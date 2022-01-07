@@ -1,6 +1,8 @@
 package com.tcc2022.techmedicine.services;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,44 @@ public class PacienteService {
 
 	public List<Paciente> findAll() {
 		return pacienteRepository.findAll();
+	}
+
+	public Paciente findById(long id) {
+		Optional<Paciente> obj = pacienteRepository.findById(id);
+		return obj.get();
+	}
+	
+	public Paciente insert(Paciente obj) {
+		return pacienteRepository.save(obj);
+	}
+
+	public void delete(Long id) {
+		pacienteRepository.deleteById(id);
+	}
+
+	public Paciente update(Long id, Paciente obj) {
+		Paciente paciente = pacienteRepository.findById(id).get();
+		updateData(paciente, obj);
+		return pacienteRepository.save(paciente);
+	}
+	
+	public void updateData(Paciente paciente, Paciente obj) {
+		paciente.setNome(obj.getNome());
+		paciente.setSobrenome(obj.getSobrenome());
+		paciente.setNascimento(obj.getNascimento());
+		paciente.setSexo(obj.getSexo());
+		paciente.setRg(obj.getRg());
+		paciente.setCpf(obj.getCpf());
+		paciente.setTelefoneResidencial(obj.getCpf());
+		paciente.setTelefoneCelular(obj.getTelefoneCelular());
+		paciente.setEmail(obj.getEmail());
+		paciente.setCep(obj.getCep());
+		paciente.setCidade(obj.getCidade());
+		paciente.setEstado(obj.getEstado());
+		paciente.setEndereco(obj.getEndereco());
+		paciente.setNumero(obj.getNumero());
+		paciente.setBairro(obj.getBairro());
+		paciente.setComplemento(obj.getComplemento());
 	}
 	
 	/*public List<Paciente> findAll() {

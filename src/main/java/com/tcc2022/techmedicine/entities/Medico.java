@@ -36,7 +36,6 @@ public class Medico implements Serializable {
 	}
 
 	public Medico(Long id, String nome, String cpf, String crm) {
-		super();
 		this.id = id;
 		this.nome = nome;
 		this.cpf = cpf;
