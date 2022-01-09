@@ -9,10 +9,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.tcc2022.techmedicine.entities.Agendamento;
 import com.tcc2022.techmedicine.entities.Categoria;
 import com.tcc2022.techmedicine.entities.Medico;
 import com.tcc2022.techmedicine.entities.Paciente;
 import com.tcc2022.techmedicine.entities.Produto;
+import com.tcc2022.techmedicine.entities.enums.SituacaoAgendamento;
+import com.tcc2022.techmedicine.repositories.AgendamentoRepository;
 import com.tcc2022.techmedicine.repositories.CategoriaRepository;
 import com.tcc2022.techmedicine.repositories.MedicoRepository;
 import com.tcc2022.techmedicine.repositories.PacienteRepository;
@@ -23,6 +26,7 @@ import com.tcc2022.techmedicine.repositories.ProdutoRepository;
 public class TesteConfig implements CommandLineRunner {
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	
 	@Autowired
 	public PacienteRepository pacienteRepository;
@@ -35,6 +39,9 @@ public class TesteConfig implements CommandLineRunner {
 	
 	@Autowired
 	public ProdutoRepository produtoRepository;
+	
+	@Autowired
+	private AgendamentoRepository agendamentoRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -62,5 +69,8 @@ public class TesteConfig implements CommandLineRunner {
 		
 		Produto prod1 = new Produto(null, "Remedio", 10.50, 5, c1);
 		produtoRepository.save(prod1);
+		
+		/*Agendamento a1 = new Agendamento(null, p1, m1, sdf.parse("09/01/2022"), sdf2.parse("15/01/2022 15:30"), SituacaoAgendamento.AGENDADO);
+		agendamentoRepository.save(a1);*/
 	}	
 }

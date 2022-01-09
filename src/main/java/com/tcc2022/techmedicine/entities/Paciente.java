@@ -2,16 +2,20 @@ package com.tcc2022.techmedicine.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_paciente")
@@ -70,6 +74,10 @@ public class Paciente implements Serializable {
 	
 	@Column(length = 70, nullable = true)
 	private String complemento;
+	
+	@OneToMany(mappedBy = "paciente")
+	@JsonIgnore
+	Set<Agendamento> agendamentos = new HashSet<>();
 	
 	public Paciente() {
 	}
@@ -230,6 +238,10 @@ public class Paciente implements Serializable {
 
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
+	}
+
+	public Set<Agendamento> getAgendamentos() {
+		return agendamentos;
 	}
 
 	@Override
