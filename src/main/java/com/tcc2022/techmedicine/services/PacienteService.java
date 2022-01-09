@@ -1,6 +1,5 @@
 package com.tcc2022.techmedicine.services;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +38,7 @@ public class PacienteService {
 		return pacienteRepository.save(paciente);
 	}
 	
-	public void updateData(Paciente paciente, Paciente obj) {
+	private void updateData(Paciente paciente, Paciente obj) {
 		paciente.setNome(obj.getNome());
 		paciente.setSobrenome(obj.getSobrenome());
 		paciente.setNascimento(obj.getNascimento());

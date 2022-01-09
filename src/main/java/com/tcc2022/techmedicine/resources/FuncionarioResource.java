@@ -15,44 +15,44 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.tcc2022.techmedicine.entities.Medico;
-import com.tcc2022.techmedicine.services.MedicoService;
+import com.tcc2022.techmedicine.entities.Funcionario;
+import com.tcc2022.techmedicine.services.FuncionarioService;
 
 @RestController
-@RequestMapping(value = "/medicos")
-public class MedicoResource {
-	
-	@Autowired
-	private MedicoService medicoService;
+@RequestMapping(value = "/funcionarios")
+public class FuncionarioResource {
 
+	@Autowired
+	private FuncionarioService funcionarioService;
+	
 	@GetMapping
-	public ResponseEntity<List<Medico>> findAll() {
-		List<Medico> list = medicoService.findAll();
+	public ResponseEntity<List<Funcionario>> findAll() {
+		List<Funcionario> list = funcionarioService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Medico> findById(@PathVariable Long id) {
-		Medico medico = medicoService.findById(id);
-		return ResponseEntity.ok().body(medico);
+	public ResponseEntity<Funcionario> findById(@PathVariable Long id) {
+		Funcionario funcionario = funcionarioService.findById(id);
+		return ResponseEntity.ok().body(funcionario);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Medico> insert(@RequestBody Medico obj) {
-		obj = medicoService.insert(obj);
+	public ResponseEntity<Funcionario> insert(@RequestBody Funcionario obj) {
+		obj = funcionarioService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		medicoService.delete(id);
+		funcionarioService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Medico> update(@PathVariable Long id, @RequestBody Medico obj) {
-		obj = medicoService.update(id, obj);
+	public ResponseEntity<Funcionario> update(@PathVariable Long id, @RequestBody Funcionario obj) {
+		obj = funcionarioService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}
 }

@@ -15,44 +15,44 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.tcc2022.techmedicine.entities.Medico;
-import com.tcc2022.techmedicine.services.MedicoService;
+import com.tcc2022.techmedicine.entities.Categoria;
+import com.tcc2022.techmedicine.services.CategoriaService;
 
 @RestController
-@RequestMapping(value = "/medicos")
-public class MedicoResource {
-	
-	@Autowired
-	private MedicoService medicoService;
+@RequestMapping(value = "/categorias")
+public class CategoriaResource {
 
+	@Autowired
+	private CategoriaService categoriaService;
+	
 	@GetMapping
-	public ResponseEntity<List<Medico>> findAll() {
-		List<Medico> list = medicoService.findAll();
+	public ResponseEntity<List<Categoria>> findAll() {
+		List<Categoria> list = categoriaService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Medico> findById(@PathVariable Long id) {
-		Medico medico = medicoService.findById(id);
-		return ResponseEntity.ok().body(medico);
+	public ResponseEntity<Categoria> findById(@PathVariable Long id) {
+		Categoria obj = categoriaService.findById(id);
+		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Medico> insert(@RequestBody Medico obj) {
-		obj = medicoService.insert(obj);
+	public ResponseEntity<Categoria> insert(@RequestBody Categoria obj) {
+		obj = categoriaService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		medicoService.delete(id);
+		categoriaService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Medico> update(@PathVariable Long id, @RequestBody Medico obj) {
-		obj = medicoService.update(id, obj);
+	public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody Categoria obj) {
+		obj = categoriaService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}
 }

@@ -14,10 +14,10 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name = "tb_medico")
-public class Medico implements Serializable {
+@Table(name = "tb_funcionario")
+public class Funcionario implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -35,16 +35,13 @@ public class Medico implements Serializable {
 	@Column(length = 9, nullable = false)
 	private String sexo;
 	
-	@Column(length = 8, nullable = false)
-	private String crm;
-	
 	@Column(length = 30, nullable = false)
-	private String especialidade;
+	private String cargo;
 	
 	@Column(length = 12, nullable = false)
 	private String rg;
 	
-	@Column(length = 14, unique = true)
+	@Column(length = 14, unique = true, nullable = false)
 	private String cpf;
 	
 	@Column(length = 14, nullable = true)
@@ -76,20 +73,19 @@ public class Medico implements Serializable {
 	
 	@Column(length = 70, nullable = true)
 	private String complemento;
-	
-	public Medico() {
+
+	public Funcionario() {
 	}
 
-	public Medico(Long id, String nome, String sobrenome, Date nascimento, String sexo, String crm, String especialidade, 
-			String rg, String cpf, String telefoneResidencial, String telefoneCelular, String email, String cep, String cidade, 
-			String estado, String endereco, String numero, String bairro, String complemento) {
+	public Funcionario(Long id, String nome, String sobrenome, Date nascimento, String sexo, String cargo, String rg, String cpf,
+			String telefoneResidencial, String telefoneCelular, String email, String cep,String cidade, String estado, 
+			String endereco, String numero, String bairro, String complemento) {
 		this.id = id;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.nascimento = nascimento;
 		this.sexo = sexo;
-		this.crm = crm;
-		this.especialidade = especialidade;
+		this.cargo = cargo;
 		this.rg = rg;
 		this.cpf = cpf;
 		this.telefoneResidencial = telefoneResidencial;
@@ -144,20 +140,12 @@ public class Medico implements Serializable {
 		this.sexo = sexo;
 	}
 
-	public String getCrm() {
-		return crm;
+	public String getCargo() {
+		return cargo;
 	}
 
-	public void setCrm(String crm) {
-		this.crm = crm;
-	}
-
-	public String getEspecialidade() {
-		return especialidade;
-	}
-
-	public void setEspecialidade(String especialidade) {
-		this.especialidade = especialidade;
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
 	}
 
 	public String getRg() {
@@ -269,7 +257,7 @@ public class Medico implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Medico other = (Medico) obj;
+		Funcionario other = (Funcionario) obj;
 		return Objects.equals(id, other.id);
 	}
 }

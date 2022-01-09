@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -23,77 +22,61 @@ public class Paciente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotNull
-	@Column(length = 20)
+	@Column(length = 20, nullable = false)
 	private String nome;
 	
-	@NotNull
-	@Column(length = 50)
+	@Column(length = 50, nullable = false)
 	private String sobrenome;
 	
-	@NotNull
-	@Column(length = 50)
+	@Column(length = 50, nullable = false)
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date nascimento;
 	
-	@NotNull
-	@Column(length = 9)
+	@Column(length = 9, nullable = false)
 	private String sexo;
 	
-	@NotNull
-	@Column(length = 12)
+	@Column(length = 12, nullable = false)
 	private String rg;
 	
-	@NotNull
-	@Column(length = 14, unique = true)
+	@Column(length = 14, unique = true, nullable = false)
 	private String cpf;
 	
-	@Column(length = 14)
+	@Column(length = 14, nullable = true)
 	private String telefoneResidencial;
 	
-	@NotNull
-	@Column(length = 15)
+	@Column(length = 15, nullable = false)
 	private String telefoneCelular;
 	
-	@NotNull
-	@Column(length = 35)
+	@Column(length = 35, nullable = false)
 	private String email;
 	
-	@NotNull
-	@Column(length = 50)
+	@Column(length = 50, nullable = false)
 	private String cep;
 	
-	@NotNull
-	@Column(length = 30)
+	@Column(length = 30, nullable = false)
 	private String cidade;
 	
-	@NotNull
-	@Column(length = 2)
+	@Column(length = 2, nullable = false)
 	private String estado;
 	
-	@NotNull
-	@Column(length = 70)
+	@Column(length = 70, nullable = false)
 	private String endereco;
 	
-	@NotNull
-	@Column(length = 5)
+	@Column(length = 5, nullable = false)
 	private String numero;
 	
-	@NotNull
-	@Column(length = 30)
+	@Column(length = 30, nullable = false)
 	private String bairro;
 	
-	@Column(length = 70)
+	@Column(length = 70, nullable = true)
 	private String complemento;
 	
 	public Paciente() {
 	}
 
-	public Paciente(Long id, @NotNull String nome, @NotNull String sobrenome, @NotNull Date nascimento,
-			@NotNull String sexo, @NotNull String rg, @NotNull String cpf, String telefoneResidencial,
-			@NotNull String telefoneCelular, @NotNull String email, @NotNull String cep, @NotNull String cidade,
-			@NotNull String estado, @NotNull String endereco, @NotNull String numero, @NotNull String bairro,
-			String complemento) {
+	public Paciente(Long id, String nome, String sobrenome, Date nascimento, String sexo, String rg, String cpf, 
+			String telefoneResidencial, String telefoneCelular, String email, String cep, String cidade, String estado, 
+			String endereco, String numero, String bairro, String complemento) {
 		this.id = id;
 		this.nome = nome;
 		this.sobrenome = sobrenome;

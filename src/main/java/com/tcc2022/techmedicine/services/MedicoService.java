@@ -24,15 +24,38 @@ public class MedicoService {
 		return medico.get();
 	}
 
+	public Medico insert(Medico obj) {
+		return medicoRepository.save(obj);
+	}
+	
 	public void delete(Long id) {
 		medicoRepository.deleteById(id);
 	}
 	
 	public Medico update(Long id, Medico obj) {
 		Medico medico = medicoRepository.findById(id).get();
-		medico.setNome(obj.getNome());
-		medico.setCpf(obj.getCpf());
-		medico.setCrm(obj.getCrm());
+		updateData(medico, obj);
 		return medicoRepository.save(medico);
+	}
+	
+	private void updateData(Medico medico, Medico obj) {
+		medico.setNome(obj.getNome());
+		medico.setSobrenome(obj.getSobrenome());
+		medico.setNascimento(obj.getNascimento());
+		medico.setSexo(obj.getSexo());
+		medico.setCrm(obj.getCrm());
+		medico.setEspecialidade(obj.getEspecialidade());
+		medico.setRg(obj.getRg());
+		medico.setCpf(obj.getCpf());
+		medico.setTelefoneResidencial(obj.getCpf());
+		medico.setTelefoneCelular(obj.getTelefoneCelular());
+		medico.setEmail(obj.getEmail());
+		medico.setCep(obj.getCep());
+		medico.setCidade(obj.getCidade());
+		medico.setEstado(obj.getEstado());
+		medico.setEndereco(obj.getEndereco());
+		medico.setNumero(obj.getNumero());
+		medico.setBairro(obj.getBairro());
+		medico.setComplemento(obj.getComplemento());
 	}
 }
