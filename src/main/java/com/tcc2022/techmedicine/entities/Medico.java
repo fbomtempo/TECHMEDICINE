@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -42,8 +44,9 @@ public class Medico implements Serializable {
 	@Column(length = 8, nullable = false)
 	private String crm;
 	
-	@Column(length = 30, nullable = false)
-	private String especialidade;
+	@ManyToOne
+	@JoinColumn(name = "id_especialidade", nullable = false)
+	private Especialidade especialidade;
 	
 	@Column(length = 12, nullable = false)
 	private String rg;
@@ -88,7 +91,7 @@ public class Medico implements Serializable {
 	public Medico() {
 	}
 
-	public Medico(Long id, String nome, String sobrenome, Date nascimento, String sexo, String crm, String especialidade, 
+	public Medico(Long id, String nome, String sobrenome, Date nascimento, String sexo, String crm, Especialidade especialidade, 
 			String rg, String cpf, String telefoneResidencial, String telefoneCelular, String email, String cep, String cidade, 
 			String estado, String endereco, String numero, String bairro, String complemento) {
 		this.id = id;
@@ -160,11 +163,11 @@ public class Medico implements Serializable {
 		this.crm = crm;
 	}
 
-	public String getEspecialidade() {
+	public Especialidade getEspecialidade() {
 		return especialidade;
 	}
 
-	public void setEspecialidade(String especialidade) {
+	public void setEspecialidade(Especialidade especialidade) {
 		this.especialidade = especialidade;
 	}
 

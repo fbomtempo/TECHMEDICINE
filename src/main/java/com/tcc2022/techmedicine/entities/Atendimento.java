@@ -15,17 +15,20 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tcc2022.techmedicine.entities.enums.SituacaoAgendamento;
+import com.tcc2022.techmedicine.entities.enums.SituacaoAtendimento;
 
 @Entity
-@Table(name = "tb_agendamento")
-public class Agendamento implements Serializable {
+@Table(name = "tb_atendimento")
+public class Atendimento implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@OneToOne
+	@JoinColumn(name = "id_agendamento", nullable = true, unique = true )
+	private Agendamento agendamento;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_paciente", nullable = false)
@@ -36,29 +39,21 @@ public class Agendamento implements Serializable {
 	private Medico medico;
 	
 	@Column(length = 50, nullable = false)
-	@JsonFormat(pattern = "dd/MM/yyyy", timezone = "America/Sao_Paulo")
-	private Date dataAgendamento;
-	
-	@Column(length = 50, nullable = false, unique = true)
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone = "America/Sao_Paulo")
-	private Date dataAgendada;
+	private Date dataAtendimento;
 	
-	private Integer situacaoAgendamento;
+	private Integer situacaoAtendimento;
 	
-	@OneToOne(mappedBy = "agendamento")
-	@JsonIgnore
-	private Atendimento atendimento;
-	
-	public Agendamento() {
+	public Atendimento() {
 	}
 
-	public Agendamento(Long id, Paciente paciente, Medico medico, Date dataAgendamento, Date dataAgendada, SituacaoAgendamento situacaoAgendamento) {
+	public Atendimento(Long id, Agendamento agendamento, Paciente paciente, Medico medico, Date dataAtendimento, SituacaoAtendimento situacaoAtendimento) {
 		this.id = id;
+		this.agendamento = agendamento;
 		this.paciente = paciente;
 		this.medico = medico;
-		this.dataAgendamento = dataAgendamento;
-		this.dataAgendada = dataAgendada;
-		setSituacaoAgendamento(situacaoAgendamento);
+		this.dataAtendimento = dataAtendimento;
+		setSituacaoAtendimento(situacaoAtendimento);
 	}
 
 	public Long getId() {
@@ -67,6 +62,14 @@ public class Agendamento implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Agendamento getAgendamento() {
+		return agendamento;
+	}
+
+	public void setAgendamento(Agendamento agendamento) {
+		this.agendamento = agendamento;
 	}
 
 	public Paciente getPaciente() {
@@ -85,29 +88,21 @@ public class Agendamento implements Serializable {
 		this.medico = medico;
 	}
 
-	public Date getDataAgendamento() {
-		return dataAgendamento;
+	public Date getDataAtendimento() {
+		return dataAtendimento;
 	}
 
-	public void setDataAgendamento(Date dataAgendamento) {
-		this.dataAgendamento = dataAgendamento;
+	public void setDataAtendimento(Date dataAtendimento) {
+		this.dataAtendimento = dataAtendimento;
 	}
 
-	public Date getDataAgendada() {
-		return dataAgendada;
-	}
-
-	public void setDataAgendada(Date dataAgendada) {
-		this.dataAgendada = dataAgendada;
-	}
-
-	public SituacaoAgendamento getSituacaoAgendamento() {
-		return SituacaoAgendamento.valueOf(situacaoAgendamento);
+	public SituacaoAtendimento getSituacaoAtendimento() {
+		return SituacaoAtendimento.valueOf(situacaoAtendimento);
 	}
 	
-	public void setSituacaoAgendamento(SituacaoAgendamento situacaoAgendamento) {
-		if (situacaoAgendamento != null) {
-			this.situacaoAgendamento = situacaoAgendamento.getCode();
+	public void setSituacaoAtendimento(SituacaoAtendimento situacaoAtendimento) {
+		if (situacaoAtendimento != null) {
+			this.situacaoAtendimento = situacaoAtendimento.getCode();
 		}
 	}
 
@@ -124,7 +119,7 @@ public class Agendamento implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Agendamento other = (Agendamento) obj;
+		Atendimento other = (Atendimento) obj;
 		return Objects.equals(id, other.id);
 	}
 }

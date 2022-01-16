@@ -10,13 +10,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.tcc2022.techmedicine.entities.Agendamento;
+import com.tcc2022.techmedicine.entities.Atendimento;
 import com.tcc2022.techmedicine.entities.Categoria;
+import com.tcc2022.techmedicine.entities.Especialidade;
 import com.tcc2022.techmedicine.entities.Medico;
 import com.tcc2022.techmedicine.entities.Paciente;
 import com.tcc2022.techmedicine.entities.Produto;
 import com.tcc2022.techmedicine.entities.enums.SituacaoAgendamento;
+import com.tcc2022.techmedicine.entities.enums.SituacaoAtendimento;
 import com.tcc2022.techmedicine.repositories.AgendamentoRepository;
+import com.tcc2022.techmedicine.repositories.AtendimentoRepository;
 import com.tcc2022.techmedicine.repositories.CategoriaRepository;
+import com.tcc2022.techmedicine.repositories.EspecialidadeRepository;
 import com.tcc2022.techmedicine.repositories.MedicoRepository;
 import com.tcc2022.techmedicine.repositories.PacienteRepository;
 import com.tcc2022.techmedicine.repositories.ProdutoRepository;
@@ -43,8 +48,17 @@ public class TesteConfig implements CommandLineRunner {
 	@Autowired
 	private AgendamentoRepository agendamentoRepository;
 	
+	@Autowired
+	private AtendimentoRepository atendimentoRepository;
+	
+	@Autowired
+	private EspecialidadeRepository especialidadeRepository;
+	
 	@Override
 	public void run(String... args) throws Exception {
+		
+		Especialidade e1 = new Especialidade(null, "Clinico Geral");
+		especialidadeRepository.save(e1);
 		
 		Paciente p1 = new Paciente(null, "Felipe", "Bomtempo", sdf.parse("04/05/2001"), "Masculino", "00.000.000-0", "000.000.000-00", 
 									"(18) 0000-0000", "(18) 00000-0000", "felipe@email.com", "00000-000", "Assis", "SP",
@@ -57,7 +71,7 @@ public class TesteConfig implements CommandLineRunner {
 		list.add(p2);
 		pacienteRepository.saveAll(list);
 
-		Medico m1 = new Medico(null, "Andresa", "Felix", sdf.parse("05/04/1976"), "Feminino", "00000000", "Clinico Geral", 
+		Medico m1 = new Medico(null, "Andresa", "Felix", sdf.parse("05/04/1976"), "Feminino", "00000000", e1, 
 				"00.000.000-0", "000.000.000-01", null, "(18) 00000-0000", "felipe@email.com", "00000-000", "Assis", "SP",
 				"Rua A", "1020", "Parque XYZ", null);
 		medicoRepository.save(m1);
@@ -70,7 +84,13 @@ public class TesteConfig implements CommandLineRunner {
 		Produto prod1 = new Produto(null, "Remedio", 10.50, 5, c1);
 		produtoRepository.save(prod1);
 		
-		/*Agendamento a1 = new Agendamento(null, p1, m1, sdf.parse("09/01/2022"), sdf2.parse("15/01/2022 15:30"), SituacaoAgendamento.AGENDADO);
-		agendamentoRepository.save(a1);*/
+		Agendamento a1 = new Agendamento(null, p1, m1, sdf.parse("10/01/2022"), sdf2.parse("15/01/2022 15:30"), SituacaoAgendamento.AGENDADO);
+		agendamentoRepository.save(a1);
+		
+		Atendimento atd1 = new Atendimento(null, null, p1, m1, sdf2.parse("15/01/2022 15:30"), SituacaoAtendimento.ABERTO);
+		atendimentoRepository.save(atd1);
+		
+		Atendimento atd2 = new Atendimento(null, a1, p1, m1, sdf2.parse("15/01/2022 15:30"), SituacaoAtendimento.ABERTO);
+		atendimentoRepository.save(atd2);
 	}	
 }
