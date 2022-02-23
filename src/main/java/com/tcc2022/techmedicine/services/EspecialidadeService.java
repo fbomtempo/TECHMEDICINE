@@ -1,9 +1,11 @@
 package com.tcc2022.techmedicine.services;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.tcc2022.techmedicine.entities.Especialidade;
@@ -18,14 +20,22 @@ public class EspecialidadeService {
 	public List<Especialidade> findAll() {
 		return especialidadeRepository.findAll();
 	}
-	
+
 	public Especialidade findById(Long id) {
 		Optional<Especialidade> obj = especialidadeRepository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new NoSuchElementException("Objeto de 'id " + id + "' não encontrado."));
+	}
+	
+	public List<Especialidade> findByDescricao(String descricao) {
+		return especialidadeRepository.findByDescricaoContaining(descricao);
 	}
 	
 	public Especialidade insert(Especialidade obj) {
-		return especialidadeRepository.save(obj);
+		try {
+			return especialidadeRepository.save(obj);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityViolationException("Integridade do banco de dados violada.");
+		}
 	}
 	
 	public void delete(Long id) {

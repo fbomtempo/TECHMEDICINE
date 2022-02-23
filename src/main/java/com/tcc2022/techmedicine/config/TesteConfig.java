@@ -32,7 +32,7 @@ public class TesteConfig implements CommandLineRunner {
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-	
+
 	@Autowired
 	public PacienteRepository pacienteRepository;
 	
@@ -57,8 +57,26 @@ public class TesteConfig implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
+		/*List<Especialidade> especialidades = new ArrayList<>();
+		Especialidade e1 = new Especialidade(null, "Clinico Geral");
+		Especialidade e2 = new Especialidade(null, "Cardiologista");
+		Especialidade e3 = new Especialidade(null, "Dermatologista");
+		Especialidade e4 = new Especialidade(null, "Urologista");
+		Especialidade e5 = new Especialidade(null, "Oftalmologista");
+		especialidades.add(e1);
+		especialidades.add(e2);
+		especialidades.add(e3);
+		especialidades.add(e4);
+		especialidades.add(e5);
+		especialidadeRepository.saveAll(especialidades);*/
+		
 		Especialidade e1 = new Especialidade(null, "Clinico Geral");
 		especialidadeRepository.save(e1);
+		
+		for (int i = 2; i <= 10; i++) {
+			String desc = String.join("", "Teste", Integer.toString(i));
+			especialidadeRepository.save(new Especialidade(null, desc));
+		}
 		
 		Paciente p1 = new Paciente(null, "Felipe", "Bomtempo", sdf.parse("04/05/2001"), "Masculino", "00.000.000-0", "000.000.000-00", 
 									"(18) 0000-0000", "(18) 00000-0000", "felipe@email.com", "00000-000", "Assis", "SP",
