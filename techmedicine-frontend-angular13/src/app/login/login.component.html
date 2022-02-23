@@ -1,0 +1,23 @@
+<!--<img src="../assets/images/background.jpg" style="position: fixed">-->
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="../assets/images/icon-principal2.png" id="icon" alt="User Icon">
+    </div>
+
+    <!-- Login Form -->
+    <form class="needs-validation" novalidate [formGroup]="form">
+      <input type="text" class="form-control fadeIn second" id="usuario" formControlName="usuario" placeholder="usuario" required>
+      <input type="password" class="form-control fadeIn third" id="senha" formControlName="senha" placeholder="password" required>
+      <input type="submit" class="mt-4 fadeIn fourth" value="Log In" (click)="login()">
+    </form>
+
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
+    </div>
+  </div>
+</div>

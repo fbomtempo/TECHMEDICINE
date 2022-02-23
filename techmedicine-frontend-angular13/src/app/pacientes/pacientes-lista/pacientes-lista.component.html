@@ -1,0 +1,82 @@
+<div *ngIf="pacientes$ | async as pacientes; else loadingError">
+  <div class="col-md-12">
+    <div class="pt-4 pb-md-0 pb-3 col-md-3">
+        <a class="fs-5 display-1 voltar" [routerLink]="['/home']"><i class="fas fa-arrow-left"></i><span class="ms-2">Voltar</span></a>
+    </div>
+    <h1 class="text-center pb-4">Cadastro de pacientes</h1>
+  </div>
+  <!--<h1 class="mt-4 mb-5">Lista de pacientes</h1>-->
+  <div class="row">
+    <div class="col">
+      <button type="button" class="btn btn-primary" [routerLink]="['novo']">Novo Paciente <i class="fas fa-plus-circle"></i></button>
+    </div>
+    <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-8 col-sm-12 col-xs-12 mt-md-0 mt-2">
+      <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Digite a especialidade" aria-label="Search" id="busca"
+          #filterInput [value]="filter ? filter : ''">
+          <button type="submit" class="btn btn-pesquisa pesquisar" (click)="setFilter(filterInput.value)"><i class="fas fa-search"></i></button>
+          <button type="button" class="btn btn-limpar pesquisar ms-2" (click)="onClearFilter(filterInput)">Limpar</button>
+      </form>
+    </div>
+  </div>
+  <table class="mt-3 table table-striped table-hover align-middle table-responsive">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">ID</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Sobrenome</th>
+        <th scope="col">Nascimento</th>
+        <th scope="col">CPF</th>
+        <th scope="col">Ações</th>
+      </tr>
+    </thead>
+    <tbody class="table-link">
+      <tr *ngFor="let paciente of onShowData(pacientes) | pagination: page:itemsPerPage; let i = index">
+        <th scope="row">{{ (i + 1) + (page - 1) * itemsPerPage }}</th>
+        <td>{{ paciente.id }}</td>
+        <td>{{ paciente.nome }}</td>
+        <td>{{ paciente.sobrenome }}</td>
+        <td>{{ paciente.nascimento }}</td>
+        <td>{{ paciente.cpf }}</td>
+        <td>
+          <button type="button" class="btn btn-round btn-outline-edit" [routerLink]="['editar/', paciente.id]"><i class="fas fa-pencil-alt"></i></button>
+          <button type="button" class="ms-2 btn-round btn-outline-delete" (click)="onDelete(paciente)"><i class="fas fa-trash-alt"></i></button>
+          <button type="button" class="ms-2 btn-round btn-outline-view" [routerLink]="['visualizar/', paciente.id]"><i class="fas fa-eye"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="mb-3 d-flex justify-content-center">
+    <pagination
+    [totalItems]="onShowData(pacientes).length" [maxSize]="paginationSize" (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
+    [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+    </pagination>
+    <br>
+  </div>
+</div>
+
+<ng-template #loadingError>
+  <div *ngIf="error$ | async; else loading">
+    <div style="height: 80vh" class="d-flex flex-column align-items-center justify-content-center">
+      <p style="font-size: 1.65rem;">Erro ao carregar pacientes.</p>
+      <button type="button" class="btn btn-lg btn-secondary" (click)="reloadPage()">Tentar Novamente <i class="fas fa-sync-alt"></i></button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div style="height: 80vh" class="d-flex align-items-center justify-content-center">
+    <div class="loader"></div>
+  </div>
+</ng-template>
+
+<!--
+<ng-template #loading2>
+  <div style="height: 85vh" class="d-flex align-items-center justify-content-center">
+    <div class="spinner-border" style="width: 8rem; height: 8rem; color: grey" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-template>
+-->

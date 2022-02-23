@@ -1,0 +1,23 @@
+<h1 class="mt-4">Visualizar Especialidade</h1>
+<div>
+  <h4 class="pt-4">Especialidade</h4>
+  <hr>
+  <dl class="row">
+    <dt class="col-sm-2">
+      ID:
+    </dt>
+    <dd class="col-sm-10">
+      {{ especialidade.id }}
+    </dd>
+    <dt class="col-sm-2">
+      Descrição:
+    </dt>
+    <dd class="col-sm-10">
+      {{ especialidade.descricao }}
+    </dd>
+  </dl>
+</div>
+<div class="fs-5">
+  <button type="button" class="btn btn-primary" [routerLink]="['../../editar/', especialidade.id]">Editar</button>
+  <button type="button" class="ms-2 btn btn-secondary" (click)="onBackToList()">Voltar a Lista</button>
+</div>

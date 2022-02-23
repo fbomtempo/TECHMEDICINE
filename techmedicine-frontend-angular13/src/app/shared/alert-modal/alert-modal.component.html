@@ -1,0 +1,16 @@
+<div class="alert alert-{{ type }} alert-dismissible fade show mb-0" role="alert">
+  <strong>{{ title }}</strong>
+  <br>
+  {{ description }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="onClose()"></button>
+  <br>
+  <!--<a style="font-size: 10px;" (click)="onShow()">Mostrar erro v</a>-->
+  <div *ngIf="show">
+    <hr>
+    <p style="font-size: 10px">{{ error.timestamp }}</p>
+    <p style="font-size: 10px">{{ error.status }}</p>
+    <p style="font-size: 10px">{{ error.error }}</p>
+    <p style="font-size: 10px">{{ error.message }}</p>
+    <p style="font-size: 10px">{{ error.path }}</p>
+  </div>
+</div>
