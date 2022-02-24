@@ -5,6 +5,9 @@ import { ModalService } from 'src/app/shared/services/modal.service';
 import { FormSerivce } from 'src/app/shared/services/form-service';
 import { Location } from '@angular/common';
 import { PacientesService } from '../pacientes.service';
+import { Observable } from 'rxjs';
+import { Estado } from 'src/app/shared/models/estado';
+import { DropdownService } from 'src/app/shared/services/dropdown.service';
 
 @Component({
   selector: 'app-pacientes-form',
@@ -13,10 +16,13 @@ import { PacientesService } from '../pacientes.service';
 })
 export class PacientesFormComponent extends FormSerivce implements OnInit, OnDestroy {
 
+  estados: Observable<Estado[]>;
+
   constructor(
-    private route: ActivatedRoute,
     private pacientesService: PacientesService,
     private modalService: ModalService,
+    private dropdownService: DropdownService,
+    private route: ActivatedRoute,
     protected override formBuilder: FormBuilder,
     protected override router: Router,
     protected override location: Location
@@ -25,8 +31,12 @@ export class PacientesFormComponent extends FormSerivce implements OnInit, OnDes
   }
 
   ngOnInit(): void {
+    //this.estados = new Observable()
+    this.estados = this.dropdownService.getEstados();
+
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     const paciente = this.route.snapshot.data['paciente'];
+
     this.form = this.formBuilder.group({
       id: [paciente.id],
       nome: [paciente.nome, [Validators.required, Validators.maxLength(45)]],
@@ -34,7 +44,8 @@ export class PacientesFormComponent extends FormSerivce implements OnInit, OnDes
       nascimento: [paciente.nascimento, [Validators.required, Validators.maxLength(45)]],
       sexo: [paciente.sexo, [Validators.required, Validators.maxLength(45)]],
       rg: [paciente.rg, [Validators.required, Validators.maxLength(45)]],
-      cpf: [paciente.cpf, [Validators.required, Validators.maxLength(45)]]
+      cpf: [paciente.cpf, [Validators.required, Validators.maxLength(45)]],
+      estado: [paciente.estado, [Validators.required]]
     });
     this.form.valueChanges.subscribe(() => {
       this.changed = true;
@@ -46,7 +57,8 @@ export class PacientesFormComponent extends FormSerivce implements OnInit, OnDes
   }
 
   onSubmit(): void {
-    this.submitted = true;
+    console.log(this.form.value)
+    /*this.submitted = true;
     if (this.form.valid) {
       if (this.form.value['id']) {
         this.pacientesService.update(this.form.value)
@@ -67,7 +79,7 @@ export class PacientesFormComponent extends FormSerivce implements OnInit, OnDes
             }
           });
       }
-    }
+    }*/
   }
 
   onCancel(): void {

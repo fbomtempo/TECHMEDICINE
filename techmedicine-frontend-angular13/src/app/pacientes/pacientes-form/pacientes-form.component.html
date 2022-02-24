@@ -1,9 +1,9 @@
 <h1 class="mt-4">{{ formType }} Paciente</h1>
 <form class="mt-4 row g-3 needs-validation" novalidate [formGroup]="form">
-  <div class="col-md-12">
+  <div class="col-md-5">
     <label for="nome" class="form-label">Nome</label>
     <input type="text" class="form-control" id="nome" formControlName="nome" placeholder="Nome"
-    [ngClass]="applyValidationClass('nome')">
+      [ngClass]="applyValidationClass('nome')">
     <div class="invalid-feedback" *ngIf="form.get('nome').errors?.['required']">
       Campo é obrigatório.
     </div>
@@ -14,10 +14,10 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-12">
+  <div class="col-md-5">
     <label for="sobrenome" class="form-label">Sobrenome</label>
     <input type="text" class="form-control" id="sobrenome" formControlName="sobrenome" placeholder="Sobrenome"
-    [ngClass]="applyValidationClass('sobrenome')">
+      [ngClass]="applyValidationClass('sobrenome')">
     <div class="invalid-feedback" *ngIf="form.get('sobrenome').errors?.['required']">
       Campo é obrigatório.
     </div>
@@ -28,10 +28,10 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-12">
+  <div class="col-md-2">
     <label for="nascimento" class="form-label">Nascimento</label>
     <input type="date" class="form-control" id="nascimento" formControlName="nascimento" placeholder="Nascimento"
-    [ngClass]="applyValidationClass('nascimento')">
+      [ngClass]="applyValidationClass('nascimento')">
     <div class="invalid-feedback" *ngIf="form.get('nascimento').errors?.['required']">
       Campo é obrigatório.
     </div>
@@ -42,10 +42,10 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-12">
+  <div class="col-md-4">
     <label for="sexo" class="form-label">Sexo</label>
     <input type="text" class="form-control" id="sexo" formControlName="sexo" placeholder="Sexo"
-    [ngClass]="applyValidationClass('sexo')">
+      [ngClass]="applyValidationClass('sexo')">
     <div class="invalid-feedback" *ngIf="form.get('sexo').errors?.['required']">
       Campo é obrigatório.
     </div>
@@ -56,10 +56,10 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-12">
+  <div class="col-md-4">
     <label for="rg" class="form-label">RG</label>
     <input type="text" class="form-control" id="rg" formControlName="rg" placeholder="RG"
-    [ngClass]="applyValidationClass('rg')">
+      [ngClass]="applyValidationClass('rg')">
     <div class="invalid-feedback" *ngIf="form.get('rg').errors?.['required']">
       Campo é obrigatório.
     </div>
@@ -70,10 +70,10 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-12">
+  <div class="col-md-4">
     <label for="cpf" class="form-label">CPF</label>
     <input type="text" class="form-control" id="cpf" formControlName="cpf" placeholder="CPF"
-    [ngClass]="applyValidationClass('cpf')">
+      [ngClass]="applyValidationClass('cpf')">
     <div class="invalid-feedback" *ngIf="form.get('cpf').errors?.['required']">
       Campo é obrigatório.
     </div>
@@ -84,13 +84,20 @@
       Parece bom.
     </div>
   </div>
+  <div class="col-md-3">
+    <label for="estado" class="form-label">Estado</label>
+    <select type="text" class="form-select" formControlName="estado" id="estado" placeholder="UF">
+      <option value="null" disabled="true" [selected]="true">Selecione o estado</option>
+      <option *ngFor="let est of estados | async" [value]="est.uf">{{ est.descricao }}</option>
+    </select>
+  </div>
   <div class="mb-5">
     <button type="submit" class="btn btn-primary" (click)="onSubmit()">Salvar</button>
     <button type="button" class="ms-2 btn btn-danger" (click)="onCancel()">Cancelar</button>
   </div>
 </form>
 
-    <!--<ng-template [ngTemplateOutlet]="outlet" [ngOutletContext]="context"></ng-template><ng-template #maxlengthError>
+<!--<ng-template [ngTemplateOutlet]="outlet" [ngOutletContext]="context"></ng-template><ng-template #maxlengthError>
       <div class="invalid-feedback">
         mt grande cachorro.
       </div>
