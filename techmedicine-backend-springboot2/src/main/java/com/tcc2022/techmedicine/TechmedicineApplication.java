@@ -31,7 +31,6 @@ public class TechmedicineApplication {
 		
 		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
 		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-		
 		return new CorsFilter(urlBasedCorsConfigurationSource);
 	}
 }
