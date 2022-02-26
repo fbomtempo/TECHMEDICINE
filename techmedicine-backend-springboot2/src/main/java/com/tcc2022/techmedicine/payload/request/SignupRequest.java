@@ -17,7 +17,7 @@ public class SignupRequest {
 	@Email
 	private String email;
 
-	private Set<String> cargos;
+	private Set<String> permissoes;
 
 	@NotBlank
 	@Size(min = 6, max = 40)
@@ -47,11 +47,11 @@ public class SignupRequest {
 		this.senha = senha;
 	}
 
-	public Set<String> getCargos() {
-		return this.cargos;
+	public Set<String> getPermissoes() {
+		return this.permissoes;
 	}
 
-	public void setCargos(Set<String> cargos) {
-		this.cargos = cargos;
+	public void setPermissoes(Set<String> permissoes) {
+		this.permissoes = permissoes;
 	}
 }

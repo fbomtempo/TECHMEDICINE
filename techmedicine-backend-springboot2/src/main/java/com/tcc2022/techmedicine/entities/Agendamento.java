@@ -43,7 +43,7 @@ public class Agendamento implements Serializable {
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone = "America/Sao_Paulo")
 	private Date dataAgendada;
 	
-	private Integer situacaoAgendamento;
+	private String situacaoAgendamento;
 	
 	@OneToOne(mappedBy = "agendamento")
 	@JsonIgnore

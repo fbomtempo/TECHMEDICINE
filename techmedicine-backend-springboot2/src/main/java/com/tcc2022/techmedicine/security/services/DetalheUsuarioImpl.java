@@ -32,7 +32,7 @@ public class DetalheUsuarioImpl implements UserDetails {
 	}
 	
 	public static DetalheUsuarioImpl build(Usuario usuario) {
-		List<GrantedAuthority> authorities = usuario.getCargos().stream()
+		List<GrantedAuthority> authorities = usuario.getPermissoes().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getDescricao().name()))
 				.collect(Collectors.toList());
 		return new DetalheUsuarioImpl(

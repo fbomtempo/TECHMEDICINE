@@ -37,8 +37,8 @@ public class Usuario implements Serializable {
 	private String senha;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "tb_usuarios_cargos", joinColumns = @JoinColumn(name = "idUsuario"), inverseJoinColumns = @JoinColumn(name = "idCargo"))
-	private Set<Cargo> cargos = new HashSet<>();
+	@JoinTable(name = "tb_usuarios_permissoes", joinColumns = @JoinColumn(name = "idUsuario"), inverseJoinColumns = @JoinColumn(name = "idPermissao"))
+	private Set<Permissao> permissoes = new HashSet<>();
 
 	public Usuario() {
 	}
@@ -82,12 +82,12 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 	}
 
-	public Set<Cargo> getCargos() {
-		return cargos;
+	public Set<Permissao> getPermissoes() {
+		return permissoes;
 	}
 	
-	public void setCargos(Set<Cargo> cargos) {
-		this.cargos = cargos;
+	public void setPermissoes(Set<Permissao> permissoes) {
+		this.permissoes = permissoes;
 	}
 
 	@Override

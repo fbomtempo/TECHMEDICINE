@@ -20,14 +20,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tcc2022.techmedicine.entities.Cargo;
+import com.tcc2022.techmedicine.entities.Permissao;
 import com.tcc2022.techmedicine.entities.Usuario;
-import com.tcc2022.techmedicine.entities.enums.TipoCargo;
+import com.tcc2022.techmedicine.entities.enums.PermissaoAcesso;
 import com.tcc2022.techmedicine.payload.request.LoginRequest;
 import com.tcc2022.techmedicine.payload.request.SignupRequest;
 import com.tcc2022.techmedicine.payload.response.JwtResponse;
 import com.tcc2022.techmedicine.payload.response.MessageResponse;
-import com.tcc2022.techmedicine.repositories.CargoRepository;
+import com.tcc2022.techmedicine.repositories.PermissaoRepository;
 import com.tcc2022.techmedicine.repositories.UsuarioRepository;
 import com.tcc2022.techmedicine.security.jwt.JwtUtils;
 import com.tcc2022.techmedicine.security.services.DetalheUsuarioImpl;
@@ -44,7 +44,7 @@ public class AuthResource {
 	UsuarioRepository usuarioRepository;
 	
 	@Autowired
-	CargoRepository cargoRepository;
+	PermissaoRepository permissaoRepository;
 	
 	@Autowired
 	PasswordEncoder encoder;
@@ -87,33 +87,33 @@ public class AuthResource {
 							 signUpRequest.getUsuario(), 
 							 signUpRequest.getEmail(),
 							 encoder.encode(signUpRequest.getSenha()));
-		Set<String> strCargos = signUpRequest.getCargos();
-		Set<Cargo> roles = new HashSet<>();
-		if (strCargos == null) {
-			Cargo userCargo = cargoRepository.findByDescricao(TipoCargo.ROLE_FUNCIONARIO)
+		Set<String> strPermissoes = signUpRequest.getPermissoes();
+		Set<Permissao> permissoes = new HashSet<>();
+		if (strPermissoes == null) {
+			Permissao userCargo = permissaoRepository.findByDescricao(PermissaoAcesso.ROLE_FUNCIONARIO)
 					.orElseThrow(() -> new RuntimeException("Error: Cargo is not found."));
-			roles.add(userCargo);
+			permissoes.add(userCargo);
 		} else {
-			strCargos.forEach(role -> {
+			strPermissoes.forEach(role -> {
 				switch (role) {
 				case "admin":
-					Cargo adminCargo = cargoRepository.findByDescricao(TipoCargo.ROLE_ADMIN)
+					Permissao adminCargo = permissaoRepository.findByDescricao(PermissaoAcesso.ROLE_ADMIN)
 							.orElseThrow(() -> new RuntimeException("Error: Cargo is not found."));
-					roles.add(adminCargo);
+					permissoes.add(adminCargo);
 					break;
 				case "medico":
-					Cargo modCargo = cargoRepository.findByDescricao(TipoCargo.ROLE_MEDICO)
+					Permissao modCargo = permissaoRepository.findByDescricao(PermissaoAcesso.ROLE_MEDICO)
 							.orElseThrow(() -> new RuntimeException("Error: Cargo is not found."));
-					roles.add(modCargo);
+					permissoes.add(modCargo);
 					break;
 				default:
-					Cargo userCargo = cargoRepository.findByDescricao(TipoCargo.ROLE_FUNCIONARIO)
+					Permissao userCargo = permissaoRepository.findByDescricao(PermissaoAcesso.ROLE_FUNCIONARIO)
 							.orElseThrow(() -> new RuntimeException("Error: Cargo is not found."));
-					roles.add(userCargo);
+					permissoes.add(userCargo);
 				}
 			});
 		}
-		user.setCargos(roles);
+		user.setPermissoes(permissoes);
 		usuarioRepository.save(user);
 		return ResponseEntity.ok(new MessageResponse("Usuario registered successfully!"));
 	}

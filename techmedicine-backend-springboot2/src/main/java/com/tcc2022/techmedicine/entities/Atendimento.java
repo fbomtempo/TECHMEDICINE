@@ -42,7 +42,7 @@ public class Atendimento implements Serializable {
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone = "America/Sao_Paulo")
 	private Date dataAtendimento;
 	
-	private Integer situacaoAtendimento;
+	private String situacaoAtendimento;
 	
 	public Atendimento() {
 	}

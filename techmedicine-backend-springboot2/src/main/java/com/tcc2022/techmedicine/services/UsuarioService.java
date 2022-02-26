@@ -23,20 +23,4 @@ public class UsuarioService {
 		Optional<Usuario> obj = usuarioRepository.findById(id);
 		return obj.get();
 	}
-	
-	public void delete(Long id) {
-		usuarioRepository.deleteById(id);
-	}
-	
-	public Usuario update(Long id, Usuario obj) {
-		Usuario usuario = usuarioRepository.findById(id).get();
-		updateData(usuario, obj);
-		return usuarioRepository.save(usuario);
-	}
-	
-	private void updateData(Usuario usuario, Usuario obj) {
-		usuario.setUsuario(obj.getUsuario());
-		usuario.setEmail(obj.getEmail());
-		usuario.setSenha(obj.getSenha());
-	}
 }

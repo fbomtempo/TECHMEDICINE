@@ -30,16 +30,4 @@ public class UsuarioResource {
 		Usuario obj = usuarioService.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
-	
-	/*@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		usuarioService.delete(id);
-		return ResponseEntity.noContent().build();
-	}
-	
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario obj) {
-		obj = usuarioService.update(id, obj);
-		return ResponseEntity.ok().body(obj);
-	}*/
 }

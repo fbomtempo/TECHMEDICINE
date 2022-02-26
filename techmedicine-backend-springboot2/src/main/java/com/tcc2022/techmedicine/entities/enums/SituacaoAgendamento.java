@@ -2,26 +2,18 @@ package com.tcc2022.techmedicine.entities.enums;
 
 public enum SituacaoAgendamento {
 
-	AGENDADO(1),
-	ATENDIDO(2),
-	CANCELADO(3);
+	AGENDADO("AGENDADO"),
+	ATENDIDO("ATENDIDO"),
+	CANCELADO("CANCELADO");
 	
-	private int code;
+	private String code;
 	
-	private SituacaoAgendamento(int code) {
+	private SituacaoAgendamento(String code) {
 		this.code = code;
 	}
 	
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 	
-	public static SituacaoAgendamento valueOf(int code) {
-		for (SituacaoAgendamento value : SituacaoAgendamento.values()) {
-			if (value.getCode() == code) {
-				return value;
-			}
-		}
-		throw new IllegalArgumentException("Código inválido");
-	}
 }

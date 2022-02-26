@@ -12,11 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.tcc2022.techmedicine.entities.enums.TipoCargo;
+import com.tcc2022.techmedicine.entities.enums.PermissaoAcesso;
 
 @Entity
-@Table(name = "tb_cargo")
-public class Cargo implements Serializable {
+@Table(name = "tb_permissao")
+public class Permissao implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -24,13 +24,13 @@ public class Cargo implements Serializable {
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(length = 20)
-	private TipoCargo descricao;
+	@Column(length = 20, nullable = false)
+	private PermissaoAcesso descricao;
 	
-	public Cargo() {
+	public Permissao() {
 	}
 	
-	public Cargo(Long id, TipoCargo descricao) {
+	public Permissao(Long id, PermissaoAcesso descricao) {
 		this.id = id;
 		this.descricao = descricao;
 	}
@@ -43,11 +43,11 @@ public class Cargo implements Serializable {
 		this.id = id;
 	}
 	
-	public TipoCargo getDescricao() {
+	public PermissaoAcesso getDescricao() {
 		return descricao;
 	}
 	
-	public void setDescricao(TipoCargo descricao) {
+	public void setDescricao(PermissaoAcesso descricao) {
 		this.descricao = descricao;
 	}
 
@@ -64,7 +64,7 @@ public class Cargo implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Cargo other = (Cargo) obj;
+		Permissao other = (Permissao) obj;
 		return Objects.equals(id, other.id);
 	}
 }

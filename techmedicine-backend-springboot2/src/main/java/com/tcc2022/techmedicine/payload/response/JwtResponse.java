@@ -9,14 +9,14 @@ public class JwtResponse {
 	private Long id;
 	private String usuario;
 	private String email;
-	private List<String> cargos;
+	private List<String> permissoes;
 
-	public JwtResponse(String accessToken, Long id, String usuario, String email, List<String> cargos) {
+	public JwtResponse(String accessToken, Long id, String usuario, String email, List<String> permissoes) {
 		this.token = accessToken;
 		this.id = id;
 		this.usuario = usuario;
 		this.email = email;
-		this.cargos = cargos;
+		this.permissoes = permissoes;
 	}
 
 	public String getAccessToken() {
@@ -59,7 +59,7 @@ public class JwtResponse {
 		this.usuario = usuario;
 	}
 
-	public List<String> getCargos() {
-		return cargos;
+	public List<String> getPermissoes() {
+		return permissoes;
 	}
 }

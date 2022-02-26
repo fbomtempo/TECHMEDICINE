@@ -4,11 +4,11 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.tcc2022.techmedicine.entities.Cargo;
-import com.tcc2022.techmedicine.entities.enums.TipoCargo;
+import com.tcc2022.techmedicine.entities.Permissao;
+import com.tcc2022.techmedicine.entities.enums.PermissaoAcesso;
 
-public interface CargoRepository extends JpaRepository<Cargo, Long> {
+public interface PermissaoRepository extends JpaRepository<Permissao, Long> {
 	
-	Optional<Cargo> findByDescricao(TipoCargo descricao);
+	Optional<Permissao> findByDescricao(PermissaoAcesso descricao);
 
 }
