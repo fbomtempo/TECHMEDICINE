@@ -90,27 +90,14 @@ public class AuthResource {
 		Set<String> strPermissoes = signUpRequest.getPermissoes();
 		Set<Permissao> permissoes = new HashSet<>();
 		if (strPermissoes == null) {
-			Permissao userCargo = permissaoRepository.findByDescricao(PermissaoAcesso.ROLE_FUNCIONARIO)
-					.orElseThrow(() -> new RuntimeException("Error: Cargo is not found."));
+			Permissao userCargo = permissaoRepository.findByDescricao("ROLE_FUNCIONARIO")
+					.orElseThrow(() -> new RuntimeException("Error: Permission is not found."));
 			permissoes.add(userCargo);
 		} else {
-			strPermissoes.forEach(role -> {
-				switch (role) {
-				case "admin":
-					Permissao adminCargo = permissaoRepository.findByDescricao(PermissaoAcesso.ROLE_ADMIN)
-							.orElseThrow(() -> new RuntimeException("Error: Cargo is not found."));
-					permissoes.add(adminCargo);
-					break;
-				case "medico":
-					Permissao modCargo = permissaoRepository.findByDescricao(PermissaoAcesso.ROLE_MEDICO)
-							.orElseThrow(() -> new RuntimeException("Error: Cargo is not found."));
-					permissoes.add(modCargo);
-					break;
-				default:
-					Permissao userCargo = permissaoRepository.findByDescricao(PermissaoAcesso.ROLE_FUNCIONARIO)
-							.orElseThrow(() -> new RuntimeException("Error: Cargo is not found."));
-					permissoes.add(userCargo);
-				}
+			strPermissoes.forEach(perm -> {
+				Permissao permissao = permissaoRepository.findByDescricao(perm)
+						.orElseThrow(() -> new RuntimeException("Error: Permission is not found."));
+				permissoes.add(permissao);
 			});
 		}
 		user.setPermissoes(permissoes);

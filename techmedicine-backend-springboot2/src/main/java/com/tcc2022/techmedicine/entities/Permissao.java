@@ -23,16 +23,15 @@ public class Permissao implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Enumerated(EnumType.STRING)
 	@Column(length = 20, nullable = false)
-	private PermissaoAcesso descricao;
+	private String descricao;
 	
 	public Permissao() {
 	}
 	
 	public Permissao(Long id, PermissaoAcesso descricao) {
 		this.id = id;
-		this.descricao = descricao;
+		setDescricao(descricao);
 	}
 	
 	public Long getId() {
@@ -44,11 +43,13 @@ public class Permissao implements Serializable {
 	}
 	
 	public PermissaoAcesso getDescricao() {
-		return descricao;
+		return PermissaoAcesso.valueOf(descricao);
 	}
 	
 	public void setDescricao(PermissaoAcesso descricao) {
-		this.descricao = descricao;
+		if (descricao != null) {
+			this.descricao = descricao.getCode();
+		}
 	}
 
 	@Override
