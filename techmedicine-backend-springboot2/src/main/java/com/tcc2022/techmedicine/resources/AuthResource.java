@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tcc2022.techmedicine.entities.Permissao;
 import com.tcc2022.techmedicine.entities.Usuario;
-import com.tcc2022.techmedicine.entities.enums.PermissaoAcesso;
 import com.tcc2022.techmedicine.payload.request.LoginRequest;
 import com.tcc2022.techmedicine.payload.request.SignupRequest;
 import com.tcc2022.techmedicine.payload.response.JwtResponse;
@@ -90,9 +89,9 @@ public class AuthResource {
 		Set<String> strPermissoes = signUpRequest.getPermissoes();
 		Set<Permissao> permissoes = new HashSet<>();
 		if (strPermissoes == null) {
-			Permissao userCargo = permissaoRepository.findByDescricao("ROLE_FUNCIONARIO")
+			Permissao permissao = permissaoRepository.findByDescricao("ROLE_FUNCIONARIO")
 					.orElseThrow(() -> new RuntimeException("Error: Permission is not found."));
-			permissoes.add(userCargo);
+			permissoes.add(permissao);
 		} else {
 			strPermissoes.forEach(perm -> {
 				Permissao permissao = permissaoRepository.findByDescricao(perm)
@@ -102,6 +101,6 @@ public class AuthResource {
 		}
 		user.setPermissoes(permissoes);
 		usuarioRepository.save(user);
-		return ResponseEntity.ok(new MessageResponse("Usuario registered successfully!"));
+		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}
 }
