@@ -54,7 +54,7 @@ public class Paciente implements Serializable {
 	@Column(length = 35, nullable = false)
 	private String email;
 	
-	@Column(length = 50, nullable = false)
+	@Column(length = 9, nullable = false)
 	private String cep;
 	
 	@Column(length = 30, nullable = false)
