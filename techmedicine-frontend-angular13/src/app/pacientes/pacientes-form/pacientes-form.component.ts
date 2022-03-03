@@ -71,6 +71,7 @@ export class PacientesFormComponent extends FormSerivce implements OnInit, OnDes
   }
 
   onSubmit(): void {
+    this.form.get('nascimento').setValue(this.formatDate());
     this.submitted = true;
     if (this.form.valid) {
       if (this.form.value['id']) {
@@ -123,10 +124,10 @@ export class PacientesFormComponent extends FormSerivce implements OnInit, OnDes
     this.form.get('complemento').markAsTouched();
   }
 
-  formatDate(): void {
+  formatDate(): string {
     let date: Date = new Date(this.form.get('nascimento').value);
     let dateStr: string = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-    this.form.get('nascimento').setValue(dateStr);
+    return dateStr;
   }
 
   reverseFormatDate(paciente: any): void {
@@ -135,7 +136,7 @@ export class PacientesFormComponent extends FormSerivce implements OnInit, OnDes
     paciente.nascimento = dateStr;
   }
 
-  applyMaskToInput(mask: string) {
+  applyMaskToInput(mask: string): void {
     let value = this.form.get(mask).value;
     let maskedValue = this.maskService.applyMask(mask, value);
     this.form.get(mask).setValue(maskedValue);
