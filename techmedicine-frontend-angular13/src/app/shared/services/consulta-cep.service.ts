@@ -15,7 +15,7 @@ export class ConsultaCepService {
     if (cep != '') {
       let validarCep = /^[0-9]{8}$/;
       if (validarCep.test(cep)) {
-        return this.http.get<Estado[]>(`//viacep.com.br/ws/${cep}/json`);
+        return this.http.get(`//viacep.com.br/ws/${cep}/json`);
       }
     }
     return EMPTY;

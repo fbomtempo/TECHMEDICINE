@@ -11,12 +11,12 @@ export class AppComponent implements OnInit {
   title = 'techmedicine';
   dropdownTitle: string;
   dropdownTitleActive: boolean;
-  //isLoggedIn: boolean = false;
+  isLoggedIn: boolean = false;
 
   constructor(private tokenStorageService: TokenStorageService) { }
 
   ngOnInit() {
-    //this.isLoggedIn = !!this.tokenStorageService.getToken();
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.dropdownTitle = 'Cadastros';
     this.dropdownTitleActive = false;
   }
