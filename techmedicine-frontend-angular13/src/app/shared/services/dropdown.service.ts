@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { take } from 'rxjs';
 import { Estado } from '../models/estado';
 
 @Injectable({
@@ -11,7 +12,7 @@ export class DropdownService {
 
   getEstados() {
     return this.http.get<Estado[]>('assets/dados/estados.json')
-      .pipe();
+      .pipe(take(1));
   }
 
   /*getCargos() {

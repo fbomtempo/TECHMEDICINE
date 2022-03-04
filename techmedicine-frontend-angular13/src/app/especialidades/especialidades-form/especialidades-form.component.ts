@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalService } from 'src/app/shared/services/modal.service';
@@ -11,7 +11,7 @@ import { Location } from '@angular/common';
   templateUrl: './especialidades-form.component.html',
   styleUrls: ['./especialidades-form.component.css']
 })
-export class EspecialidadesFormComponent extends FormSerivce implements OnInit, OnDestroy {
+export class EspecialidadesFormComponent extends FormSerivce implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
@@ -34,10 +34,6 @@ export class EspecialidadesFormComponent extends FormSerivce implements OnInit, 
     this.form.valueChanges.subscribe(() => {
       this.changed = true;
     });
-  }
-
-  ngOnDestroy(): void {
-
   }
 
   onSubmit(): void {

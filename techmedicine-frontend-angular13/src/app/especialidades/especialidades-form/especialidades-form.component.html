@@ -1,28 +1,25 @@
 <h1 class="mt-4">{{ formType }} Especialidade</h1>
 <form class="mt-4 row g-3 needs-validation" novalidate [formGroup]="form">
-  <div class="col-md-12">
+  <div class="col-12">
     <label for="descricao" class="form-label">Descrição da Especialidade</label>
     <input type="text" class="form-control" id="descricao" formControlName="descricao" placeholder="Descrição da especialidade"
     [ngClass]="applyValidationClass('descricao')">
-    <ng-template [ngTemplateOutlet]="feedbackMessage"></ng-template>
+    <div class="invalid-feedback" *ngIf="form.get('descricao').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('descricao').errors?.['maxlength']">
+      Campo deve possuir no máximo 35 caracteres.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
   </div>
-  <div class="mb-5">
+  <div class="pt-4 mb-5">
     <button type="submit" class="btn btn-primary" (click)="onSubmit()">Salvar</button>
     <button type="button" class="ms-2 btn btn-danger" (click)="onCancel()">Cancelar</button>
   </div>
 </form>
 
-<ng-template #feedbackMessage>
-  <div class="invalid-feedback" *ngIf="form.get('descricao').errors?.['required']">
-    Campo é obrigatório.
-  </div>
-  <div class="invalid-feedback" *ngIf="form.get('descricao').errors?.['maxlength']">
-    Campo deve possuir no máximo 35 caracteres.
-  </div>
-  <div class="valid-feedback">
-    Parece bom.
-  </div>
-</ng-template>
 
     <!--<ng-template [ngTemplateOutlet]="outlet" [ngOutletContext]="context"></ng-template><ng-template #maxlengthError>
       <div class="invalid-feedback">

@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
@@ -28,7 +29,8 @@ export class EspecialidadesListaComponent implements OnInit, OnDestroy {
     private especialidadesService: EspecialidadesService,
     private modalService: ModalService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -127,6 +129,10 @@ export class EspecialidadesListaComponent implements OnInit, OnDestroy {
     } else {
       this.paginationSize = 10;
     }
+  }
+
+  onBack() {
+    this.location.back();
   }
 
 }

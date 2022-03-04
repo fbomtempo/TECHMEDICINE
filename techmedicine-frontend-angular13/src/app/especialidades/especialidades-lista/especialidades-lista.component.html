@@ -1,7 +1,7 @@
 <div *ngIf="especialidades$ | async as especialidades; else loadingError">
   <div class="col-md-12">
     <div class="pt-4 pb-md-0 pb-3 col-md-3">
-        <a class="fs-5 display-1 voltar" [routerLink]="['/home']"><i class="fas fa-arrow-left"></i><span class="ms-2">Voltar</span></a>
+        <a class="fs-5 display-1 voltar" (click)="onBack()"><i class="fas fa-arrow-left"></i><span class="ms-2">Voltar</span></a>
     </div>
     <h1 class="text-center pb-4">Cadastro de Especialidades</h1>
   </div>

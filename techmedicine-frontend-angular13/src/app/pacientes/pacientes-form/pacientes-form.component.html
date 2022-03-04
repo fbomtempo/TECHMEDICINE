@@ -1,6 +1,6 @@
 <h1 class="mt-4">{{ formType }} Paciente</h1>
 <form class="mt-4 row g-3 needs-validation" novalidate [formGroup]="form">
-  <div class="col-md-5">
+  <div class="col-xl-5">
     <label for="nome" class="form-label">Nome</label>
     <input type="text" class="form-control" id="nome" formControlName="nome" placeholder="Nome"
       [ngClass]="applyValidationClass('nome')">
@@ -14,7 +14,7 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-5">
+  <div class="col-xl-5">
     <label for="sobrenome" class="form-label">Sobrenome</label>
     <input type="text" class="form-control" id="sobrenome" formControlName="sobrenome" placeholder="Sobrenome"
       [ngClass]="applyValidationClass('sobrenome')">
@@ -28,7 +28,7 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-2">
+  <div class="col-xl-2">
     <label for="nascimento" class="form-label">Nascimento</label>
     <input type="date" class="form-control" id="nascimento" formControlName="nascimento" placeholder="Nascimento"
       [ngClass]="applyValidationClass('nascimento')" (blur)="formatDate()">
@@ -39,7 +39,7 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-xl-4">
     <label for="sexo" class="form-label">Sexo</label>
     <input type="text" class="form-control" id="sexo" formControlName="sexo" placeholder="Sexo"
       [ngClass]="applyValidationClass('sexo')">
@@ -53,7 +53,7 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-xl-4">
     <label for="rg" class="form-label">RG</label>
     <input type="text" class="form-control" id="rg" formControlName="rg" placeholder="RG"
       [ngClass]="applyValidationClass('rg')">
@@ -67,7 +67,7 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-xl-4">
     <label for="cpf" class="form-label">CPF</label>
     <input type="text" class="form-control" id="cpf" formControlName="cpf" placeholder="CPF"
       [ngClass]="applyValidationClass('cpf')" (input)="applyMaskToInput('cpf')">
@@ -81,7 +81,7 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-3">
+  <div class="col-xl-3">
     <label for="telefoneResidencial" class="form-label">Telefone Residencial</label>
     <input type="text" class="form-control" id="telefoneResidencial" formControlName="telefoneResidencial" placeholder="Telefone Residencial"
       [ngClass]="applyValidationClass('telefoneResidencial')" (input)="applyMaskToInput('telefoneResidencial')">
@@ -95,7 +95,7 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-3">
+  <div class="col-xl-3">
     <label for="telefoneCelular" class="form-label">Telefone Celular</label>
     <input type="text" class="form-control" id="telefoneCelular" formControlName="telefoneCelular" placeholder="Telefone Celular"
       [ngClass]="applyValidationClass('telefoneCelular')" (input)="applyMaskToInput('telefoneCelular')">
@@ -109,7 +109,7 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-6">
+  <div class="col-xl-6">
     <label for="email" class="form-label">E-mail</label>
     <input type="text" class="form-control" id="email" formControlName="email" placeholder="E-mail"
       [ngClass]="applyValidationClass('email')">
@@ -123,7 +123,7 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-3">
+  <div class="col-xl-3">
     <label for="cep" class="form-label">CEP</label>
     <input type="text" class="form-control" id="cep" formControlName="cep" placeholder="CEP"
       [ngClass]="applyValidationClass('cep')" (blur)="searchCep()" (input)="applyMaskToInput('cep')">
@@ -137,7 +137,7 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-6">
+  <div class="col-xl-6">
     <label for="cidade" class="form-label">Cidade</label>
     <input type="text" class="form-control" id="cidade" formControlName="cidade" placeholder="Cidade"
       [ngClass]="applyValidationClass('cidade')">
@@ -151,11 +151,11 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-3">
+  <div class="col-xl-3">
     <label for="estado" class="form-label">Estado</label>
     <select type="text" class="form-select" formControlName="estado" id="estado" placeholder="UF" [ngClass]="applyValidationClass('estado')">
       <option value="null" disabled="true" [selected]="true">Selecione o estado</option>
-      <option *ngFor="let est of estados | async" [value]="est.uf">{{ est.descricao }}</option>
+      <option *ngFor="let est of estados$ | async" [value]="est.uf">{{ est.descricao }}</option>
     </select>
     <div class="invalid-feedback" *ngIf="form.get('estado').errors?.['required']">
       Campo é obrigatório.
@@ -164,7 +164,7 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-6">
+  <div class="col-xl-6">
     <label for="endereco" class="form-label">Endereço</label>
     <input type="text" class="form-control" id="endereco" formControlName="endereco" placeholder="Endereço"
       [ngClass]="applyValidationClass('endereco')">
@@ -178,21 +178,21 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-2">
+  <div class="col-xl-2">
     <label for="numero" class="form-label">Número</label>
     <input type="number" class="form-control" id="numero" formControlName="numero" placeholder="Número"
       [ngClass]="applyValidationClass('numero')">
     <div class="invalid-feedback" *ngIf="form.get('numero').errors?.['required']">
       Campo é obrigatório.
     </div>
-    <div class="invalid-feedback" *ngIf="form.get('cidade').errors?.['maxlength']">
-      Campo deve possuir no máximo 5 caracteres.
+    <div class="invalid-feedback" *ngIf="form.get('numero').errors?.['min'] || form.get('numero').errors?.['max']">
+      Número inválido.
     </div>
     <div class="valid-feedback">
       Parece bom.
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-xl-4">
     <label for="bairro" class="form-label">Bairro</label>
     <input type="text" class="form-control" id="bairro" formControlName="bairro" placeholder="Bairro"
       [ngClass]="applyValidationClass('bairro')">
@@ -206,7 +206,7 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-md-12">
+  <div class="col-xl-12">
     <label for="complemento" class="form-label">Complemento</label>
     <input type="text" class="form-control" id="complemento" formControlName="complemento" placeholder="Complemento"
       [ngClass]="applyValidationClass('complemento')">
@@ -220,7 +220,7 @@
       Parece bom.
     </div>
   </div>
-  <div class="mb-5">
+  <div class="pt-4 mb-5">
     <button type="submit" class="btn btn-primary" (click)="onSubmit()">Salvar</button>
     <button type="button" class="ms-2 btn btn-danger" (click)="onCancel()">Cancelar</button>
   </div>

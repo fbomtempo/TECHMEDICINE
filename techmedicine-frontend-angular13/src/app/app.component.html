@@ -11,12 +11,6 @@
           <a class="nav-link" aria-current="page" [routerLink]="['/home']" [routerLinkActive]="['active']"
             (isActiveChange)="onRouterLinkActiveHome($event)">Home</a>
         </li>
-        <!--<li class="nav-item">
-          <a class="nav-link" [routerLink]="['/pacientes']" [routerLinkActive]="['active']">Pacientes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/especialidades']" [routerLinkActive]="['active']" [queryParams]="{ pagina: 1 }">Especialidades</a>
-        </li>-->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false" [class.active]="dropdownTitleActive">
@@ -72,16 +66,16 @@
   <router-outlet></router-outlet>
 </div>
 <footer class="d-flex flex-wrap justify-content-between align-items-center footer mt-auto py-3 border-top bg-color-primary">
-  <p class="ps-4 col-md-4 mb-0 text-light">&copy; 2021 TechMedicine, Inc</p>
+  <p class="text-center col-12 col-md-4 text-md-start ps-md-4 mb-md-0 text-light">&copy; 2021 TechMedicine, Inc</p>
   <a href="/"
-    class="col-md-4 d-flex align-items-center justify-content-center text-light link-light text-decoration-none">
+    class="col-12 col-md-4 d-flex align-items-center justify-content-center text-light link-light text-decoration-none">
     <i class="fas fa-heartbeat" style="font-size: 40px;"></i>
   </a>
-  <ul class="pe-4 nav col-md-4 justify-content-end">
-    <li class="nav-item"><a href="#" class="nav-link px-2 text-light">Home</a></li>
-    <!--<li class="nav-item"><a href="#" class="nav-link px-2 text-light">Features</a></li>
-    <li class="nav-item"><a href="#" class="nav-link px-2 text-light">Pricing</a></li>
-    <li class="nav-item"><a href="#" class="nav-link px-2 text-light">FAQs</a></li>
+  <ul class="col-12 justify-content-center col-md-4 justify-content-md-end pe-md-4 nav">
+    <li class="nav-item"><a href="#" class="nav-link px-2 text-light">Twitter</a></li>
+    <li class="nav-item"><a href="#" class="nav-link px-2 text-light">Instagram</a></li>
+    <li class="nav-item"><a href="#" class="nav-link px-2 text-light">Facebook</a></li>
+    <!--<li class="nav-item"><a href="#" class="nav-link px-2 text-light">FAQs</a></li>
     <li class="nav-item"><a href="#" class="nav-link px-2 text-light">About</a></li>-->
   </ul>
 </footer>

@@ -6,11 +6,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { SharedModule } from '../shared/shared.module';
 import { PacientesFormComponent } from './pacientes-form/pacientes-form.component';
+import { PacientesDetalhesComponent } from './pacientes-detalhes/pacientes-detalhes.component';
 
 @NgModule({
   declarations: [
     PacientesListaComponent,
-    PacientesFormComponent
+    PacientesFormComponent,
+    PacientesDetalhesComponent
   ],
   imports: [
     CommonModule,

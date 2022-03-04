@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY } from 'rxjs';
+import { EMPTY, take } from 'rxjs';
 import { Estado } from '../models/estado';
 
 @Injectable({
@@ -15,7 +15,8 @@ export class ConsultaCepService {
     if (cep != '') {
       let validarCep = /^[0-9]{8}$/;
       if (validarCep.test(cep)) {
-        return this.http.get(`//viacep.com.br/ws/${cep}/json`);
+        return this.http.get(`//viacep.com.br/ws/${cep}/json`)
+          .pipe(take(1));
       }
     }
     return EMPTY;

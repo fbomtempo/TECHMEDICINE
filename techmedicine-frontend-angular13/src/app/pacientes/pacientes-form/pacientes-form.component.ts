@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalService } from 'src/app/shared/services/modal.service';
@@ -16,9 +16,9 @@ import { MaskService } from 'src/app/shared/services/mask.service';
   templateUrl: './pacientes-form.component.html',
   styleUrls: ['./pacientes-form.component.css']
 })
-export class PacientesFormComponent extends FormSerivce implements OnInit, OnDestroy {
+export class PacientesFormComponent extends FormSerivce implements OnInit {
 
-  estados: Observable<Estado[]>;
+  estados$: Observable<Estado[]>;
 
   constructor(
     private pacientesService: PacientesService,
@@ -35,7 +35,7 @@ export class PacientesFormComponent extends FormSerivce implements OnInit, OnDes
   }
 
   ngOnInit(): void {
-    this.estados = this.dropdownService.getEstados();
+    this.estados$ = this.dropdownService.getEstados();
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     let paciente = this.route.snapshot.data['paciente'];
     if(paciente.nascimento != undefined) {
@@ -57,17 +57,13 @@ export class PacientesFormComponent extends FormSerivce implements OnInit, OnDes
       cidade: [paciente.cidade, [Validators.required, Validators.maxLength(30)]],
       estado: [paciente.estado, [Validators.required]],
       endereco: [paciente.endereco, [Validators.required, Validators.maxLength(70)]],
-      numero: [paciente.numero, [Validators.required, Validators.maxLength(5)]],
+      numero: [paciente.numero, [Validators.required, Validators.min(1), Validators.max(9999)]],
       bairro: [paciente.bairro, [Validators.required, Validators.maxLength(30)]],
       complemento: [paciente.complemento, [Validators.maxLength(70)]]
     });
     this.form.valueChanges.subscribe(() => {
       this.changed = true;
     });
-  }
-
-  ngOnDestroy(): void {
-
   }
 
   onSubmit(): void {
@@ -102,10 +98,11 @@ export class PacientesFormComponent extends FormSerivce implements OnInit, OnDes
 
   searchCep() {
     const cep = this.form.get('cep').value;
-
     if (cep != null && cep !== '') {
       this.cepService.consultaCEP(cep)
-      .subscribe(dados => this.populateData(dados));
+        .subscribe(dados => {
+          this.populateData(dados);
+        });
     }
   }
 
