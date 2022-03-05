@@ -4,7 +4,6 @@ import { MedicosRoutingModule } from './medicos-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { MedicosListaComponent } from './medicos-lista/medicos-lista.component';
 import { MedicosFormComponent } from './medicos-form/medicos-form.component';
 
@@ -19,8 +18,7 @@ import { MedicosFormComponent } from './medicos-form/medicos-form.component';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    PaginationModule,
-    AutocompleteLibModule
+    PaginationModule
   ],
   providers: [
     DatePipe

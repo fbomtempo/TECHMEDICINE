@@ -1,5 +1,4 @@
 <h1 class="mt-4">{{ formType }} Médico</h1>
-<button (click)="print()">Debug</button>
 <form class="mt-4 row g-3 needs-validation" novalidate [formGroup]="form">
   <div class="col-xl-5">
     <label for="nome" class="form-label">Nome</label>
@@ -55,25 +54,12 @@
     </div>
   </div>
   <div class="col-xl-4">
-    <div class="ng-autocomplete">
-      <label for="especialidade" class="form-label">Especialidade</label>
-      <ng-autocomplete
-        [data]="especialidades$ | async"
-        [searchKeyword]="keyword"
-        notFoundText="Não encontrado"
-        placeholder="Especialidade"
-        [initialValue]="initialValue"
-        (selected)="selectEvent($event)"
-        [itemTemplate]="itemTemplate"
-        [notFoundTemplate]="notFoundTemplate">
-      </ng-autocomplete>
-    </div>
-    <ng-template #itemTemplate let-item>
-      <a [innerHTML]="item.descricao"></a>
-    </ng-template>
-    <ng-template #notFoundTemplate let-notFound>
-      <div [innerHTML]="notFound"></div>
-    </ng-template>
+    <label for="especialidade" class="form-label">Especialidade</label>
+    <select class="form-control" formControlName="especialidade" id="especialidade" placeholder="Especialidade"
+      [ngClass]="applyValidationClass('especialidade')" [compareWith]="compareFn">
+      <option value="null" disabled="true" [selected]="true">Selecione a especialidade</option>
+      <option *ngFor="let esp of especialidades$ | async" [ngValue]="esp">{{ esp.descricao }}</option>
+    </select>
     <div class="invalid-feedback" *ngIf="form.get('especialidade').errors?.['required']">
       Campo é obrigatório.
     </div>
@@ -273,5 +259,27 @@
   <div class="pt-4 mb-5">
     <button type="submit" class="btn btn-primary" (click)="onSubmit()">Salvar</button>
     <button type="button" class="ms-2 btn btn-danger" (click)="onCancel()">Cancelar</button>
-  </div>-->
+  </div>
 </form>
+
+<!--<label for="especialidade" class="form-label">Especialidade</label>
+      <ng-autocomplete
+        #especialidadeAutocomplete
+        [data]="especialidades$ | async"
+        [searchKeyword]="keyword"
+        notFoundText="Não encontrado"
+        placeholder="Especialidade"
+        [initialValue]="initialValue"
+        (closed)='onClosed($event)'
+        (selected)="selectEvent($event)"
+        [itemTemplate]="itemTemplate"
+        [notFoundTemplate]="notFoundTemplate"
+        name="especialidade">
+      </ng-autocomplete>
+    </div>
+    <ng-template #itemTemplate let-item>
+      <a [innerHTML]="item.descricao"></a>
+    </ng-template>
+    <ng-template #notFoundTemplate let-notFound>
+      <div [innerHTML]="notFound"></div>
+    </ng-template>-->

@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { map, Observable, startWith } from 'rxjs';
 import { Especialidade } from 'src/app/especialidades/especialidade';
 import { Estado } from 'src/app/shared/models/estado';
 import { ConsultaCepService } from 'src/app/shared/services/consulta-cep.service';
@@ -21,8 +21,9 @@ export class MedicosFormComponent extends FormSerivce implements OnInit {
 
   estados$: Observable<Estado[]>;
   especialidades$: Observable<Especialidade[]>;
-  keyword: string;
-  initialValue: string;
+  compareFn(c1: Especialidade, c2: Especialidade): boolean {
+    return c1 && c2 ? c1.id === c2.id : c1 === c2;
+  }
 
   constructor(
     private medicosService: MedicosService,
@@ -47,8 +48,6 @@ export class MedicosFormComponent extends FormSerivce implements OnInit {
     if(medico.nascimento != undefined) {
       this.reverseFormatDate(medico);
     }
-    this.keyword = 'descricao';
-    this.initialValue = (medico.especialidade != undefined) ? medico.especialidade.descricao : undefined;
 
     this.form = this.formBuilder.group({
       id: [medico.id],
@@ -60,9 +59,9 @@ export class MedicosFormComponent extends FormSerivce implements OnInit {
       especialidade: [medico.especialidade, [Validators.required]],
       rg: [medico.rg, [Validators.required, Validators.maxLength(12)]],
       cpf: [medico.cpf, [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
-      telefoneResidencial: [medico.cpf, [Validators.maxLength(14)]],
-      telefoneCelular: [medico.cpf, [Validators.required, Validators.maxLength(15)]],
-      email: [medico.cpf, [Validators.required, Validators.maxLength(35)]],
+      telefoneResidencial: [medico.telefoneResidencial, [Validators.maxLength(14)]],
+      telefoneCelular: [medico.telefoneCelular, [Validators.required, Validators.maxLength(15)]],
+      email: [medico.email, [Validators.required, Validators.maxLength(35)]],
       cep: [medico.cep, [Validators.required, Validators.maxLength(9)]],
       cidade: [medico.cidade, [Validators.required, Validators.maxLength(30)]],
       estado: [medico.estado, [Validators.required]],
@@ -149,15 +148,6 @@ export class MedicosFormComponent extends FormSerivce implements OnInit {
     this.form.get(mask).setValue(maskedValue);
   }
 
-  selectEvent(item) {
-    if (this.initialValue === undefined) {
-      this.form.patchValue({
-        especialidade: item
-      });
-    }
-  }
-
-  print() {
-    console.log(this.form.value)
-  }
 }
+
+
