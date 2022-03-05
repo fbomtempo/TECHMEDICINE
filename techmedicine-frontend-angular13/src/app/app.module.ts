@@ -8,6 +8,8 @@ import { SharedModule } from './shared/shared.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { authInterceptorProviders } from './auth/auth-interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { authInterceptorProviders } from './auth/auth-interceptor';
     HttpClientModule,
     SharedModule,
     ModalModule.forRoot(),
-    PaginationModule.forRoot()
+    PaginationModule.forRoot(),
+    BrowserAnimationsModule,
+    MatAutocompleteModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

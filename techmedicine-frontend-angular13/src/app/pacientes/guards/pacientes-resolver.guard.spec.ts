@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { PacientesResolverGuard } from './pacientes-resolver.guard';
 
-describe('EspecialidadeResolverGuard', () => {
+describe('PacientesResolverGuard', () => {
   let guard: PacientesResolverGuard;
 
   beforeEach(() => {

@@ -27,6 +27,11 @@
                 [routerLinkActiveOptions]="{ paths: 'subset', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' }"
                 (isActiveChange)="onRouterLinkActive($event, 'Pacientes')">Cadastro de Pacientes</a></li>
             <li>
+            <li><a class="dropdown-item" [routerLink]="['medicos']" [queryParams]="{ pagina: 1 }"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{ paths: 'subset', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' }"
+                (isActiveChange)="onRouterLinkActive($event, 'Médicos')">Cadastro de Médicos</a></li>
+            <li>
               <hr class="dropdown-divider">
             </li>
             <li><a class="dropdown-item" href="#">Something else here</a></li>

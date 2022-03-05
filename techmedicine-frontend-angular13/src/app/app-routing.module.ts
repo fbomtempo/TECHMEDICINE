@@ -11,12 +11,16 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
   },
   {
+    path: 'especialidades',
+    loadChildren: () => import('./especialidades/especialidades.module').then(m => m.EspecialidadesModule)
+  },
+  {
     path: 'pacientes',
     loadChildren: () => import('./pacientes/pacientes.module').then(m => m.PacientesModule)
   },
   {
-    path: 'especialidades',
-    loadChildren: () => import('./especialidades/especialidades.module').then(m => m.EspecialidadesModule)
+    path: 'medicos',
+    loadChildren: () => import('./medicos/medicos.module').then(m => m.MedicosModule)
   },
   {
     path: '',
