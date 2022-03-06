@@ -76,6 +76,7 @@ export class MedicosFormComponent extends FormSerivce implements OnInit {
   }
 
   onSubmit(): void {
+    console.log(this.form.value)
     this.form.get('nascimento').setValue(this.formatDate());
     this.submitted = true;
     if (this.form.valid) {

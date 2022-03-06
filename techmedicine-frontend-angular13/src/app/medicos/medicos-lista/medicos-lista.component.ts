@@ -38,7 +38,7 @@ export class MedicosListaComponent implements OnInit {
     this.itemsPerPage = 10;
     this.subscription = this.route.queryParams.subscribe(queryParams => {
       this.page = queryParams['pagina'];
-      this.filter = queryParams['descricao'];
+      this.filter = queryParams['nome'];
       this.currentPage = parseInt(this.page.toString());
     });
     this.onRefresh();
@@ -87,7 +87,7 @@ export class MedicosListaComponent implements OnInit {
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: {
-          descricao: filter.toLowerCase()
+          nome: filter.toLowerCase()
         },
         queryParamsHandling: 'merge',
       });
@@ -96,11 +96,11 @@ export class MedicosListaComponent implements OnInit {
 
   onClearFilter(filterInput: HTMLInputElement): void {
     filterInput.value = '';
-    if (this.route.snapshot.queryParams['descricao']) {
+    if (this.route.snapshot.queryParams['nome']) {
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: {
-          descricao: null
+          nome: null
         },
         queryParamsHandling: 'merge',
       });

@@ -1,95 +1,107 @@
-<h1 class="mt-4">Visualizar Paciente</h1>
+<h1 class="mt-4">Visualizar Médico</h1>
 <div>
-  <h4 class="pt-4">Paciente</h4>
+  <h4 class="pt-4">Médico</h4>
   <hr>
   <dl class="row">
     <dt class="col-sm-2">
       ID:
     </dt>
     <dd class="col-sm-10">
-      {{ paciente.id }}
+      {{ medico.id }}
     </dd>
     <dt class="col-sm-2">
       Nome:
     </dt>
     <dd class="col-sm-10">
-      {{ paciente.nome }}
+      {{ medico.nome }}
     </dd>
     <dt class="col-sm-2">
       Sobrenome:
     </dt>
     <dd class="col-sm-10">
-      {{ paciente.sobrenome }}
+      {{ medico.sobrenome }}
     </dd>
     <dt class="col-sm-2">
       Nascimento:
     </dt>
     <dd class="col-sm-10">
-      {{ paciente.nascimento }}
+      {{ medico.nascimento }}
     </dd>
     <dt class="col-sm-2">
       Sexo:
     </dt>
     <dd class="col-sm-10">
-      {{ paciente.sexo }}
+      {{ medico.sexo }}
+    </dd>
+    <dt class="col-sm-2">
+      Especialidade:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medico.especialidade.descricao }}
+    </dd>
+    <dt class="col-sm-2">
+      CRM:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medico.crm }}
     </dd>
     <dt class="col-sm-2">
       RG:
     </dt>
     <dd class="col-sm-10">
-      {{ paciente.rg }}
+      {{ medico.rg }}
     </dd>
     <dt class="col-sm-2">
       CPF:
     </dt>
     <dd class="col-sm-10">
-      {{ paciente.cpf }}
+      {{ medico.cpf }}
     </dd>
     <dt class="col-sm-2">
       E-mail:
     </dt>
     <dd class="col-sm-10">
-      {{ paciente.email }}
+      {{ medico.email }}
     </dd>
     <dt class="col-sm-2">
       CEP:
     </dt>
     <dd class="col-sm-10">
-      {{ paciente.cep }}
+      {{ medico.cep }}
     </dd>
     <dt class="col-sm-2">
       Cidade:
     </dt>
     <dd class="col-sm-10">
-      {{ paciente.cidade }}
+      {{ medico.cidade }}
     </dd>
     <dt class="col-sm-2">
       Estado:
     </dt>
     <dd class="col-sm-10">
-      {{ paciente.estado }}
+      {{ medico.estado }}
     </dd>
     <dt class="col-sm-2">
       Endereço:
     </dt>
     <dd class="col-sm-10">
-      {{ paciente.endereco }}
+      {{ medico.endereco }}
     </dd>
     <dt class="col-sm-2">
       Número:
     </dt>
     <dd class="col-sm-10">
-      {{ paciente.numero }}
+      {{ medico.numero }}
     </dd>
     <dt class="col-sm-2">
       Complemento:
     </dt>
     <dd class="col-sm-10">
-      {{ paciente.complemento }}
+      {{ medico.complemento }}
     </dd>
   </dl>
 </div>
 <div class="pt-4 mb-5">
-  <button type="button" class="btn btn-primary" [routerLink]="['../../editar/', paciente.id]">Editar</button>
+  <button type="button" class="btn btn-primary" [routerLink]="['../../editar/', medico.id]">Editar</button>
   <button type="button" class="ms-2 btn btn-secondary" (click)="onBackToList()">Voltar a Lista</button>
 </div>

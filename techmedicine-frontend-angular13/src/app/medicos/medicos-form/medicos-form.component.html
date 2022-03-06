@@ -41,8 +41,12 @@
   </div>
   <div class="col-xl-4">
     <label for="sexo" class="form-label">Sexo</label>
-    <input type="text" class="form-control" id="sexo" formControlName="sexo" placeholder="Sexo"
+    <select class="form-select" id="sexo" formControlName="sexo" id="sexo" placeholder="Sexo"
       [ngClass]="applyValidationClass('sexo')">
+      <option value="null" disabled="true" [selected]="true">Selecione o sexo</option>
+      <option [value]="'Feminino'">Feminino</option>
+      <option [value]="'Masculino'">Masculino</option>
+    </select>
     <div class="invalid-feedback" *ngIf="form.get('sexo').errors?.['required']">
       Campo é obrigatório.
     </div>
@@ -55,7 +59,7 @@
   </div>
   <div class="col-xl-4">
     <label for="especialidade" class="form-label">Especialidade</label>
-    <select class="form-control" formControlName="especialidade" id="especialidade" placeholder="Especialidade"
+    <select class="form-select" formControlName="especialidade" id="especialidade" placeholder="Especialidade"
       [ngClass]="applyValidationClass('especialidade')" [compareWith]="compareFn">
       <option value="null" disabled="true" [selected]="true">Selecione a especialidade</option>
       <option *ngFor="let esp of especialidades$ | async" [ngValue]="esp">{{ esp.descricao }}</option>
@@ -188,13 +192,16 @@
   </div>
   <div class="col-xl-3">
     <label for="estado" class="form-label">Estado</label>
-    <select type="text" class="form-select" formControlName="estado" id="estado" placeholder="UF"
+    <select class="form-select" formControlName="estado" id="estado" placeholder="UF"
       [ngClass]="applyValidationClass('estado')">
       <option value="null" disabled="true" [selected]="true">Selecione o estado</option>
       <option *ngFor="let est of estados$ | async" [value]="est.uf">{{ est.descricao }}</option>
     </select>
     <div class="invalid-feedback" *ngIf="form.get('estado').errors?.['required']">
       Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('estado').errors?.['maxlength']">
+      Campo deve possuir no máximo 2 caracteres.
     </div>
     <div class="valid-feedback">
       Parece bom.
