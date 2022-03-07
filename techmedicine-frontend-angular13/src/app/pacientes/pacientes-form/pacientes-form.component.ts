@@ -81,6 +81,7 @@ export class PacientesFormComponent extends FormSerivce implements OnInit {
             complete: () => {
               this.modalService.alertSuccess('Paciente atualizado com sucesso!', 'Redirecionando a página...');
               setTimeout(() => this.location.back(), 2000);
+              this.submittedSucess = true;
             }
           });
       } else {
@@ -90,6 +91,7 @@ export class PacientesFormComponent extends FormSerivce implements OnInit {
             complete: () => {
               this.modalService.alertSuccess('Paciente cadastrado com sucesso!', 'Redirecionando a página...');
               setTimeout(() => this.location.back(), 2000);
+              this.submittedSucess = true;
             }
           });
       }

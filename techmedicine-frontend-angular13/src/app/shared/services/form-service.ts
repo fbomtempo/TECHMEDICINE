@@ -7,6 +7,7 @@ export class FormSerivce implements ICanDeactivate {
 
   form: FormGroup;
   submitted: boolean = false;
+  submittedSucess: boolean = false;
   changed: boolean = false;
   formType: string;
 
@@ -43,7 +44,7 @@ export class FormSerivce implements ICanDeactivate {
       }
     });
 
-    if (cont != 0 && this.changed) {
+    if (cont != 0 && this.changed && !this.submittedSucess) {
       return confirm('Tem certeza que deseja sair? Os dados preenchidos serão perdidos.');
     }
     return true;
