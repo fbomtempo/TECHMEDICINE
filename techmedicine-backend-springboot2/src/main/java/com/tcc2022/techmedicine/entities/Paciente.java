@@ -33,7 +33,7 @@ public class Paciente implements Serializable {
 	private String sobrenome;
 	
 	@Column(length = 50, nullable = false)
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "America/Sao_Paulo")
 	private Date nascimento;
 	
 	@Column(length = 9, nullable = false)
