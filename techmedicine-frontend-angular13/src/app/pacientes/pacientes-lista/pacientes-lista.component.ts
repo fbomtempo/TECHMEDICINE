@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
-import { catchError, Observable, of, Subject, Subscription, switchMap, take } from 'rxjs';
+import { catchError, map, Observable, of, Subject, Subscription, switchMap, take } from 'rxjs';
 import { ModalService } from 'src/app/shared/services/modal.service';
 import { Paciente } from '../paciente';
 import { PacientesService } from '../pacientes.service';
@@ -50,7 +50,15 @@ export class PacientesListaComponent implements OnInit, OnDestroy {
 
   onRefresh(): void | Observable<never> {
     this.pacientes$ = this.pacientesService.findAll()
-      .pipe(catchError(() => {
+      .pipe(
+        map(pacientes => {
+          pacientes.forEach(paciente => {
+            let date: Date = new Date(paciente.nascimento);
+            paciente.nascimento = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+          })
+          return pacientes;
+        }),
+        catchError(() => {
         this.error$.next(true);
         return of();
       })

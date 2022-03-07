@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
-import { catchError, Observable, of, Subject, Subscription, switchMap, take } from 'rxjs';
+import { catchError, map, Observable, of, Subject, Subscription, switchMap, take } from 'rxjs';
 import { ModalService } from 'src/app/shared/services/modal.service';
 import { Medico } from '../medico';
 import { MedicosService } from '../medicos.service';
@@ -50,7 +50,15 @@ export class MedicosListaComponent implements OnInit {
 
   onRefresh(): void | Observable<never> {
     this.medicos$ = this.medicosService.findAll()
-      .pipe(catchError(() => {
+      .pipe(
+        map(medicos => {
+          medicos.forEach(medico => {
+            let date: Date = new Date(medico.nascimento);
+            medico.nascimento = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+          })
+          return medicos;
+        }),
+        catchError(() => {
         this.error$.next(true);
         return of();
       })

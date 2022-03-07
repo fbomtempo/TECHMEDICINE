@@ -46,6 +46,7 @@ export class EspecialidadesFormComponent extends FormSerivce implements OnInit {
             complete: () => {
               this.modalService.alertSuccess('Especialidade atualizada com sucesso!', 'Redirecionando a página...');
               setTimeout(() => this.location.back(), 2000);
+              this.submittedSucess = true;
             }
           });
       } else {
@@ -55,6 +56,7 @@ export class EspecialidadesFormComponent extends FormSerivce implements OnInit {
             complete: () => {
               this.modalService.alertSuccess('Especialidade cadastrada com sucesso!', 'Redirecionando a página...');
               setTimeout(() => this.location.back(), 2000);
+              this.submittedSucess = true;
             }
           });
       }
