@@ -47,7 +47,7 @@ public class MedicoService {
 		medico.setEspecialidade(obj.getEspecialidade());
 		medico.setRg(obj.getRg());
 		medico.setCpf(obj.getCpf());
-		medico.setTelefoneResidencial(obj.getCpf());
+		medico.setTelefoneResidencial(obj.getTelefoneResidencial());
 		medico.setTelefoneCelular(obj.getTelefoneCelular());
 		medico.setEmail(obj.getEmail());
 		medico.setCep(obj.getCep());

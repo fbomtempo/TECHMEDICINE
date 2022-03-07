@@ -35,35 +35,35 @@ public class Medico implements Serializable {
 	private String sobrenome;
 	
 	@Column(length = 50, nullable = false)
-	@JsonFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date nascimento;
 	
 	@Column(length = 9, nullable = false)
 	private String sexo;
-	
-	@Column(length = 8, nullable = false)
-	private String crm;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "id_especialidade", nullable = false)
 	private Especialidade especialidade;
 	
+	@Column(length = 8, nullable = false)
+	private String crm;
+	
 	@Column(length = 12, nullable = false)
 	private String rg;
 	
-	@Column(length = 14, unique = true)
+	@Column(length = 11, unique = true)
 	private String cpf;
 	
-	@Column(length = 14, nullable = true)
+	@Column(length = 10, nullable = true)
 	private String telefoneResidencial;
 	
-	@Column(length = 15, nullable = false)
+	@Column(length = 11, nullable = false)
 	private String telefoneCelular;
 	
 	@Column(length = 35, nullable = false)
 	private String email;
 	
-	@Column(length = 50, nullable = false)
+	@Column(length = 8, nullable = false)
 	private String cep;
 	
 	@Column(length = 30, nullable = false)
@@ -191,8 +191,8 @@ public class Medico implements Serializable {
 		return telefoneResidencial;
 	}
 
-	public void setTelefoneResidencial(String telefoneResidencial) {
-		this.telefoneResidencial = telefoneResidencial;
+	public void setTelefoneResidencial(String testeTelRes) {
+		this.telefoneResidencial = testeTelRes;
 	}
 
 	public String getTelefoneCelular() {

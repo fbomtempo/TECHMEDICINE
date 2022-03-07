@@ -45,7 +45,7 @@ public class PacienteService {
 		paciente.setSexo(obj.getSexo());
 		paciente.setRg(obj.getRg());
 		paciente.setCpf(obj.getCpf());
-		paciente.setTelefoneResidencial(obj.getCpf());
+		paciente.setTelefoneResidencial(obj.getTelefoneResidencial());
 		paciente.setTelefoneCelular(obj.getTelefoneCelular());
 		paciente.setEmail(obj.getEmail());
 		paciente.setCep(obj.getCep());
