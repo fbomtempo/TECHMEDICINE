@@ -3,7 +3,7 @@ export interface Paciente {
   id: number;
   nome: string;
   sobrenome: string;
-  nascimento: Date;
+  nascimento: string;
   sexo: string;
   rg: string;
   cpf: string;
