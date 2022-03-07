@@ -42,4 +42,8 @@ export class MaskService {
     return this.masks[mask](value);
   }
 
+  undoMask(value: string) {
+    return value.replace(/\D/g, '');
+  }
+
 }

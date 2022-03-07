@@ -31,7 +31,7 @@
   <div class="col-xl-2">
     <label for="nascimento" class="form-label">Nascimento</label>
     <input type="date" class="form-control" id="nascimento" formControlName="nascimento" placeholder="Nascimento"
-      [ngClass]="applyValidationClass('nascimento')" (blur)="formatDate()">
+      [ngClass]="applyValidationClass('nascimento')" >
     <div class="invalid-feedback" *ngIf="form.get('nascimento').errors?.['required']">
       Campo é obrigatório.
     </div>
@@ -112,7 +112,7 @@
     </div>
     <div class="invalid-feedback"
       *ngIf="form.get('cpf').errors?.['minlength'] || form.get('cpf').errors?.['maxlength']">
-      Campo deve possuir 14 caracteres.
+      CPF inválido.
     </div>
     <div class="valid-feedback">
       Parece bom.
@@ -126,8 +126,9 @@
     <div class="invalid-feedback" *ngIf="form.get('telefoneResidencial').errors?.['required']">
       Campo é obrigatório.
     </div>
-    <div class="invalid-feedback" *ngIf="form.get('telefoneResidencial').errors?.['maxlength']">
-      Campo deve possuir no máximo 14 caracteres.
+    <div class="invalid-feedback"
+      *ngIf="form.get('telefoneResidencial').errors?.['minlength'] || form.get('telefoneResidencial').errors?.['maxlength']">
+      Telefone residencial inválido.
     </div>
     <div class="valid-feedback">
       Parece bom.
@@ -141,8 +142,9 @@
     <div class="invalid-feedback" *ngIf="form.get('telefoneCelular').errors?.['required']">
       Campo é obrigatório.
     </div>
-    <div class="invalid-feedback" *ngIf="form.get('telefoneCelular').errors?.['maxlength']">
-      Campo deve possuir no máximo 15 caracteres.
+    <div class="invalid-feedback"
+      *ngIf="form.get('telefoneCelular').errors?.['minlength'] || form.get('telefoneCelular').errors?.['maxlength']">
+      Telefone celular inválido.
     </div>
     <div class="valid-feedback">
       Parece bom.
@@ -169,8 +171,8 @@
     <div class="invalid-feedback" *ngIf="form.get('cep').errors?.['required']">
       Campo é obrigatório.
     </div>
-    <div class="invalid-feedback" *ngIf="form.get('cep').errors?.['maxlength']">
-      Campo deve possuir no máximo 9 caracteres.
+    <div class="invalid-feedback" *ngIf="form.get('cep').errors?.['minlength'] || form.get('cep').errors?.['maxlength']">
+      CEP inválido.
     </div>
     <div class="valid-feedback">
       Parece bom.
@@ -264,7 +266,7 @@
     </div>
   </div>
   <div class="pt-4 mb-5">
-    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Salvar</button>
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()" [class.disabled]="!this.changed">Salvar</button>
     <button type="button" class="ms-2 btn btn-danger" (click)="onCancel()">Cancelar</button>
   </div>
 </form>

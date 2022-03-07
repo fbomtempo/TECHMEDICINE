@@ -43,7 +43,7 @@ export class FormSerivce implements ICanDeactivate {
       }
     });
 
-    if (cont != 0 && this.changed && !this.submitted) {
+    if (cont != 0 && this.changed) {
       return confirm('Tem certeza que deseja sair? Os dados preenchidos serão perdidos.');
     }
     return true;
