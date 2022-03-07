@@ -37,12 +37,6 @@ public class EspecialidadeResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
-	@GetMapping(value = "/descricao/{descricao}")
-	public ResponseEntity<List<Especialidade>> findByDescricao(@PathVariable String descricao) {
-		List<Especialidade> list = especialidadeService.findByDescricao(descricao);
-		return ResponseEntity.ok().body(list);
-	}
-	
 	@PostMapping
 	public ResponseEntity<Especialidade> insert(@RequestBody Especialidade obj) {
 		obj = especialidadeService.insert(obj);

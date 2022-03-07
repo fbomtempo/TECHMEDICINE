@@ -16,7 +16,7 @@ public class MedicoService {
 	private MedicoRepository medicoRepository;
 	
 	public List<Medico> findAll() {
-		return medicoRepository.findAll();
+		return medicoRepository.findAllByOrderByIdAsc();
 	}
 	
 	public Medico findById(Long id) {

@@ -18,16 +18,12 @@ public class EspecialidadeService {
 	private EspecialidadeRepository especialidadeRepository;
 	
 	public List<Especialidade> findAll() {
-		return especialidadeRepository.findAll();
+		return especialidadeRepository.findAllByOrderByIdAsc();
 	}
 
 	public Especialidade findById(Long id) {
 		Optional<Especialidade> obj = especialidadeRepository.findById(id);
 		return obj.orElseThrow(() -> new NoSuchElementException("Objeto de 'id " + id + "' não encontrado."));
-	}
-	
-	public List<Especialidade> findByDescricao(String descricao) {
-		return especialidadeRepository.findByDescricaoContaining(descricao);
 	}
 	
 	public Especialidade insert(Especialidade obj) {

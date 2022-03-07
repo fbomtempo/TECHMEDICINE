@@ -16,7 +16,7 @@ public class PacienteService {
 	private PacienteRepository pacienteRepository;
 
 	public List<Paciente> findAll() {
-		return pacienteRepository.findAll();
+		return pacienteRepository.findAllByOrderByIdAsc();
 	}
 
 	public Paciente findById(long id) {
