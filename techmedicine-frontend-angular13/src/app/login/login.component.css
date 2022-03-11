@@ -1,16 +1,27 @@
 /* BASIC */
 
-html {
-  background-color: #56baed;
-}
-
-body {
+.body {
   font-family: "Poppins", sans-serif;
   height: 100vh;
+  width: 100vw;
+}
+
+.bg {
+  /* The image used */
+  background-image: url("../../assets//imagens/medic-background.jpg");
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 a {
-  color: #92badd;
+  /*color: #92badd;*/
+  color: blue;
   display: inline-block;
   text-decoration: none;
   font-weight: 400;
@@ -41,7 +52,7 @@ h2 {
 #formContent {
   -webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 10px 10px 10px 10px;
-  background: #fff;
+  background-color: lightgray;
   padding: 30px;
   width: 90%;
   max-width: 450px;
@@ -53,7 +64,7 @@ h2 {
 }
 
 #formFooter {
-  background-color: #f6f6f6;
+  background-color: lightgray;
   border-top: 1px solid #dce8f1;
   padding: 25px;
   text-align: center;
@@ -277,10 +288,6 @@ input[type=text]:placeholder {
   background-color: var(--color-primary);
   content: "";
   transition: width 0.2s;
-}
-
-.underlineHover:hover {
-  color: var(--bs-dark);
 }
 
 .underlineHover:hover:after {
