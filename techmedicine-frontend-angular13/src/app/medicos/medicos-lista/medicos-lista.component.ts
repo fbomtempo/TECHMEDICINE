@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { catchError, map, Observable, of, Subject, Subscription, switchMap, take } from 'rxjs';
+import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 import { Medico } from '../medico';
 import { MedicosService } from '../medicos.service';
@@ -28,6 +29,7 @@ export class MedicosListaComponent implements OnInit {
   constructor(
     private medicosService: MedicosService,
     private modalService: ModalService,
+    private maskService: MaskService,
     private route: ActivatedRoute,
     private router: Router,
     private location: Location
@@ -53,8 +55,7 @@ export class MedicosListaComponent implements OnInit {
       .pipe(
         map(medicos => {
           medicos.forEach(medico => {
-            let date: Date = new Date(medico.nascimento);
-            medico.nascimento = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+            this.formatData(medico);
           })
           return medicos;
         }),
@@ -63,6 +64,15 @@ export class MedicosListaComponent implements OnInit {
         return of();
       })
     );
+  }
+
+  private formatData(medico: Medico): void {
+    let date: Date = new Date(medico.nascimento);
+    medico.nascimento = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+    medico.cpf = this.maskService.applyMask('cpf', medico.cpf);
+    medico.telefoneResidencial = this.maskService.applyMask('telefoneResidencial', medico.cpf);
+    medico.telefoneCelular = this.maskService.applyMask('telefoneCelular', medico.telefoneCelular);
+    medico.cep =this.maskService.applyMask('cep', medico.cep);
   }
 
   onDelete(medico: Medico): void {

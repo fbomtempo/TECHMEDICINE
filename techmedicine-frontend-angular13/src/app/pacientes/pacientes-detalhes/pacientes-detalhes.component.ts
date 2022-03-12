@@ -4,6 +4,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription, take } from 'rxjs';
 import { Estado } from 'src/app/shared/models/estado';
+import { MaskService } from 'src/app/shared/services/mask.service';
 import { Paciente } from '../paciente';
 
 @Component({
@@ -15,10 +16,11 @@ export class PacientesDetalhesComponent implements OnInit, OnDestroy {
 
   paciente: Paciente;
   estados$: Observable<Estado>;
-  subscription: Subscription;
   estados: any = [];
+  subscription: Subscription;
 
   constructor(
+    private maskService: MaskService,
     private route: ActivatedRoute,
     private http: HttpClient,
     private location: Location
@@ -35,10 +37,20 @@ export class PacientesDetalhesComponent implements OnInit, OnDestroy {
         }
       })
     });
+    this.formatData(this.paciente);
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  private formatData(paciente: Paciente): void {
+    let date: Date = new Date(paciente.nascimento);
+    paciente.nascimento = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+    paciente.cpf = this.maskService.applyMask('cpf', paciente.cpf);
+    paciente.telefoneResidencial = this.maskService.applyMask('telefoneResidencial', paciente.cpf);
+    paciente.telefoneCelular = this.maskService.applyMask('telefoneCelular', paciente.telefoneCelular);
+    paciente.cep =this.maskService.applyMask('cep', paciente.cep);
   }
 
   onBackToList(): void {
