@@ -76,7 +76,6 @@ public class Paciente implements Serializable {
 	private String complemento;
 	
 	@OneToMany(mappedBy = "paciente")
-	@JsonIgnore
 	Set<Agendamento> agendamentos = new HashSet<>();
 	
 	public Paciente() {
@@ -240,6 +239,7 @@ public class Paciente implements Serializable {
 		this.complemento = complemento;
 	}
 
+	@JsonIgnore
 	public Set<Agendamento> getAgendamentos() {
 		return agendamentos;
 	}

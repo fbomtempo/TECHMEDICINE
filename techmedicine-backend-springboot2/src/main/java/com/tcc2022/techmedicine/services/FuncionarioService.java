@@ -16,7 +16,7 @@ public class FuncionarioService {
 	private FuncionarioRepository funcionarioRepository;
 	
 	public List<Funcionario> findAll() {
-		List<Funcionario> list = funcionarioRepository.findAll();
+		List<Funcionario> list = funcionarioRepository.findAllByOrderByIdAsc();
 		return list;
 	}
 	

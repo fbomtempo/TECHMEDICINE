@@ -20,6 +20,10 @@ public class EspecialidadeService {
 	public List<Especialidade> findAll() {
 		return especialidadeRepository.findAllByOrderByIdAsc();
 	}
+	
+	public List<Especialidade> findAllByOrderByDescricaoAsc() {
+		return especialidadeRepository.findAllByOrderByDescricaoAsc();
+	}
 
 	public Especialidade findById(Long id) {
 		Optional<Especialidade> obj = especialidadeRepository.findById(id);

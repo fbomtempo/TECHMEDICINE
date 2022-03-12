@@ -16,8 +16,8 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "tb_especialidade")
-public class Especialidade implements Serializable {
+@Table(name = "tb_cargo")
+public class Cargo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -27,13 +27,13 @@ public class Especialidade implements Serializable {
 	@Column(length = 35, nullable = false)
 	private String descricao;
 	
-	@OneToMany(mappedBy = "especialidade")
-	private Set<Medico> medicos = new HashSet<>();
+	@OneToMany(mappedBy = "cargo")
+	private Set<Funcionario> funcionarios = new HashSet<>();
 	
-	public Especialidade() {
+	public Cargo() {
 	}
 	
-	public Especialidade(Long id, String descricao) {
+	public Cargo(Long id, String descricao) {
 		this.id = id;
 		this.descricao = descricao;
 	}
@@ -55,8 +55,8 @@ public class Especialidade implements Serializable {
 	}
 	
 	@JsonIgnore
-	public Set<Medico> getMedicos() {
-		return medicos;
+	public Set<Funcionario> getFuncionarioss() {
+		return funcionarios;
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class Especialidade implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Especialidade other = (Especialidade) obj;
+		Cargo other = (Cargo) obj;
 		return id == other.id;
 	}
 }

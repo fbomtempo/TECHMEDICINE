@@ -9,5 +9,6 @@ import com.tcc2022.techmedicine.entities.Especialidade;
 public interface EspecialidadeRepository extends JpaRepository<Especialidade, Long> {
 	
 	List<Especialidade> findAllByOrderByIdAsc();
+	List<Especialidade> findAllByOrderByDescricaoAsc();
 	
 }

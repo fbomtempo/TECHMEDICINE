@@ -267,6 +267,7 @@ public class Medico implements Serializable {
 		this.complemento = complemento;
 	}
 
+	@JsonIgnore
 	public Set<Agendamento> getAgendamentos() {
 		return agendamentos;
 	}

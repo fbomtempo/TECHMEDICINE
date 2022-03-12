@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -29,14 +31,15 @@ public class Funcionario implements Serializable {
 	private String sobrenome;
 	
 	@Column(length = 50, nullable = false)
-	@JsonFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "America/Sao_Paulo")
 	private Date nascimento;
 	
 	@Column(length = 9, nullable = false)
 	private String sexo;
 	
-	@Column(length = 30, nullable = false)
-	private String cargo;
+	@ManyToOne
+	@JoinColumn(name = "id_cargo", nullable = false)
+	private Cargo cargo;
 	
 	@Column(length = 12, nullable = false)
 	private String rg;
@@ -77,7 +80,7 @@ public class Funcionario implements Serializable {
 	public Funcionario() {
 	}
 
-	public Funcionario(Long id, String nome, String sobrenome, Date nascimento, String sexo, String cargo, String rg, String cpf,
+	public Funcionario(Long id, String nome, String sobrenome, Date nascimento, String sexo, Cargo cargo, String rg, String cpf,
 			String telefoneResidencial, String telefoneCelular, String email, String cep,String cidade, String estado, 
 			String endereco, String numero, String bairro, String complemento) {
 		this.id = id;
@@ -140,11 +143,11 @@ public class Funcionario implements Serializable {
 		this.sexo = sexo;
 	}
 
-	public String getCargo() {
+	public Cargo getCargo() {
 		return cargo;
 	}
 
-	public void setCargo(String cargo) {
+	public void setCargo(Cargo cargo) {
 		this.cargo = cargo;
 	}
 
