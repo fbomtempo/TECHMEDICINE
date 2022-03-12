@@ -12,23 +12,20 @@ import { Paciente } from '../paciente';
   templateUrl: './pacientes-detalhes.component.html',
   styleUrls: ['./pacientes-detalhes.component.css']
 })
-export class PacientesDetalhesComponent implements OnInit, OnDestroy {
+export class PacientesDetalhesComponent implements OnInit {
 
   paciente: Paciente;
-  estados$: Observable<Estado>;
-  estados: any = [];
-  subscription: Subscription;
 
   constructor(
     private maskService: MaskService,
     private route: ActivatedRoute,
-    private http: HttpClient,
     private location: Location
   ) { }
 
   ngOnInit(): void {
     this.paciente = this.route.snapshot.data['paciente'];
-    this.estados$ = this.http.get<Estado>('assets/dados/estados.json').pipe(take(1));
+    this.formatData(this.paciente);
+    /*this.estados$ = this.http.get<Estado>('assets/dados/estados.json').pipe(take(1));
     this.subscription = this.estados$.subscribe(estados => {
       this.estados = estados;
       this.estados.forEach(estado => {
@@ -36,12 +33,7 @@ export class PacientesDetalhesComponent implements OnInit, OnDestroy {
           this.paciente.estado = estado.descricao;
         }
       })
-    });
-    this.formatData(this.paciente);
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    });*/
   }
 
   private formatData(paciente: Paciente): void {
