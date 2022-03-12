@@ -17,11 +17,6 @@
             {{ dropdownTitle }}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" [routerLink]="['especialidades']" [queryParams]="{ pagina: 1 }"
-                [routerLinkActive]="['active']"
-                [routerLinkActiveOptions]="{ paths: 'subset', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' }"
-                (isActiveChange)="onRouterLinkActive($event, 'Especialidades')">
-                Cadastro de Especialidades</a></li>
             <li><a class="dropdown-item" [routerLink]="['pacientes']" [queryParams]="{ pagina: 1 }"
                 [routerLinkActive]="['active']"
                 [routerLinkActiveOptions]="{ paths: 'subset', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' }"
@@ -31,6 +26,21 @@
                 [routerLinkActive]="['active']"
                 [routerLinkActiveOptions]="{ paths: 'subset', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' }"
                 (isActiveChange)="onRouterLinkActive($event, 'Médicos')">Cadastro de Médicos</a></li>
+            <li><a class="dropdown-item" [routerLink]="['funcionarios']" [queryParams]="{ pagina: 1 }"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{ paths: 'subset', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' }"
+                (isActiveChange)="onRouterLinkActive($event, 'Funcionários')">Cadastro de Funcionários</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" [routerLink]="['especialidades']" [queryParams]="{ pagina: 1 }"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{ paths: 'subset', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' }"
+                (isActiveChange)="onRouterLinkActive($event, 'Especialidades')">Cadastro de Especialidades</a></li>
+            <li><a class="dropdown-item" [routerLink]="['cargos']" [queryParams]="{ pagina: 1 }"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{ paths: 'subset', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' }"
+                (isActiveChange)="onRouterLinkActive($event, 'Cargos')">Cadastro de Cargos</a></li>
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -39,11 +49,13 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Movimentações
+            aria-expanded="false" [class.active]="dropdownTitleActive2">
+            {{ dropdownTitle2 }}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item"></a></li>
+            <li><a class="dropdown-item" [routerLink]="['agendamentos']" [routerLinkActive]="['active']"
+                (isActiveChange)="onRouterLinkActive2($event, 'Agendamentos')">Realizar Agendamento</a></li>
+            <li>
             <li><a class="dropdown-item"></a></li>
             <li>
               <hr class="dropdown-divider">
@@ -70,7 +82,8 @@
 <div class="container">
   <router-outlet></router-outlet>
 </div>
-<footer class="d-flex flex-wrap justify-content-between align-items-center footer mt-auto py-3 border-top bg-color-primary">
+<footer
+  class="d-flex flex-wrap justify-content-between align-items-center footer mt-auto py-3 border-top bg-color-primary">
   <p class="text-center col-12 col-md-4 text-md-start ps-md-4 mb-md-0 text-light">&copy; 2021 TechMedicine, Inc</p>
   <a href="/"
     class="col-12 col-md-4 d-flex align-items-center justify-content-center text-light link-light text-decoration-none">

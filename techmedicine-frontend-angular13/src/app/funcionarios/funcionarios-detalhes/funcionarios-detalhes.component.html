@@ -1,0 +1,113 @@
+<h1 class="mt-4">Visualizar Funcionário</h1>
+<div>
+  <h4 class="pt-4">Funcionário</h4>
+  <hr>
+  <dl class="row">
+    <dt class="col-sm-2">
+      ID:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.id }}
+    </dd>
+    <dt class="col-sm-2">
+      Nome:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.nome }}
+    </dd>
+    <dt class="col-sm-2">
+      Sobrenome:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.sobrenome }}
+    </dd>
+    <dt class="col-sm-2">
+      Nascimento:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.nascimento }}
+    </dd>
+    <dt class="col-sm-2">
+      Sexo:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.sexo }}
+    </dd>
+    <dt class="col-sm-2">
+      Especialidade:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.cargo.descricao }}
+    </dd>
+    <dt class="col-sm-2">
+      RG:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.rg }}
+    </dd>
+    <dt class="col-sm-2">
+      CPF:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.cpf }}
+    </dd>
+    <dt class="col-sm-2">
+      Telefone Residencial:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.telefoneResidencial }}
+    </dd>
+    <dt class="col-sm-2">
+      Telefone Celular:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.telefoneCelular }}
+    </dd>
+    <dt class="col-sm-2">
+      E-mail:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.email }}
+    </dd>
+    <dt class="col-sm-2">
+      CEP:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.cep }}
+    </dd>
+    <dt class="col-sm-2">
+      Cidade:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.cidade }}
+    </dd>
+    <dt class="col-sm-2">
+      Estado:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.estado }}
+    </dd>
+    <dt class="col-sm-2">
+      Endereço:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.endereco }}
+    </dd>
+    <dt class="col-sm-2">
+      Número:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.numero }}
+    </dd>
+    <dt class="col-sm-2">
+      Complemento:
+    </dt>
+    <dd class="col-sm-10">
+      {{ funcionario.complemento }}
+    </dd>
+  </dl>
+</div>
+<div class="pt-4 mb-5">
+  <button type="button" class="btn btn-primary" [routerLink]="['../../editar/', funcionario.id]">Editar</button>
+  <button type="button" class="ms-2 btn btn-secondary" (click)="onBackToList()">Voltar a Lista</button>
+</div>

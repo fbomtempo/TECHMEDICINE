@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalService } from 'src/app/shared/services/modal.service';
-import { FormSerivce } from 'src/app/shared/services/form-service';
+import { FormService } from 'src/app/shared/services/form-service';
 import { EspecialidadesService } from '../especialidades.service';
 import { Location } from '@angular/common';
 
@@ -11,7 +11,7 @@ import { Location } from '@angular/common';
   templateUrl: './especialidades-form.component.html',
   styleUrls: ['./especialidades-form.component.css']
 })
-export class EspecialidadesFormComponent extends FormSerivce implements OnInit {
+export class EspecialidadesFormComponent extends FormService implements OnInit {
 
   constructor(
     private route: ActivatedRoute,

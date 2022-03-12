@@ -16,7 +16,7 @@ import { PacientesService } from '../pacientes.service';
 export class PacientesListaComponent implements OnInit, OnDestroy {
 
   pacientes$: Observable<Paciente[]>;
-  error$: Subject<boolean> = new Subject();
+  error: Subject<boolean> = new Subject();
   subscription: Subscription;
 
   page: number;
@@ -60,7 +60,7 @@ export class PacientesListaComponent implements OnInit, OnDestroy {
           return pacientes;
         }),
         catchError(() => {
-        this.error$.next(true);
+        this.error.next(true);
         return of();
       })
     );
@@ -76,7 +76,7 @@ export class PacientesListaComponent implements OnInit, OnDestroy {
   }
 
   onDelete(paciente: Paciente): void {
-    this.modalService.showConfirmModal('Confirmação', 'Tem certeza que deseja remover essa paciente?')
+    this.modalService.showConfirmModal('Confirmação', 'Tem certeza que deseja remover esse paciente?')
       .pipe(
         take(1),
         switchMap(result => result ? this.pacientesService.delete(paciente.id) : of())

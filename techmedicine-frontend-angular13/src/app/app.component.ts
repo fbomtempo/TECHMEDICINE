@@ -10,7 +10,9 @@ export class AppComponent implements OnInit {
 
   title = 'techmedicine';
   dropdownTitle: string;
+  dropdownTitle2: string;
   dropdownTitleActive: boolean;
+  dropdownTitleActive2: boolean;
   isLoggedIn: boolean = false;
 
   constructor(private tokenStorageService: TokenStorageService) { }
@@ -18,13 +20,17 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.dropdownTitle = 'Cadastros';
+    this.dropdownTitle2 = 'Consultas';
     this.dropdownTitleActive = false;
+    this.dropdownTitleActive2 = false;
   }
 
   onRouterLinkActiveHome(event: boolean) {
     if (event === true) {
       this.dropdownTitle = 'Cadastros';
+      this.dropdownTitle2 = 'Consultas';
       this.dropdownTitleActive = false;
+      this.dropdownTitleActive2 = false;
     }
   }
 
@@ -32,6 +38,13 @@ export class AppComponent implements OnInit {
     if (event === true) {
       this.dropdownTitle = dropdownTitle;
       this.dropdownTitleActive = event;
+    }
+  }
+
+  onRouterLinkActive2(event: boolean, dropdownTitle: string) {
+    if (event === true) {
+      this.dropdownTitle2 = dropdownTitle;
+      this.dropdownTitleActive2 = event;
     }
   }
 

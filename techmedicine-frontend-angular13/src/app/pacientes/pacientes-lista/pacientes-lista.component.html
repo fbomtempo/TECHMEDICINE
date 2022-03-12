@@ -65,7 +65,7 @@
 </div>
 
 <ng-template #loadingError>
-  <div *ngIf="error$ | async; else loading">
+  <div *ngIf="error | async; else loading">
     <div style="height: 80vh" class="d-flex flex-column align-items-center justify-content-center">
       <p style="font-size: 1.65rem;">Erro ao carregar pacientes.</p>
       <button type="button" class="btn btn-lg btn-secondary" (click)="reloadPage()">Tentar Novamente <i

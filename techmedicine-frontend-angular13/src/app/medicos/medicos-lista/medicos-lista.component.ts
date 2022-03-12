@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { catchError, map, Observable, of, Subject, Subscription, switchMap, take } from 'rxjs';
@@ -13,10 +13,10 @@ import { MedicosService } from '../medicos.service';
   templateUrl: './medicos-lista.component.html',
   styleUrls: ['./medicos-lista.component.css']
 })
-export class MedicosListaComponent implements OnInit {
+export class MedicosListaComponent implements OnInit, OnDestroy {
 
   medicos$: Observable<Medico[]>;
-  error$: Subject<boolean> = new Subject();
+  error: Subject<boolean> = new Subject();
   subscription: Subscription;
 
   page: number;
@@ -60,7 +60,7 @@ export class MedicosListaComponent implements OnInit {
           return medicos;
         }),
         catchError(() => {
-        this.error$.next(true);
+        this.error.next(true);
         return of();
       })
     );
@@ -76,14 +76,14 @@ export class MedicosListaComponent implements OnInit {
   }
 
   onDelete(medico: Medico): void {
-    this.modalService.showConfirmModal('Confirmação', 'Tem certeza que deseja remover essa paciente?')
+    this.modalService.showConfirmModal('Confirmação', 'Tem certeza que deseja remover esse médico?')
       .pipe(
         take(1),
         switchMap(result => result ? this.medicosService.delete(medico.id) : of())
       )
       .subscribe({
         next: () => setTimeout(() => this.onRefresh(), 100),
-        error: () => this.modalService.alertDanger('Erro ao remover paciente!', 'Tente novamente mais tarde.')
+        error: () => this.modalService.alertDanger('Erro ao remover médico!', 'Tente novamente mais tarde.')
       });
   }
 

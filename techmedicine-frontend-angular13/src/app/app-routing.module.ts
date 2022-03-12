@@ -11,16 +11,28 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
   },
   {
-    path: 'especialidades',
-    loadChildren: () => import('./especialidades/especialidades.module').then(m => m.EspecialidadesModule)
-  },
-  {
     path: 'pacientes',
     loadChildren: () => import('./pacientes/pacientes.module').then(m => m.PacientesModule)
   },
   {
     path: 'medicos',
     loadChildren: () => import('./medicos/medicos.module').then(m => m.MedicosModule)
+  },
+  {
+    path: 'funcionarios',
+    loadChildren: () => import('./funcionarios/funcionarios.module').then(m => m.FuncionariosModule)
+  },
+  {
+    path: 'especialidades',
+    loadChildren: () => import('./especialidades/especialidades.module').then(m => m.EspecialidadesModule)
+  },
+  {
+    path: 'cargos',
+    loadChildren: () => import('./cargos/cargos.module').then(m => m.CargosModule)
+  },
+  {
+    path: 'agendamentos',
+    loadChildren: () => import('./agendamentos/agendamentos.module').then(m => m.AgendamentosModule)
   },
   {
     path: '',

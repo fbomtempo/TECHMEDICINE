@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalService } from 'src/app/shared/services/modal.service';
-import { FormSerivce } from 'src/app/shared/services/form-service';
+import { FormService } from 'src/app/shared/services/form-service';
 import { Location } from '@angular/common';
 import { PacientesService } from '../pacientes.service';
 import { Observable } from 'rxjs';
@@ -17,7 +17,7 @@ import { Paciente } from '../paciente';
   templateUrl: './pacientes-form.component.html',
   styleUrls: ['./pacientes-form.component.css']
 })
-export class PacientesFormComponent extends FormSerivce implements OnInit {
+export class PacientesFormComponent extends FormService implements OnInit {
 
   estados$: Observable<Estado[]>;
   readonly fields = ['cpf', 'telefoneResidencial', 'telefoneCelular', 'cep'];

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ValidationErrors } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ICanDeactivate } from "../guards/ican-deactivate";
 
-export class FormSerivce implements ICanDeactivate {
+export class FormService implements ICanDeactivate {
 
   form: FormGroup;
   submitted: boolean = false;

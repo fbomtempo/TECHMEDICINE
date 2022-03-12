@@ -15,7 +15,7 @@ import { EspecialidadesService } from '../especialidades.service';
 export class EspecialidadesListaComponent implements OnInit, OnDestroy {
 
   especialidades$: Observable<Especialidade[]>;
-  error$: Subject<boolean> = new Subject();
+  error: Subject<boolean> = new Subject();
   subscription: Subscription;
 
   page: number;
@@ -51,7 +51,7 @@ export class EspecialidadesListaComponent implements OnInit, OnDestroy {
   onRefresh(): void | Observable<never> {
     this.especialidades$ = this.especialidadesService.findAll()
       .pipe(catchError(() => {
-        this.error$.next(true);
+        this.error.next(true);
         return of();
       })
     );

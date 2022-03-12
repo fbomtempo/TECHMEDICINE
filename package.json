@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@fullcalendar/angular": "^5.10.2",
+    "@fullcalendar/bootstrap5": "^5.10.2"
+  }
+}

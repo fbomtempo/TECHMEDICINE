@@ -2,12 +2,12 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, Observable, startWith } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Especialidade } from 'src/app/especialidades/especialidade';
 import { Estado } from 'src/app/shared/models/estado';
 import { ConsultaCepService } from 'src/app/shared/services/consulta-cep.service';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
-import { FormSerivce } from 'src/app/shared/services/form-service';
+import { FormService } from 'src/app/shared/services/form-service';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 import { Medico } from '../medico';
@@ -18,7 +18,7 @@ import { MedicosService } from '../medicos.service';
   templateUrl: './medicos-form.component.html',
   styleUrls: ['./medicos-form.component.css']
 })
-export class MedicosFormComponent extends FormSerivce implements OnInit {
+export class MedicosFormComponent extends FormService implements OnInit {
 
   estados$: Observable<Estado[]>;
   especialidades$: Observable<Especialidade[]>;

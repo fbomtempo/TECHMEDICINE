@@ -1,0 +1,25 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { AgendamentosListaComponent } from './agendamentos-lista.component';
+
+describe('AgendamentosListaComponent', () => {
+  let component: AgendamentosListaComponent;
+  let fixture: ComponentFixture<AgendamentosListaComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ AgendamentosListaComponent ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AgendamentosListaComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
