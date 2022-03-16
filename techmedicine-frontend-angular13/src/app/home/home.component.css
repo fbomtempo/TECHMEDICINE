@@ -1,3 +1,8 @@
+.container-padding {
+  padding-top: 7vh;
+  padding-bottom: 3.5vh;
+}
+
 .icon-link {
   text-decoration: none;
   color: #727272;
@@ -27,15 +32,27 @@
   10px 10px 0px 0px hsl(0, 0%, 80%);
 }
 
-@media only screen and (max-width: 576px) and (hover: none) {
+@media only screen and (hover: none) {
 
   .card {
-    width: 12rem;
-    height: 9rem;
     border-color: #3f51b5;
     border-width: 2px;
     box-shadow:
     10px 10px 0px 0px hsl(0, 0%, 80%);
+  }
+
+}
+
+@media only screen and (max-width: 576px) {
+
+  .container-padding {
+    padding-top: 3.5vh;
+    padding-bottom: 3.5vh;
+  }
+
+  .card {
+    width: 12rem;
+    height: 9rem;
   }
 
   .card-icon {
@@ -65,13 +82,20 @@
 
 }
 
-@media only screen and (min-width: 577px) and (max-width: 1280px) and (hover: none) {
+@media only screen and (min-width: 1281px) and (max-width: 1440px) {
 
   .card {
-    border-color: #3f51b5;
-    border-width: 2px;
-    box-shadow:
-    10px 10px 0px 0px hsl(0, 0%, 80%);
+    width: 15.5rem;
+    height: 12.5rem;
+  }
+
+  .card-icon {
+    font-size: 5.3rem;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
   }
 
 }
+

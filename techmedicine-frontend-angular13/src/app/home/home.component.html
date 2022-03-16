@@ -1,8 +1,8 @@
 <div class="d-flex flex-column h-100">
   <h1 class="text-center pt-5 display-4">Bem-vindo(a) de volta!</h1>
-  <div class="container" style="padding-top: 7.5vh; padding-bottom: 3.5vh;">
-    <div class="row">
-      <div class="pb-5 pt-3 pt-lg-0 col-12 col-lg-4 d-flex justify-content-center">
+  <div class="container container-padding">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3">
+      <div class="pb-5 pt-4 pt-lg-1 pt-xl-0 col d-flex justify-content-center">
         <a [routerLink]="['/pacientes']" [queryParams]="{ pagina: 1 }" class="icon-link">
           <div class="card">
             <div class="text-center card-icon"><i class="fas fa-head-side-mask"></i></div>
@@ -12,7 +12,7 @@
           </div>
         </a>
       </div>
-      <div class="pb-5 pt-3 pt-lg-0 col-12 col-lg-4 d-flex justify-content-center">
+      <div class="pb-5 pt-4 pt-lg-1 pt-xl-0 col d-flex justify-content-center">
         <a [routerLink]="['/medicos']" [queryParams]="{ pagina: 1 }" class="icon-link">
           <div class="card">
             <div class="text-center card-icon"><i class="fas fa-user-md"></i></div>
@@ -22,7 +22,7 @@
           </div>
         </a>
       </div>
-      <div class="pb-5 pt-3 pt-lg-0 col-12 col-lg-4 d-flex justify-content-center">
+      <div class="pb-5 pt-4 pt-lg-1 pt-xl-0 col d-flex justify-content-center">
         <a asp-area="" asp-controller="Funcionarios" asp-action="Index" class="icon-link">
           <div class="card">
             <div class="text-center card-icon"><i class="fas fa-user-tie"></i></div>
@@ -32,9 +32,7 @@
           </div>
         </a>
       </div>
-    </div>
-    <div class="row mt-lg-2 mt-xl-3 mt-xxl-3">
-      <div class="pb-5 pt-3 pt-lg-0 col-12 col-lg-4 d-flex justify-content-center">
+      <div class="pb-5 pt-3 pt-lg-4 col d-flex justify-content-center">
         <a [routerLink]="['/agendamentos']" class="icon-link">
           <div class="card">
             <div class="text-center card-icon"><i class="fas fa-calendar-check"></i></div>
@@ -44,7 +42,7 @@
           </div>
         </a>
       </div>
-      <div class="pb-5 pt-3 pt-lg-0 col-12 col-lg-4 d-flex justify-content-center">
+      <div class="pb-5 pt-3 pt-lg-4 col d-flex justify-content-center">
         <a asp-area="" asp-controller="Produtos" asp-action="Index" class="icon-link">
           <div class="card">
             <div class="text-center card-icon"><i class="fas fa-file-alt"></i></div>
@@ -54,7 +52,7 @@
           </div>
         </a>
       </div>
-      <div class="pb-5 pt-3 pt-lg-0 col-12 col-lg-4 d-flex justify-content-center">
+      <div class="pb-5 pt-3 pt-lg-4 col d-flex justify-content-center">
         <a asp-area="" asp-controller="Movimentacoes" asp-action="Index" class="icon-link">
           <div class="card">
             <div class="text-center card-icon"><i class="fas fa-book-medical"></i></div>
