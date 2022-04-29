@@ -1,7 +1,7 @@
 package com.tcc2022.techmedicine.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -14,7 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.tcc2022.techmedicine.entities.enums.SituacaoAtendimento;
 
 @Entity
@@ -38,16 +39,16 @@ public class Atendimento implements Serializable {
 	@JoinColumn(name = "id_medico", nullable = false)
 	private Medico medico;
 	
-	@Column(length = 50, nullable = false)
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone = "America/Sao_Paulo")
-	private Date dataAtendimento;
+	@Column(nullable = false)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dataAtendimento;
 	
 	private String situacaoAtendimento;
 	
 	public Atendimento() {
 	}
 
-	public Atendimento(Long id, Agendamento agendamento, Paciente paciente, Medico medico, Date dataAtendimento, SituacaoAtendimento situacaoAtendimento) {
+	public Atendimento(Long id, Agendamento agendamento, Paciente paciente, Medico medico, LocalDate dataAtendimento, SituacaoAtendimento situacaoAtendimento) {
 		this.id = id;
 		this.agendamento = agendamento;
 		this.paciente = paciente;
@@ -88,11 +89,11 @@ public class Atendimento implements Serializable {
 		this.medico = medico;
 	}
 
-	public Date getDataAtendimento() {
+	public LocalDate getDataAtendimento() {
 		return dataAtendimento;
 	}
 
-	public void setDataAtendimento(Date dataAtendimento) {
+	public void setDataAtendimento(LocalDate dataAtendimento) {
 		this.dataAtendimento = dataAtendimento;
 	}
 

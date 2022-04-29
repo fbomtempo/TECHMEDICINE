@@ -1,7 +1,7 @@
 package com.tcc2022.techmedicine.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -14,7 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tcc2022.techmedicine.entities.enums.SituacaoAgendamento;
 
@@ -35,13 +36,13 @@ public class Agendamento implements Serializable {
 	@JoinColumn(name = "id_medico", nullable = false)
 	private Medico medico;
 	
-	@Column(length = 50, nullable = false)
-	@JsonFormat(pattern = "dd/MM/yyyy", timezone = "America/Sao_Paulo")
-	private Date dataAgendamento;
+	@Column(nullable = false)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dataAgendamento;
 	
-	@Column(length = 50, nullable = false, unique = true)
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone = "America/Sao_Paulo")
-	private Date dataAgendada;
+	@Column(nullable = false)
+	@DateTimeFormat(pattern = "yyyy-MM-dd") /*timezone = "America/Sao_Paulo")*/
+	private LocalDate dataAgendada;
 	
 	private String situacaoAgendamento;
 	
@@ -52,7 +53,7 @@ public class Agendamento implements Serializable {
 	public Agendamento() {
 	}
 
-	public Agendamento(Long id, Paciente paciente, Medico medico, Date dataAgendamento, Date dataAgendada, SituacaoAgendamento situacaoAgendamento) {
+	public Agendamento(Long id, Paciente paciente, Medico medico, LocalDate dataAgendamento, LocalDate dataAgendada, SituacaoAgendamento situacaoAgendamento) {
 		this.id = id;
 		this.paciente = paciente;
 		this.medico = medico;
@@ -85,19 +86,19 @@ public class Agendamento implements Serializable {
 		this.medico = medico;
 	}
 
-	public Date getDataAgendamento() {
+	public LocalDate getDataAgendamento() {
 		return dataAgendamento;
 	}
 
-	public void setDataAgendamento(Date dataAgendamento) {
+	public void setDataAgendamento(LocalDate dataAgendamento) {
 		this.dataAgendamento = dataAgendamento;
 	}
 
-	public Date getDataAgendada() {
+	public LocalDate getDataAgendada() {
 		return dataAgendada;
 	}
 
-	public void setDataAgendada(Date dataAgendada) {
+	public void setDataAgendada(LocalDate dataAgendada) {
 		this.dataAgendada = dataAgendada;
 	}
 

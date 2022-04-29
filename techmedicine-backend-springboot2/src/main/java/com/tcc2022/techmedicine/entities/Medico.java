@@ -1,7 +1,7 @@
 package com.tcc2022.techmedicine.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -16,7 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -34,9 +35,9 @@ public class Medico implements Serializable {
 	@Column(length = 50, nullable = false)
 	private String sobrenome;
 	
-	@Column(length = 50, nullable = false)
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "America/Sao_Paulo")
-	private Date nascimento;
+	@Column(nullable = false)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate nascimento;
 	
 	@Column(length = 9, nullable = false)
 	private String sexo;
@@ -91,7 +92,7 @@ public class Medico implements Serializable {
 	public Medico() {
 	}
 
-	public Medico(Long id, String nome, String sobrenome, Date nascimento, String sexo, String crm, Especialidade especialidade, 
+	public Medico(Long id, String nome, String sobrenome, LocalDate nascimento, String sexo, String crm, Especialidade especialidade, 
 			String rg, String cpf, String telefoneResidencial, String telefoneCelular, String email, String cep, String cidade, 
 			String estado, String endereco, String numero, String bairro, String complemento) {
 		this.id = id;
@@ -139,11 +140,11 @@ public class Medico implements Serializable {
 		this.sobrenome = sobrenome;
 	}
 
-	public Date getNascimento() {
+	public LocalDate getNascimento() {
 		return nascimento;
 	}
 
-	public void setNascimento(Date nascimento) {
+	public void setNascimento(LocalDate nascimento) {
 		this.nascimento = nascimento;
 	}
 

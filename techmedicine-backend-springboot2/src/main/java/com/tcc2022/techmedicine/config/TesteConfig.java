@@ -68,7 +68,7 @@ public class TesteConfig implements CommandLineRunner {
 		especialidades.add(e3);
 		especialidades.add(e4);
 		especialidades.add(e5);
-		especialidadeRepository.saveAll(especialidades);*/
+		especialidadeRepository.saveAll(especialidades);
 		
 		Especialidade e1 = new Especialidade(null, "Clinico Geral");
 		especialidadeRepository.save(e1);
@@ -109,6 +109,6 @@ public class TesteConfig implements CommandLineRunner {
 		atendimentoRepository.save(atd1);
 		
 		Atendimento atd2 = new Atendimento(null, a1, p1, m1, sdf2.parse("15/01/2022 15:30"), SituacaoAtendimento.ABERTO);
-		atendimentoRepository.save(atd2);
+		atendimentoRepository.save(atd2);*/
 	}	
 }
