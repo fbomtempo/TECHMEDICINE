@@ -1,0 +1,7 @@
+<pre class="card card-block card-header mb-3">Model: {{selected | json}}</pre>
+<label for="states">States</label>
+<input [(ngModel)]="selected"
+       [typeahead]="states"
+       [typeaheadOptionsLimit]="5"
+       class="form-control"
+       id="states">

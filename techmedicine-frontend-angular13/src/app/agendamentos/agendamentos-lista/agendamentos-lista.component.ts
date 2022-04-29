@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CalendarOptions } from '@fullcalendar/angular';
 import ptBrLocale from '@fullcalendar/core/locales/pt-br';
 
@@ -26,13 +27,14 @@ export class AgendamentosListaComponent implements OnInit {
     ]
   };
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
 
   handleDateClick(arg) {
     alert('date click! ' + arg.dateStr)
+    //this.router.navigate(['agendamentos/novo', arg.dateStr]);
   }
 
 }

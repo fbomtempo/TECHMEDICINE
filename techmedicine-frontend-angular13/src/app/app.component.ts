@@ -37,14 +37,18 @@ export class AppComponent implements OnInit {
   onRouterLinkActive(event: boolean, dropdownTitle: string) {
     if (event === true) {
       this.dropdownTitle = dropdownTitle;
+      this.dropdownTitle2 = 'Consultas';
       this.dropdownTitleActive = event;
+      this.dropdownTitleActive2 = false;
     }
   }
 
   onRouterLinkActive2(event: boolean, dropdownTitle: string) {
     if (event === true) {
       this.dropdownTitle2 = dropdownTitle;
+      this.dropdownTitle = 'Cadastros';
       this.dropdownTitleActive2 = event;
+      this.dropdownTitleActive = false;
     }
   }
 
