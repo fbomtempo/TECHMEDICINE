@@ -1,7 +1,8 @@
 package com.tcc2022.techmedicine.entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -37,13 +38,10 @@ public class Agendamento implements Serializable {
 	private Medico medico;
 	
 	@Column(nullable = false)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate dataAgendamento;
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	private LocalDateTime dataAgendada;
 	
-	@Column(nullable = false)
-	@DateTimeFormat(pattern = "yyyy-MM-dd") /*timezone = "America/Sao_Paulo")*/
-	private LocalDate dataAgendada;
-	
+	@Column(length = 30, nullable = false)
 	private String situacaoAgendamento;
 	
 	@OneToOne(mappedBy = "agendamento")
@@ -53,11 +51,10 @@ public class Agendamento implements Serializable {
 	public Agendamento() {
 	}
 
-	public Agendamento(Long id, Paciente paciente, Medico medico, LocalDate dataAgendamento, LocalDate dataAgendada, SituacaoAgendamento situacaoAgendamento) {
+	public Agendamento(Long id, Paciente paciente, Medico medico, LocalDateTime dataAgendada, SituacaoAgendamento situacaoAgendamento) {
 		this.id = id;
 		this.paciente = paciente;
 		this.medico = medico;
-		this.dataAgendamento = dataAgendamento;
 		this.dataAgendada = dataAgendada;
 		setSituacaoAgendamento(situacaoAgendamento);
 	}
@@ -86,19 +83,11 @@ public class Agendamento implements Serializable {
 		this.medico = medico;
 	}
 
-	public LocalDate getDataAgendamento() {
-		return dataAgendamento;
-	}
-
-	public void setDataAgendamento(LocalDate dataAgendamento) {
-		this.dataAgendamento = dataAgendamento;
-	}
-
-	public LocalDate getDataAgendada() {
+	public LocalDateTime getDataAgendada() {
 		return dataAgendada;
 	}
 
-	public void setDataAgendada(LocalDate dataAgendada) {
+	public void setDataAgendada(LocalDateTime dataAgendada) {
 		this.dataAgendada = dataAgendada;
 	}
 

@@ -41,7 +41,6 @@ public class AgendamentoService {
 	private void updateData(Agendamento agendamento, Agendamento obj) {
 		agendamento.setPaciente(obj.getPaciente());
 		agendamento.setMedico(obj.getMedico());
-		agendamento.setDataAgendamento(obj.getDataAgendamento());
 		agendamento.setDataAgendada(obj.getDataAgendada());
 		agendamento.setSituacaoAgendamento(obj.getSituacaoAgendamento());
 	}
