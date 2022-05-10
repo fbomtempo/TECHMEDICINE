@@ -4,15 +4,17 @@ import { AgendamentosListaComponent } from './agendamentos-lista/agendamentos-li
 import { AgendamentosRoutingModule } from './agendamentos-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FullCalendarModule } from '@fullcalendar/angular';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
 import { AgendamentosFormComponent } from './agendamentos-form/agendamentos-form.component';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
-FullCalendarModule.registerPlugins([
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
-  interactionPlugin,
+  timeGridPlugin,
+  interactionPlugin
 ]);
 
 @NgModule({
@@ -27,7 +29,7 @@ FullCalendarModule.registerPlugins([
     FormsModule,
     ReactiveFormsModule,
     FullCalendarModule,
-    TypeaheadModule.forRoot()
+    TypeaheadModule.forRoot(),
   ]
 })
 export class AgendamentosModule { }
