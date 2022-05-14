@@ -1,8 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CalendarOptions } from '@fullcalendar/angular';
 import ptBrLocale from '@fullcalendar/core/locales/pt-br';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { catchError, Observable, of, Subject } from 'rxjs';
+import { AppointmentModalComponent } from 'src/app/shared/appointment-modal/appointment-modal/appointment-modal.component';
 import { ModalService } from 'src/app/shared/services/modal.service';
+import { Agendamento } from '../agendamento';
+import { AgendamentosService } from '../agendamentos.service';
 
 @Component({
   selector: 'app-agendamentos-lista',
@@ -19,56 +24,95 @@ export class AgendamentosListaComponent implements OnInit {
       center: 'title',
       right: 'timeGridWeek,timeGridDay'
     },
+    //height: 740,
+    //aspectRatio: 1.40,
+    stickyHeaderDates: true,
+    allDaySlot: false,
+    expandRows: true,
+    slotMinTime: '08:00',
+    slotMaxTime: '19:00',
+    slotEventOverlap: false,
     slotLabelFormat: {
       hour: 'numeric',
       minute: '2-digit',
       omitZeroMinute: false,
       meridiem: 'short'
     },
-    height: 740,
-    dateClick: this.handleDateClick.bind(this),
-    allDaySlot: false,
-    slotMinTime: '08:00',
-    slotMaxTime: '21:00',
-    /*titleFormat: { year: 'numeric', month: 'long' },*/
-    events: [
-      { title: 'event 1', date: '2022-04-29 10:30' },
-      { title: 'event 2', date: '2022-04-29 11:00' },
-      { title: 'event 3', date: '2022-04-29 11:30' },
-      { title: 'event 4', date: '2022-04-29 12:00' },
-    ]
+    businessHours: [
+      {
+        daysOfWeek: [ 1, 2, 3, 4, 5 ],
+        startTime: '08:00',
+        endTime: '12:00'
+      },
+      {
+        daysOfWeek: [ 1, 2, 3, 4, 5 ],
+        startTime: '14:00',
+        endTime: '19:00'
+      },
+    ],
+    selectable: true,
+    select: this.addAppointment.bind(this),
+    selectConstraint: "businessHours",
+    selectAllow: this.maxSelectionAllowed.bind(this),
+    eventClick: this.viewAppointment.bind(this)
   };
+  agendamentos$: Observable<Agendamento[]>;
+  error: Subject<boolean> = new Subject();
+  @ViewChild('appointmentModal', { static: true }) appointmentModal?: AppointmentModalComponent;
 
   constructor(
     private router: Router,
+    private agendamentosService: AgendamentosService,
+    private bsModalRef: BsModalRef,
+    private bsModalService: BsModalService,
     private modalService: ModalService
   ) { }
 
   ngOnInit(): void {
+    this.onRefresh();
   }
 
-  handleDateClick(arg) {
-    const dateStr: string = arg.dateStr.slice(0, 16);
-    this.router.navigate(['agendamentos/novo', dateStr]);
-    //this.modalService.alertSuccess('Teste', 'Teste');
+  onRefresh(): void | Observable<never> {
+    let agendamentos: any[];
+    this.agendamentos$ = this.agendamentosService.findAll()
+      .pipe(
+        catchError(() => {
+          this.error.next(true);
+          return of();
+        })
+      );
+    this.agendamentos$.subscribe((result: Agendamento[]) => {
+      agendamentos = result.map((a: Agendamento) => {
+        return {
+          id: a.id,
+          title: a.paciente.nome + ' ' + a.paciente.sobrenome,
+          start: a.dataAgendada,
+          end: a.dataTermino
+        };
+      });
+      this.calendarOptions.events = agendamentos;
+    });
   }
 
+  reloadPage(): void {
+    window.location.reload();
+  }
+
+  private addAppointment(arg): void {
+    const startDateStr: string = arg.startStr.slice(0, 16);
+    const endTimeStr: string = arg.endStr.slice(11, 16);
+    const urlDateStr: string = startDateStr + '-'  + endTimeStr;
+    this.router.navigate(['agendamentos/novo', urlDateStr]);
+  }
+
+  private maxSelectionAllowed(arg): boolean {
+    var duration = Math.abs((arg.end.getTime() - arg.start.getTime()) / 3600000);
+    return duration < 1;
+  }
+
+  private viewAppointment(arg): void {
+    //this.bsModalRef = this.bsModalRef..
+    console.log(arg);
+    this.appointmentModal.showModal();
+  }
 }
-
-/*  calendarOptions: CalendarOptions = {
-    initialView: 'dayGridMonth',
-    /*dateClick: this.handleDateClick.bind(this), // bind is important!
-    height: 725,
-    locale: ptBrLocale,
-    headerToolbar: {
-      start: 'title', // will normally be on the left. if RTL, will be on the right
-      center: '',
-      end: 'today prev,next' // will normally be on the right. if RTL, will be on the left
-    },
-    titleFormat: { year: 'numeric', month: 'long' },
-    events: [
-      { title: 'event 1', date: '2022-03-10' },
-      { title: 'event 2', date: '2022-03-11' }
-    ]
-  };
-*/

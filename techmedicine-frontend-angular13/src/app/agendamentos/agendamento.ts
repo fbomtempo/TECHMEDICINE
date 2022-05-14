@@ -7,6 +7,7 @@ export interface Agendamento {
   paciente: Paciente;
   medico: Medico;
   dataAgendada: string;
+  dataTermino: string;
   situacaoAgendamento: string;
 
 }

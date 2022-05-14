@@ -10,7 +10,7 @@
       Parece bom.
     </div>
   </div>
-  <div class="col-xl-1">
+  <div class="col-xl-2">
     <label for="horario" class="form-label">Horário</label>
     <input type="text" class="form-control"  id="horario" formControlName="horario" [ngClass]="applyValidationClass('horario')" readonly>
     <div class="invalid-feedback" *ngIf="form.get('horario').errors?.['required']">

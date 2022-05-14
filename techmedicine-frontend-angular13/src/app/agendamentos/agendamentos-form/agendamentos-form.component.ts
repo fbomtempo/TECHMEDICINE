@@ -19,6 +19,10 @@ import { AgendamentosService } from '../agendamentos.service';
 })
 export class AgendamentosFormComponent extends FormService implements OnInit {
 
+  fullTimestamp: string;
+  date: string;
+  startTime: string;
+  endTime: string;
   pacientes$: Observable<Paciente[]>;
   medicos$: Observable<Medico[]>;
 
@@ -36,29 +40,19 @@ export class AgendamentosFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
-    let fullTimestamp: string = this.route.snapshot.params['data'];
-    const data = fullTimestamp.slice(0, 10);
-    const horario = fullTimestamp.slice(11);
+    this.fullTimestamp = this.route.snapshot.params['data'];
+    this.date = this.fullTimestamp.slice(0, 10);
+    this.startTime = this.fullTimestamp.slice(11, 16);
+    this.endTime = this.fullTimestamp.slice(17);
+
     this.pacientes$ = this.pacientesService.findAll();
     this.medicos$ = this.medicosService.findAll();
     this.formType = 'Novo';
 
-    /*this.pacientesService.findAll()
-      .pipe(
-        take(1)
-      )
-      .subscribe(pacientes => {
-        this.pacientes = pacientes;
-        let test: string[];
-        test = pacientes.map(paciente => paciente.nome.concat(' ', paciente.sobrenome))
-        console.log(test);
-        console.log(this.pacientes);
-      });*/
-
     this.form = this.formBuilder.group({
       id: [null],
-      data: [data, Validators.required],
-      horario: [horario, Validators.required],
+      data: [this.date, Validators.required],
+      horario: [this.startTime + '-' + this.endTime, Validators.required],
       paciente: [null, Validators.required],
       medico: [null, Validators.required],
       situacaoAgendamento: [null]
@@ -70,7 +64,7 @@ export class AgendamentosFormComponent extends FormService implements OnInit {
 
   onSubmit(): void {
     const agendamento: Agendamento = this.createAgendamento(this.form.value);
-    console.log(agendamento);
+    //console.log(agendamento);
     this.submitted = true;
     if (this.form.valid && this.changed) {
       if (this.form.value['id']) {
@@ -101,74 +95,15 @@ export class AgendamentosFormComponent extends FormService implements OnInit {
     this.router.navigate(['/agendamentos']);
   }
 
-  private createAgendamento(dados): Agendamento {
+  private createAgendamento(data: any): Agendamento {
+    const horarios: string[] = data.horario.split('-');
     return {
       id: null,
-      dataAgendada: dados.data + 'T' + dados.horario,
-      paciente: dados.paciente,
-      medico: dados.medico,
+      dataAgendada: data.data + 'T' + horarios[0],
+      dataTermino: data.data + 'T' + horarios[1],
+      paciente: data.paciente,
+      medico: data.medico,
       situacaoAgendamento: 'AGENDADO'
-    }
+    };
   }
 }
-
-
-  /*select(paciente: Paciente) {
-    this.form.patchValue({
-      paciente: paciente
-    });
-  }
-
-  selected?: Paciente;
-  states: string[] = [
-    'Alabama',
-    'Alaska',
-    'Arizona',
-    'Arkansas',
-    'California',
-    'Colorado',
-    'Connecticut',
-    'Delaware',
-    'Florida',
-    'Georgia',
-    'Hawaii',
-    'Idaho',
-    'Illinois',
-    'Indiana',
-    'Iowa',
-    'Kansas',
-    'Kentucky',
-    'Louisiana',
-    'Maine',
-    'Maryland',
-    'Massachusetts',
-    'Michigan',
-    'Minnesota',
-    'Mississippi',
-    'Missouri',
-    'Montana',
-    'Nebraska',
-    'Nevada',
-    'New Hampshire',
-    'New Jersey',
-    'New Mexico',
-    'New York',
-    'North Dakota',
-    'North Carolina',
-    'Ohio',
-    'Oklahoma',
-    'Oregon',
-    'Pennsylvania',
-    'Rhode Island',
-    'South Carolina',
-    'South Dakota',
-    'Tennessee',
-    'Texas',
-    'Utah',
-    'Vermont',
-    'Virginia',
-    'Washington',
-    'West Virginia',
-    'Wisconsin',
-    'Wyoming'
-  ];*/

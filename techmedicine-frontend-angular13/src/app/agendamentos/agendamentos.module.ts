@@ -10,6 +10,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { AppointmentModalComponent } from '../shared/appointment-modal/appointment-modal/appointment-modal.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -20,7 +21,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
 @NgModule({
   declarations: [
     AgendamentosListaComponent,
-    AgendamentosFormComponent
+    AgendamentosFormComponent,
+    AppointmentModalComponent
   ],
   imports: [
     CommonModule,
