@@ -2,7 +2,6 @@ package com.tcc2022.techmedicine.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -41,6 +40,10 @@ public class Agendamento implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime dataAgendada;
 	
+	@Column(nullable = false)
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	private LocalDateTime dataTermino;
+	
 	@Column(length = 30, nullable = false)
 	private String situacaoAgendamento;
 	
@@ -51,11 +54,12 @@ public class Agendamento implements Serializable {
 	public Agendamento() {
 	}
 
-	public Agendamento(Long id, Paciente paciente, Medico medico, LocalDateTime dataAgendada, SituacaoAgendamento situacaoAgendamento) {
+	public Agendamento(Long id, Paciente paciente, Medico medico, LocalDateTime dataAgendada, LocalDateTime dataTermino, SituacaoAgendamento situacaoAgendamento) {
 		this.id = id;
 		this.paciente = paciente;
 		this.medico = medico;
 		this.dataAgendada = dataAgendada;
+		this.dataTermino = dataTermino;
 		setSituacaoAgendamento(situacaoAgendamento);
 	}
 
@@ -89,6 +93,14 @@ public class Agendamento implements Serializable {
 
 	public void setDataAgendada(LocalDateTime dataAgendada) {
 		this.dataAgendada = dataAgendada;
+	}
+	
+	public LocalDateTime getDataTermino() {
+		return dataTermino;
+	}
+
+	public void setDataTermino(LocalDateTime dataTermino) {
+		this.dataTermino = dataTermino;
 	}
 
 	public SituacaoAgendamento getSituacaoAgendamento() {
