@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AgendamentosListaComponent } from './agendamentos-lista/agendamentos-lista.component';
+import { AgendamentosCalendarioComponent } from './agendamentos-calendario/agendamentos-calendario.component';
 import { AgendamentosRoutingModule } from './agendamentos-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,7 +20,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
 
 @NgModule({
   declarations: [
-    AgendamentosListaComponent,
+    AgendamentosCalendarioComponent,
     AgendamentosFormComponent,
     AppointmentModalComponent
   ],

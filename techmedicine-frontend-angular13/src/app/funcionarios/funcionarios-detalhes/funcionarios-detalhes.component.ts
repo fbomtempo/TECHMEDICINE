@@ -21,16 +21,16 @@ export class FuncionariosDetalhesComponent implements OnInit {
 
   ngOnInit(): void {
     this.funcionario = this.route.snapshot.data['funcionario'];
-    this.formatData(this.funcionario);
+    this.formatData();
   }
 
-  private formatData(funcionario: Funcionario): void {
-    let date: Date = new Date(funcionario.nascimento);
-    funcionario.nascimento = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-    funcionario.cpf = this.maskService.applyMask('cpf', funcionario.cpf);
-    funcionario.telefoneResidencial = this.maskService.applyMask('telefoneResidencial', funcionario.cpf);
-    funcionario.telefoneCelular = this.maskService.applyMask('telefoneCelular', funcionario.telefoneCelular);
-    funcionario.cep =this.maskService.applyMask('cep', funcionario.cep);
+  private formatData(): void {
+    let date: Date = new Date(this.funcionario.nascimento);
+    this.funcionario.nascimento = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+    this.funcionario.cpf = this.maskService.applyMask('cpf', this.funcionario.cpf);
+    this.funcionario.telefoneResidencial = this.maskService.applyMask('telefoneResidencial', this.funcionario.cpf);
+    this.funcionario.telefoneCelular = this.maskService.applyMask('telefoneCelular', this.funcionario.telefoneCelular);
+    this.funcionario.cep =this.maskService.applyMask('cep', this.funcionario.cep);
   }
 
   onBackToList(): void {

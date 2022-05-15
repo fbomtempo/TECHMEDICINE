@@ -54,25 +54,25 @@ export class FuncionariosListaComponent implements OnInit, OnDestroy {
     this.funcionarios$ = this.funcionariosService.findAll()
       .pipe(
         map(funcionarios => {
-          funcionarios.forEach(funcionarios => {
-            this.formatData(funcionarios);
-          })
-          return funcionarios;
+          return funcionarios.map(funcionario => {
+            return this.formatData(funcionario);
+          });
         }),
         catchError(() => {
-        this.error.next(true);
-        return of();
-      })
+          this.error.next(true);
+          return of();
+        })
     );
   }
 
-  private formatData(funcionario: Funcionario): void {
+  private formatData(funcionario: Funcionario): Funcionario {
     let date: Date = new Date(funcionario.nascimento);
     funcionario.nascimento = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
     funcionario.cpf = this.maskService.applyMask('cpf', funcionario.cpf);
     funcionario.telefoneResidencial = this.maskService.applyMask('telefoneResidencial', funcionario.cpf);
     funcionario.telefoneCelular = this.maskService.applyMask('telefoneCelular', funcionario.telefoneCelular);
     funcionario.cep =this.maskService.applyMask('cep', funcionario.cep);
+    return funcionario;
   }
 
   onDelete(funcionario: Funcionario): void {

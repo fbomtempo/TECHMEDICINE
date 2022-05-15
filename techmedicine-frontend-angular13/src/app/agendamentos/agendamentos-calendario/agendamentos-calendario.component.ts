@@ -1,20 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarOptions } from '@fullcalendar/angular';
 import ptBrLocale from '@fullcalendar/core/locales/pt-br';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { catchError, Observable, of, Subject } from 'rxjs';
 import { AppointmentModalComponent } from 'src/app/shared/appointment-modal/appointment-modal/appointment-modal.component';
-import { ModalService } from 'src/app/shared/services/modal.service';
 import { Agendamento } from '../agendamento';
 import { AgendamentosService } from '../agendamentos.service';
 
 @Component({
-  selector: 'app-agendamentos-lista',
-  templateUrl: './agendamentos-lista.component.html',
-  styleUrls: ['./agendamentos-lista.component.css']
+  selector: 'app-agendamentos-calendario',
+  templateUrl: './agendamentos-calendario.component.html',
+  styleUrls: ['./agendamentos-calendario.component.css']
 })
-export class AgendamentosListaComponent implements OnInit {
+export class AgendamentosCalendarioComponent implements OnInit {
 
   calendarOptions: CalendarOptions = {
     initialView: 'timeGridWeek',
@@ -61,11 +59,9 @@ export class AgendamentosListaComponent implements OnInit {
   @ViewChild('appointmentModal', { static: true }) appointmentModal?: AppointmentModalComponent;
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
-    private agendamentosService: AgendamentosService,
-    private bsModalRef: BsModalRef,
-    private bsModalService: BsModalService,
-    private modalService: ModalService
+    private agendamentosService: AgendamentosService
   ) { }
 
   ngOnInit(): void {
@@ -102,17 +98,25 @@ export class AgendamentosListaComponent implements OnInit {
     const startDateStr: string = arg.startStr.slice(0, 16);
     const endTimeStr: string = arg.endStr.slice(11, 16);
     const urlDateStr: string = startDateStr + '-'  + endTimeStr;
-    this.router.navigate(['agendamentos/novo', urlDateStr]);
+    this.router.navigate(['novo'], {
+      relativeTo: this.route,
+      queryParams: { data: urlDateStr }
+    });
+  }
+
+  private viewAppointment(arg): void {
+    let agendamento: Agendamento;
+    this.agendamentosService.findById(arg.event.id).subscribe(result => {
+      agendamento = result;
+      console.log(arg.event);
+      this.appointmentModal.id = agendamento.id;
+      this.appointmentModal.dataAgendada = arg.event.startStr;
+      this.appointmentModal.showModal();
+    });
   }
 
   private maxSelectionAllowed(arg): boolean {
     var duration = Math.abs((arg.end.getTime() - arg.start.getTime()) / 3600000);
     return duration < 1;
-  }
-
-  private viewAppointment(arg): void {
-    //this.bsModalRef = this.bsModalRef..
-    console.log(arg);
-    this.appointmentModal.showModal();
   }
 }

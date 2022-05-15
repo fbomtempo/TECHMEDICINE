@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DeactivateGuard } from '../shared/guards/deactivate.guard';
 import { MedicosResolverGuard } from './guards/medicos-resolver.guard';
-import { MedicosDetalhesComponent } from './medicos-detalhes/medicoss-detalhes.component';
+import { MedicosDetalhesComponent } from './medicos-detalhes/medicos-detalhes.component';
 import { MedicosFormComponent } from './medicos-form/medicos-form.component';
 import { MedicosListaComponent } from './medicos-lista/medicos-lista.component';
 

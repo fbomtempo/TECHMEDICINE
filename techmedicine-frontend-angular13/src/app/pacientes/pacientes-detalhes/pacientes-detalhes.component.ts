@@ -24,25 +24,16 @@ export class PacientesDetalhesComponent implements OnInit {
 
   ngOnInit(): void {
     this.paciente = this.route.snapshot.data['paciente'];
-    this.formatData(this.paciente);
-    /*this.estados$ = this.http.get<Estado>('assets/dados/estados.json').pipe(take(1));
-    this.subscription = this.estados$.subscribe(estados => {
-      this.estados = estados;
-      this.estados.forEach(estado => {
-        if (this.paciente.estado === estado.uf) {
-          this.paciente.estado = estado.descricao;
-        }
-      })
-    });*/
+    this.formatData();
   }
 
-  private formatData(paciente: Paciente): void {
-    let date: Date = new Date(paciente.nascimento);
-    paciente.nascimento = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-    paciente.cpf = this.maskService.applyMask('cpf', paciente.cpf);
-    paciente.telefoneResidencial = this.maskService.applyMask('telefoneResidencial', paciente.cpf);
-    paciente.telefoneCelular = this.maskService.applyMask('telefoneCelular', paciente.telefoneCelular);
-    paciente.cep =this.maskService.applyMask('cep', paciente.cep);
+  private formatData(): void {
+    const date: Date = new Date(this.paciente.nascimento);
+    this.paciente.nascimento = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+    this.paciente.cpf = this.maskService.applyMask('cpf', this.paciente.cpf);
+    this.paciente.telefoneResidencial = this.maskService.applyMask('telefoneResidencial', this.paciente.cpf);
+    this.paciente.telefoneCelular = this.maskService.applyMask('telefoneCelular', this.paciente.telefoneCelular);
+    this.paciente.cep =this.maskService.applyMask('cep', this.paciente.cep);
   }
 
   onBackToList(): void {

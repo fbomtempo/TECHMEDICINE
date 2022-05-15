@@ -270,25 +270,3 @@
     <button type="button" class="ms-2 btn btn-danger" (click)="onCancel()">Cancelar</button>
   </div>
 </form>
-
-<!--<label for="especialidade" class="form-label">Especialidade</label>
-      <ng-autocomplete
-        #especialidadeAutocomplete
-        [data]="especialidades$ | async"
-        [searchKeyword]="keyword"
-        notFoundText="Não encontrado"
-        placeholder="Especialidade"
-        [initialValue]="initialValue"
-        (closed)='onClosed($event)'
-        (selected)="selectEvent($event)"
-        [itemTemplate]="itemTemplate"
-        [notFoundTemplate]="notFoundTemplate"
-        name="especialidade">
-      </ng-autocomplete>
-    </div>
-    <ng-template #itemTemplate let-item>
-      <a [innerHTML]="item.descricao"></a>
-    </ng-template>
-    <ng-template #notFoundTemplate let-notFound>
-      <div [innerHTML]="notFound"></div>
-    </ng-template>-->

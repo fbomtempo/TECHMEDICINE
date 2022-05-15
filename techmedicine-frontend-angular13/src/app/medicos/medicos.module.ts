@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { MedicosListaComponent } from './medicos-lista/medicos-lista.component';
 import { MedicosFormComponent } from './medicos-form/medicos-form.component';
-import { MedicosDetalhesComponent } from './medicos-detalhes/medicoss-detalhes.component';
+import { MedicosDetalhesComponent } from './medicos-detalhes/medicos-detalhes.component';
 
 @NgModule({
   declarations: [

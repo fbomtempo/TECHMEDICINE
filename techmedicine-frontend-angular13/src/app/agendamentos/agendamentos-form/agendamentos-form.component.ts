@@ -40,7 +40,7 @@ export class AgendamentosFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fullTimestamp = this.route.snapshot.params['data'];
+    this.fullTimestamp = this.route.snapshot.queryParams['data'];
     this.date = this.fullTimestamp.slice(0, 10);
     this.startTime = this.fullTimestamp.slice(11, 16);
     this.endTime = this.fullTimestamp.slice(17);

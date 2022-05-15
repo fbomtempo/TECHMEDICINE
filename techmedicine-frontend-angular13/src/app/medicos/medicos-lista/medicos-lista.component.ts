@@ -54,25 +54,25 @@ export class MedicosListaComponent implements OnInit, OnDestroy {
     this.medicos$ = this.medicosService.findAll()
       .pipe(
         map(medicos => {
-          medicos.forEach(medico => {
-            this.formatData(medico);
-          })
-          return medicos;
+          return medicos.map(medico => {
+            return this.formatData(medico);
+          });
         }),
         catchError(() => {
-        this.error.next(true);
-        return of();
-      })
+          this.error.next(true);
+          return of();
+        })
     );
   }
 
-  private formatData(medico: Medico): void {
+  private formatData(medico: Medico): Medico {
     let date: Date = new Date(medico.nascimento);
     medico.nascimento = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
     medico.cpf = this.maskService.applyMask('cpf', medico.cpf);
     medico.telefoneResidencial = this.maskService.applyMask('telefoneResidencial', medico.cpf);
     medico.telefoneCelular = this.maskService.applyMask('telefoneCelular', medico.telefoneCelular);
     medico.cep =this.maskService.applyMask('cep', medico.cep);
+    return medico;
   }
 
   onDelete(medico: Medico): void {

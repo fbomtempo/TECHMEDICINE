@@ -54,25 +54,25 @@ export class PacientesListaComponent implements OnInit, OnDestroy {
     this.pacientes$ = this.pacientesService.findAll()
       .pipe(
         map(pacientes => {
-          pacientes.forEach(paciente => {
-            this.formatData(paciente);
-          })
-          return pacientes;
+          return pacientes.map(paciente => {
+            return this.formatData(paciente);
+          });
         }),
         catchError(() => {
-        this.error.next(true);
-        return of();
-      })
+          this.error.next(true);
+          return of();
+        })
     );
   }
 
-  private formatData(paciente: Paciente): void {
+  private formatData(paciente: Paciente): Paciente {
     let date: Date = new Date(paciente.nascimento);
     paciente.nascimento = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
     paciente.cpf = this.maskService.applyMask('cpf', paciente.cpf);
     paciente.telefoneResidencial = this.maskService.applyMask('telefoneResidencial', paciente.cpf);
     paciente.telefoneCelular = this.maskService.applyMask('telefoneCelular', paciente.telefoneCelular);
     paciente.cep =this.maskService.applyMask('cep', paciente.cep);
+    return paciente;
   }
 
   onDelete(paciente: Paciente): void {

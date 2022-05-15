@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DeactivateGuard } from '../shared/guards/deactivate.guard';
 import { AgendamentosFormComponent } from './agendamentos-form/agendamentos-form.component';
-import { AgendamentosListaComponent } from './agendamentos-lista/agendamentos-lista.component';
+import { AgendamentosCalendarioComponent } from './agendamentos-calendario/agendamentos-calendario.component';
 
 const routes: Routes = [
   {
-    path: '', component: AgendamentosListaComponent
+    path: '', component: AgendamentosCalendarioComponent
   },
   {
-    path: 'novo/:data',
+    path: 'novo',
     component: AgendamentosFormComponent,
     /*canDeactivate: [DeactivateGuard],
     resolve: { medico: MedicosResolverGuard },*/

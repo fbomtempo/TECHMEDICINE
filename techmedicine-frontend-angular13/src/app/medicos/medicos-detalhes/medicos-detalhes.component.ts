@@ -21,16 +21,16 @@ export class MedicosDetalhesComponent implements OnInit {
 
   ngOnInit(): void {
     this.medico = this.route.snapshot.data['medico'];
-    this.formatData(this.medico);
+    this.formatData();
   }
 
-  private formatData(medico: Medico): void {
-    let date: Date = new Date(medico.nascimento);
-    medico.nascimento = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-    medico.cpf = this.maskService.applyMask('cpf', medico.cpf);
-    medico.telefoneResidencial = this.maskService.applyMask('telefoneResidencial', medico.cpf);
-    medico.telefoneCelular = this.maskService.applyMask('telefoneCelular', medico.telefoneCelular);
-    medico.cep =this.maskService.applyMask('cep', medico.cep);
+  private formatData(): void {
+    let date: Date = new Date(this.medico.nascimento);
+    this.medico.nascimento = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+    this.medico.cpf = this.maskService.applyMask('cpf', this.medico.cpf);
+    this.medico.telefoneResidencial = this.maskService.applyMask('telefoneResidencial', this.medico.cpf);
+    this.medico.telefoneCelular = this.maskService.applyMask('telefoneCelular', this.medico.telefoneCelular);
+    this.medico.cep =this.maskService.applyMask('cep', this.medico.cep);
   }
 
   onBackToList(): void {
