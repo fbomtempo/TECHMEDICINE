@@ -1,0 +1,113 @@
+<h1 class="mt-4">Visualizar Paciente</h1>
+<div>
+  <h4 class="pt-4">Paciente</h4>
+  <hr>
+  <dl class="row">
+    <dt class="col-sm-2">
+      ID:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.id }}
+    </dd>
+    <dt class="col-sm-2">
+      Nome:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.name }}
+    </dd>
+    <dt class="col-sm-2">
+      Sobrenome:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.surname }}
+    </dd>
+    <dt class="col-sm-2">
+      Nascimento:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.birthDate }}
+    </dd>
+    <dt class="col-sm-2">
+      Sexo:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.gender }}
+    </dd>
+    <dt class="col-sm-2">
+      RG:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.rg }}
+    </dd>
+    <dt class="col-sm-2">
+      CPF:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.cpf }}
+    </dd>
+    <dt class="col-sm-2">
+      Telefone Residencial:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.homePhone }}
+    </dd>
+    <dt class="col-sm-2">
+      Telefone Celular:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.mobilePhone }}
+    </dd>
+    <dt class="col-sm-2">
+      E-mail:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.email }}
+    </dd>
+    <dt class="col-sm-2">
+      CEP:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.cep }}
+    </dd>
+    <dt class="col-sm-2">
+      Cidade:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.city }}
+    </dd>
+    <dt class="col-sm-2">
+      Estado:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.state }}
+    </dd>
+    <dt class="col-sm-2">
+      Endereço:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.address }}
+    </dd>
+    <dt class="col-sm-2">
+      Número:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.number }}
+    </dd>
+    <dt class="col-sm-2">
+      Bairro:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.district }}
+    </dd>
+    <dt class="col-sm-2">
+      Complemento:
+    </dt>
+    <dd class="col-sm-10">
+      {{ patient.complement }}
+    </dd>
+  </dl>
+</div>
+<div class="pt-4 mb-5">
+  <button type="button" class="btn btn-primary" [routerLink]="['../../editar/', patient.id]">Editar</button>
+  <button type="button" class="ms-2 btn btn-secondary" (click)="onBackToList()">Voltar a Lista</button>
+</div>

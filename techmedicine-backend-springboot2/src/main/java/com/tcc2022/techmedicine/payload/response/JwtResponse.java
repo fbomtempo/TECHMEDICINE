@@ -7,16 +7,16 @@ public class JwtResponse {
 	private String token;
 	private String type = "Bearer";
 	private Long id;
-	private String usuario;
+	private String user;
 	private String email;
-	private List<String> permissoes;
+	private List<String> permissions;
 
-	public JwtResponse(String accessToken, Long id, String usuario, String email, List<String> permissoes) {
+	public JwtResponse(String accessToken, Long id, String user, String email, List<String> permissions) {
 		this.token = accessToken;
 		this.id = id;
-		this.usuario = usuario;
+		this.user = user;
 		this.email = email;
-		this.permissoes = permissoes;
+		this.permissions = permissions;
 	}
 
 	public String getAccessToken() {
@@ -51,15 +51,15 @@ public class JwtResponse {
 		this.email = email;
 	}
 
-	public String getUsuario() {
-		return usuario;
+	public String getUser() {
+		return user;
 	}
 
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setUser(String user) {
+		this.user = user;
 	}
 
-	public List<String> getPermissoes() {
-		return permissoes;
+	public List<String> getPermissions() {
+		return permissions;
 	}
 }

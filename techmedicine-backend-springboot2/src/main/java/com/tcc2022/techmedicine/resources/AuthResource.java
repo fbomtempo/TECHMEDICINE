@@ -20,16 +20,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tcc2022.techmedicine.entities.Permissao;
-import com.tcc2022.techmedicine.entities.Usuario;
+import com.tcc2022.techmedicine.entities.Permission;
+import com.tcc2022.techmedicine.entities.User;
 import com.tcc2022.techmedicine.payload.request.LoginRequest;
 import com.tcc2022.techmedicine.payload.request.SignupRequest;
 import com.tcc2022.techmedicine.payload.response.JwtResponse;
 import com.tcc2022.techmedicine.payload.response.MessageResponse;
-import com.tcc2022.techmedicine.repositories.PermissaoRepository;
-import com.tcc2022.techmedicine.repositories.UsuarioRepository;
+import com.tcc2022.techmedicine.repositories.PermissionRepository;
+import com.tcc2022.techmedicine.repositories.UserRepository;
 import com.tcc2022.techmedicine.security.jwt.JwtUtils;
-import com.tcc2022.techmedicine.security.services.DetalheUsuarioImpl;
+import com.tcc2022.techmedicine.security.services.UserDetailsImpl;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -40,10 +40,10 @@ public class AuthResource {
 	AuthenticationManager authenticationManager;
 	
 	@Autowired
-	UsuarioRepository usuarioRepository;
+	UserRepository userRepository;
 	
 	@Autowired
-	PermissaoRepository permissaoRepository;
+	PermissionRepository permissaoRepository;
 	
 	@Autowired
 	PasswordEncoder encoder;
@@ -52,13 +52,13 @@ public class AuthResource {
 	JwtUtils jwtUtils;
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> authenticateUsuario(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsuario(), loginRequest.getSenha()));
+				new UsernamePasswordAuthenticationToken(loginRequest.getUser(), loginRequest.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
 		
-		DetalheUsuarioImpl userDetails = (DetalheUsuarioImpl) authentication.getPrincipal();		
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
 		List<String> roles = userDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
@@ -70,37 +70,37 @@ public class AuthResource {
 	}
 	
 	@PostMapping("/cadastrar")
-	public ResponseEntity<?> registerUsuario(@Valid @RequestBody SignupRequest signUpRequest) {
-		if (usuarioRepository.existsByUsuario(signUpRequest.getUsuario())) {
+	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+		if (userRepository.existsByUsername(signUpRequest.getUser())) {
 			return ResponseEntity
 					.badRequest()
-					.body(new MessageResponse("Error: Usuarioname is already taken!"));
+					.body(new MessageResponse("Error: Username is already taken!"));
 		}
-		if (usuarioRepository.existsByEmail(signUpRequest.getEmail())) {
+		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: Email is already in use!"));
 		}
 		// Create new user's account
-		Usuario user = new Usuario(null,
-							 signUpRequest.getUsuario(), 
+		User user = new User(null,
+							 signUpRequest.getUser(), 
 							 signUpRequest.getEmail(),
-							 encoder.encode(signUpRequest.getSenha()));
-		Set<String> strPermissoes = signUpRequest.getPermissoes();
-		Set<Permissao> permissoes = new HashSet<>();
-		if (strPermissoes == null) {
-			Permissao permissao = permissaoRepository.findByDescricao("ROLE_FUNCIONARIO")
+							 encoder.encode(signUpRequest.getPassword()));
+		Set<String> strPermissions = signUpRequest.getPermissions();
+		Set<Permission> permissions = new HashSet<>();
+		if (strPermissions == null) {
+			Permission permission = permissaoRepository.findByDescription("ROLE_FUNCIONARIO")
 					.orElseThrow(() -> new RuntimeException("Error: Permission is not found."));
-			permissoes.add(permissao);
+			permissions.add(permission);
 		} else {
-			strPermissoes.forEach(perm -> {
-				Permissao permissao = permissaoRepository.findByDescricao(perm)
+			strPermissions.forEach(perm -> {
+				Permission permission = permissaoRepository.findByDescription(perm)
 						.orElseThrow(() -> new RuntimeException("Error: Permission is not found."));
-				permissoes.add(permissao);
+				permissions.add(permission);
 			});
 		}
-		user.setPermissoes(permissoes);
-		usuarioRepository.save(user);
+		user.setPermissions(permissions);
+		userRepository.save(user);
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}
 }

@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { take } from 'rxjs';
-import { Cargo } from 'src/app/cargos/cargo';
-import { Especialidade } from 'src/app/especialidades/especialidade';
+import { Role } from 'src/app/roles/model/role';
+import { Specialty } from 'src/app/specialties/model/specialty';
 import { environment } from 'src/environments/environment';
-import { Estado } from '../models/estado';
+import { State } from '../models/states';
 
 @Injectable({
   providedIn: 'root'
@@ -15,18 +15,18 @@ export class DropdownService {
 
   constructor(private http: HttpClient) { }
 
-  getEstados() {
-    return this.http.get<Estado[]>('assets/dados/estados.json')
+  getStates() {
+    return this.http.get<State[]>('assets/data/states.json')
       .pipe(take(1));
   }
 
-  getEspecialidades() {
-    return this.http.get<Especialidade[]>(`${this.API}especialidades/orderBy/descricao`)
+  getSpecialties() {
+    return this.http.get<Specialty[]>(`${this.API}especialidades/orderBy/descricao`)
       .pipe(take(1));
   }
 
-  getCargos() {
-    return this.http.get<Cargo[]>(`${this.API}cargos/orderBy/descricao`)
+  getRoles() {
+    return this.http.get<Role[]>(`${this.API}cargos/orderBy/descricao`)
       .pipe(take(1));
   }
 

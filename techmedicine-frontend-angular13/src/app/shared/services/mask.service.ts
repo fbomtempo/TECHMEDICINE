@@ -14,14 +14,14 @@ export class MaskService {
             .replace(/(\d{3})(\d{1,2})/, '$1-$2')
             .replace(/(-\d{2})\d+?$/, '$1')
     },
-    telefoneResidencial(value: string): string {
+    homePhone(value: string): string {
         return value
             .replace(/\D+/g, '')
             .replace(/(\d{2})(\d)/, '($1) $2')
             .replace(/(\d{4})(\d)/, '$1-$2')
             .replace(/(-\d{4})\d+?$/, '$1')
     },
-    telefoneCelular(value: string): string {
+    mobilePhone(value: string): string {
         return value
             .replace(/\D+/g, '')
             .replace(/(\d{2})(\d)/, '($1) $2')
@@ -42,7 +42,7 @@ export class MaskService {
     return this.masks[mask](value);
   }
 
-  undoMask(value: string) {
+  undoMask(value: string): string {
     return value.replace(/\D/g, '');
   }
 

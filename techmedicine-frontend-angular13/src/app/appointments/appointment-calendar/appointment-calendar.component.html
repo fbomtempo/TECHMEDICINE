@@ -1,0 +1,21 @@
+<div *ngIf="appointments$ | async as appointments; else loadingError">
+  <full-calendar [options]="calendarOptions" class="mt-4 mb-5"></full-calendar>
+</div>
+
+<app-appointment-modal #appointmentModal (eventTest)="appointmentModalAction($event)"></app-appointment-modal>
+
+<ng-template #loadingError>
+  <div *ngIf="error | async; else loading">
+    <div style="height: 80vh" class="d-flex flex-column align-items-center justify-content-center">
+      <p style="font-size: 1.65rem;">Erro ao carregar agendamentos.</p>
+      <button type="button" class="btn btn-lg btn-secondary" (click)="reloadPage()">Tentar Novamente <i
+          class="fas fa-sync-alt"></i></button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div style="height: 80vh" class="d-flex align-items-center justify-content-center">
+    <div class="loader"></div>
+  </div>
+</ng-template>

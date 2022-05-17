@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.tcc2022.techmedicine.security.jwt.AuthEntryPointJwt;
 import com.tcc2022.techmedicine.security.jwt.AuthTokenFilter;
-import com.tcc2022.techmedicine.security.services.DetalheUsuarioServiceImpl;
+import com.tcc2022.techmedicine.security.services.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -27,7 +27,7 @@ import com.tcc2022.techmedicine.security.services.DetalheUsuarioServiceImpl;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-	DetalheUsuarioServiceImpl userDetailsService;
+	UserDetailsServiceImpl userDetailsService;
 	
 	@Autowired
 	private AuthEntryPointJwt unauthorizedHandler;

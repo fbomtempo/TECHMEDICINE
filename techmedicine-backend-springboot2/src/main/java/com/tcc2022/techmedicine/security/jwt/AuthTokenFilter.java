@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.tcc2022.techmedicine.security.services.DetalheUsuarioServiceImpl;
+import com.tcc2022.techmedicine.security.services.UserDetailsServiceImpl;
 
 public class AuthTokenFilter extends OncePerRequestFilter {
 	
@@ -25,7 +25,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 	private JwtUtils jwtUtils;
 	
 	@Autowired
-	private DetalheUsuarioServiceImpl userDetailsService;
+	private UserDetailsServiceImpl userDetailsService;
 	private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 	
 	@Override

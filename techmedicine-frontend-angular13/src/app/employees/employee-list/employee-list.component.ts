@@ -1,0 +1,156 @@
+import { Location } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { catchError, map, Observable, of, Subject, Subscription, switchMap, take } from 'rxjs';
+import { MaskService } from 'src/app/shared/services/mask.service';
+import { ModalService } from 'src/app/shared/services/modal.service';
+import { Employee } from '../model/employee';
+import { EmployeeService } from '../service/employee.service';
+
+@Component({
+  selector: 'app-employee-list',
+  templateUrl: './employee-list.component.html',
+  styleUrls: ['./employee-list.component.css']
+})
+export class EmployeeListComponent implements OnInit, OnDestroy {
+
+  employees$: Observable<Employee[]>;
+  error: Subject<boolean> = new Subject();
+  subscription: Subscription;
+
+  page: number;
+  currentPage: number;
+  itemsPerPage: number;
+  paginationSize: number;
+
+  filter: string;
+
+  constructor(
+    private employeeService: EmployeeService,
+    private modalService: ModalService,
+    private maskService: MaskService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location
+  ) { }
+
+  ngOnInit(): void {
+    this.setPaginationSize();
+    this.itemsPerPage = 10;
+    this.subscription = this.route.queryParams.subscribe(queryParams => {
+      this.page = queryParams['pagina'];
+      this.filter = queryParams['nome'];
+      this.currentPage = parseInt(this.page.toString());
+    });
+    this.onRefresh();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  onRefresh(): void | Observable<never> {
+    this.employees$ = this.employeeService.findAll()
+      .pipe(
+        map(employees => {
+          return employees.map(employee => {
+            return this.formatData(employee);
+          });
+        }),
+        catchError(() => {
+          this.error.next(true);
+          return of();
+        })
+    );
+  }
+
+  private formatData(employee: Employee): Employee {
+    let date: Date = new Date(employee.birthDate);
+    employee.birthDate = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+    employee.cpf = this.maskService.applyMask('cpf', employee.cpf);
+    employee.homePhone = this.maskService.applyMask('homePhone', employee.homePhone);
+    employee.mobilePhone = this.maskService.applyMask('mobilePhone', employee.mobilePhone);
+    employee.cep =this.maskService.applyMask('cep', employee.cep);
+    return employee;
+  }
+
+  onDelete(employee: Employee): void {
+    this.modalService.showConfirmModal('Confirmação', 'Tem certeza que deseja remover esse funcionário?')
+      .pipe(
+        take(1),
+        switchMap(result => result ? this.employeeService.delete(employee.id) : of())
+      )
+      .subscribe({
+        next: () => setTimeout(() => this.onRefresh(), 100),
+        error: () => this.modalService.alertDanger('Erro ao remover funcionário!', 'Tente novamente mais tarde.')
+      });
+  }
+
+  onShowData(employees: Employee[]): Employee[] {
+    if (!this.filter || this.filter == '') {
+      return employees;
+    }
+    return employees.filter(v => {
+      if (v.name.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0) {
+        return true;
+      } else {
+        return false;
+      }
+    })
+  }
+
+  setFilter(filter: string): void {
+    if (filter) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          nome: filter.toLowerCase()
+        },
+        queryParamsHandling: 'merge',
+      });
+    }
+  }
+
+  onClearFilter(filterInput: HTMLInputElement): void {
+    filterInput.value = '';
+    if (this.route.snapshot.queryParams['nome']) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          nome: null
+        },
+        queryParamsHandling: 'merge',
+      });
+    }
+  }
+
+  pageChanged(event: PageChangedEvent): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        pagina: event.page
+      },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  reloadPage(): void {
+    window.location.reload();
+  }
+
+  private setPaginationSize(): void {
+    if (window.innerWidth < 576) {
+      this.paginationSize = 3;
+    } else if (window.innerWidth < 992){
+      this.paginationSize = 7;
+    } else {
+      this.paginationSize = 10;
+    }
+  }
+
+  onBack(): void {
+    this.location.back();
+  }
+
+}

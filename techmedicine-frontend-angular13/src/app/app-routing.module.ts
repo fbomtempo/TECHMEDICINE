@@ -12,27 +12,27 @@ const routes: Routes = [
   },
   {
     path: 'pacientes',
-    loadChildren: () => import('./pacientes/pacientes.module').then(m => m.PacientesModule)
+    loadChildren: () => import('./patients/patients.module').then(m => m.PatientsModule)
   },
   {
     path: 'medicos',
-    loadChildren: () => import('./medicos/medicos.module').then(m => m.MedicosModule)
+    loadChildren: () => import('./medics/medics.module').then(m => m.MedicsModule)
   },
   {
     path: 'funcionarios',
-    loadChildren: () => import('./funcionarios/funcionarios.module').then(m => m.FuncionariosModule)
+    loadChildren: () => import('./employees/employees.module').then(m => m.EmployeesModule)
   },
   {
     path: 'especialidades',
-    loadChildren: () => import('./especialidades/especialidades.module').then(m => m.EspecialidadesModule)
+    loadChildren: () => import('./specialties/specialties.module').then(m => m.SpecialtiesModule)
   },
   {
     path: 'cargos',
-    loadChildren: () => import('./cargos/cargos.module').then(m => m.CargosModule)
+    loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule)
   },
   {
     path: 'agendamentos',
-    loadChildren: () => import('./agendamentos/agendamentos.module').then(m => m.AgendamentosModule)
+    loadChildren: () => import('./appointments/appointments.module').then(m => m.AppointmentsModule)
   },
   {
     path: '',
@@ -40,7 +40,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    loadChildren: () => import('./nao-encontrado/nao-encontrado.module').then(m => m.NaoEncontradoModule)
+    loadChildren: () => import('./not-found/not-found.module').then(m => m.NotFoundModule)
   }
 ];
 

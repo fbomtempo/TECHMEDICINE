@@ -1,0 +1,235 @@
+<h1 class="mt-4">{{ formType }} Paciente</h1>
+<form class="mt-4 row g-3 needs-validation" novalidate [formGroup]="form">
+  <div class="col-xl-5">
+    <label for="name" class="form-label">Nome</label>
+    <input type="text" class="form-control" id="name" formControlName="name" placeholder="Nome"
+      [ngClass]="applyValidationClass('name')">
+    <div class="invalid-feedback" *ngIf="form.get('name').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('name').errors?.['maxlength']">
+      Campo deve possuir no máximo 20 caracteres.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-5">
+    <label for="surname" class="form-label">Sobrename</label>
+    <input type="text" class="form-control" id="surname" formControlName="surname" placeholder="Sobrenome"
+      [ngClass]="applyValidationClass('surname')">
+    <div class="invalid-feedback" *ngIf="form.get('surname').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('surname').errors?.['maxlength']">
+      Campo deve possuir no máximo 50 caracteres.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-2">
+    <label for="birthDate" class="form-label">Nascimento</label>
+    <input type="date" class="form-control" id="birthDate" formControlName="birthDate" placeholder="Nascimento"
+      [ngClass]="applyValidationClass('birthDate')">
+    <div class="invalid-feedback" *ngIf="form.get('birthDate').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-4">
+    <label for="gender" class="form-label">Sexo</label>
+    <select class="form-select" id="gender" formControlName="gender" id="gender" placeholder="Sexo"
+      [ngClass]="applyValidationClass('gender')">
+      <option value="null" disabled="true" [selected]="true">Selecione o sexo</option>
+      <option [value]="'Feminino'">Feminino</option>
+      <option [value]="'Masculino'">Masculino</option>
+    </select>
+    <div class="invalid-feedback" *ngIf="form.get('gender').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('gender').errors?.['maxlength']">
+      Campo deve possuir no máximo 9 caracteres.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-4">
+    <label for="rg" class="form-label">RG</label>
+    <input type="text" class="form-control" id="rg" formControlName="rg" placeholder="RG"
+      [ngClass]="applyValidationClass('rg')">
+    <div class="invalid-feedback" *ngIf="form.get('rg').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('rg').errors?.['maxlength']">
+      Campo deve possuir no máximo 12 caracteres.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-4">
+    <label for="cpf" class="form-label">CPF</label>
+    <input type="text" class="form-control" id="cpf" formControlName="cpf" placeholder="CPF"
+      [ngClass]="applyValidationClass('cpf')" (input)="applyMaskToInput('cpf')">
+    <div class="invalid-feedback" *ngIf="form.get('cpf').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('cpf').errors?.['minlength'] || form.get('cpf').errors?.['maxlength']">
+      CPF inválido.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-3">
+    <label for="homePhone" class="form-label">Telefone Residencial</label>
+    <input type="text" class="form-control" id="homePhone" formControlName="homePhone" placeholder="Telefone Residencial"
+      [ngClass]="applyValidationClass('homePhone')" (input)="applyMaskToInput('homePhone')">
+    <div class="invalid-feedback" *ngIf="form.get('homePhone').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('homePhone').errors?.['minlength'] || form.get('homePhone').errors?.['maxlength']">
+      Telefone residencial inválido.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-3">
+    <label for="mobilePhone" class="form-label">Telefone Celular</label>
+    <input type="text" class="form-control" id="mobilePhone" formControlName="mobilePhone" placeholder="Telefone Celular"
+      [ngClass]="applyValidationClass('mobilePhone')" (input)="applyMaskToInput('mobilePhone')">
+    <div class="invalid-feedback" *ngIf="form.get('mobilePhone').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('mobilePhone').errors?.['minlength'] || form.get('mobilePhone').errors?.['maxlength']">
+      Telefone celular inválido.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <label for="email" class="form-label">E-mail</label>
+    <input type="text" class="form-control" id="email" formControlName="email" placeholder="E-mail"
+      [ngClass]="applyValidationClass('email')">
+    <div class="invalid-feedback" *ngIf="form.get('email').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('email').errors?.['maxlength']">
+      Campo deve possuir no máximo 35 caracteres.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-3">
+    <label for="cep" class="form-label">CEP</label>
+    <input type="text" class="form-control" id="cep" formControlName="cep" placeholder="CEP"
+      [ngClass]="applyValidationClass('cep')" (blur)="searchCep()" (input)="applyMaskToInput('cep')">
+    <div class="invalid-feedback" *ngIf="form.get('cep').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('cep').errors?.['minlength'] || form.get('cep').errors?.['maxlength']">
+      CEP inválido.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <label for="city" class="form-label">Cidade</label>
+    <input type="text" class="form-control" id="city" formControlName="city" placeholder="Cidade"
+      [ngClass]="applyValidationClass('city')">
+    <div class="invalid-feedback" *ngIf="form.get('city').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('city').errors?.['maxlength']">
+      Campo deve possuir no máximo 30 caracteres.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-3">
+    <label for="state" class="form-label">Estado</label>
+    <select class="form-select" formControlName="state" id="state" placeholder="UF"
+      [ngClass]="applyValidationClass('state')">
+      <option value="null" disabled="true" [selected]="true">Selecione o estado</option>
+      <option *ngFor="let state of states$ | async" [value]="state.uf">{{ state.descricao }}</option>
+    </select>
+    <div class="invalid-feedback" *ngIf="form.get('state').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('state').errors?.['maxlength']">
+      Campo deve possuir no máximo 2 caracteres.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <label for="address" class="form-label">Endereço</label>
+    <input type="text" class="form-control" id="address" formControlName="address" placeholder="Endereço"
+      [ngClass]="applyValidationClass('address')">
+    <div class="invalid-feedback" *ngIf="form.get('address').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('city').errors?.['maxlength']">
+      Campo deve possuir no máximo 70 caracteres.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-2">
+    <label for="number" class="form-label">Número</label>
+    <input type="number" class="form-control" id="number" formControlName="number" placeholder="Número"
+      [ngClass]="applyValidationClass('number')">
+    <div class="invalid-feedback" *ngIf="form.get('number').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('number').errors?.['min'] || form.get('number').errors?.['max']">
+      Número inválido.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-4">
+    <label for="district" class="form-label">Bairro</label>
+    <input type="text" class="form-control" id="district" formControlName="district" placeholder="Bairro"
+      [ngClass]="applyValidationClass('district')">
+    <div class="invalid-feedback" *ngIf="form.get('district').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('district').errors?.['maxlength']">
+      Campo deve possuir no máximo 30 caracteres.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="col-xl-12">
+    <label for="complement" class="form-label">Complemento</label>
+    <input type="text" class="form-control" id="complement" formControlName="complement" placeholder="Complemento"
+      [ngClass]="applyValidationClass('complement')">
+    <div class="invalid-feedback" *ngIf="form.get('complement').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.get('complement').errors?.['maxlength']">
+      Campo deve possuir no máximo 70 caracteres.
+    </div>
+    <div class="valid-feedback">
+      Parece bom.
+    </div>
+  </div>
+  <div class="pt-4 mb-5">
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Salvar</button>
+    <button type="button" class="ms-2 btn btn-danger" (click)="onCancel()">Cancelar</button>
+  </div>
+</form>

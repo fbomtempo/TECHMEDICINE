@@ -10,25 +10,25 @@ public class SignupRequest {
 	
 	@NotBlank
 	@Size(min = 3, max = 20)
-	private String usuario;
+	private String user;
 
 	@NotBlank
 	@Size(max = 50)
 	@Email
 	private String email;
 
-	private Set<String> permissoes;
+	private Set<String> permissions;
 
 	@NotBlank
 	@Size(min = 6, max = 40)
-	private String senha;
+	private String password;
 
-	public String getUsuario() {
-		return usuario;
+	public String getUser() {
+		return user;
 	}
 
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setUser(String user) {
+		this.user = user;
 	}
 
 	public String getEmail() {
@@ -39,19 +39,19 @@ public class SignupRequest {
 		this.email = email;
 	}
 
-	public String getSenha() {
-		return senha;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public Set<String> getPermissoes() {
-		return this.permissoes;
+	public Set<String> getPermissions() {
+		return this.permissions;
 	}
 
-	public void setPermissoes(Set<String> permissoes) {
-		this.permissoes = permissoes;
+	public void setPermissions(Set<String> permissions) {
+		this.permissions = permissions;
 	}
 }

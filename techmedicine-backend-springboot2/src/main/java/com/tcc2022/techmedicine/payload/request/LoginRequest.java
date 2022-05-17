@@ -5,24 +5,24 @@ import javax.validation.constraints.NotBlank;
 public class LoginRequest {
 	
 	@NotBlank
-	private String usuario;
+	private String user;
 
 	@NotBlank
-	private String senha;
+	private String password;
 
-	public String getUsuario() {
-		return usuario;
+	public String getUser() {
+		return user;
 	}
 
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setUser(String user) {
+		this.user = user;
 	}
 
-	public String getSenha() {
-		return senha;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }

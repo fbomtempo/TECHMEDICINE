@@ -2,17 +2,17 @@ package com.tcc2022.techmedicine.payload.response;
 
 public class MessageResponse {
 	
-	private String mensagem;
+	private String message;
 
-	public MessageResponse(String mensagem) {
-		this.mensagem = mensagem;
+	public MessageResponse(String message) {
+		this.message = message;
 	}
 
-	public String getMensagem() {
-		return mensagem;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setMensagem(String mensagem) {
-		this.mensagem = mensagem;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

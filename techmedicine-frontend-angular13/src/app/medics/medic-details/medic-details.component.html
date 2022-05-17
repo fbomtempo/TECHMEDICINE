@@ -1,0 +1,125 @@
+<h1 class="mt-4">Visualizar Médico</h1>
+<div>
+  <h4 class="pt-4">Médico</h4>
+  <hr>
+  <dl class="row">
+    <dt class="col-sm-2">
+      ID:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.id }}
+    </dd>
+    <dt class="col-sm-2">
+      Nome:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.name }}
+    </dd>
+    <dt class="col-sm-2">
+      Sobrenome:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.surname }}
+    </dd>
+    <dt class="col-sm-2">
+      Nascimento:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.birthDate }}
+    </dd>
+    <dt class="col-sm-2">
+      Sexo:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.gender }}
+    </dd>
+    <dt class="col-sm-2">
+      Especialidade:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.specialty.description }}
+    </dd>
+    <dt class="col-sm-2">
+      CRM:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.crm }}
+    </dd>
+    <dt class="col-sm-2">
+      RG:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.rg }}
+    </dd>
+    <dt class="col-sm-2">
+      CPF:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.cpf }}
+    </dd>
+    <dt class="col-sm-2">
+      Telefone Residencial:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.homePhone }}
+    </dd>
+    <dt class="col-sm-2">
+      Telefone Celular:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.mobilePhone }}
+    </dd>
+    <dt class="col-sm-2">
+      E-mail:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.email }}
+    </dd>
+    <dt class="col-sm-2">
+      CEP:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.cep }}
+    </dd>
+    <dt class="col-sm-2">
+      Cidade:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.city }}
+    </dd>
+    <dt class="col-sm-2">
+      Estado:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.state }}
+    </dd>
+    <dt class="col-sm-2">
+      Endereço:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.address }}
+    </dd>
+    <dt class="col-sm-2">
+      Número:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.number }}
+    </dd>
+    <dt class="col-sm-2">
+      Bairro:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.district }}
+    </dd>
+    <dt class="col-sm-2">
+      Complemento:
+    </dt>
+    <dd class="col-sm-10">
+      {{ medic.complement }}
+    </dd>
+  </dl>
+</div>
+<div class="pt-4 mb-5">
+  <button type="button" class="btn btn-primary" [routerLink]="['../../editar/', medic.id]">Editar</button>
+  <button type="button" class="ms-2 btn btn-secondary" (click)="onBackToList()">Voltar a Lista</button>
+</div>
