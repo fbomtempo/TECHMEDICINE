@@ -2,7 +2,7 @@
   <full-calendar [options]="calendarOptions" class="mt-4 mb-5"></full-calendar>
 </div>
 
-<app-appointment-modal #appointmentModal (eventTest)="appointmentModalAction($event)"></app-appointment-modal>
+<app-appointment-modal [appointment]="appointment" #appointmentModal (deletionEvent)="onRefresh()" hidden></app-appointment-modal>
 
 <ng-template #loadingError>
   <div *ngIf="error | async; else loading">

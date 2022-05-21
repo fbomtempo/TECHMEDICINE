@@ -46,7 +46,7 @@ export class SpecialtyFormComponent extends FormService implements OnInit {
             error: () => this.modalService.alertDanger('Erro ao atualizar especialidade!', 'Tente novamente mais tarde.'),
             complete: () => {
               this.modalService.alertSuccess('Especialidade atualizada com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.location.back(), 2000);
+              setTimeout(() => this.router.navigate(['especialidades'], { queryParams: { pagina: 1 }}), 2000);
               this.submittedSucess = true;
             }
           });
@@ -56,7 +56,7 @@ export class SpecialtyFormComponent extends FormService implements OnInit {
             error: () => this.modalService.alertDanger('Erro ao cadastrar especialidade!', 'Tente novamente mais tarde.'),
             complete: () => {
               this.modalService.alertSuccess('Especialidade cadastrada com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.location.back(), 2000);
+              setTimeout(() => this.router.navigate(['especialidades'], { queryParams: { pagina: 1 }}), 2000);
               this.submittedSucess = true;
             }
           });
@@ -65,7 +65,7 @@ export class SpecialtyFormComponent extends FormService implements OnInit {
   }
 
   onCancel(): void {
-    this.location.back()
+    this.router.navigate(['especialidades'], { queryParams: { pagina: 1 }});
   }
 
 }

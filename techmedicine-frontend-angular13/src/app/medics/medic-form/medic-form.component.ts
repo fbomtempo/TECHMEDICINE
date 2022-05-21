@@ -88,7 +88,7 @@ export class MedicFormComponent extends FormService implements OnInit {
             error: () => this.modalService.alertDanger('Erro ao atualizar médico!', 'Tente novamente mais tarde.'),
             complete: () => {
               this.modalService.alertSuccess('Médico atualizado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.location.back(), 2000);
+              setTimeout(() => this.router.navigate(['/medicos'], { queryParams: { pagina: 1}}), 2000);
               this.submittedSucess = true;
             }
           });
@@ -98,7 +98,7 @@ export class MedicFormComponent extends FormService implements OnInit {
             error: () => this.modalService.alertDanger('Erro ao cadastrar médico!', 'Tente novamente mais tarde.'),
             complete: () => {
               this.modalService.alertSuccess('Médico cadastrado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.location.back(), 2000);
+              setTimeout(() => this.router.navigate(['/medicos'], { queryParams: { pagina: 1}}), 2000);
               this.submittedSucess = true;
             }
           });

@@ -23,8 +23,6 @@ export class AppointmentsCalendarComponent implements OnInit {
       center: 'title',
       right: 'timeGridWeek,timeGridDay'
     },
-    //height: 740,
-    //aspectRatio: 1.40,
     stickyHeaderDates: true,
     allDaySlot: false,
     expandRows: true,
@@ -49,6 +47,10 @@ export class AppointmentsCalendarComponent implements OnInit {
         endTime: '19:00'
       },
     ],
+    editable: true,
+    eventDrop: this.eventDropUpdate.bind(this),
+    eventConstraint: "businessHours",
+    eventOverlap: false,
     selectable: true,
     select: this.addAppointment.bind(this),
     selectConstraint: "businessHours",
@@ -108,64 +110,37 @@ export class AppointmentsCalendarComponent implements OnInit {
   }
 
   private viewAppointment(arg): void {
-    this.appointmentService.findById(arg.event.id).subscribe(result => {
+      this.appointmentService.findById(arg.event.id).subscribe(result => {
       this.appointment = result;
-      //console.log(arg.event);
-      this.appointmentModal.id = this.appointment.id;
-      this.appointmentModal.dataAgendada = arg.event.startStr;
-      this.appointmentModal.showModal();
+      this.appointmentModal.show();
     });
-  }
-
-  appointmentModalAction(event: string) {
-    if (event === 'DELETE') {
-      this.modalService.showConfirmModal('Confirmação', 'Tem certeza que deseja remover esse agendamento?')
-        .pipe(
-          take(1),
-          switchMap(confirmResult => confirmResult ? this.appointmentService.delete(this.appointment.id) : of() )
-        )
-        .subscribe({
-          next: () => {
-            this.appointmentModal.close();
-            setTimeout(() => this.onRefresh(), 100);
-          },
-          error: (err) => {
-            console.log(err);
-            this.modalService.alertDanger('Erro ao remover agendamento!', 'Tente novamente mais tarde.')
-          }
-        });
-    } else if (event === 'UPDATE') {
-      alert('navegando pra rota');
-    }
   }
 
   private maxSelectionAllowed(arg): boolean {
     var duration = Math.abs((arg.end.getTime() - arg.start.getTime()) / 3600000);
     return duration < 1;
   }
+
+  private eventDropUpdate(info): void {
+    let appointment: Appointment;
+    this.appointmentService.findById(info.oldEvent.id).subscribe(result => {
+      appointment = result;
+      this.updateEvent(appointment, info);
+    });
+  }
+
+  private updateEvent(appointment: Appointment, info): void {
+    appointment.scheduledTimestamp = info.event.startStr.slice(0, 16);
+    appointment.endTimestamp = info.event.endStr.slice(0, 16);
+    this.appointmentService.update(appointment)
+      .subscribe({
+        error: () => this.modalService.alertDanger('Erro ao atualizar agendamento!', 'Tente novamente mais tarde.'),
+        complete: () => {
+          this.modalService.alertSuccess('Agendamento atualizado com sucesso!', 'Atualizando a página...');
+          setTimeout(() => this.onRefresh(), 2000);
+        }
+      });
+  }
+
 }
 
-    /*this.agendamentosService.findById(arg.event.id).subscribe(result => {
-      this.bsModalRef = this.modalService.showAppointmentModal(result);
-      this.appointmentModalAction();
-    });*/
-
-
-  /*appointmentModalAction() {
-    if (this.bsModalRef.content.eventStr === 'DELETE') {
-      this.modalService.showConfirmModal('Confirmação', 'Tem certeza que deseja remover esse agendamento?')
-        .pipe(
-          take(1),
-          switchMap(confirmResult => confirmResult ? this.agendamentosService.delete(this.agendamento.id) : of() )
-        )
-        .subscribe({
-          next: () => {
-            //this.appointmentModal.close();
-            setTimeout(() => this.onRefresh(), 100);
-          },
-          error: () => this.modalService.alertDanger('Erro ao remover agendamento!', 'Tente novamente mais tarde.')
-        });
-    } else if (event === 'UPDATE') {
-      alert('navegando pra rota');
-    }
-  }*/

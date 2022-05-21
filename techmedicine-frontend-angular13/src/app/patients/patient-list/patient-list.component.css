@@ -1,9 +1,9 @@
-.voltar {
+.back {
   color: black;
   text-decoration: none;
 }
 
-.voltar:hover {
+.back:hover {
   color:black;
   cursor: pointer;
   text-decoration: underline;
@@ -13,7 +13,7 @@
   border-radius: 35px;
 }
 
-.btn-pesquisa {
+.btn-search {
   border: 1px solid black;
   border-radius: 5px;
   background-color: transparent;
@@ -24,19 +24,19 @@
   color: black;
 }
 
-.btn-pesquisa:hover {
+.btn-search:hover {
   border-color: black;
   background-color: black;
   color: white;
 }
 
-.pesquisar:hover {
+.search:hover {
   border-color: black;
   background-color: black;
   color: white;
 }
 
-.btn-limpar {
+.btn-clear {
   border: 1px solid black;
   border-radius: 5px;
   background-color: transparent;
@@ -47,7 +47,7 @@
   color: black;
 }
 
-.limpar:hover {
+.clear:hover {
   border-color: black;
   background-color: black;
   color: white;

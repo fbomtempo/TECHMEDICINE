@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tcc2022.techmedicine.entities.Appointment;
+import com.tcc2022.techmedicine.entities.enums.AppointmentSituation;
 import com.tcc2022.techmedicine.repositories.AppointmentRepository;
 
 @Service
@@ -25,6 +26,7 @@ public class AppointmentService {
 	}
 	
 	public Appointment insert(Appointment obj) {
+		obj.setAppointmentSituation(AppointmentSituation.AGENDADO);
 		return agendamentoRepository.save(obj);
 	}
 	
@@ -43,6 +45,5 @@ public class AppointmentService {
 		appointment.setMedic(obj.getMedic());
 		appointment.setScheduledTimestamp(obj.getScheduledTimestamp());
 		appointment.setEndTimestamp(obj.getEndTimestamp());
-		appointment.setAppointmentSituation(obj.getAppointmentSituation());
 	}
 }

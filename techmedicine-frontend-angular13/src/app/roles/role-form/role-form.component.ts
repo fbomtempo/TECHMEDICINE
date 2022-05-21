@@ -46,7 +46,7 @@ export class RoleFormComponent extends FormService implements OnInit {
             error: () => this.modalService.alertDanger('Erro ao atualizar cargi!', 'Tente novamente mais tarde.'),
             complete: () => {
               this.modalService.alertSuccess('Cargo atualizado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.location.back(), 2000);
+              setTimeout(() => this.router.navigate(['cargos'], { queryParams: { pagina: 1 }}), 2000);
               this.submittedSucess = true;
             }
           });
@@ -56,7 +56,7 @@ export class RoleFormComponent extends FormService implements OnInit {
             error: () => this.modalService.alertDanger('Erro ao cadastrar cargo!', 'Tente novamente mais tarde.'),
             complete: () => {
               this.modalService.alertSuccess('Cargo cadastrado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.location.back(), 2000);
+              setTimeout(() => this.router.navigate(['cargos'], { queryParams: { pagina: 1 }}), 2000);
               this.submittedSucess = true;
             }
           });
@@ -65,7 +65,7 @@ export class RoleFormComponent extends FormService implements OnInit {
   }
 
   onCancel(): void {
-    this.location.back()
+    this.router.navigate(['cargos'], { queryParams: { pagina: 1 }});
   }
 
 }

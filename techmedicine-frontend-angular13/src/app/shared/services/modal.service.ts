@@ -23,7 +23,7 @@ export class ModalService {
     bsModalRef.content.description = description;
     bsModalRef.content.type = alertType;
 
-    if (timeout != undefined) {
+    if (timeout) {
       setTimeout(() => bsModalRef.hide(), timeout);
     }
   }

@@ -1,15 +1,36 @@
 <ng-template #template>
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title">Agendamento ID {{ id }} - {{ dataAgendada }}</h5>
+      <h5 class="modal-title">Agendamento ID {{ appointment.id }} - {{ appointment.scheduledTimestamp }}</h5>
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="close()"></button>
     </div>
     <div class="modal-body">
-      <p>Modal body text goes here.</p>
+      <div class="row mb-4">
+        <div class="col-8"><strong>Paciente: </strong>
+          <br><span>{{ appointment.patient.name + appointment.patient.surname }}</span>
+        </div>
+        <div class="col-4"><strong>Nascimento: </strong>
+          <br><span>{{ appointment.patient.birthDate }}</span>
+        </div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-4"><strong>CPF: </strong>
+          <br><span>{{ appointment.patient.cpf }}</span>
+        </div>
+        <div class="col-4"><strong>Tel. Residencial: </strong>
+          <br><span>{{ appointment.patient.homePhone }}</span>
+        </div>
+        <div class="col-4"><strong>Tel. Celular: </strong>
+          <br><span>{{ appointment.patient.mobilePhone }}</span>
+        </div>
+      </div>
+      <div class="row">
+
+      </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="delete()">Deletar</button>
-      <button type="button" class="btn btn-primary d-block" (click)="update()">Editar</button>
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="onDelete()">Deletar</button>
+      <button type="button" class="btn btn-primary d-block" (click)="onUpdate()">Editar</button>
     </div>
   </div>
 </ng-template>

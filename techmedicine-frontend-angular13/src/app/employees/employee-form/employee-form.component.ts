@@ -87,7 +87,7 @@ export class EmployeeFormComponent extends FormService implements OnInit {
             error: () => this.modalService.alertDanger('Erro ao atualizar funcionário!', 'Tente novamente mais tarde.'),
             complete: () => {
               this.modalService.alertSuccess('Funcionário atualizado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.location.back(), 2000);
+              setTimeout(() => this.router.navigate(['/funcionarios'], { queryParams: { pagina: 1 } }), 2000);
               this.submittedSucess = true;
             }
           });
@@ -97,7 +97,7 @@ export class EmployeeFormComponent extends FormService implements OnInit {
             error: () => this.modalService.alertDanger('Erro ao cadastrar funcionário!', 'Tente novamente mais tarde.'),
             complete: () => {
               this.modalService.alertSuccess('Funcionário cadastrado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.location.back(), 2000);
+              setTimeout(() => this.router.navigate(['/funcionarios'], { queryParams: { pagina: 1 } }), 2000);
               this.submittedSucess = true;
             }
           });

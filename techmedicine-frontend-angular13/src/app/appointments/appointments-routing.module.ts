@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DeactivateGuard } from '../shared/guards/deactivate.guard';
 import { AppointmentFormComponent } from './appointment-form/appointment-form.component';
 import { AppointmentsCalendarComponent } from './appointment-calendar/appointment-calendar.component';
+import { AppointmentsResolverGuard } from './guards/appointments-resolver.guard';
 
 const routes: Routes = [
   {
@@ -11,16 +12,16 @@ const routes: Routes = [
   {
     path: 'novo',
     component: AppointmentFormComponent,
-    /*canDeactivate: [DeactivateGuard],
-    resolve: { medico: MedicosResolverGuard },*/
-  }/*,
-  {
-    path: 'editar/:id',
-    component: MedicosFormComponent,
-    resolve: { medico: MedicosResolverGuard },
+    resolve: { appointment: AppointmentsResolverGuard },
     canDeactivate: [DeactivateGuard]
   },
   {
+    path: 'editar/:id',
+    component: AppointmentFormComponent,
+    resolve: { appointment: AppointmentsResolverGuard },
+    canDeactivate: [DeactivateGuard]
+  }
+  /*{
     path: 'visualizar/:id',
     component: MedicosDetalhesComponent,
     resolve: { medico: MedicosResolverGuard }

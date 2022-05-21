@@ -2,7 +2,7 @@
 <form class="mt-4 row g-3 needs-validation" novalidate [formGroup]="form">
   <div class="col-xl-2">
     <label for="date" class="form-label">Data</label>
-    <input type="date" class="form-control" id="date" formControlName="date" [ngClass]="applyValidationClass('date')" readonly>
+    <input type="date" class="form-control" id="date" formControlName="date" [ngClass]="applyValidationClass('date')">
     <div class="invalid-feedback" *ngIf="form.get('date').errors?.['required']">
       Campo é obrigatório.
     </div>
@@ -11,9 +11,12 @@
     </div>
   </div>
   <div class="col-xl-2">
-    <label for="time" class="form-label">Horário</label>
-    <input type="text" class="form-control"  id="time" formControlName="time" [ngClass]="applyValidationClass('time')" readonly>
-    <div class="invalid-feedback" *ngIf="form.get('time').errors?.['required']">
+    <label for="timeslot" class="form-label">Horário</label>
+    <select class="form-select" id="timeslot" formControlName="timeslot" [ngClass]="applyValidationClass('timeslot')">
+      <option value="null" disabled="true" [selected]="true" disabled>Selecione o horário</option>
+      <option *ngFor="let timeslot of timeslots" [value]="timeslot">{{ timeslot }}</option>
+    </select>
+    <div class="invalid-feedback" *ngIf="form.get('timeslot').errors?.['required']">
       Campo é obrigatório.
     </div>
     <div class="valid-feedback">
@@ -23,7 +26,8 @@
   <div class="col-12"></div>
   <div class="col-xl-6">
     <label for="patient" class="form-label">Paciente</label>
-    <select class="form-select" id="patient" formControlName="patient" [ngClass]="applyValidationClass('patient')">
+    <select class="form-select" id="patient" formControlName="patient" placeholder="Paciente"
+    [ngClass]="applyValidationClass('patient')" [compareWith]="compareFnPatient">
       <option value="null" disabled="true" [selected]="true">Selecione o paciente</option>
       <option *ngFor="let patient of patients$ | async" [ngValue]="patient">{{ patient.name + ' ' + patient.surname }}</option>t
     </select>
@@ -37,7 +41,8 @@
   <div class="col-12"></div>
   <div class="col-xl-6">
     <label for="medic" class="form-label">Médico</label>
-    <select class="form-select" id="medic" formControlName="medic" [ngClass]="applyValidationClass('medic')">
+    <select class="form-select" id="medic" formControlName="medic" placeholder="Médico"
+    [ngClass]="applyValidationClass('medic')" [compareWith]="compareFnPatient">
       <option value="null" disabled="true" [selected]="true">Selecione o médico</option>
       <option *ngFor="let medic of medics$ | async" [ngValue]="medic">{{ medic.name + ' ' + medic.surname }}</option>t
     </select>
@@ -53,9 +58,6 @@
     <button type="button" class="ms-2 btn btn-danger" (click)="onCancel()">Cancelar</button>
   </div>
 </form>
-
-
-
 
 
 
