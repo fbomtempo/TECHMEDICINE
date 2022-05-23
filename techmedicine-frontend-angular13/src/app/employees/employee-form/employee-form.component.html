@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class="col-xl-5">
-    <label for="surname" class="form-label">Sobrename</label>
+    <label for="surname" class="form-label">Sobrenome</label>
     <input type="text" class="form-control" id="surname" formControlName="surname" placeholder="Sobrenome"
       [ngClass]="applyValidationClass('surname')">
     <div class="invalid-feedback" *ngIf="form.get('surname').errors?.['required']">
@@ -59,18 +59,22 @@
   </div>
   <div class="col-xl-4">
     <label for="role" class="form-label">Cargo</label>
-    <select class="form-select" formControlName="role" id="role" placeholder="Cargo"
-      [ngClass]="applyValidationClass('role')" [compareWith]="compareFn">
-      <option value="null" disabled="true" [selected]="true">Selecione o cargo</option>
-      <option *ngFor="let role of roles$ | async" [ngValue]="role">{{ role.description }}</option>
-    </select>
-    <div class="invalid-feedback" *ngIf="form.get('role').errors?.['required']">
+    <ng-select formControlName="role"
+               [items]="roles$ | async"
+               bindLabel="description"
+               labelForId="role"
+               placeholder="Selecione o cargo"
+               clearAllText="Limpar"
+               [compareWith]="compareFn"
+               [loading]="rolesLoading"
+               loadingText="Carregando"
+               notFoundText="Nenhum item encontrado"
+               [ngClass]="submitted ? applyValidationClass('specialty', true) : 'ng-untouched'">
+    </ng-select>
+    <div class="ng-select-invalid-feedback">
       Campo é obrigatório.
     </div>
-    <div class="invalid-feedback" *ngIf="form.get('role').errors?.['maxlength']">
-      Campo deve possuir no máximo 12 caracteres.
-    </div>
-    <div class="valid-feedback">
+    <div class="ng-select-valid-feedback">
       Parece bom.
     </div>
   </div>

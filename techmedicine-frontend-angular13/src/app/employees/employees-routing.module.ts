@@ -4,7 +4,7 @@ import { DeactivateGuard } from '../shared/guards/deactivate.guard';
 import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
 import { EmployeeFormComponent } from './employee-form/employee-form.component';
 import { EmployeeListComponent } from './employee-list/employee-list.component';
-import { EmployeesResolverGuard } from './guards/employees-resolver.guard';
+import { EmployeesResolver } from './guards/employees.resolver';
 
 const routes: Routes = [
   {
@@ -13,19 +13,19 @@ const routes: Routes = [
   {
     path: 'novo',
     component: EmployeeFormComponent,
-    resolve: { employee: EmployeesResolverGuard },
+    resolve: { employee: EmployeesResolver },
     canDeactivate: [DeactivateGuard]
   },
   {
     path: 'editar/:id',
     component: EmployeeFormComponent,
-    resolve: { employee: EmployeesResolverGuard },
+    resolve: { employee: EmployeesResolver },
     canDeactivate: [DeactivateGuard]
   },
   {
     path: 'visualizar/:id',
     component: EmployeeDetailsComponent,
-    resolve: { employee: EmployeesResolverGuard }
+    resolve: { employee: EmployeesResolver }
   }
 ];
 @NgModule({

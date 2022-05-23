@@ -4,7 +4,7 @@ import { DeactivateGuard } from '../shared/guards/deactivate.guard';
 import { RolesDetailsComponent } from './role-details/role-details.component';
 import { RoleFormComponent } from './role-form/role-form.component';
 import { RoleListComponent } from './role-list/role-list.component';
-import { RolesResolverGuard } from './guards/roles-resolver.guard';
+import { RolesResolver } from './guards/roles.resolver';
 
 const routes: Routes = [
   {
@@ -14,19 +14,19 @@ const routes: Routes = [
   {
     path: 'novo',
     component: RoleFormComponent,
-    resolve: { role: RolesResolverGuard },
+    resolve: { role: RolesResolver },
     canDeactivate: [DeactivateGuard]
   },
   {
     path: 'editar/:id',
     component: RoleFormComponent,
-    resolve: { role: RolesResolverGuard },
+    resolve: { role: RolesResolver },
     canDeactivate: [DeactivateGuard]
   },
   {
     path: 'visualizar/:id',
     component: RolesDetailsComponent,
-    resolve: { role: RolesResolverGuard }
+    resolve: { role: RolesResolver }
   }
 ];
 @NgModule({

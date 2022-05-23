@@ -8,6 +8,7 @@ import { EmployeeDetailsComponent } from './employee-details/employee-details.co
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     EmployeesRoutingModule,
     SharedModule,
     FormsModule,
+    NgSelectModule,
     ReactiveFormsModule,
     PaginationModule
   ],

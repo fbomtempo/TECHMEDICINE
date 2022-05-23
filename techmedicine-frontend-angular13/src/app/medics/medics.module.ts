@@ -7,6 +7,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { MedicListComponent } from './medic-list/medic-list.component';
 import { MedicFormComponent } from './medic-form/medic-form.component';
 import { MedicDetailsComponent } from './medic-details/medic-details.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { MedicDetailsComponent } from './medic-details/medic-details.component';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+    NgSelectModule,
     PaginationModule
   ],
   providers: [

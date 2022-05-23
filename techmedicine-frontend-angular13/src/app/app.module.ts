@@ -9,7 +9,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { authInterceptorProviders } from './auth/auth-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     ModalModule.forRoot(),
     PaginationModule.forRoot(),
     BrowserAnimationsModule,
-    MatAutocompleteModule
+    ButtonsModule.forRoot()
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

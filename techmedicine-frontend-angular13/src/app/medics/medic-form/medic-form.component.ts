@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { Specialty } from 'src/app/specialties/model/specialty';
 import { State } from 'src/app/shared/models/states';
 import { CepSearchService } from 'src/app/shared/services/cep-search.service';
@@ -22,6 +22,7 @@ export class MedicFormComponent extends FormService implements OnInit {
 
   states$: Observable<State[]>;
   specialties$: Observable<Specialty[]>;
+  specialtiesLoading: boolean = true;
   compareFn(c1: Specialty, c2: Specialty): boolean {
     return c1 && c2 ? c1.id === c2.id : c1 === c2;
   }
@@ -43,8 +44,15 @@ export class MedicFormComponent extends FormService implements OnInit {
   ngOnInit(): void {
     this.states$ = this.dropdownService.getStates();
     this.specialties$ = this.dropdownService.getSpecialties();
+    this.specialties$
+    .pipe(
+      take(1)
+    )
+    .subscribe({
+      next: () => this.specialtiesLoading = false
+    });
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
-    let medic = this.route.snapshot.data['medic'];
+    const medic = this.route.snapshot.data['medic'];
 
     this.form = this.formBuilder.group({
       id: [medic.id],
@@ -158,5 +166,3 @@ export class MedicFormComponent extends FormService implements OnInit {
   }
 
 }
-
-

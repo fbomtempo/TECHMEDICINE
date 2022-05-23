@@ -69,7 +69,7 @@ export class AppointmentFormComponent extends FormService implements OnInit {
     this.patients$ = this.dropdownService.getPatients();
     this.medics$ = this.dropdownService.getMedics();
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
-    let appointment = this.route.snapshot.data['appointment'];
+    const appointment = this.route.snapshot.data['appointment'];
 
     const fullTimestamp = this.route.snapshot.queryParams['data'];
     this.formatTimestamp(appointment, fullTimestamp);
@@ -89,7 +89,8 @@ export class AppointmentFormComponent extends FormService implements OnInit {
   onSubmit(): void {
     const appointment: Appointment = this.createAppointment(this.form.value);
     this.submitted = true;
-  if (this.form.valid && this.changed) {
+    console.log(appointment)
+    /*if (this.form.valid && this.changed) {
       if (this.form.value['id']) {
         this.appointmentService.update(appointment)
           .subscribe({
@@ -111,7 +112,7 @@ export class AppointmentFormComponent extends FormService implements OnInit {
             }
           });
       }
-    }
+    }*/
   }
 
   onCancel(): void {
@@ -137,11 +138,27 @@ export class AppointmentFormComponent extends FormService implements OnInit {
       this.endTime = fullTimestamp.slice(17);
       this.timeslot = this.startTime + '-' + this.endTime;
       return;
+    } else if (appointment.id) {
+      this.date = appointment.scheduledTimestamp.slice(0, 10);
+      this.startTime = appointment.scheduledTimestamp.slice(11, 16);
+      this.endTime = appointment.endTimestamp.slice(11, 16);
+      this.timeslot = this.startTime + '-' + this.endTime;
+    } else {
+      this.date = null;
+      this.timeslot = null;
     }
-    this.date = appointment.scheduledTimestamp.slice(0, 10);
-    this.startTime = appointment.scheduledTimestamp.slice(11, 16);
-    this.endTime = appointment.endTimestamp.slice(11, 16);
-    this.timeslot = this.startTime + '-' + this.endTime;
   }
 
+  applyValidationClassTest(field: string): any {
+    return {
+      'ng-untouched': !this.submitted,
+      'ng-touched': this.submitted,
+      'is-invalid': (this.submitted || this.isTouched(field) || this.isDirty(field)) && this.hasError(field),
+      'is-valid': (this.submitted || this.isTouched(field) || this.isDirty(field)) && !this.hasError(field)
+    }
+  }
+
+  log() {
+    console.log(this.form.get('patient').value);
+  }
 }

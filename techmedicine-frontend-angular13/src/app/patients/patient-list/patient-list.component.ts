@@ -66,7 +66,7 @@ export class PatientsListComponent implements OnInit, OnDestroy {
   }
 
   private formatData(patient: Patient): Patient {
-    let date: Date = new Date(patient.birthDate);
+    const date: Date = new Date(patient.birthDate);
     patient.birthDate = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
     patient.cpf = this.maskService.applyMask('cpf', patient.cpf);
     patient.homePhone = this.maskService.applyMask('homePhone', patient.homePhone);

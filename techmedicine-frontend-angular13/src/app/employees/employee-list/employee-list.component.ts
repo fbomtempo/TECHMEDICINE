@@ -66,7 +66,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   }
 
   private formatData(employee: Employee): Employee {
-    let date: Date = new Date(employee.birthDate);
+    const date: Date = new Date(employee.birthDate);
     employee.birthDate = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
     employee.cpf = this.maskService.applyMask('cpf', employee.cpf);
     employee.homePhone = this.maskService.applyMask('homePhone', employee.homePhone);

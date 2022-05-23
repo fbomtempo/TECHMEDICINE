@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarOptions } from '@fullcalendar/angular';
@@ -49,31 +50,37 @@ export class AppointmentsCalendarComponent implements OnInit {
     ],
     editable: true,
     eventDrop: this.eventDropUpdate.bind(this),
-    eventConstraint: "businessHours",
+    eventConstraint: 'businessHours',
     eventOverlap: false,
     selectable: true,
     select: this.addAppointment.bind(this),
-    selectConstraint: "businessHours",
+    selectConstraint: 'businessHours',
     selectAllow: this.maxSelectionAllowed.bind(this),
     eventClick: this.viewAppointment.bind(this)
   };
+  radioModel: string = 'Calendar';
   appointments$: Observable<Appointment[]>;
   appointment: Appointment;
   error: Subject<boolean> = new Subject();
   @ViewChild('appointmentModal', { static: true }) appointmentModal?: AppointmentModalComponent;
 
   constructor(
+    private appointmentService: AppointmentService,
+    private modalService: ModalService,
     private route: ActivatedRoute,
     private router: Router,
-    private appointmentService: AppointmentService,
-    private modalService: ModalService
+    private location: Location
   ) { }
 
   ngOnInit(): void {
+    if (this.route.snapshot.queryParams['pagina']) {
+      this.radioModel = 'List';
+    }
     this.onRefresh();
   }
 
   onRefresh(): void | Observable<never> {
+    this.radioModel = 'Calendar';
     let agendamentos: any[];
     this.appointments$ = this.appointmentService.findAll()
       .pipe(
@@ -97,6 +104,18 @@ export class AppointmentsCalendarComponent implements OnInit {
 
   reloadPage(): void {
     window.location.reload();
+  }
+
+  onBack(): void {
+    this.location.back();
+  }
+
+  changeUrl(): void {
+    this.router.navigate([], {
+      queryParams: {
+        pagina: 1
+      }
+    });
   }
 
   private addAppointment(arg): void {

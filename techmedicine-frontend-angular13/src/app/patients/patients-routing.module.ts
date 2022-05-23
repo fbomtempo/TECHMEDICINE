@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DeactivateGuard } from '../shared/guards/deactivate.guard';
-import { PatientsResolverGuard } from './guards/patients-resolver.guard';
+import { PatientsResolver } from './guards/patients.resolver';
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
 import { PatientsFormComponent } from './patient-form/patient-form.component';
 import { PatientsListComponent } from './patient-list/patient-list.component';
@@ -13,19 +13,19 @@ const routes: Routes = [
   {
     path: 'novo',
     component: PatientsFormComponent,
-    resolve: { patient: PatientsResolverGuard },
+    resolve: { patient: PatientsResolver },
     canDeactivate: [DeactivateGuard]
   },
   {
     path: 'editar/:id',
     component: PatientsFormComponent,
-    resolve: { patient: PatientsResolverGuard },
+    resolve: { patient: PatientsResolver },
     canDeactivate: [DeactivateGuard]
   },
   {
     path: 'visualizar/:id',
     component: PatientDetailsComponent,
-    resolve: { patient: PatientsResolverGuard }
+    resolve: { patient: PatientsResolver }
   }
 ];
 

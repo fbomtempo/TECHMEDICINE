@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { take } from 'rxjs';
+import { delay, Observable, take } from 'rxjs';
 import { Medic } from 'src/app/medics/model/medic';
 import { Patient } from 'src/app/patients/model/patient';
 import { Role } from 'src/app/roles/model/role';
@@ -17,29 +17,41 @@ export class DropdownService {
 
   constructor(private http: HttpClient) { }
 
-  getStates() {
+  getStates(): Observable<State[]> {
     return this.http.get<State[]>('assets/data/states.json')
       .pipe(take(1));
   }
 
-  getSpecialties() {
+  getSpecialties(): Observable<Specialty[]> {
     return this.http.get<Specialty[]>(`${this.API}especialidades/orderBy/descricao`)
-      .pipe(take(1));
+      .pipe(
+        delay(750),
+        take(1)
+      );
   }
 
-  getRoles() {
+  getRoles(): Observable<Role[]> {
     return this.http.get<Role[]>(`${this.API}cargos/orderBy/descricao`)
-      .pipe(take(1));
+      .pipe(
+        delay(750),
+        take(1)
+      );
   }
 
-  getPatients() {
+  getPatients(): Observable<Patient[]> {
     return this.http.get<Patient[]>(`${this.API}pacientes`)
-      .pipe(take(1));
+      .pipe(
+        delay(750),
+        take(1)
+      );
   }
 
-  getMedics() {
+  getMedics(): Observable<Medic[]> {
     return this.http.get<Medic[]>(`${this.API}medicos`)
-      .pipe(take(1));
+      .pipe(
+        delay(750),
+        take(1)
+      );
   }
 
 }

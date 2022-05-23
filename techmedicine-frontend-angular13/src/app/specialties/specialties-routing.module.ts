@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DeactivateGuard } from '../shared/guards/deactivate.guard';
-import { SpecialtiesResolver } from './guards/specialties-resolver.guard';
+import { SpecialtiesResolver } from './guards/specialties.resolver';
 import { SpecialtyDetailsComponent } from './specialty-details/specialty-details.component';
 import { SpecialtyFormComponent } from './specialty-form/specialty-form.component';
 import { SpecialtyListComponent } from './specialty-list/specialty-list.component';

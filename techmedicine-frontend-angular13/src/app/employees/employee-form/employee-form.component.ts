@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { Role } from 'src/app/roles/model/role';
 import { State } from 'src/app/shared/models/states';
 import { CepSearchService } from 'src/app/shared/services/cep-search.service';
@@ -22,6 +22,7 @@ export class EmployeeFormComponent extends FormService implements OnInit {
 
   states$: Observable<State[]>;
   roles$: Observable<Role[]>;
+  rolesLoading: boolean = true;
   compareFn(c1: Role, c2: Role): boolean {
     return c1 && c2 ? c1.id === c2.id : c1 === c2;
   }
@@ -43,8 +44,15 @@ export class EmployeeFormComponent extends FormService implements OnInit {
   ngOnInit(): void {
     this.states$ = this.dropdownService.getStates();
     this.roles$ = this.dropdownService.getRoles();
+    this.roles$
+    .pipe(
+      take(1)
+    )
+    .subscribe({
+      next: () => this.rolesLoading = false
+    });
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
-    let employee = this.route.snapshot.data['employee'];
+    const employee = this.route.snapshot.data['employee'];
 
     this.form = this.formBuilder.group({
       id: [employee.id],

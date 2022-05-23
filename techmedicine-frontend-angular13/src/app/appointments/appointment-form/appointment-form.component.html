@@ -26,17 +26,26 @@
   <div class="col-12"></div>
   <div class="col-xl-6">
     <label for="patient" class="form-label">Paciente</label>
-    <select class="form-select" id="patient" formControlName="patient" placeholder="Paciente"
+    <ng-select [items]="patients$ | async"
+               bindLabel="surname"
+               labelForId="patient"
+               placeholder="Selecione o paciente"
+               clearAllText="Clear"
+               formControlName="patient"
+               [ngClass]="submitted ? applyValidationClass('patient', true) : 'ng-untouched'">
+    </ng-select>
+    <div class="ng-select-invalid-feedback">
+      Campo é obrigatório.
+    </div>
+    <div class="ng-select-valid-feedback">
+      Parece bom.
+    </div>
+    <!--<select class="form-select" id="patient" formControlName="patient" placeholder="Paciente"
     [ngClass]="applyValidationClass('patient')" [compareWith]="compareFnPatient">
       <option value="null" disabled="true" [selected]="true">Selecione o paciente</option>
       <option *ngFor="let patient of patients$ | async" [ngValue]="patient">{{ patient.name + ' ' + patient.surname }}</option>t
-    </select>
-    <div class="invalid-feedback" *ngIf="form.get('patient').errors?.['required']">
-      Campo é obrigatório.
-    </div>
-    <div class="valid-feedback">
-      Parece bom.
-    </div>
+    </select>-->
+    <button (click)="log()"></button>
   </div>
   <div class="col-12"></div>
   <div class="col-xl-6">

@@ -38,7 +38,7 @@ export class PatientsFormComponent extends FormService implements OnInit {
   ngOnInit(): void {
     this.states$ = this.dropdownService.getStates();
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
-    let patient = this.route.snapshot.data['patient'];
+    const patient = this.route.snapshot.data['patient'];
 
     this.form = this.formBuilder.group({
       id: [patient.id],

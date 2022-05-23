@@ -29,7 +29,13 @@ export class FormService implements ICanDeactivate {
     return this.form.get(field)?.dirty;
   }
 
-  applyValidationClass(field: string): any {
+  applyValidationClass(field: string, ngSelect?: boolean): any {
+    if (ngSelect) {
+      return {
+        'ng-untouched': !this.submitted,
+        'ng-touched': this.submitted
+      }
+    }
     return {
       'is-invalid': (this.submitted || this.isTouched(field) || this.isDirty(field)) && this.hasError(field),
       'is-valid': (this.submitted || this.isTouched(field) || this.isDirty(field)) && !this.hasError(field)

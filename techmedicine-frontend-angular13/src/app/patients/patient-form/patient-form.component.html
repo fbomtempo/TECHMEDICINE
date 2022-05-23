@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class="col-xl-5">
-    <label for="surname" class="form-label">Sobrename</label>
+    <label for="surname" class="form-label">Sobrenome</label>
     <input type="text" class="form-control" id="surname" formControlName="surname" placeholder="Sobrenome"
       [ngClass]="applyValidationClass('surname')">
     <div class="invalid-feedback" *ngIf="form.get('surname').errors?.['required']">
