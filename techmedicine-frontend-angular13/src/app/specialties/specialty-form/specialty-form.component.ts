@@ -25,9 +25,12 @@ export class SpecialtyFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
-    this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Nova';
-    const specialty = this.route.snapshot.data['specialty'];
+    this.createForm();
+  }
 
+  private createForm(): void {
+    const specialty = this.route.snapshot.data['specialty'];
+    this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Nova';
     this.form = this.formBuilder.group({
       id: [specialty.id],
       description: [specialty.description, [Validators.required, Validators.maxLength(45)]]

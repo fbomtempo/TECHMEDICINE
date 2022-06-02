@@ -60,7 +60,7 @@
   <div class="col-xl-4">
     <label for="role" class="form-label">Cargo</label>
     <ng-select formControlName="role"
-               [items]="roles$ | async"
+               [items]="roles"
                bindLabel="description"
                labelForId="role"
                placeholder="Selecione o cargo"
@@ -69,6 +69,7 @@
                [loading]="rolesLoading"
                loadingText="Carregando"
                notFoundText="Nenhum item encontrado"
+               [virtualScroll]="true"
                [ngClass]="submitted ? applyValidationClass('specialty', true) : 'ng-untouched'">
     </ng-select>
     <div class="ng-select-invalid-feedback">

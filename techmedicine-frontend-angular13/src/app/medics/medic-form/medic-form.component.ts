@@ -21,7 +21,7 @@ import { MedicService } from '../service/medic.service';
 export class MedicFormComponent extends FormService implements OnInit {
 
   states$: Observable<State[]>;
-  specialties$: Observable<Specialty[]>;
+  specialties: Specialty[];
   specialtiesLoading: boolean = true;
   compareFn(c1: Specialty, c2: Specialty): boolean {
     return c1 && c2 ? c1.id === c2.id : c1 === c2;
@@ -42,18 +42,27 @@ export class MedicFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
-    this.states$ = this.dropdownService.getStates();
-    this.specialties$ = this.dropdownService.getSpecialties();
-    this.specialties$
-    .pipe(
-      take(1)
-    )
-    .subscribe({
-      next: () => this.specialtiesLoading = false
-    });
-    this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
-    const medic = this.route.snapshot.data['medic'];
+    this.fetchData();
+    this.createForm();
+  }
 
+  private fetchData(): void {
+    this.states$ = this.dropdownService.getStates();
+    this.dropdownService.getSpecialties()
+      .subscribe({
+        next: (result) => {
+          this.specialties = result;
+          this.specialtiesLoading = false;
+        }
+      });
+  }
+
+  private createForm(): void {
+    const medic = this.maskService.formatData(
+      this.route.snapshot.data['medic'],
+      ['cpf', 'homePhone', 'mobilePhone', 'cep']
+    );
+    this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
       id: [medic.id],
       name: [medic.name, [Validators.required, Validators.maxLength(20)]],
@@ -75,47 +84,7 @@ export class MedicFormComponent extends FormService implements OnInit {
       district: [medic.district, [Validators.required, Validators.maxLength(30)]],
       complement: [medic.complement, [Validators.maxLength(70)]]
     });
-    const fields = ['cpf', 'homePhone', 'mobilePhone', 'cep'];
-    fields.forEach(field => {
-      if (this.form.get(field).value != null) {
-        this.applyMaskToInput(field);
-      }
-    });
-    this.form.valueChanges.subscribe(() => {
-      this.changed = true;
-    });
-  }
-
-  onSubmit(): void {
-    const medic: Medic = this.unformatData(this.form.value);
-    this.submitted = true;
-    if (this.form.valid && this.changed) {
-      if (this.form.value['id']) {
-        this.medicService.update(medic)
-          .subscribe({
-            error: () => this.modalService.alertDanger('Erro ao atualizar médico!', 'Tente novamente mais tarde.'),
-            complete: () => {
-              this.modalService.alertSuccess('Médico atualizado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.router.navigate(['/medicos'], { queryParams: { pagina: 1}}), 2000);
-              this.submittedSucess = true;
-            }
-          });
-      } else {
-        this.medicService.create(medic)
-          .subscribe({
-            error: () => this.modalService.alertDanger('Erro ao cadastrar médico!', 'Tente novamente mais tarde.'),
-            complete: () => {
-              this.modalService.alertSuccess('Médico cadastrado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.router.navigate(['/medicos'], { queryParams: { pagina: 1}}), 2000);
-              this.submittedSucess = true;
-            }
-          });
-      }
-    }
-  }
-
-  onCancel(): void {
-    this.router.navigate(['/medicos'], { queryParams: { pagina: 1}});
+    this.subscribeToChanges();
   }
 
   applyMaskToInput(mask: string): void {
@@ -149,20 +118,39 @@ export class MedicFormComponent extends FormService implements OnInit {
     this.form.get('complement').markAsTouched();
   }
 
-  private unformatData(medic: Medic): Medic {
-    if (this.form.get('cpf').value != null) {
-      medic.cpf = this.maskService.undoMask(this.form.get('cpf').value);
+  onSubmit(): void {
+    const medic: Medic = this.maskService.unformatData(
+      this.form.value,
+      ['cpf', 'homePhone', 'mobilePhone', 'cep']
+    );
+    this.submitted = true;
+    if (this.form.valid && this.changed) {
+      if (this.form.value['id']) {
+        this.medicService.update(medic)
+          .subscribe({
+            error: () => this.modalService.alertDanger('Erro ao atualizar médico!', 'Tente novamente mais tarde.'),
+            complete: () => {
+              this.modalService.alertSuccess('Médico atualizado com sucesso!', 'Redirecionando a página...');
+              setTimeout(() => this.router.navigate(['/medicos'], { queryParams: { pagina: 1}}), 2000);
+              this.submittedSucess = true;
+            }
+          });
+      } else {
+        this.medicService.create(medic)
+          .subscribe({
+            error: () => this.modalService.alertDanger('Erro ao cadastrar médico!', 'Tente novamente mais tarde.'),
+            complete: () => {
+              this.modalService.alertSuccess('Médico cadastrado com sucesso!', 'Redirecionando a página...');
+              setTimeout(() => this.router.navigate(['/medicos'], { queryParams: { pagina: 1}}), 2000);
+              this.submittedSucess = true;
+            }
+          });
+      }
     }
-    if (this.form.get('homePhone').value != null) {
-      medic.homePhone = this.maskService.undoMask(this.form.get('homePhone').value);
-    }
-    if (this.form.get('mobilePhone').value != null) {
-      medic.mobilePhone = this.maskService.undoMask(this.form.get('mobilePhone').value);
-    }
-    if (this.form.get('cep').value != null) {
-      medic.cep = this.maskService.undoMask(this.form.get('cep').value);
-    }
-    return medic;
+  }
+
+  onCancel(): void {
+    this.router.navigate(['/medicos'], { queryParams: { pagina: 1}});
   }
 
 }

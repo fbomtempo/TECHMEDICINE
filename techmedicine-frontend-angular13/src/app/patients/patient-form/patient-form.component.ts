@@ -36,10 +36,20 @@ export class PatientsFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
-    this.states$ = this.dropdownService.getStates();
-    this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
-    const patient = this.route.snapshot.data['patient'];
+    this.fetchData();
+    this.createForm();
+  }
 
+  private fetchData(): void {
+    this.states$ = this.dropdownService.getStates();
+  }
+
+  private createForm(): void {
+    const patient = this.maskService.formatData(
+      this.route.snapshot.data['patient'],
+      ['cpf', 'homePhone', 'mobilePhone', 'cep']
+    );
+    this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
       id: [patient.id],
       name: [patient.name, [Validators.required, Validators.maxLength(20)]],
@@ -59,47 +69,7 @@ export class PatientsFormComponent extends FormService implements OnInit {
       district: [patient.district, [Validators.required, Validators.maxLength(30)]],
       complement: [patient.complement, [Validators.maxLength(70)]]
     });
-    const fields = ['cpf', 'homePhone', 'mobilePhone', 'cep'];
-    fields.forEach(field => {
-      if (this.form.get(field).value != null) {
-        this.applyMaskToInput(field);
-      }
-    });
-    this.form.valueChanges.subscribe(() => {
-      this.changed = true;
-    });
-  }
-
-  onSubmit(): void {
-    const patient: Patient = this.unformatData(this.form.value)
-    this.submitted = true;
-    if (this.form.valid && this.changed) {
-      if (this.form.value['id']) {
-        this.patientService.update(patient)
-          .subscribe({
-            error: () => this.modalService.alertDanger('Erro ao atualizar paciente!', 'Tente novamente mais tarde.'),
-            complete: () => {
-              this.modalService.alertSuccess('Paciente atualizado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.router.navigate(['/pacientes'], { queryParams: { pagina: 1}}), 2000);
-              this.submittedSucess = true;
-            }
-          });
-      } else {
-        this.patientService.create(patient)
-          .subscribe({
-            error: () => this.modalService.alertDanger('Erro ao cadastrar paciente!', 'Tente novamente mais tarde.'),
-            complete: () => {
-              this.modalService.alertSuccess('Paciente cadastrado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.router.navigate(['/pacientes'], { queryParams: { pagina: 1}}), 2000);
-              this.submittedSucess = true;
-            }
-          });
-      }
-    }
-  }
-
-  onCancel(): void {
-    this.router.navigate(['/pacientes'], { queryParams: { pagina: 1}});
+    this.subscribeToChanges();
   }
 
   applyMaskToInput(mask: string): void {
@@ -133,20 +103,39 @@ export class PatientsFormComponent extends FormService implements OnInit {
     this.form.get('complement').markAsTouched();
   }
 
-  private unformatData(patient: Patient): Patient {
-    if (this.form.get('cpf').value != null) {
-      patient.cpf = this.maskService.undoMask(this.form.get('cpf').value);
+  onSubmit(): void {
+    const patient: Patient = this.maskService.unformatData(
+      this.form.value,
+      ['cpf', 'homePhone', 'mobilePhone', 'cep']
+    );
+    this.submitted = true;
+    if (this.form.valid && this.changed) {
+      if (this.form.value['id']) {
+        this.patientService.update(patient)
+          .subscribe({
+            error: () => this.modalService.alertDanger('Erro ao atualizar paciente!', 'Tente novamente mais tarde.'),
+            complete: () => {
+              this.modalService.alertSuccess('Paciente atualizado com sucesso!', 'Redirecionando a página...');
+              setTimeout(() => this.router.navigate(['/pacientes'], { queryParams: { pagina: 1}}), 2000);
+              this.submittedSucess = true;
+            }
+          });
+      } else {
+        this.patientService.create(patient)
+          .subscribe({
+            error: () => this.modalService.alertDanger('Erro ao cadastrar paciente!', 'Tente novamente mais tarde.'),
+            complete: () => {
+              this.modalService.alertSuccess('Paciente cadastrado com sucesso!', 'Redirecionando a página...');
+              setTimeout(() => this.router.navigate(['/pacientes'], { queryParams: { pagina: 1}}), 2000);
+              this.submittedSucess = true;
+            }
+          });
+      }
     }
-    if (this.form.get('homePhone').value != null) {
-      patient.homePhone = this.maskService.undoMask(this.form.get('homePhone').value);
-    }
-    if (this.form.get('mobilePhone').value != null) {
-      patient.mobilePhone = this.maskService.undoMask(this.form.get('mobilePhone').value);
-    }
-    if (this.form.get('cep').value != null) {
-      patient.cep = this.maskService.undoMask(this.form.get('cep').value);
-    }
-    return patient;
+  }
+
+  onCancel(): void {
+    this.router.navigate(['/pacientes'], { queryParams: { pagina: 1}});
   }
 
 }

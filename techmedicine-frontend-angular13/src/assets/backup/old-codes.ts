@@ -65,5 +65,36 @@ this.subscription = this.estados$.subscribe(estados => {
     <ng-template #notFoundTemplate let-notFound>
       <div [innerHTML]="notFound"></div>
     </ng-template>-->
-*/
 
+------------ AGENDAMENTOS FORM HTML ------------
+
+<!--<ng-template #customItemTemplate let-model="item">
+  <span>{{ model.nome + ' ' + model.sobrenome + '    CPF:' + model.cpf }}</span>
+</ng-template>
+
+<label for="states">States</label>
+<input [(ngModel)]="selected"
+       [typeahead]="patients"
+       [typeaheadOptionsLimit]="15"
+       (typeaheadOnSelect)="select($event.item)"
+       class="form-control"
+       id="states">
+<button (click)="print()">Print</button>
+<pre class="card card-block card-header mb-3">Model: {{selected | json}}</pre>
+
+  <label for="patients">Pacientes</label>
+  <input formControlName="patient"
+       [typeahead]="patients"
+       typeaheadOptionField="nome"
+       [typeaheadOptionsLimit]="15"
+       (typeaheadOnSelect)="select($event.item)"
+       class="form-control"
+       id="patients">
+  <button (click)="print()">Print</button>-->
+
+  <select class="form-select" id="patient" formControlName="patient" placeholder="Paciente"
+  [ngClass]="applyValidationClass('patient')" [compareWith]="compareFnPatient">
+    <option value="null" disabled="true" [selected]="true">Selecione o paciente</option>
+    <option *ngFor="let patient of patients$ | async" [ngValue]="patient">{{ patient.name + ' ' + patient.surname }}</option>t
+  </select>-->
+*/

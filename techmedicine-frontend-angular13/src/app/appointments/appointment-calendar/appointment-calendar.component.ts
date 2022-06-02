@@ -9,6 +9,11 @@ import { ModalService } from 'src/app/shared/services/modal.service';
 import { Appointment } from '../model/appointment';
 import { AppointmentService } from '../service/appointment.service';
 
+export class Teste {
+  id: number;
+  descricao: string;
+}
+
 @Component({
   selector: 'app-appointment-calendar',
   templateUrl: './appointment-calendar.component.html',
@@ -58,7 +63,7 @@ export class AppointmentsCalendarComponent implements OnInit {
     selectAllow: this.maxSelectionAllowed.bind(this),
     eventClick: this.viewAppointment.bind(this)
   };
-  radioModel: string = 'Calendar';
+  /* radioModel: string = 'Calendar'; */
   appointments$: Observable<Appointment[]>;
   appointment: Appointment;
   error: Subject<boolean> = new Subject();
@@ -73,14 +78,28 @@ export class AppointmentsCalendarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.route.snapshot.queryParams['pagina']) {
-      this.radioModel = 'List';
-    }
     this.onRefresh();
+    /*let teste: Teste = new Teste();
+    teste.id = 1;
+    teste.descricao = 'teste';
+    let teste2: Teste = teste;
+    console.log('Antes função: ')
+    console.log(teste)
+    this.func(teste);
+    console.log('Depois função: ')
+    console.log(teste)
+    console.log('Teste2: ')
+    console.log(teste2)*/
   }
 
+  /*func(arg) {
+    arg.id = 10;
+    console.log('Função: ');
+    console.log(arg)
+
+  }*/
+
   onRefresh(): void | Observable<never> {
-    this.radioModel = 'Calendar';
     let agendamentos: any[];
     this.appointments$ = this.appointmentService.findAll()
       .pipe(
@@ -89,33 +108,26 @@ export class AppointmentsCalendarComponent implements OnInit {
           return of();
         })
       );
-    this.appointments$.subscribe(result => {
-      agendamentos = result.map((a: Appointment) => {
-        return {
-          id: a.id,
-          title: a.patient.name + ' ' + a.patient.surname,
-          start: a.scheduledTimestamp,
-          end: a.endTimestamp
-        };
+    this.appointments$
+      .pipe(
+        take(1)
+      )
+      .subscribe(result => {
+        agendamentos = result.map((appointment: Appointment) => {
+          return {
+            id: appointment.id,
+            title: appointment.patient.name + ' ' + appointment.patient.surname,
+            start: appointment.scheduledTimestamp,
+            end: appointment.endTimestamp
+          };
+        });
+        this.calendarOptions.events = agendamentos;
       });
-      this.calendarOptions.events = agendamentos;
-    });
   }
 
-  reloadPage(): void {
-    window.location.reload();
-  }
-
-  onBack(): void {
-    this.location.back();
-  }
-
-  changeUrl(): void {
-    this.router.navigate([], {
-      queryParams: {
-        pagina: 1
-      }
-    });
+  private maxSelectionAllowed(arg): boolean {
+    var duration = Math.abs((arg.end.getTime() - arg.start.getTime()) / 3600000);
+    return duration < 1;
   }
 
   private addAppointment(arg): void {
@@ -126,18 +138,6 @@ export class AppointmentsCalendarComponent implements OnInit {
       relativeTo: this.route,
       queryParams: { data: urlDateStr }
     });
-  }
-
-  private viewAppointment(arg): void {
-      this.appointmentService.findById(arg.event.id).subscribe(result => {
-      this.appointment = result;
-      this.appointmentModal.show();
-    });
-  }
-
-  private maxSelectionAllowed(arg): boolean {
-    var duration = Math.abs((arg.end.getTime() - arg.start.getTime()) / 3600000);
-    return duration < 1;
   }
 
   private eventDropUpdate(info): void {
@@ -161,5 +161,37 @@ export class AppointmentsCalendarComponent implements OnInit {
       });
   }
 
+  private viewAppointment(arg): void {
+    this.appointmentService.findById(arg.event.id).subscribe(result => {
+      this.appointment = result;
+      this.appointmentModal.show();
+    });
+  }
+
+  onBack(): void {
+    this.location.back();
+  }
+
+  reloadPage(): void {
+    window.location.reload();
+  }
+
 }
 
+/*
+
+onInit() {
+  if (this.route.snapshot.queryParams['pagina']) {
+    this.radioModel = 'List';
+  }
+  this.radioModel = 'Calendar';
+}
+
+changeUrl(): void {
+    this.router.navigate([], {
+      queryParams: {
+        pagina: 1
+      }
+    });
+  }
+*/

@@ -1,6 +1,7 @@
 import { Location } from "@angular/common";
 import { FormBuilder, FormGroup, ValidationErrors } from "@angular/forms";
 import { Router } from "@angular/router";
+import { take } from "rxjs";
 import { ICanDeactivate } from "../guards/ican-deactivate";
 
 export class FormService implements ICanDeactivate {
@@ -17,18 +18,6 @@ export class FormService implements ICanDeactivate {
     protected location: Location
   ) { }
 
-  hasError(field: string): ValidationErrors {
-    return this.form.get(field)?.errors;
-  }
-
-  isTouched(field: string): boolean {
-    return this.form.get(field)?.touched;
-  }
-
-  isDirty(field: string): boolean {
-    return this.form.get(field)?.dirty;
-  }
-
   applyValidationClass(field: string, ngSelect?: boolean): any {
     if (ngSelect) {
       return {
@@ -42,18 +31,39 @@ export class FormService implements ICanDeactivate {
     }
   }
 
-  formHasChanged(): boolean {
+  private hasError(field: string): ValidationErrors {
+    return this.form.get(field)?.errors;
+  }
+
+  private isTouched(field: string): boolean {
+    return this.form.get(field)?.touched;
+  }
+
+  private isDirty(field: string): boolean {
+    return this.form.get(field)?.dirty;
+  }
+
+  private formHasChanged(): boolean {
     let cont: number = 0;
     Object.keys(this.form.value).forEach(key => {
       if (this.form.value[key] != '' && this.form.value[key] != null && this.form.value[key] != undefined) {
         cont++;
       }
     });
-
     if (cont != 0 && this.changed && !this.submittedSucess) {
       return confirm('Tem certeza que deseja sair? Os dados preenchidos serão perdidos.');
     }
     return true;
+  }
+
+  subscribeToChanges(): void {
+    this.form.valueChanges
+      .pipe(
+        take(1)
+      )
+      .subscribe(() => {
+        this.changed = true;
+      });
   }
 
   canDeactivateRoute(): boolean {

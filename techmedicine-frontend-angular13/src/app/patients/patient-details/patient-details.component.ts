@@ -20,17 +20,10 @@ export class PatientDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.patient = this.route.snapshot.data['patient'];
-    this.formatData();
-  }
-
-  private formatData(): void {
-    const date: Date = new Date(this.patient.birthDate);
-    this.patient.birthDate = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-    this.patient.cpf = this.maskService.applyMask('cpf', this.patient.cpf);
-    this.patient.homePhone = this.maskService.applyMask('homePhone', this.patient.homePhone);
-    this.patient.mobilePhone = this.maskService.applyMask('mobilePhone', this.patient.mobilePhone);
-    this.patient.cep =this.maskService.applyMask('cep', this.patient.cep);
+    this.patient = this.maskService.formatData(
+      this.route.snapshot.data['patient'],
+      ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep']
+    );
   }
 
   onBackToList(): void {

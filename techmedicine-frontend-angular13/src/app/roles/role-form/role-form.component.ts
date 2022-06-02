@@ -25,9 +25,12 @@ export class RoleFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
-    this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
-    const role = this.route.snapshot.data['role'];
+    this.createForm();
+  }
 
+  private createForm(): void {
+    const role = this.route.snapshot.data['role'];
+    this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
       id: [role.id],
       description: [role.description, [Validators.required, Validators.maxLength(35)]]

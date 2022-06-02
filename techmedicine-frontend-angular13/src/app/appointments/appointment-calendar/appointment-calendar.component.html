@@ -6,20 +6,21 @@
         <a class="fs-5 display-1 back" (click)="onBack()"><i class="fas fa-arrow-left"></i><span
             class="ms-2">Voltar</span></a>
       </div>
-      <div class="pt-4 pb-md-0 pb-3 col-9 text-end" role="group" aria-label="Basic example">
+      <!-- <div class="pt-4 pb-md-0 pb-3 col-9 text-end" role="group" aria-label="Basic example">
         <label class="btn btn-primary" [(ngModel)]="radioModel"
           btnRadio="Calendar" tabindex="0" role="button">Calendário</label>
         <label class="btn btn-primary" [(ngModel)]="radioModel" (click)="changeUrl()"
           btnRadio="List" tabindex="0" role="button">Lista</label>
-      </div>
+      </div> -->
   </div>
-  <div *ngIf="radioModel === 'Calendar'; else appointmentsList">
+  <!-- <div *ngIf="radioModel === 'Calendar'; else appointmentsList"> -->
+  <div>
     <full-calendar [options]="calendarOptions" class="mt-4 mb-5"></full-calendar>
   </div>
 
-  <ng-template #appointmentsList>
+  <!-- <ng-template #appointmentsList>
     <app-appointment-list [appointments]="appointments" [error]="error" (deleteEvent)="onRefresh()" *ngIf="radioModel === 'List'" ></app-appointment-list>
-  </ng-template>
+  </ng-template> -->
 </div>
 
 <ng-template #loadingError>

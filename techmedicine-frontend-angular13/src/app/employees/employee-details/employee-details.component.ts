@@ -20,17 +20,10 @@ export class EmployeeDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.employee = this.route.snapshot.data['employee'];
-    this.formatData();
-  }
-
-  private formatData(): void {
-    let date: Date = new Date(this.employee.birthDate);
-    this.employee.birthDate = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-    this.employee.cpf = this.maskService.applyMask('cpf', this.employee.cpf);
-    this.employee.homePhone = this.maskService.applyMask('homePhone', this.employee.cpf);
-    this.employee.mobilePhone = this.maskService.applyMask('mobilePhone', this.employee.mobilePhone);
-    this.employee.cep =this.maskService.applyMask('cep', this.employee.cep);
+    this.employee = this.maskService.formatData(
+      this.route.snapshot.data['employee'],
+      ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep']
+    );
   }
 
   onBackToList(): void {

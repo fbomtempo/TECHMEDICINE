@@ -55,7 +55,10 @@ export class MedicListComponent implements OnInit, OnDestroy {
       .pipe(
         map(medics => {
           return medics.map(medic => {
-            return this.formatData(medic);
+            return this.maskService.formatData(
+              medic,
+              ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep']
+            );
           });
         }),
         catchError((err) => {
@@ -63,16 +66,6 @@ export class MedicListComponent implements OnInit, OnDestroy {
           return of();
         })
     );
-  }
-
-  private formatData(medic: Medic): Medic {
-    const date: Date = new Date(medic.birthDate);
-    medic.birthDate = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-    medic.cpf = this.maskService.applyMask('cpf', medic.cpf);
-    medic.homePhone = this.maskService.applyMask('homePhone', medic.homePhone);
-    medic.mobilePhone = this.maskService.applyMask('mobilePhone', medic.mobilePhone);
-    medic.cep =this.maskService.applyMask('cep', medic.cep);
-    return medic;
   }
 
   onDelete(medic: Medic): void {

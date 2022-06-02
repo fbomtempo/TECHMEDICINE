@@ -1,14 +1,13 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { map, Observable, Subject, Subscription, take } from 'rxjs';
 import { Medic } from 'src/app/medics/model/medic';
-import { MedicService } from 'src/app/medics/service/medic.service';
 import { Patient } from 'src/app/patients/model/patient';
-import { PatientService } from 'src/app/patients/service/patient.service';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { FormService } from 'src/app/shared/services/form-service';
+import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 import { Appointment } from '../model/appointment';
 import { AppointmentService } from '../service/appointment.service';
@@ -44,8 +43,12 @@ export class AppointmentFormComponent extends FormService implements OnInit {
   startTime: string;
   endTime: string;
   timeslot: string;
-  patients$: Observable<Patient[]>;
-  medics$: Observable<Medic[]>;
+  //patients$: Observable<Patient[]>;
+  patients:Patient[];
+  patientsLoading: boolean = true;
+  //medics$: Observable<Medic[]>;
+  medics: Medic[];
+  medicsLoading: boolean = true;
   compareFnPatient(c1: Patient, c2: Patient): boolean {
     return c1 && c2 ? c1.id === c2.id : c1 === c2;
   }
@@ -55,9 +58,10 @@ export class AppointmentFormComponent extends FormService implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private dropdownService: DropdownService,
-    private modalService: ModalService,
     private appointmentService: AppointmentService,
+    private modalService: ModalService,
+    private dropdownService: DropdownService,
+    private maskService: MaskService,
     protected override formBuilder: FormBuilder,
     protected override router: Router,
     protected override location: Location
@@ -66,14 +70,55 @@ export class AppointmentFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
-    this.patients$ = this.dropdownService.getPatients();
-    this.medics$ = this.dropdownService.getMedics();
-    this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
-    const appointment = this.route.snapshot.data['appointment'];
+    this.fetchData();
+    this.createForm();
+  }
 
+  private fetchData(): void {
+    this.dropdownService.getPatients()
+      .pipe(
+        map(patients => {
+          return patients.map(patient => {
+            return this.maskService.formatData(
+              patient,
+              ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep']
+            );
+          });
+        })
+      )
+      .subscribe(result => {
+        this.patients = result.map(patient => {
+          patient.searchLabel = `${patient.name} ${patient.surname}`;
+          return patient;
+        });
+        this.patientsLoading = false;
+        }
+      );
+    this.dropdownService.getMedics()
+      .pipe(
+        map(medics => {
+          return medics.map(medic => {
+            return this.maskService.formatData(
+              medic,
+              ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep']
+            );
+          });
+        })
+      )
+      .subscribe(result => {
+        this.medics = result.map(medic => {
+          medic.searchLabel = `${medic.name} ${medic.surname}`;
+          return medic;
+        });
+        this.medicsLoading = false
+      });
+  }
+
+  private createForm(): void {
+    const appointment = this.route.snapshot.data['appointment'];
     const fullTimestamp = this.route.snapshot.queryParams['data'];
     this.formatTimestamp(appointment, fullTimestamp);
-
+    this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
       id: [appointment.id],
       date: [this.date, [Validators.required]],
@@ -86,11 +131,28 @@ export class AppointmentFormComponent extends FormService implements OnInit {
     });
   }
 
+  private formatTimestamp(appointment: Appointment, fullTimestamp: string): void {
+    if (fullTimestamp) {
+      this.date = fullTimestamp.slice(0, 10);
+      this.startTime = fullTimestamp.slice(11, 16);
+      this.endTime = fullTimestamp.slice(17);
+      this.timeslot = this.startTime + '-' + this.endTime;
+      return;
+    } else if (appointment.id) {
+      this.date = appointment.scheduledTimestamp.slice(0, 10);
+      this.startTime = appointment.scheduledTimestamp.slice(11, 16);
+      this.endTime = appointment.endTimestamp.slice(11, 16);
+      this.timeslot = this.startTime + '-' + this.endTime;
+    } else {
+      this.date = null;
+      this.timeslot = null;
+    }
+  }
+
   onSubmit(): void {
     const appointment: Appointment = this.createAppointment(this.form.value);
     this.submitted = true;
-    console.log(appointment)
-    /*if (this.form.valid && this.changed) {
+    if (this.form.valid && this.changed) {
       if (this.form.value['id']) {
         this.appointmentService.update(appointment)
           .subscribe({
@@ -112,53 +174,24 @@ export class AppointmentFormComponent extends FormService implements OnInit {
             }
           });
       }
-    }*/
-  }
-
-  onCancel(): void {
-    this.router.navigate(['agendamentos']);
+    }
   }
 
   private createAppointment(data: any): Appointment {
     const times: string[] = data.timeslot.split('-');
+    const fields = ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep'];
     return {
       id: data.id,
-      patient: data.patient,
-      medic: data.medic,
+      patient: (data.patient != null ) ? this.maskService.unformatData(data.patient, fields) : null,
+      medic: (data.medic != null ) ? this.maskService.unformatData(data.medic, fields) : null,
       scheduledTimestamp: data.date + 'T' + times[0],
       endTimestamp: data.date + 'T' + times[1],
       appointmentSituation: null
     };
   }
 
-  private formatTimestamp(appointment: Appointment, fullTimestamp: string): void {
-    if (fullTimestamp) {
-      this.date =fullTimestamp.slice(0, 10);
-      this.startTime = fullTimestamp.slice(11, 16);
-      this.endTime = fullTimestamp.slice(17);
-      this.timeslot = this.startTime + '-' + this.endTime;
-      return;
-    } else if (appointment.id) {
-      this.date = appointment.scheduledTimestamp.slice(0, 10);
-      this.startTime = appointment.scheduledTimestamp.slice(11, 16);
-      this.endTime = appointment.endTimestamp.slice(11, 16);
-      this.timeslot = this.startTime + '-' + this.endTime;
-    } else {
-      this.date = null;
-      this.timeslot = null;
-    }
+  onCancel(): void {
+    this.router.navigate(['agendamentos']);
   }
 
-  applyValidationClassTest(field: string): any {
-    return {
-      'ng-untouched': !this.submitted,
-      'ng-touched': this.submitted,
-      'is-invalid': (this.submitted || this.isTouched(field) || this.isDirty(field)) && this.hasError(field),
-      'is-valid': (this.submitted || this.isTouched(field) || this.isDirty(field)) && !this.hasError(field)
-    }
-  }
-
-  log() {
-    console.log(this.form.get('patient').value);
-  }
 }

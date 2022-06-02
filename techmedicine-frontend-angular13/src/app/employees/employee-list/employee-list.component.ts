@@ -55,7 +55,10 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
       .pipe(
         map(employees => {
           return employees.map(employee => {
-            return this.formatData(employee);
+            return this.maskService.formatData(
+              employee,
+              ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep']
+            );
           });
         }),
         catchError(() => {
@@ -63,16 +66,6 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
           return of();
         })
     );
-  }
-
-  private formatData(employee: Employee): Employee {
-    const date: Date = new Date(employee.birthDate);
-    employee.birthDate = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-    employee.cpf = this.maskService.applyMask('cpf', employee.cpf);
-    employee.homePhone = this.maskService.applyMask('homePhone', employee.homePhone);
-    employee.mobilePhone = this.maskService.applyMask('mobilePhone', employee.mobilePhone);
-    employee.cep =this.maskService.applyMask('cep', employee.cep);
-    return employee;
   }
 
   onDelete(employee: Employee): void {

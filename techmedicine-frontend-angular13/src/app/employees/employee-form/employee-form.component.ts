@@ -21,7 +21,7 @@ import { EmployeeService } from '../service/employee.service';
 export class EmployeeFormComponent extends FormService implements OnInit {
 
   states$: Observable<State[]>;
-  roles$: Observable<Role[]>;
+  roles:Role[];
   rolesLoading: boolean = true;
   compareFn(c1: Role, c2: Role): boolean {
     return c1 && c2 ? c1.id === c2.id : c1 === c2;
@@ -42,18 +42,27 @@ export class EmployeeFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
-    this.states$ = this.dropdownService.getStates();
-    this.roles$ = this.dropdownService.getRoles();
-    this.roles$
-    .pipe(
-      take(1)
-    )
-    .subscribe({
-      next: () => this.rolesLoading = false
-    });
-    this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
-    const employee = this.route.snapshot.data['employee'];
+    this.fetchData();
+    this.createForm();
+  }
 
+  private fetchData(): void {
+    this.states$ = this.dropdownService.getStates();
+    this.dropdownService.getRoles()
+      .subscribe({
+        next: (result) => {
+          this.roles = result;
+          this.rolesLoading = false;
+        }
+      });
+  }
+
+  private createForm(): void {
+    const employee = this.maskService.formatData(
+      this.route.snapshot.data['employee'],
+      ['cpf', 'homePhone', 'mobilePhone', 'cep']
+    );
+    this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
       id: [employee.id],
       name: [employee.name, [Validators.required, Validators.maxLength(20)]],
@@ -74,47 +83,7 @@ export class EmployeeFormComponent extends FormService implements OnInit {
       district: [employee.district, [Validators.required, Validators.maxLength(30)]],
       complement: [employee.complement, [Validators.maxLength(70)]]
     });
-    const fields = ['cpf', 'homePhone', 'mobilePhone', 'cep'];
-    fields.forEach(field => {
-      if (this.form.get(field).value != null) {
-        this.applyMaskToInput(field);
-      }
-    });
-    this.form.valueChanges.subscribe(() => {
-      this.changed = true;
-    });
-  }
-
-  onSubmit(): void {
-    const employee: Employee = this.unformatData(this.form.value);
-    this.submitted = true;
-    if (this.form.valid && this.changed) {
-      if (this.form.value['id']) {
-        this.employeeService.update(employee)
-          .subscribe({
-            error: () => this.modalService.alertDanger('Erro ao atualizar funcionário!', 'Tente novamente mais tarde.'),
-            complete: () => {
-              this.modalService.alertSuccess('Funcionário atualizado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.router.navigate(['/funcionarios'], { queryParams: { pagina: 1 } }), 2000);
-              this.submittedSucess = true;
-            }
-          });
-      } else {
-        this.employeeService.create(employee)
-          .subscribe({
-            error: () => this.modalService.alertDanger('Erro ao cadastrar funcionário!', 'Tente novamente mais tarde.'),
-            complete: () => {
-              this.modalService.alertSuccess('Funcionário cadastrado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.router.navigate(['/funcionarios'], { queryParams: { pagina: 1 } }), 2000);
-              this.submittedSucess = true;
-            }
-          });
-      }
-    }
-  }
-
-  onCancel(): void {
-    this.router.navigate(['/funcionarios'], { queryParams: { pagina: 1 } });
+    this.subscribeToChanges();
   }
 
   applyMaskToInput(mask: string): void {
@@ -148,20 +117,39 @@ export class EmployeeFormComponent extends FormService implements OnInit {
     this.form.get('complement').markAsTouched();
   }
 
-  private unformatData(employee: Employee): Employee {
-    if (this.form.get('cpf').value != null) {
-      employee.cpf = this.maskService.undoMask(this.form.get('cpf').value);
+  onSubmit(): void {
+    const employee: Employee = this.maskService.unformatData(
+      this.form.value,
+      ['cpf', 'homePhone', 'mobilePhone', 'cep']
+    );
+    this.submitted = true;
+    if (this.form.valid && this.changed) {
+      if (this.form.value['id']) {
+        this.employeeService.update(employee)
+          .subscribe({
+            error: () => this.modalService.alertDanger('Erro ao atualizar funcionário!', 'Tente novamente mais tarde.'),
+            complete: () => {
+              this.modalService.alertSuccess('Funcionário atualizado com sucesso!', 'Redirecionando a página...');
+              setTimeout(() => this.router.navigate(['/funcionarios'], { queryParams: { pagina: 1 } }), 2000);
+              this.submittedSucess = true;
+            }
+          });
+      } else {
+        this.employeeService.create(employee)
+          .subscribe({
+            error: () => this.modalService.alertDanger('Erro ao cadastrar funcionário!', 'Tente novamente mais tarde.'),
+            complete: () => {
+              this.modalService.alertSuccess('Funcionário cadastrado com sucesso!', 'Redirecionando a página...');
+              setTimeout(() => this.router.navigate(['/funcionarios'], { queryParams: { pagina: 1 } }), 2000);
+              this.submittedSucess = true;
+            }
+          });
+      }
     }
-    if (this.form.get('homePhone').value != null) {
-      employee.homePhone = this.maskService.undoMask(this.form.get('homePhone').value);
-    }
-    if (this.form.get('mobilePhone').value != null) {
-      employee.mobilePhone = this.maskService.undoMask(this.form.get('mobilePhone').value);
-    }
-    if (this.form.get('cep').value != null) {
-      employee.cep = this.maskService.undoMask(this.form.get('cep').value);
-    }
-    return employee;
+  }
+
+  onCancel(): void {
+    this.router.navigate(['/funcionarios'], { queryParams: { pagina: 1 } });
   }
 
 }
