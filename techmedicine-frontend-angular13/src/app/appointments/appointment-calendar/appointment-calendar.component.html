@@ -2,16 +2,51 @@
 
 <div *ngIf="appointments$ | async as appointments; else loadingError">
   <div class="row">
+    <div class="col-md-12">
+      <div class="pt-4 pb-md-0 pb-3 col-md-3">
+        <a class="fs-5 display-1 back" (click)="onBack()"><i class="fas fa-arrow-left"></i><span
+            class="ms-2">Voltar</span></a>
+      </div>
+      <h1 class="text-center pb-4">Realização de Agendamentos</h1>
+    </div>
+  </div>
+  <!--<div class="row">
       <div class="pt-4 pb-md-0 pb-3 col-3">
         <a class="fs-5 display-1 back" (click)="onBack()"><i class="fas fa-arrow-left"></i><span
             class="ms-2">Voltar</span></a>
       </div>
-      <!-- <div class="pt-4 pb-md-0 pb-3 col-9 text-end" role="group" aria-label="Basic example">
+      <div class="pt-4 pb-md-0 pb-3 col-9 text-end" role="group" aria-label="Basic example">
         <label class="btn btn-primary" [(ngModel)]="radioModel"
           btnRadio="Calendar" tabindex="0" role="button">Calendário</label>
         <label class="btn btn-primary" [(ngModel)]="radioModel" (click)="changeUrl()"
           btnRadio="List" tabindex="0" role="button">Lista</label>
-      </div> -->
+      </div>-->
+  <div class="row">
+    <div class="pt-2 pb-3">
+        <label for="medic" class="form-label">Médico</label>
+        <ng-select [items]="medics"
+                   bindLabel="searchLabel"
+                   labelForId="medic"
+                   placeholder="Selecione o médico"
+                   clearAllText="Limpar"
+                   [compareWith]="compareFnMedic"
+                   [loading]="medicsLoading"
+                   notFoundText="Nenhum item encontrado"
+                   [virtualScroll]="true">
+          <ng-template ng-label-tmp let-item="item">
+            {{item.name + ' ' + item.surname}}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+            <div style="margin: 10px 0;" class="card">
+              <div class="card-body">
+                  <h5 class="card-title">{{ item.name + ' ' +item.surname }}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">CPF: {{ item.cpf }}</h6>
+                  <h6 class="card-subtitle mb-2 text-muted">Telefone: {{ item.mobilePhone }}</h6>
+              </div>
+            </div>
+          </ng-template>
+        </ng-select>
+    </div>
   </div>
   <!-- <div *ngIf="radioModel === 'Calendar'; else appointmentsList"> -->
   <div>

@@ -3,8 +3,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarOptions } from '@fullcalendar/angular';
 import ptBrLocale from '@fullcalendar/core/locales/pt-br';
-import { catchError, Observable, of, Subject, switchMap, take } from 'rxjs';
+import { catchError, map, Observable, of, Subject, switchMap, take } from 'rxjs';
 import { AppointmentModalComponent } from 'src/app/appointments/appointment-modal/appointment-modal.component';
+import { Medic } from 'src/app/medics/model/medic';
+import { DropdownService } from 'src/app/shared/services/dropdown.service';
+import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 import { Appointment } from '../model/appointment';
 import { AppointmentService } from '../service/appointment.service';
@@ -69,8 +72,16 @@ export class AppointmentsCalendarComponent implements OnInit {
   error: Subject<boolean> = new Subject();
   @ViewChild('appointmentModal', { static: true }) appointmentModal?: AppointmentModalComponent;
 
+  medics: Medic[];
+  medicsLoading: boolean = true;
+  compareFnMedic(c1: Medic, c2: Medic): boolean {
+    return c1 && c2 ? c1.id === c2.id : c1 === c2;
+  }
+
   constructor(
     private appointmentService: AppointmentService,
+    private dropdownService: DropdownService,
+    private maskService: MaskService,
     private modalService: ModalService,
     private route: ActivatedRoute,
     private router: Router,
@@ -78,6 +89,7 @@ export class AppointmentsCalendarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.fetchData();
     this.onRefresh();
     /*let teste: Teste = new Teste();
     teste.id = 1;
@@ -98,6 +110,27 @@ export class AppointmentsCalendarComponent implements OnInit {
     console.log(arg)
 
   }*/
+
+  private fetchData(): void {
+    this.dropdownService.getMedics()
+      .pipe(
+        map(medics => {
+          return medics.map(medic => {
+            return this.maskService.formatData(
+              medic,
+              ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep']
+            );
+          });
+        })
+      )
+      .subscribe(result => {
+        this.medics = result.map(medic => {
+          medic.searchLabel = `${medic.name} ${medic.surname}`;
+          return medic;
+        });
+        this.medicsLoading = false
+      });
+  }
 
   onRefresh(): void | Observable<never> {
     let agendamentos: any[];
