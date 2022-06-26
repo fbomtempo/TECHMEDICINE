@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, take } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Role } from 'src/app/roles/model/role';
 import { State } from 'src/app/shared/models/states';
 import { CepSearchService } from 'src/app/shared/services/cep-search.service';
@@ -10,6 +10,7 @@ import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { FormService } from 'src/app/shared/services/form-service';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
+
 import { Employee } from '../model/employee';
 import { EmployeeService } from '../service/employee.service';
 
@@ -28,15 +29,15 @@ export class EmployeeFormComponent extends FormService implements OnInit {
   }
 
   constructor(
+    protected override formBuilder: FormBuilder,
+    protected override router: Router,
+    protected override location: Location,
     private employeeService: EmployeeService,
     private modalService: ModalService,
     private cepService: CepSearchService,
     private maskService: MaskService,
     private dropdownService: DropdownService,
-    private route: ActivatedRoute,
-    protected override formBuilder: FormBuilder,
-    protected override router: Router,
-    protected override location: Location
+    private route: ActivatedRoute
   ) {
     super(formBuilder, router, location);
   }
@@ -50,18 +51,18 @@ export class EmployeeFormComponent extends FormService implements OnInit {
     this.states$ = this.dropdownService.getStates();
     this.dropdownService.getRoles()
       .subscribe({
-        next: (result) => {
-          this.roles = result;
-          this.rolesLoading = false;
-        }
+        next: (roles: Role[]) => this.roles = roles,
+        complete: () => this.rolesLoading = false
       });
   }
 
   private createForm(): void {
-    const employee = this.maskService.formatData(
-      this.route.snapshot.data['employee'],
-      ['cpf', 'homePhone', 'mobilePhone', 'cep']
-    );
+    const employee = this.maskService.formatData(this.route.snapshot.data['employee'], [
+      'cpf',
+      'homePhone',
+      'mobilePhone',
+      'cep'
+    ]);
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
       id: [employee.id],
@@ -96,13 +97,13 @@ export class EmployeeFormComponent extends FormService implements OnInit {
     const cep = this.form.get('cep').value;
     if (cep != null && cep !== '') {
       this.cepService.searchCEP(cep)
-        .subscribe(data => {
+        .subscribe((data: any) => {
           this.populateData(data);
         });
     }
   }
 
-  private populateData(data): void {
+  private populateData(data: any): void {
     this.form.patchValue({
       city: data.localidade,
       state: data.uf,
@@ -118,10 +119,12 @@ export class EmployeeFormComponent extends FormService implements OnInit {
   }
 
   onSubmit(): void {
-    const employee: Employee = this.maskService.unformatData(
-      this.form.value,
-      ['cpf', 'homePhone', 'mobilePhone', 'cep']
-    );
+    const employee: Employee = this.maskService.unformatData(this.form.value, [
+      'cpf',
+      'homePhone',
+      'mobilePhone',
+      'cep'
+    ]);
     this.submitted = true;
     if (this.form.valid && this.changed) {
       if (this.form.value['id']) {
@@ -151,7 +154,6 @@ export class EmployeeFormComponent extends FormService implements OnInit {
   onCancel(): void {
     this.router.navigate(['/funcionarios'], { queryParams: { pagina: 1 } });
   }
-
 }
 
 

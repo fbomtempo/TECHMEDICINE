@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormService } from 'src/app/shared/services/form-service';
 import { ModalService } from 'src/app/shared/services/modal.service';
+
 import { RoleService } from '../service/role.service';
 
 @Component({
@@ -14,12 +15,12 @@ import { RoleService } from '../service/role.service';
 export class RoleFormComponent extends FormService implements OnInit {
 
   constructor(
+    protected override formBuilder: FormBuilder,
+    protected override router: Router,
+    protected override location: Location,
     private route: ActivatedRoute,
     private roleService: RoleService,
-    private modalService: ModalService,
-    formBuilder: FormBuilder,
-    router: Router,
-    location: Location
+    private modalService: ModalService
   ) {
     super(formBuilder, router, location);
   }
@@ -35,9 +36,7 @@ export class RoleFormComponent extends FormService implements OnInit {
       id: [role.id],
       description: [role.description, [Validators.required, Validators.maxLength(35)]]
     });
-    this.form.valueChanges.subscribe(() => {
-      this.changed = true;
-    });
+    this.subscribeToChanges();
   }
 
   onSubmit(): void {
@@ -70,6 +69,5 @@ export class RoleFormComponent extends FormService implements OnInit {
   onCancel(): void {
     this.router.navigate(['cargos'], { queryParams: { pagina: 1 }});
   }
-
 }
 

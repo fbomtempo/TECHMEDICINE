@@ -1,10 +1,11 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalService } from 'src/app/shared/services/modal.service';
 import { FormService } from 'src/app/shared/services/form-service';
+import { ModalService } from 'src/app/shared/services/modal.service';
+
 import { SpecialtyService } from '../service/specialty.service';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-specialty-form',
@@ -14,12 +15,12 @@ import { Location } from '@angular/common';
 export class SpecialtyFormComponent extends FormService implements OnInit {
 
   constructor(
+    protected override formBuilder: FormBuilder,
+    protected override router: Router,
+    protected override location: Location,
     private route: ActivatedRoute,
     private specialtyService: SpecialtyService,
-    private modalService: ModalService,
-    formBuilder: FormBuilder,
-    router: Router,
-    location: Location
+    private modalService: ModalService
   ) {
     super(formBuilder, router, location);
   }
@@ -35,9 +36,7 @@ export class SpecialtyFormComponent extends FormService implements OnInit {
       id: [specialty.id],
       description: [specialty.description, [Validators.required, Validators.maxLength(45)]]
     });
-    this.form.valueChanges.subscribe(() => {
-      this.changed = true;
-    });
+    this.subscribeToChanges();
   }
 
   onSubmit(): void {
@@ -70,5 +69,4 @@ export class SpecialtyFormComponent extends FormService implements OnInit {
   onCancel(): void {
     this.router.navigate(['especialidades'], { queryParams: { pagina: 1 }});
   }
-
 }

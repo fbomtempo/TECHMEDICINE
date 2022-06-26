@@ -16,9 +16,9 @@ export class AppointmentModalComponent implements OnInit {
 
   @Input() appointment: Appointment;
 
-  @ViewChild('template') modalTemplate;
-
   @Output() deletionEvent: EventEmitter<void> = new EventEmitter();
+
+  @ViewChild('template') modalTemplate;
 
   constructor(
     private bsModalRef: BsModalRef,
@@ -43,7 +43,9 @@ export class AppointmentModalComponent implements OnInit {
   }
 
   show(): void {
-    this.bsModalRef = this.bsModalService.show(this.modalTemplate, Object.assign({}, { class: 'modal-lg' }));
+    this.bsModalRef = this.bsModalService.show(this.modalTemplate, Object.assign({}, {
+      class: 'modal-lg'
+    }));
   }
 
   close(): void {
@@ -54,32 +56,26 @@ export class AppointmentModalComponent implements OnInit {
     this.modalService.showConfirmModal('Confirmação', 'Tem certeza que deseja remover esse agendamento?')
       .pipe(
         take(1),
-        switchMap(confirmResult => confirmResult ? this.appointmentService.delete(this.appointment.id) : of())
+        switchMap((confirmResult: boolean) => confirmResult ? this.appointmentService.delete(this.appointment.id) : of())
       )
       .subscribe({
         next: () => {
           this.close();
           setTimeout(() => this.deletionEvent.emit(), 100);
         },
-        error: (err) => {
-          console.log(err);
-          this.modalService.alertDanger('Erro ao remover agendamento!', 'Tente novamente mais tarde.')
-        }
+        error: () => this.modalService.alertDanger('Erro ao remover agendamento!', 'Tente novamente mais tarde.')
       });
   }
 
   onUpdate(): void {
     this.close();
-    this.router.navigate(['editar/', this.appointment.id], { relativeTo: this.route });
+    this.router.navigate(['editar/', this.appointment.id], {
+      relativeTo: this.route
+    });
   }
 
   private formatData(appointment: Appointment): void {
-    let date: Date = new Date(this.appointment.patient.birthDate);
-    this.appointment.patient.birthDate = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-    this.appointment.patient.cpf = this.maskService.applyMask('cpf', appointment.patient.cpf);
-    this.appointment.patient.homePhone = this.maskService.applyMask('homePhone', appointment.patient.homePhone);
-    this.appointment.patient.mobilePhone = this.maskService.applyMask('mobilePhone', appointment.patient.mobilePhone);
-    this.appointment.patient.cep =this.maskService.applyMask('cep', appointment.patient.cep);
+    const fields = ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep'];
+    this.appointment.patient = this.maskService.formatData(appointment.patient, fields);
   }
-
 }

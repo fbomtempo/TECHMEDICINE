@@ -6,6 +6,7 @@ import { Patient } from 'src/app/patients/model/patient';
 import { Role } from 'src/app/roles/model/role';
 import { Specialty } from 'src/app/specialties/model/specialty';
 import { environment } from 'src/environments/environment';
+
 import { State } from '../models/states';
 
 @Injectable({
@@ -53,5 +54,4 @@ export class DropdownService {
         take(1)
       );
   }
-
 }

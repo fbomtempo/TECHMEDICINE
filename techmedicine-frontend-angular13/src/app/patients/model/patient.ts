@@ -17,5 +17,4 @@ export interface Patient {
   number: string;
   district: string;
   complement: string;
-
 }

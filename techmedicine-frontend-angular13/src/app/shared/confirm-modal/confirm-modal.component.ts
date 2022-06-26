@@ -19,11 +19,11 @@ export class ConfirmModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onConfirm() {
+  onConfirm(): void {
     this.modalResult(true);
   }
 
-  onCancel() {
+  onCancel(): void {
     this.modalResult(false);
   }
 
@@ -31,5 +31,4 @@ export class ConfirmModalComponent implements OnInit {
     this.confirmResult.next(value);
     this.bsModalRef.hide();
   }
-
 }

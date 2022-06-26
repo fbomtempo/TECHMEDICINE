@@ -1,16 +1,17 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalService } from 'src/app/shared/services/modal.service';
-import { FormService } from 'src/app/shared/services/form-service';
-import { Location } from '@angular/common';
-import { PatientService } from '../service/patient.service';
 import { Observable } from 'rxjs';
 import { State } from 'src/app/shared/models/states';
-import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { CepSearchService } from 'src/app/shared/services/cep-search.service';
+import { DropdownService } from 'src/app/shared/services/dropdown.service';
+import { FormService } from 'src/app/shared/services/form-service';
 import { MaskService } from 'src/app/shared/services/mask.service';
+import { ModalService } from 'src/app/shared/services/modal.service';
+
 import { Patient } from '../model/patient';
+import { PatientService } from '../service/patient.service';
 
 @Component({
   selector: 'app-patient-form',
@@ -22,15 +23,15 @@ export class PatientsFormComponent extends FormService implements OnInit {
   states$: Observable<State[]>;
 
   constructor(
+    protected override formBuilder: FormBuilder,
+    protected override router: Router,
+    protected override location: Location,
     private patientService: PatientService,
     private modalService: ModalService,
     private cepService: CepSearchService,
     private maskService: MaskService,
     private dropdownService: DropdownService,
-    private route: ActivatedRoute,
-    protected override formBuilder: FormBuilder,
-    protected override router: Router,
-    protected override location: Location
+    private route: ActivatedRoute
   ) {
     super(formBuilder, router, location);
   }
@@ -45,10 +46,12 @@ export class PatientsFormComponent extends FormService implements OnInit {
   }
 
   private createForm(): void {
-    const patient = this.maskService.formatData(
-      this.route.snapshot.data['patient'],
-      ['cpf', 'homePhone', 'mobilePhone', 'cep']
-    );
+    const patient = this.maskService.formatData(this.route.snapshot.data['patient'], [
+      'cpf',
+      'homePhone',
+      'mobilePhone',
+      'cep'
+    ]);
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
       id: [patient.id],
@@ -82,13 +85,13 @@ export class PatientsFormComponent extends FormService implements OnInit {
     const cep = this.form.get('cep').value;
     if (cep != null && cep !== '') {
       this.cepService.searchCEP(cep)
-        .subscribe(data => {
+        .subscribe((data: any) => {
           this.populateData(data);
         });
     }
   }
 
-  private populateData(data): void {
+  private populateData(data: any): void {
     this.form.patchValue({
       city: data.localidade,
       state: data.uf,
@@ -104,10 +107,12 @@ export class PatientsFormComponent extends FormService implements OnInit {
   }
 
   onSubmit(): void {
-    const patient: Patient = this.maskService.unformatData(
-      this.form.value,
-      ['cpf', 'homePhone', 'mobilePhone', 'cep']
-    );
+    const patient: Patient = this.maskService.unformatData(this.form.value, [
+      'cpf',
+      'homePhone',
+      'mobilePhone',
+      'cep'
+    ]);
     this.submitted = true;
     if (this.form.valid && this.changed) {
       if (this.form.value['id']) {
@@ -137,6 +142,5 @@ export class PatientsFormComponent extends FormService implements OnInit {
   onCancel(): void {
     this.router.navigate(['/pacientes'], { queryParams: { pagina: 1}});
   }
-
 }
 

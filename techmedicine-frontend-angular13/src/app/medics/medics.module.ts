@@ -1,14 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { MedicsRoutingModule } from './medics-routing.module';
-import { SharedModule } from '../shared/shared.module';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { MedicListComponent } from './medic-list/medic-list.component';
-import { MedicFormComponent } from './medic-form/medic-form.component';
-import { MedicDetailsComponent } from './medic-details/medic-details.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
+import { SharedModule } from '../shared/shared.module';
+import { MedicDetailsComponent } from './medic-details/medic-details.component';
+import { MedicFormComponent } from './medic-form/medic-form.component';
+import { MedicListComponent } from './medic-list/medic-list.component';
+import { MedicsRoutingModule } from './medics-routing.module';
 
 @NgModule({
   declarations: [

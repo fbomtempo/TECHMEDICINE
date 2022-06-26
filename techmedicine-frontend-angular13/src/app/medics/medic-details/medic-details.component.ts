@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MaskService } from 'src/app/shared/services/mask.service';
+
 import { Medic } from '../model/medic';
 
 @Component({
@@ -20,10 +21,13 @@ export class MedicDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.medic = this.maskService.formatData(
-      this.route.snapshot.data['medic'],
-      ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep']
-    );
+    this.medic = this.maskService.formatData(this.route.snapshot.data['medic'], [
+      'birthDate',
+      'cpf',
+      'homePhone',
+      'mobilePhone',
+      'cep'
+    ]);
   }
 
   onBackToList(): void {

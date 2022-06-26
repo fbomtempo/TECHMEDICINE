@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+
 import { AuthService } from '../../auth/services/auth.service';
 import { TokenStorageService } from '../../auth/services/token-storage.service';
 
@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
   login() {
     const { usuario, senha } = this.form.value;
     this.authService.login(usuario, senha).subscribe({
-      next: data => {
+      next: (data: any) => {
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUser(data);
         this.isLoginFailed = false;
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
         this.roles = this.tokenStorage.getUser().roles;
         this.reloadPage();
       },
-      error: err => {
+      error: (err: any) => {
         this.errorMessage = err.error.message;
         console.log(err);
         this.isLoginFailed = true;
@@ -57,5 +57,4 @@ export class LoginComponent implements OnInit {
   reloadPage(): void {
     window.location.reload();
   }
-
 }

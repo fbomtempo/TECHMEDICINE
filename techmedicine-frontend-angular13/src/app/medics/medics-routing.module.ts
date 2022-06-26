@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { DeactivateGuard } from '../shared/guards/deactivate.guard';
 import { MedicsResolver } from './guards/medics.resolver';
 import { MedicDetailsComponent } from './medic-details/medic-details.component';

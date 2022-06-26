@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { DeactivateGuard } from '../shared/guards/deactivate.guard';
-import { AppointmentFormComponent } from './appointment-form/appointment-form.component';
 import { AppointmentsCalendarComponent } from './appointment-calendar/appointment-calendar.component';
+import { AppointmentFormComponent } from './appointment-form/appointment-form.component';
 import { AppointmentsResolver } from './guards/appointments.resolver';
 
 const routes: Routes = [

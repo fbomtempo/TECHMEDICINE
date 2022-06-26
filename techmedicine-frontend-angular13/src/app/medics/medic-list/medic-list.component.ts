@@ -1,10 +1,11 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { catchError, map, Observable, of, Subject, Subscription, switchMap, take } from 'rxjs';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
+
 import { Medic } from '../model/medic';
 import { MedicService } from '../service/medic.service';
 
@@ -38,7 +39,7 @@ export class MedicListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setPaginationSize();
     this.itemsPerPage = 10;
-    this.subscription = this.route.queryParams.subscribe(queryParams => {
+    this.subscription = this.route.queryParams.subscribe((queryParams: Params) => {
       this.page = queryParams['pagina'];
       this.filter = queryParams['nome'];
       this.currentPage = parseInt(this.page.toString());
@@ -53,15 +54,18 @@ export class MedicListComponent implements OnInit, OnDestroy {
   onRefresh(): void | Observable<never> {
     this.medics$ = this.medicService.findAll()
       .pipe(
-        map(medics => {
-          return medics.map(medic => {
-            return this.maskService.formatData(
-              medic,
-              ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep']
-            );
+        map((medics: Medic[]) => {
+          return medics.map((medic: Medic) => {
+            return this.maskService.formatData(medic, [
+              'birthDate',
+              'cpf',
+              'homePhone',
+              'mobilePhone',
+              'cep'
+            ]);
           });
         }),
-        catchError((err) => {
+        catchError(() => {
           this.error.next(true);
           return of();
         })
@@ -72,7 +76,7 @@ export class MedicListComponent implements OnInit, OnDestroy {
     this.modalService.showConfirmModal('Confirmação', 'Tem certeza que deseja remover esse médico?')
       .pipe(
         take(1),
-        switchMap(result => result ? this.medicService.delete(medic.id) : of())
+        switchMap((confirmResult: boolean) => confirmResult ? this.medicService.delete(medic.id) : of())
       )
       .subscribe({
         next: () => setTimeout(() => this.onRefresh(), 100),
@@ -84,8 +88,8 @@ export class MedicListComponent implements OnInit, OnDestroy {
     if (!this.filter || this.filter == '') {
       return medics;
     }
-    return medics.filter(v => {
-      if (v.name.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0) {
+    return medics.filter((medic: Medic) => {
+      if (medic.name.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0) {
         return true;
       } else {
         return false;
@@ -145,5 +149,4 @@ export class MedicListComponent implements OnInit, OnDestroy {
   onBack(): void {
     this.location.back();
   }
-
 }

@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import {
-  Router, Resolve,
-  RouterStateSnapshot,
-  ActivatedRouteSnapshot
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
+
 import { Employee } from '../model/employee';
 import { EmployeeService } from '../service/employee.service';
 

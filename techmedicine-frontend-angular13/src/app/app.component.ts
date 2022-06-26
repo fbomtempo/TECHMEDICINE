@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { TokenStorageService } from './auth/services/token-storage.service';
 
 @Component({
@@ -65,7 +66,6 @@ export class AppComponent implements OnInit {
     this.tokenStorageService.signOut();
     window.location.reload();
   }
-
 }
 
 

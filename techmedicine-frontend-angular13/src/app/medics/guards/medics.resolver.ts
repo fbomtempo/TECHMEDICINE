@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import {
-  Router, Resolve,
-  RouterStateSnapshot,
-  ActivatedRouteSnapshot
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
+
 import { Medic } from '../model/medic';
 import { MedicService } from '../service/medic.service';
 
@@ -29,5 +26,4 @@ export class MedicsResolver implements Resolve<Medic> {
     }
     return of({});
   }
-
 }

@@ -1,5 +1,5 @@
-import { Medic } from "../../medics/model/medic";
-import { Patient } from "../../patients/model/patient";
+import { Medic } from '../../medics/model/medic';
+import { Patient } from '../../patients/model/patient';
 
 export interface Appointment {
 
@@ -9,5 +9,4 @@ export interface Appointment {
   scheduledTimestamp: string;
   endTimestamp: string;
   appointmentSituation: string;
-
 }

@@ -20,12 +20,11 @@ export class AlertModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onClose() {
+  onClose(): void {
     this.bsModalRef.hide();
   }
 
-  onShow() {
+  onShow(): void {
     this.show = !this.show;
   }
-
 }

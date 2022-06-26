@@ -1,9 +1,10 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { catchError, Observable, of, Subject, Subscription, switchMap, take } from 'rxjs';
 import { ModalService } from 'src/app/shared/services/modal.service';
+
 import { Role } from '../model/role';
 import { RoleService } from '../service/role.service';
 
@@ -36,7 +37,7 @@ export class RoleListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setPaginationSize();
     this.itemsPerPage = 10;
-    this.subscription = this.route.queryParams.subscribe(queryParams => {
+    this.subscription = this.route.queryParams.subscribe((queryParams: Params) => {
       this.page = queryParams['pagina'];
       this.filter = queryParams['descricao'];
       this.currentPage = parseInt(this.page.toString());
@@ -61,7 +62,7 @@ export class RoleListComponent implements OnInit, OnDestroy {
     this.modalService.showConfirmModal('Confirmação', 'Tem certeza que deseja remover esse cargo?')
       .pipe(
         take(1),
-        switchMap(result => result ? this.roleService.delete(Role.id) : of())
+        switchMap((confirmResult: boolean) => confirmResult ? this.roleService.delete(Role.id) : of())
       )
       .subscribe({
         next: () => setTimeout(() => this.onRefresh(), 100),
@@ -73,8 +74,8 @@ export class RoleListComponent implements OnInit, OnDestroy {
     if (!this.filter || this.filter == '') {
       return roles;
     }
-    return roles.filter(v => {
-      if (v.description.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0) {
+    return roles.filter((role: Role) => {
+      if (role.description.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0) {
         return true;
       } else {
         return false;
@@ -134,5 +135,4 @@ export class RoleListComponent implements OnInit, OnDestroy {
   onBack(): void {
     this.location.back();
   }
-
 }

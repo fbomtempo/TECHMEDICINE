@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
 import { Role } from '../model/role';
 
 @Component({
@@ -24,5 +25,4 @@ export class RolesDetailsComponent implements OnInit {
   onBackToList(): void {
     this.location.back();
   }
-
 }

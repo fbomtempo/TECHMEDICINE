@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class MaskService {
 
-  private readonly masks = {
+  readonly formatOptions = {
     date(value: string): string {
       const date: Date = new Date(value);
       return date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
@@ -42,11 +42,6 @@ export class MaskService {
 
   constructor() { }
 
-  formatDate(value: string) {
-    const date: Date = new Date(value);
-    return date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-  }
-
   formatData(obj: any, fields: string[]): any {
     fields.forEach(field => {
       if (obj[field] != null) {
@@ -68,9 +63,9 @@ export class MaskService {
   applyMask(mask: string, value: string): string {
     if (value != null) {
       if (mask !== 'cpf' && mask !== 'homePhone' && mask !== 'mobilePhone' && mask !== 'cep' ) {
-        return this.masks['date'](value);
+        return this.formatOptions['date'](value);
       }
-      return this.masks[mask](value);
+      return this.formatOptions[mask](value);
     }
     return value;
   }

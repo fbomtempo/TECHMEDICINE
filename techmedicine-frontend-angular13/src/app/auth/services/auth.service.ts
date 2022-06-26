@@ -24,7 +24,4 @@ export class AuthService {
   /*register(username: string, email: string, password: string): Observable<any> {
     return this.http.post(`${this.API_URL}cadastrar` + 'signup', { username, email, password }, this.httpOptions);
   }*/
-
 }
-
-

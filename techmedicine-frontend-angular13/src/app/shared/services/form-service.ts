@@ -7,10 +7,10 @@ import { ICanDeactivate } from "../guards/ican-deactivate";
 export class FormService implements ICanDeactivate {
 
   form: FormGroup;
+  formType: string;
+  changed: boolean = false;
   submitted: boolean = false;
   submittedSucess: boolean = false;
-  changed: boolean = false;
-  formType: string;
 
   constructor(
     protected formBuilder: FormBuilder,
@@ -43,19 +43,6 @@ export class FormService implements ICanDeactivate {
     return this.form.get(field)?.dirty;
   }
 
-  private formHasChanged(): boolean {
-    let cont: number = 0;
-    Object.keys(this.form.value).forEach(key => {
-      if (this.form.value[key] != '' && this.form.value[key] != null && this.form.value[key] != undefined) {
-        cont++;
-      }
-    });
-    if (cont != 0 && this.changed && !this.submittedSucess) {
-      return confirm('Tem certeza que deseja sair? Os dados preenchidos serão perdidos.');
-    }
-    return true;
-  }
-
   subscribeToChanges(): void {
     this.form.valueChanges
       .pipe(
@@ -67,7 +54,11 @@ export class FormService implements ICanDeactivate {
   }
 
   canDeactivateRoute(): boolean {
-    return this.formHasChanged();
+    //return this.formHasChanged();
+    if (this.changed && !this.submittedSucess) {
+      return confirm('Tem certeza que deseja sair? Os dados preenchidos serão perdidos.');
+    }
+    return true;
   }
 
 }

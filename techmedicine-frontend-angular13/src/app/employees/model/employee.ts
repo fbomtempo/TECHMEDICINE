@@ -20,5 +20,4 @@ export interface Employee {
   number: string;
   district: string;
   complement: string;
-
 }

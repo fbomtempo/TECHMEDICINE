@@ -11,5 +11,4 @@ export class PaginationPipe implements PipeTransform {
     objects = objects.slice(startItem, endItem);
     return objects;
   }
-
 }

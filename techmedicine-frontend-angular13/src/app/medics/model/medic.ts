@@ -21,5 +21,4 @@ export interface Medic {
   number: string;
   district: string;
   complement: string;
-
 }
