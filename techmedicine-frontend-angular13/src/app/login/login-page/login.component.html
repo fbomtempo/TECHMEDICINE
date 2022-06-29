@@ -4,19 +4,40 @@
     <div class="wrapper fadeInDown">
       <div id="formContent">
         <!-- Tabs Titles -->
-
         <!-- Icon -->
         <div class="fadeIn first">
-          <img src="../assets/images/medic-logo.jpg" style="border-radius: 100%" id="icon" alt="User Icon">
+          <img
+            src="../assets/images/medic-logo.jpg"
+            style="border-radius: 100%"
+            id="icon"
+            alt="User Icon"
+          />
         </div>
-
         <!-- Login Form -->
         <form class="needs-validation" novalidate [formGroup]="form">
-          <input type="text" class="form-control fadeIn second" id="usuario" formControlName="usuario" placeholder="Usuário" required>
-          <input type="password" class="form-control fadeIn third" id="senha" formControlName="senha" placeholder="Senha" required>
-          <input type="submit" class="mt-4 fadeIn fourth" value="Log In" (click)="login()">
+          <input
+            type="text"
+            class="form-control fadeIn second"
+            id="usuario"
+            formControlName="usuario"
+            placeholder="Usuário"
+            required
+          />
+          <input
+            type="password"
+            class="form-control fadeIn third"
+            id="senha"
+            formControlName="senha"
+            placeholder="Senha"
+            required
+          />
+          <input
+            type="submit"
+            class="mt-4 fadeIn fourth"
+            value="Log In"
+            (click)="login()"
+          />
         </form>
-
         <!-- Remind Passowrd -->
         <div id="formFooter">
           <a class="underlineHover" href="#">Esqueceu a senha?</a>

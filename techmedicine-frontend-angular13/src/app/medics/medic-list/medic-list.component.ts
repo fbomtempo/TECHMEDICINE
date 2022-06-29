@@ -2,7 +2,16 @@ import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
-import { catchError, map, Observable, of, Subject, Subscription, switchMap, take } from 'rxjs';
+import {
+  catchError,
+  map,
+  Observable,
+  of,
+  Subject,
+  Subscription,
+  switchMap,
+  take
+} from 'rxjs';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
@@ -15,16 +24,13 @@ import { MedicService } from '../service/medic.service';
   styleUrls: ['./medic-list.component.css']
 })
 export class MedicListComponent implements OnInit, OnDestroy {
-
   medics$: Observable<Medic[]>;
   error: Subject<boolean> = new Subject();
   subscription: Subscription;
-
   page: number;
   currentPage: number;
   itemsPerPage: number;
   paginationSize: number;
-
   filter: string;
 
   constructor(
@@ -34,16 +40,18 @@ export class MedicListComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private location: Location
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.setPaginationSize();
     this.itemsPerPage = 10;
-    this.subscription = this.route.queryParams.subscribe((queryParams: Params) => {
-      this.page = queryParams['pagina'];
-      this.filter = queryParams['nome'];
-      this.currentPage = parseInt(this.page.toString());
-    });
+    this.subscription = this.route.queryParams.subscribe(
+      (queryParams: Params) => {
+        this.page = queryParams['pagina'];
+        this.filter = queryParams['nome'];
+        this.currentPage = parseInt(this.page.toString());
+      }
+    );
     this.onRefresh();
   }
 
@@ -52,35 +60,44 @@ export class MedicListComponent implements OnInit, OnDestroy {
   }
 
   onRefresh(): void | Observable<never> {
-    this.medics$ = this.medicService.findAll()
-      .pipe(
-        map((medics: Medic[]) => {
-          return medics.map((medic: Medic) => {
-            return this.maskService.formatData(medic, [
-              'birthDate',
-              'cpf',
-              'homePhone',
-              'mobilePhone',
-              'cep'
-            ]);
-          });
-        }),
-        catchError(() => {
-          this.error.next(true);
-          return of();
-        })
+    this.medics$ = this.medicService.findAll().pipe(
+      map((medics: Medic[]) => {
+        return medics.map((medic: Medic) => {
+          return this.maskService.formatData(medic, [
+            'birthDate',
+            'cpf',
+            'homePhone',
+            'mobilePhone',
+            'cep'
+          ]);
+        });
+      }),
+      catchError(() => {
+        this.error.next(true);
+        return of();
+      })
     );
   }
 
   onDelete(medic: Medic): void {
-    this.modalService.showConfirmModal('Confirmação', 'Tem certeza que deseja remover esse médico?')
+    this.modalService
+      .showConfirmModal(
+        'Confirmação',
+        'Tem certeza que deseja remover esse médico?'
+      )
       .pipe(
         take(1),
-        switchMap((confirmResult: boolean) => confirmResult ? this.medicService.delete(medic.id) : of())
+        switchMap((confirmResult: boolean) =>
+          confirmResult ? this.medicService.delete(medic.id) : of()
+        )
       )
       .subscribe({
         next: () => setTimeout(() => this.onRefresh(), 100),
-        error: () => this.modalService.alertDanger('Erro ao remover médico!', 'Tente novamente mais tarde.')
+        error: () =>
+          this.modalService.alertDanger(
+            'Erro ao remover médico!',
+            'Tente novamente mais tarde.'
+          )
       });
   }
 
@@ -94,7 +111,7 @@ export class MedicListComponent implements OnInit, OnDestroy {
       } else {
         return false;
       }
-    })
+    });
   }
 
   setFilter(filter: string): void {
@@ -104,7 +121,7 @@ export class MedicListComponent implements OnInit, OnDestroy {
         queryParams: {
           nome: filter.toLowerCase()
         },
-        queryParamsHandling: 'merge',
+        queryParamsHandling: 'merge'
       });
     }
   }
@@ -117,7 +134,7 @@ export class MedicListComponent implements OnInit, OnDestroy {
         queryParams: {
           nome: null
         },
-        queryParamsHandling: 'merge',
+        queryParamsHandling: 'merge'
       });
     }
   }
@@ -128,7 +145,7 @@ export class MedicListComponent implements OnInit, OnDestroy {
       queryParams: {
         pagina: event.page
       },
-      queryParamsHandling: 'merge',
+      queryParamsHandling: 'merge'
     });
   }
 
@@ -139,7 +156,7 @@ export class MedicListComponent implements OnInit, OnDestroy {
   private setPaginationSize(): void {
     if (window.innerWidth < 576) {
       this.paginationSize = 3;
-    } else if (window.innerWidth < 992){
+    } else if (window.innerWidth < 992) {
       this.paginationSize = 7;
     } else {
       this.paginationSize = 10;

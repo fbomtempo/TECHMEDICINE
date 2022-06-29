@@ -11,11 +11,7 @@ import { MedicListComponent } from './medic-list/medic-list.component';
 import { MedicsRoutingModule } from './medics-routing.module';
 
 @NgModule({
-  declarations: [
-    MedicListComponent,
-    MedicFormComponent,
-    MedicDetailsComponent
-  ],
+  declarations: [MedicListComponent, MedicFormComponent, MedicDetailsComponent],
   imports: [
     CommonModule,
     MedicsRoutingModule,
@@ -25,8 +21,6 @@ import { MedicsRoutingModule } from './medics-routing.module';
     NgSelectModule,
     PaginationModule
   ],
-  providers: [
-    DatePipe
-  ]
+  providers: [DatePipe]
 })
-export class MedicsModule { }
+export class MedicsModule {}

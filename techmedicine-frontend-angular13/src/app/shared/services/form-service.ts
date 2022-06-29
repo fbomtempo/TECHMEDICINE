@@ -1,34 +1,33 @@
-import { Location } from "@angular/common";
-import { FormBuilder, FormGroup, ValidationErrors } from "@angular/forms";
-import { Router } from "@angular/router";
-import { take } from "rxjs";
-import { ICanDeactivate } from "../guards/ican-deactivate";
+import { Location } from '@angular/common';
+import { FormBuilder, FormGroup, ValidationErrors } from '@angular/forms';
+import { Router } from '@angular/router';
+import { take } from 'rxjs';
+import { ICanDeactivate } from '../guards/ican-deactivate';
 
 export class FormService implements ICanDeactivate {
-
   form: FormGroup;
   formType: string;
   changed: boolean = false;
   submitted: boolean = false;
   submittedSucess: boolean = false;
 
-  constructor(
-    protected formBuilder: FormBuilder,
-    protected router: Router,
-    protected location: Location
-  ) { }
+  constructor() {}
 
   applyValidationClass(field: string, ngSelect?: boolean): any {
     if (ngSelect) {
       return {
         'ng-untouched': !this.submitted,
         'ng-touched': this.submitted
-      }
+      };
     }
     return {
-      'is-invalid': (this.submitted || this.isTouched(field) || this.isDirty(field)) && this.hasError(field),
-      'is-valid': (this.submitted || this.isTouched(field) || this.isDirty(field)) && !this.hasError(field)
-    }
+      'is-invalid':
+        (this.submitted || this.isTouched(field) || this.isDirty(field)) &&
+        this.hasError(field),
+      'is-valid':
+        (this.submitted || this.isTouched(field) || this.isDirty(field)) &&
+        !this.hasError(field)
+    };
   }
 
   private hasError(field: string): ValidationErrors {
@@ -44,21 +43,18 @@ export class FormService implements ICanDeactivate {
   }
 
   subscribeToChanges(): void {
-    this.form.valueChanges
-      .pipe(
-        take(1)
-      )
-      .subscribe(() => {
-        this.changed = true;
-      });
+    this.form.valueChanges.pipe(take(1)).subscribe(() => {
+      this.changed = true;
+    });
   }
 
   canDeactivateRoute(): boolean {
     //return this.formHasChanged();
     if (this.changed && !this.submittedSucess) {
-      return confirm('Tem certeza que deseja sair? Os dados preenchidos serão perdidos.');
+      return confirm(
+        'Tem certeza que deseja sair? Os dados preenchidos serão perdidos.'
+      );
     }
     return true;
   }
-
 }

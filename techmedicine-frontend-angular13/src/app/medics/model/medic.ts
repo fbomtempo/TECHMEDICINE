@@ -1,7 +1,6 @@
-import { Specialty } from "../../specialties/model/specialty";
+import { Specialty } from '../../specialties/model/specialty';
 
 export interface Medic {
-
   id: number;
   name: string;
   surname: string;

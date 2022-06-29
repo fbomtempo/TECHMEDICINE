@@ -1,135 +1,137 @@
-[{
-	"id": "1",
-	"uf": "AC",
-	"descricao": "Acre"
-},
-{
-	"id": "2",
-	"uf": "AL",
-	"descricao": "Alagoas"
-},
-{
-	"id": "3",
-	"uf": "AM",
-	"descricao": "Amazonas"
-},
-{
-	"id": "4",
-	"uf": "AP",
-	"descricao": "Amapá"
-},
-{
-	"id": "5",
-	"uf": "BA",
-	"descricao": "Bahia"
-},
-{
-	"id": "6",
-	"uf": "CE",
-	"descricao": "Ceará"
-},
-{
-	"id": "7",
-	"uf": "DF",
-	"descricao": "Distrito Federal"
-},
-{
-	"id": "8",
-	"uf": "ES",
-	"descricao": "Espírito Santo"
-},
-{
-	"id": "9",
-	"uf": "GO",
-	"descricao": "Goiás"
-},
-{
-	"id": "10",
-	"uf": "MA",
-	"descricao": "Maranhão"
-},
-{
-	"id": "11",
-	"uf": "MG",
-	"descricao": "Minas Gerais"
-},
-{
-	"id": "12",
-	"uf": "MS",
-	"descricao": "Mato Grosso do Sul"
-},
-{
-	"id": "13",
-	"uf": "MT",
-	"descricao": "Mato Grosso"
-},
-{
-	"id": "14",
-	"uf": "PA",
-	"descricao": "Pará"
-},
-{
-	"id": "15",
-	"uf": "PB",
-	"descricao": "Paraíba"
-},
-{
-	"id": "16",
-	"uf": "PE",
-	"descricao": "Pernambuco"
-},
-{
-	"id": "17",
-	"uf": "PI",
-	"descricao": "Piauí"
-},
-{
-	"id": "18",
-	"uf": "PR",
-	"descricao": "Paraná"
-},
-{
-	"id": "19",
-	"uf": "RJ",
-	"descricao": "Rio de Janeiro"
-},
-{
-	"id": "20",
-	"uf": "RN",
-	"descricao": "Rio Grande do Norte"
-},
-{
-	"id": "21",
-	"uf": "RO",
-	"descricao": "Rondônia"
-},
-{
-	"id": "22",
-	"uf": "RR",
-	"descricao": "Roraima"
-},
-{
-	"id": "23",
-	"uf": "RS",
-	"descricao": "Rio Grande do Sul"
-},
-{
-	"id": "24",
-	"uf": "SC",
-	"descricao": "Santa Catarina"
-},
-{
-	"id": "25",
-	"uf": "SE",
-	"descricao": "Sergipe"
-},
-{
-	"id": "26",
-	"uf": "SP",
-	"descricao": "São Paulo"
-},
-{
-	"id": "27",
-	"uf": "TO",
-	"descricao": "Tocantins"
-}]
+[
+  {
+    "id": "1",
+    "uf": "AC",
+    "descricao": "Acre"
+  },
+  {
+    "id": "2",
+    "uf": "AL",
+    "descricao": "Alagoas"
+  },
+  {
+    "id": "3",
+    "uf": "AM",
+    "descricao": "Amazonas"
+  },
+  {
+    "id": "4",
+    "uf": "AP",
+    "descricao": "Amapá"
+  },
+  {
+    "id": "5",
+    "uf": "BA",
+    "descricao": "Bahia"
+  },
+  {
+    "id": "6",
+    "uf": "CE",
+    "descricao": "Ceará"
+  },
+  {
+    "id": "7",
+    "uf": "DF",
+    "descricao": "Distrito Federal"
+  },
+  {
+    "id": "8",
+    "uf": "ES",
+    "descricao": "Espírito Santo"
+  },
+  {
+    "id": "9",
+    "uf": "GO",
+    "descricao": "Goiás"
+  },
+  {
+    "id": "10",
+    "uf": "MA",
+    "descricao": "Maranhão"
+  },
+  {
+    "id": "11",
+    "uf": "MG",
+    "descricao": "Minas Gerais"
+  },
+  {
+    "id": "12",
+    "uf": "MS",
+    "descricao": "Mato Grosso do Sul"
+  },
+  {
+    "id": "13",
+    "uf": "MT",
+    "descricao": "Mato Grosso"
+  },
+  {
+    "id": "14",
+    "uf": "PA",
+    "descricao": "Pará"
+  },
+  {
+    "id": "15",
+    "uf": "PB",
+    "descricao": "Paraíba"
+  },
+  {
+    "id": "16",
+    "uf": "PE",
+    "descricao": "Pernambuco"
+  },
+  {
+    "id": "17",
+    "uf": "PI",
+    "descricao": "Piauí"
+  },
+  {
+    "id": "18",
+    "uf": "PR",
+    "descricao": "Paraná"
+  },
+  {
+    "id": "19",
+    "uf": "RJ",
+    "descricao": "Rio de Janeiro"
+  },
+  {
+    "id": "20",
+    "uf": "RN",
+    "descricao": "Rio Grande do Norte"
+  },
+  {
+    "id": "21",
+    "uf": "RO",
+    "descricao": "Rondônia"
+  },
+  {
+    "id": "22",
+    "uf": "RR",
+    "descricao": "Roraima"
+  },
+  {
+    "id": "23",
+    "uf": "RS",
+    "descricao": "Rio Grande do Sul"
+  },
+  {
+    "id": "24",
+    "uf": "SC",
+    "descricao": "Santa Catarina"
+  },
+  {
+    "id": "25",
+    "uf": "SE",
+    "descricao": "Sergipe"
+  },
+  {
+    "id": "26",
+    "uf": "SP",
+    "descricao": "São Paulo"
+  },
+  {
+    "id": "27",
+    "uf": "TO",
+    "descricao": "Tocantins"
+  }
+]

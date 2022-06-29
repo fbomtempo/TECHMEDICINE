@@ -8,16 +8,13 @@ import { Subject } from 'rxjs';
   styleUrls: ['./confirm-modal.component.css']
 })
 export class ConfirmModalComponent implements OnInit {
-
   @Input() title: string;
   @Input() description: string;
-
   confirmResult: Subject<boolean> = new Subject();
 
-  constructor(private bsModalRef: BsModalRef) { }
+  constructor(private bsModalRef: BsModalRef) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onConfirm(): void {
     this.modalResult(true);

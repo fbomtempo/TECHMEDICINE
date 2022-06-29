@@ -6,16 +6,8 @@ import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { PaginationPipe } from './pipes/pagination.pipe';
 
 @NgModule({
-  declarations: [
-    AlertModalComponent,
-    ConfirmModalComponent,
-    PaginationPipe
-  ],
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    PaginationPipe
-  ]
+  declarations: [AlertModalComponent, ConfirmModalComponent, PaginationPipe],
+  imports: [CommonModule],
+  exports: [PaginationPipe]
 })
-export class SharedModule { }
+export class SharedModule {}

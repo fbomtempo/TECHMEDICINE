@@ -1,23 +1,45 @@
 <div *ngIf="employees$ | async as employees; else loadingError">
   <div class="col-md-12">
     <div class="pt-4 pb-md-0 pb-3 col-md-3">
-      <a class="fs-5 display-1 back" (click)="onBack()"><i class="fas fa-arrow-left"></i><span
-          class="ms-2">Voltar</span></a>
+      <a class="fs-5 display-1 back" (click)="onBack()"
+        ><i class="fas fa-arrow-left"></i><span class="ms-2">Voltar</span></a
+      >
     </div>
     <h1 class="text-center pb-4">Cadastro de Funcionários</h1>
   </div>
   <div class="row">
     <div class="col">
-      <a type="button" class="btn btn-primary" [routerLink]="['novo']">Novo Funcionário <i
-          class="fas fa-plus-circle"></i></a>
+      <a type="button" class="btn btn-primary" [routerLink]="['novo']"
+        >Novo Funcionário <i class="fas fa-plus-circle"></i
+      ></a>
     </div>
-    <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-8 col-sm-12 col-xs-12 mt-md-0 mt-2">
+    <div
+      class="col-xxl-6 col-xl-6 col-lg-8 col-md-8 col-sm-12 col-xs-12 mt-md-0 mt-2"
+    >
       <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Digite o nome do funcionário"
-          aria-label="Search" id="search" #filterInput [value]="filter ? filter : ''">
-        <button type="submit" class="btn btn-search search" (click)="setFilter(filterInput.value)"><i
-            class="fas fa-search"></i></button>
-        <button type="button" class="btn btn-clear clear ms-2" (click)="onClearFilter(filterInput)">Limpar</button>
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Digite o nome do funcionário"
+          aria-label="Search"
+          id="search"
+          #filterInput
+          [value]="filter ? filter : ''"
+        />
+        <button
+          type="submit"
+          class="btn btn-search search"
+          (click)="setFilter(filterInput.value)"
+        >
+          <i class="fas fa-search"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-clear clear ms-2"
+          (click)="onClearFilter(filterInput)"
+        >
+          Limpar
+        </button>
       </form>
     </div>
   </div>
@@ -35,46 +57,86 @@
         </tr>
       </thead>
       <tbody class="table-link">
-        <tr *ngFor="let employee of onShowData(employees) | pagination: page:itemsPerPage; let i = index">
-          <th scope="row">{{ (i + 1) + (page - 1) * itemsPerPage }}</th>
+        <tr
+          *ngFor="
+            let employee of onShowData(employees)
+              | pagination: page:itemsPerPage;
+            let i = index
+          "
+        >
+          <th scope="row">{{ i + 1 + (page - 1) * itemsPerPage }}</th>
           <td>{{ employee.id }}</td>
           <td>{{ employee.name }}</td>
           <td>{{ employee.surname }}</td>
           <td>{{ employee.role.description }}</td>
           <td>{{ employee.cpf }}</td>
           <td>
-            <button type="button" class="btn btn-round btn-outline-edit me-2" [routerLink]="['editar/', employee.id]"><i
-                class="fas fa-pencil-alt"></i></button>
-            <button type="button" class="btn-round btn-outline-delete me-2" (click)="onDelete(employee)"><i
-                class="fas fa-trash-alt"></i></button>
-            <button type="button" class="btn-round btn-outline-view" [routerLink]="['visualizar/', employee.id]"><i
-                class="fas fa-eye"></i></button>
+            <button
+              type="button"
+              class="btn btn-round btn-outline-edit me-2"
+              [routerLink]="['editar/', employee.id]"
+            >
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+            <button
+              type="button"
+              class="btn-round btn-outline-delete me-2"
+              (click)="onDelete(employee)"
+            >
+              <i class="fas fa-trash-alt"></i>
+            </button>
+            <button
+              type="button"
+              class="btn-round btn-outline-view"
+              [routerLink]="['visualizar/', employee.id]"
+            >
+              <i class="fas fa-eye"></i>
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="mb-3 d-flex justify-content-center">
-    <pagination [totalItems]="onShowData(employees).length" [maxSize]="paginationSize" (pageChanged)="pageChanged($event)"
-      [(ngModel)]="currentPage" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
-      lastText="&raquo;">
+    <pagination
+      [totalItems]="onShowData(employees).length"
+      [maxSize]="paginationSize"
+      (pageChanged)="pageChanged($event)"
+      [(ngModel)]="currentPage"
+      [boundaryLinks]="true"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
+      lastText="&raquo;"
+    >
     </pagination>
-    <br>
+    <br />
   </div>
 </div>
 
 <ng-template #loadingError>
   <div *ngIf="error | async; else loading">
-    <div style="height: 80vh" class="d-flex flex-column align-items-center justify-content-center">
-      <p style="font-size: 1.65rem;">Erro ao carregar pacientes.</p>
-      <button type="button" class="btn btn-lg btn-secondary" (click)="reloadPage()">Tentar Novamente <i
-          class="fas fa-sync-alt"></i></button>
+    <div
+      style="height: 80vh"
+      class="d-flex flex-column align-items-center justify-content-center"
+    >
+      <p style="font-size: 1.65rem">Erro ao carregar pacientes.</p>
+      <button
+        type="button"
+        class="btn btn-lg btn-secondary"
+        (click)="reloadPage()"
+      >
+        Tentar Novamente <i class="fas fa-sync-alt"></i>
+      </button>
     </div>
   </div>
 </ng-template>
 
 <ng-template #loading>
-  <div style="height: 80vh" class="d-flex align-items-center justify-content-center">
+  <div
+    style="height: 80vh"
+    class="d-flex align-items-center justify-content-center"
+  >
     <div class="loader"></div>
   </div>
 </ng-template>

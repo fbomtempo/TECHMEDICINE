@@ -1,12 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SpecialtiesRoutingModule } from './specialties-routing.module';
-import { SpecialtyListComponent } from './specialty-list/specialty-list.component';
-import { SpecialtyFormComponent } from './specialty-form/specialty-form.component';
-import { SpecialtyDetailsComponent } from './specialty-details/specialty-details.component';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+
 import { SharedModule } from '../shared/shared.module';
+import { SpecialtiesRoutingModule } from './specialties-routing.module';
+import { SpecialtyDetailsComponent } from './specialty-details/specialty-details.component';
+import { SpecialtyFormComponent } from './specialty-form/specialty-form.component';
+import { SpecialtyListComponent } from './specialty-list/specialty-list.component';
 
 @NgModule({
   declarations: [
@@ -23,4 +24,4 @@ import { SharedModule } from '../shared/shared.module';
     PaginationModule
   ]
 })
-export class SpecialtiesModule { }
+export class SpecialtiesModule {}

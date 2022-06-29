@@ -10,7 +10,6 @@ import { TokenStorageService } from '../../auth/services/token-storage.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
   form: FormGroup;
   isLoggedIn;
   isLoginFailed;
@@ -20,19 +19,21 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private tokenStorage: TokenStorageService,
-    private formBuilder: FormBuilder,
-  ) { }
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-    this.isLoggedIn = (this.tokenStorage.getToken()) ? true : false;
+    this.isLoggedIn = this.tokenStorage.getToken() ? true : false;
     this.isLoginFailed = false;
     this.errorMessage = '';
-    this.roles = (this.tokenStorage.getToken()) ? this.tokenStorage.getUser().roles : [];
+    this.roles = this.tokenStorage.getToken()
+      ? this.tokenStorage.getUser().roles
+      : [];
 
     this.form = this.formBuilder.group({
       usuario: [null, Validators.required],
       senha: [null, Validators.required]
-    })
+    });
   }
 
   login() {

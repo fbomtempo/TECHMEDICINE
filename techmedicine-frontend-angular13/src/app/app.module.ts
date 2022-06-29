@@ -12,9 +12,7 @@ import { authInterceptorProviders } from './auth/auth-interceptor';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -28,4 +26,4 @@ import { SharedModule } from './shared/shared.module';
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

@@ -10,13 +10,9 @@ import { Specialty } from '../model/specialty';
   styleUrls: ['./specialty-details.component.css']
 })
 export class SpecialtyDetailsComponent implements OnInit {
-
   specialty: Specialty;
 
-  constructor(
-    private route: ActivatedRoute,
-    private location: Location
-  ) { }
+  constructor(private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit(): void {
     this.specialty = this.route.snapshot.data['specialty'];

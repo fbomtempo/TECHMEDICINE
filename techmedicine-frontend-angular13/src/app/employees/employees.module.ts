@@ -25,8 +25,6 @@ import { EmployeesRoutingModule } from './employees-routing.module';
     ReactiveFormsModule,
     PaginationModule
   ],
-  providers: [
-    DatePipe
-  ]
+  providers: [DatePipe]
 })
-export class EmployeesModule { }
+export class EmployeesModule {}

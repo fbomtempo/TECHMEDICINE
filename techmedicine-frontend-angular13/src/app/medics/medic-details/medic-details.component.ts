@@ -11,23 +11,19 @@ import { Medic } from '../model/medic';
   styleUrls: ['./medic-details.component.css']
 })
 export class MedicDetailsComponent implements OnInit {
-
   medic: Medic;
 
   constructor(
     private maskService: MaskService,
     private route: ActivatedRoute,
     private location: Location
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.medic = this.maskService.formatData(this.route.snapshot.data['medic'], [
-      'birthDate',
-      'cpf',
-      'homePhone',
-      'mobilePhone',
-      'cep'
-    ]);
+    this.medic = this.maskService.formatData(
+      this.route.snapshot.data['medic'],
+      ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep']
+    );
   }
 
   onBackToList(): void {

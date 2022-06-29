@@ -9,9 +9,7 @@ import { Role } from '../model/role';
   providedIn: 'root'
 })
 export class RoleService extends CrudService<Role> {
-
   constructor(protected override http: HttpClient) {
     super(http, `${environment.API}cargos`);
   }
-
 }

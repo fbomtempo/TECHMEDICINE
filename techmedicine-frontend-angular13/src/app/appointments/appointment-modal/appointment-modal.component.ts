@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { of, switchMap, take } from 'rxjs';
@@ -13,11 +21,8 @@ import { AppointmentService } from '../service/appointment.service';
   styleUrls: ['./appointment-modal.component.css']
 })
 export class AppointmentModalComponent implements OnInit {
-
   @Input() appointment: Appointment;
-
   @Output() deletionEvent: EventEmitter<void> = new EventEmitter();
-
   @ViewChild('template') modalTemplate;
 
   constructor(
@@ -28,10 +33,9 @@ export class AppointmentModalComponent implements OnInit {
     private maskService: MaskService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.appointment) {
@@ -43,9 +47,15 @@ export class AppointmentModalComponent implements OnInit {
   }
 
   show(): void {
-    this.bsModalRef = this.bsModalService.show(this.modalTemplate, Object.assign({}, {
-      class: 'modal-lg'
-    }));
+    this.bsModalRef = this.bsModalService.show(
+      this.modalTemplate,
+      Object.assign(
+        {},
+        {
+          class: 'modal-lg'
+        }
+      )
+    );
   }
 
   close(): void {
@@ -53,17 +63,29 @@ export class AppointmentModalComponent implements OnInit {
   }
 
   onDelete(): void {
-    this.modalService.showConfirmModal('Confirmação', 'Tem certeza que deseja remover esse agendamento?')
+    this.modalService
+      .showConfirmModal(
+        'Confirmação',
+        'Tem certeza que deseja remover esse agendamento?'
+      )
       .pipe(
         take(1),
-        switchMap((confirmResult: boolean) => confirmResult ? this.appointmentService.delete(this.appointment.id) : of())
+        switchMap((confirmResult: boolean) =>
+          confirmResult
+            ? this.appointmentService.delete(this.appointment.id)
+            : of()
+        )
       )
       .subscribe({
         next: () => {
           this.close();
           setTimeout(() => this.deletionEvent.emit(), 100);
         },
-        error: () => this.modalService.alertDanger('Erro ao remover agendamento!', 'Tente novamente mais tarde.')
+        error: () =>
+          this.modalService.alertDanger(
+            'Erro ao remover agendamento!',
+            'Tente novamente mais tarde.'
+          )
       });
   }
 
@@ -76,6 +98,9 @@ export class AppointmentModalComponent implements OnInit {
 
   private formatData(appointment: Appointment): void {
     const fields = ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep'];
-    this.appointment.patient = this.maskService.formatData(appointment.patient, fields);
+    this.appointment.patient = this.maskService.formatData(
+      appointment.patient,
+      fields
+    );
   }
 }

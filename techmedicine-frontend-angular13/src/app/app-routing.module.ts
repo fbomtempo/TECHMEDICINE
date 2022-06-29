@@ -4,43 +4,56 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule)
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
+    loadChildren: () =>
+      import('./login/login.module').then((m) => m.LoginModule)
   },
   {
     path: 'pacientes',
-    loadChildren: () => import('./patients/patients.module').then(m => m.PatientsModule)
+    loadChildren: () =>
+      import('./patients/patients.module').then((m) => m.PatientsModule)
   },
   {
     path: 'medicos',
-    loadChildren: () => import('./medics/medics.module').then(m => m.MedicsModule)
+    loadChildren: () =>
+      import('./medics/medics.module').then((m) => m.MedicsModule)
   },
   {
     path: 'funcionarios',
-    loadChildren: () => import('./employees/employees.module').then(m => m.EmployeesModule)
+    loadChildren: () =>
+      import('./employees/employees.module').then((m) => m.EmployeesModule)
   },
   {
     path: 'especialidades',
-    loadChildren: () => import('./specialties/specialties.module').then(m => m.SpecialtiesModule)
+    loadChildren: () =>
+      import('./specialties/specialties.module').then(
+        (m) => m.SpecialtiesModule
+      )
   },
   {
     path: 'cargos',
-    loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule)
+    loadChildren: () =>
+      import('./roles/roles.module').then((m) => m.RolesModule)
   },
   {
     path: 'agendamentos',
-    loadChildren: () => import('./appointments/appointments.module').then(m => m.AppointmentsModule)
+    loadChildren: () =>
+      import('./appointments/appointments.module').then(
+        (m) => m.AppointmentsModule
+      )
   },
   {
     path: '',
-    redirectTo: '/home', pathMatch: 'full'
+    redirectTo: '/home',
+    pathMatch: 'full'
   },
   {
     path: '**',
-    loadChildren: () => import('./not-found/not-found.module').then(m => m.NotFoundModule)
+    loadChildren: () =>
+      import('./not-found/not-found.module').then((m) => m.NotFoundModule)
   }
 ];
 
@@ -48,4 +61,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

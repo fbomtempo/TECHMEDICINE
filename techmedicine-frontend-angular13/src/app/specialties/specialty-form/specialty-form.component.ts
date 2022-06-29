@@ -13,16 +13,14 @@ import { SpecialtyService } from '../service/specialty.service';
   styleUrls: ['./specialty-form.component.css']
 })
 export class SpecialtyFormComponent extends FormService implements OnInit {
-
   constructor(
-    protected override formBuilder: FormBuilder,
-    protected override router: Router,
-    protected override location: Location,
-    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
     private specialtyService: SpecialtyService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
-    super(formBuilder, router, location);
+    super();
   }
 
   ngOnInit(): void {
@@ -34,7 +32,10 @@ export class SpecialtyFormComponent extends FormService implements OnInit {
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Nova';
     this.form = this.formBuilder.group({
       id: [specialty.id],
-      description: [specialty.description, [Validators.required, Validators.maxLength(45)]]
+      description: [
+        specialty.description,
+        [Validators.required, Validators.maxLength(45)]
+      ]
     });
     this.subscribeToChanges();
   }
@@ -43,30 +44,54 @@ export class SpecialtyFormComponent extends FormService implements OnInit {
     this.submitted = true;
     if (this.form.valid) {
       if (this.form.value['id']) {
-        this.specialtyService.update(this.form.value)
-          .subscribe({
-            error: () => this.modalService.alertDanger('Erro ao atualizar especialidade!', 'Tente novamente mais tarde.'),
-            complete: () => {
-              this.modalService.alertSuccess('Especialidade atualizada com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.router.navigate(['especialidades'], { queryParams: { pagina: 1 }}), 2000);
-              this.submittedSucess = true;
-            }
-          });
+        this.specialtyService.update(this.form.value).subscribe({
+          error: () =>
+            this.modalService.alertDanger(
+              'Erro ao atualizar especialidade!',
+              'Tente novamente mais tarde.'
+            ),
+          complete: () => {
+            this.modalService.alertSuccess(
+              'Especialidade atualizada com sucesso!',
+              'Redirecionando a página...'
+            );
+            setTimeout(
+              () =>
+                this.router.navigate(['especialidades'], {
+                  queryParams: { pagina: 1 }
+                }),
+              2000
+            );
+            this.submittedSucess = true;
+          }
+        });
       } else {
-        this.specialtyService.create(this.form.value)
-          .subscribe({
-            error: () => this.modalService.alertDanger('Erro ao cadastrar especialidade!', 'Tente novamente mais tarde.'),
-            complete: () => {
-              this.modalService.alertSuccess('Especialidade cadastrada com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.router.navigate(['especialidades'], { queryParams: { pagina: 1 }}), 2000);
-              this.submittedSucess = true;
-            }
-          });
+        this.specialtyService.create(this.form.value).subscribe({
+          error: () =>
+            this.modalService.alertDanger(
+              'Erro ao cadastrar especialidade!',
+              'Tente novamente mais tarde.'
+            ),
+          complete: () => {
+            this.modalService.alertSuccess(
+              'Especialidade cadastrada com sucesso!',
+              'Redirecionando a página...'
+            );
+            setTimeout(
+              () =>
+                this.router.navigate(['especialidades'], {
+                  queryParams: { pagina: 1 }
+                }),
+              2000
+            );
+            this.submittedSucess = true;
+          }
+        });
       }
     }
   }
 
   onCancel(): void {
-    this.router.navigate(['especialidades'], { queryParams: { pagina: 1 }});
+    this.router.navigate(['especialidades'], { queryParams: { pagina: 1 } });
   }
 }

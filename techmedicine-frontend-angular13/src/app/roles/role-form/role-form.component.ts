@@ -13,16 +13,14 @@ import { RoleService } from '../service/role.service';
   styleUrls: ['./role-form.component.css']
 })
 export class RoleFormComponent extends FormService implements OnInit {
-
   constructor(
-    protected override formBuilder: FormBuilder,
-    protected override router: Router,
-    protected override location: Location,
-    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
     private roleService: RoleService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
-    super(formBuilder, router, location);
+    super();
   }
 
   ngOnInit(): void {
@@ -34,7 +32,10 @@ export class RoleFormComponent extends FormService implements OnInit {
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
       id: [role.id],
-      description: [role.description, [Validators.required, Validators.maxLength(35)]]
+      description: [
+        role.description,
+        [Validators.required, Validators.maxLength(35)]
+      ]
     });
     this.subscribeToChanges();
   }
@@ -43,31 +44,54 @@ export class RoleFormComponent extends FormService implements OnInit {
     this.submitted = true;
     if (this.form.valid) {
       if (this.form.value['id']) {
-        this.roleService.update(this.form.value)
-          .subscribe({
-            error: () => this.modalService.alertDanger('Erro ao atualizar cargi!', 'Tente novamente mais tarde.'),
-            complete: () => {
-              this.modalService.alertSuccess('Cargo atualizado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.router.navigate(['cargos'], { queryParams: { pagina: 1 }}), 2000);
-              this.submittedSucess = true;
-            }
-          });
+        this.roleService.update(this.form.value).subscribe({
+          error: () =>
+            this.modalService.alertDanger(
+              'Erro ao atualizar cargi!',
+              'Tente novamente mais tarde.'
+            ),
+          complete: () => {
+            this.modalService.alertSuccess(
+              'Cargo atualizado com sucesso!',
+              'Redirecionando a página...'
+            );
+            setTimeout(
+              () =>
+                this.router.navigate(['cargos'], {
+                  queryParams: { pagina: 1 }
+                }),
+              2000
+            );
+            this.submittedSucess = true;
+          }
+        });
       } else {
-        this.roleService.create(this.form.value)
-          .subscribe({
-            error: () => this.modalService.alertDanger('Erro ao cadastrar cargo!', 'Tente novamente mais tarde.'),
-            complete: () => {
-              this.modalService.alertSuccess('Cargo cadastrado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.router.navigate(['cargos'], { queryParams: { pagina: 1 }}), 2000);
-              this.submittedSucess = true;
-            }
-          });
+        this.roleService.create(this.form.value).subscribe({
+          error: () =>
+            this.modalService.alertDanger(
+              'Erro ao cadastrar cargo!',
+              'Tente novamente mais tarde.'
+            ),
+          complete: () => {
+            this.modalService.alertSuccess(
+              'Cargo cadastrado com sucesso!',
+              'Redirecionando a página...'
+            );
+            setTimeout(
+              () =>
+                this.router.navigate(['cargos'], {
+                  queryParams: { pagina: 1 }
+                }),
+              2000
+            );
+            this.submittedSucess = true;
+          }
+        });
       }
     }
   }
 
   onCancel(): void {
-    this.router.navigate(['cargos'], { queryParams: { pagina: 1 }});
+    this.router.navigate(['cargos'], { queryParams: { pagina: 1 } });
   }
 }
-

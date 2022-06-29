@@ -16,10 +16,9 @@ import { AppointmentService } from '../service/appointment.service';
 @Component({
   selector: 'app-appointment-calendar',
   templateUrl: './appointment-calendar.component.html',
-  styleUrls: ['./appointment-calendar.component.css'],
+  styleUrls: ['./appointment-calendar.component.css']
 })
 export class AppointmentsCalendarComponent implements OnInit {
-
   loadPage: boolean;
   calendarOptions: CalendarOptions = {
     initialView: 'timeGridWeek',
@@ -27,7 +26,7 @@ export class AppointmentsCalendarComponent implements OnInit {
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'timeGridWeek,timeGridDay',
+      right: 'timeGridWeek,timeGridDay'
     },
     stickyHeaderDates: true,
     allDaySlot: false,
@@ -39,19 +38,19 @@ export class AppointmentsCalendarComponent implements OnInit {
       hour: 'numeric',
       minute: '2-digit',
       omitZeroMinute: false,
-      meridiem: 'short',
+      meridiem: 'short'
     },
     businessHours: [
       {
         daysOfWeek: [1, 2, 3, 4, 5],
         startTime: '08:00',
-        endTime: '12:00',
+        endTime: '12:00'
       },
       {
         daysOfWeek: [1, 2, 3, 4, 5],
         startTime: '14:00',
-        endTime: '19:00',
-      },
+        endTime: '19:00'
+      }
     ],
     editable: true,
     eventConstraint: 'businessHours',
@@ -61,7 +60,7 @@ export class AppointmentsCalendarComponent implements OnInit {
     selectable: true,
     selectConstraint: 'businessHours',
     select: this.addAppointment.bind(this),
-    selectAllow: this.maxSelectionAllowed.bind(this),
+    selectAllow: this.maxSelectionAllowed.bind(this)
   };
   appointments$: Observable<Appointment[]>;
   appointment: Appointment;
@@ -71,7 +70,8 @@ export class AppointmentsCalendarComponent implements OnInit {
   compareFnMedic(c1: Medic, c2: Medic): boolean {
     return c1 && c2 ? c1.id === c2.id : c1 === c2;
   }
-  @ViewChild('appointmentModal', { static: true }) appointmentModal?: AppointmentModalComponent;
+  @ViewChild('appointmentModal', { static: true })
+  appointmentModal?: AppointmentModalComponent;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -89,7 +89,9 @@ export class AppointmentsCalendarComponent implements OnInit {
   }
 
   private fetchData(): void {
-    this.dropdownService.getMedics().pipe(
+    this.dropdownService
+      .getMedics()
+      .pipe(
         map((medics: Medic[]) => {
           return medics.map((medic: Medic) => {
             return this.maskService.formatData(medic, [
@@ -97,25 +99,27 @@ export class AppointmentsCalendarComponent implements OnInit {
               'cpf',
               'homePhone',
               'mobilePhone',
-              'cep',
+              'cep'
             ]);
           });
         })
-      ).subscribe({
+      )
+      .subscribe({
         next: (medics: Medic[]) => {
           this.medics = medics.map((medic: any) => {
             medic.searchLabel = `${medic.name} ${medic.surname}`;
             return medic;
           });
         },
-        complete: () => (this.medicsLoading = false),
+        complete: () => (this.medicsLoading = false)
       });
   }
 
   onRefresh(): void | Observable<never> {
     this.loadPage = false;
     let agendamentos: any[];
-    this.appointmentService.findAll()
+    this.appointmentService
+      .findAll()
       .pipe(
         take(1),
         catchError(() => {
@@ -130,14 +134,14 @@ export class AppointmentsCalendarComponent implements OnInit {
               id: appointment.id,
               title: `${appointment.patient.name} ${appointment.patient.surname}`,
               start: appointment.scheduledTimestamp,
-              end: appointment.endTimestamp,
+              end: appointment.endTimestamp
             };
           });
         },
         complete: () => {
           this.calendarOptions.events = agendamentos;
           this.loadPage = true;
-        },
+        }
       });
   }
 
@@ -147,7 +151,7 @@ export class AppointmentsCalendarComponent implements OnInit {
     const urlDateStr: string = `${startDateStr}-${endTimeStr}`;
     this.router.navigate(['novo'], {
       relativeTo: this.route,
-      queryParams: { data: urlDateStr },
+      queryParams: { data: urlDateStr }
     });
   }
 
@@ -163,11 +167,18 @@ export class AppointmentsCalendarComponent implements OnInit {
     appointment.scheduledTimestamp = info.event.startStr.slice(0, 16);
     appointment.endTimestamp = info.event.endStr.slice(0, 16);
     this.appointmentService.update(appointment).subscribe({
-      error: () => this.modalService.alertDanger('Erro ao atualizar agendamento!', 'Tente novamente mais tarde.'),
+      error: () =>
+        this.modalService.alertDanger(
+          'Erro ao atualizar agendamento!',
+          'Tente novamente mais tarde.'
+        ),
       complete: () => {
-        this.modalService.alertSuccess('Agendamento atualizado com sucesso!', 'Atualizando a página...');
+        this.modalService.alertSuccess(
+          'Agendamento atualizado com sucesso!',
+          'Atualizando a página...'
+        );
         setTimeout(() => this.onRefresh(), 2000);
-      },
+      }
     });
   }
 
@@ -176,12 +187,14 @@ export class AppointmentsCalendarComponent implements OnInit {
       next: (appointment: Appointment) => {
         this.appointment = appointment;
       },
-      complete: () => this.appointmentModal.show(),
+      complete: () => this.appointmentModal.show()
     });
   }
 
   private maxSelectionAllowed(arg: any): boolean {
-    let duration = Math.abs((arg.end.getTime() - arg.start.getTime()) / 3600000);
+    let duration = Math.abs(
+      (arg.end.getTime() - arg.start.getTime()) / 3600000
+    );
     return duration < 1;
   }
 

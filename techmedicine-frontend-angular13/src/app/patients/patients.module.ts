@@ -23,8 +23,6 @@ import { PatientsRoutingModule } from './patients-routing.module';
     ReactiveFormsModule,
     PaginationModule
   ],
-  providers: [
-    DatePipe
-  ]
+  providers: [DatePipe]
 })
-export class PatientsModule { }
+export class PatientsModule {}

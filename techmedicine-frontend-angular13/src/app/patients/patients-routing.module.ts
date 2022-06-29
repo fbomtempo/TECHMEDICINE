@@ -9,7 +9,8 @@ import { PatientsListComponent } from './patient-list/patient-list.component';
 
 const routes: Routes = [
   {
-    path: '', component: PatientsListComponent
+    path: '',
+    component: PatientsListComponent
   },
   {
     path: 'novo',
@@ -34,4 +35,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PatientsRoutingModule { }
+export class PatientsRoutingModule {}

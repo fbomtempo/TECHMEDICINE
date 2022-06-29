@@ -10,11 +10,7 @@ import { RoleListComponent } from './role-list/role-list.component';
 import { RolesRoutingModule } from './roles-routing.module';
 
 @NgModule({
-  declarations: [
-    RoleListComponent,
-    RolesDetailsComponent,
-    RoleFormComponent
-  ],
+  declarations: [RoleListComponent, RolesDetailsComponent, RoleFormComponent],
   imports: [
     CommonModule,
     RolesRoutingModule,
@@ -24,4 +20,4 @@ import { RolesRoutingModule } from './roles-routing.module';
     PaginationModule
   ]
 })
-export class RolesModule { }
+export class RolesModule {}

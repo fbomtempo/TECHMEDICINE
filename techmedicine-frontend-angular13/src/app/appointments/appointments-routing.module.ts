@@ -8,7 +8,8 @@ import { AppointmentsResolver } from './guards/appointments.resolver';
 
 const routes: Routes = [
   {
-    path: '', component: AppointmentsCalendarComponent
+    path: '',
+    component: AppointmentsCalendarComponent
   },
   {
     path: 'novo',
@@ -28,4 +29,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AppointmentsRoutingModule { }
+export class AppointmentsRoutingModule {}

@@ -20,7 +20,6 @@ import { MedicService } from '../service/medic.service';
   styleUrls: ['./medic-form.component.css']
 })
 export class MedicFormComponent extends FormService implements OnInit {
-
   states$: Observable<State[]>;
   specialties: Specialty[];
   specialtiesLoading: boolean = true;
@@ -29,17 +28,16 @@ export class MedicFormComponent extends FormService implements OnInit {
   }
 
   constructor(
-    protected override formBuilder: FormBuilder,
-    protected override router: Router,
-    protected override location: Location,
+    private formBuilder: FormBuilder,
     private medicService: MedicService,
     private modalService: ModalService,
     private cepService: CepSearchService,
     private maskService: MaskService,
     private dropdownService: DropdownService,
+    private router: Router,
     private route: ActivatedRoute
   ) {
-    super(formBuilder, router, location);
+    super();
   }
 
   ngOnInit(): void {
@@ -49,20 +47,17 @@ export class MedicFormComponent extends FormService implements OnInit {
 
   private fetchData(): void {
     this.states$ = this.dropdownService.getStates();
-    this.dropdownService.getSpecialties()
-      .subscribe({
-        next: (specialties: Specialty[]) => this.specialties = specialties,
-        complete: () => this.specialtiesLoading = false
-      });
+    this.dropdownService.getSpecialties().subscribe({
+      next: (specialties: Specialty[]) => (this.specialties = specialties),
+      complete: () => (this.specialtiesLoading = false)
+    });
   }
 
   private createForm(): void {
-    const medic = this.maskService.formatData(this.route.snapshot.data['medic'], [
-      'cpf',
-      'homePhone',
-      'mobilePhone',
-      'cep'
-    ]);
+    const medic = this.maskService.formatData(
+      this.route.snapshot.data['medic'],
+      ['cpf', 'homePhone', 'mobilePhone', 'cep']
+    );
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
       id: [medic.id],
@@ -73,16 +68,42 @@ export class MedicFormComponent extends FormService implements OnInit {
       crm: [medic.crm, [Validators.required, Validators.maxLength(12)]],
       specialty: [medic.specialty, [Validators.required]],
       rg: [medic.rg, [Validators.required, Validators.maxLength(12)]],
-      cpf: [medic.cpf, [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
-      homePhone: [medic.homePhone, [Validators.minLength(14), Validators.maxLength(14)]],
-      mobilePhone: [medic.mobilePhone, [Validators.minLength(15), Validators.required, Validators.maxLength(15)]],
+      cpf: [
+        medic.cpf,
+        [
+          Validators.required,
+          Validators.minLength(14),
+          Validators.maxLength(14)
+        ]
+      ],
+      homePhone: [
+        medic.homePhone,
+        [Validators.minLength(14), Validators.maxLength(14)]
+      ],
+      mobilePhone: [
+        medic.mobilePhone,
+        [
+          Validators.minLength(15),
+          Validators.required,
+          Validators.maxLength(15)
+        ]
+      ],
       email: [medic.email, [Validators.required, Validators.maxLength(35)]],
-      cep: [medic.cep, [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
+      cep: [
+        medic.cep,
+        [Validators.required, Validators.minLength(9), Validators.maxLength(9)]
+      ],
       city: [medic.city, [Validators.required, Validators.maxLength(30)]],
       state: [medic.state, [Validators.required]],
       address: [medic.address, [Validators.required, Validators.maxLength(70)]],
-      number: [medic.number, [Validators.required, Validators.min(1), Validators.max(9999)]],
-      district: [medic.district, [Validators.required, Validators.maxLength(30)]],
+      number: [
+        medic.number,
+        [Validators.required, Validators.min(1), Validators.max(9999)]
+      ],
+      district: [
+        medic.district,
+        [Validators.required, Validators.maxLength(30)]
+      ],
       complement: [medic.complement, [Validators.maxLength(70)]]
     });
     this.subscribeToChanges();
@@ -97,10 +118,9 @@ export class MedicFormComponent extends FormService implements OnInit {
   searchCep(): void {
     const cep = this.form.get('cep').value;
     if (cep != null && cep !== '') {
-      this.cepService.searchCEP(cep)
-        .subscribe((data: any) => {
-          this.populateData(data);
-        });
+      this.cepService.searchCEP(cep).subscribe((data: any) => {
+        this.populateData(data);
+      });
     }
   }
 
@@ -129,30 +149,54 @@ export class MedicFormComponent extends FormService implements OnInit {
     this.submitted = true;
     if (this.form.valid && this.changed) {
       if (this.form.value['id']) {
-        this.medicService.update(medic)
-          .subscribe({
-            error: () => this.modalService.alertDanger('Erro ao atualizar médico!', 'Tente novamente mais tarde.'),
-            complete: () => {
-              this.modalService.alertSuccess('Médico atualizado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.router.navigate(['/medicos'], { queryParams: { pagina: 1}}), 2000);
-              this.submittedSucess = true;
-            }
-          });
+        this.medicService.update(medic).subscribe({
+          error: () =>
+            this.modalService.alertDanger(
+              'Erro ao atualizar médico!',
+              'Tente novamente mais tarde.'
+            ),
+          complete: () => {
+            this.modalService.alertSuccess(
+              'Médico atualizado com sucesso!',
+              'Redirecionando a página...'
+            );
+            setTimeout(
+              () =>
+                this.router.navigate(['/medicos'], {
+                  queryParams: { pagina: 1 }
+                }),
+              2000
+            );
+            this.submittedSucess = true;
+          }
+        });
       } else {
-        this.medicService.create(medic)
-          .subscribe({
-            error: () => this.modalService.alertDanger('Erro ao cadastrar médico!', 'Tente novamente mais tarde.'),
-            complete: () => {
-              this.modalService.alertSuccess('Médico cadastrado com sucesso!', 'Redirecionando a página...');
-              setTimeout(() => this.router.navigate(['/medicos'], { queryParams: { pagina: 1}}), 2000);
-              this.submittedSucess = true;
-            }
-          });
+        this.medicService.create(medic).subscribe({
+          error: () =>
+            this.modalService.alertDanger(
+              'Erro ao cadastrar médico!',
+              'Tente novamente mais tarde.'
+            ),
+          complete: () => {
+            this.modalService.alertSuccess(
+              'Médico cadastrado com sucesso!',
+              'Redirecionando a página...'
+            );
+            setTimeout(
+              () =>
+                this.router.navigate(['/medicos'], {
+                  queryParams: { pagina: 1 }
+                }),
+              2000
+            );
+            this.submittedSucess = true;
+          }
+        });
       }
     }
   }
 
   onCancel(): void {
-    this.router.navigate(['/medicos'], { queryParams: { pagina: 1}});
+    this.router.navigate(['/medicos'], { queryParams: { pagina: 1 } });
   }
 }

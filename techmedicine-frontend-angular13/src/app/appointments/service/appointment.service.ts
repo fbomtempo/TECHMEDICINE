@@ -8,8 +8,7 @@ import { Appointment } from '../model/appointment';
 @Injectable({
   providedIn: 'root'
 })
-export class AppointmentService extends CrudService<Appointment>  {
-
+export class AppointmentService extends CrudService<Appointment> {
   constructor(protected override http: HttpClient) {
     super(http, `${environment.API}agendamentos`);
   }

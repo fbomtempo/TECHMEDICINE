@@ -2,97 +2,129 @@
 <form class="mt-4 row g-3 needs-validation" novalidate [formGroup]="form">
   <div class="col-xl-2">
     <label for="date" class="form-label">Data</label>
-    <input type="date" class="form-control" id="date" formControlName="date" [ngClass]="applyValidationClass('date')">
+    <input
+      type="date"
+      class="form-control"
+      id="date"
+      formControlName="date"
+      [ngClass]="applyValidationClass('date')"
+    />
     <div class="invalid-feedback" *ngIf="form.get('date').errors?.['required']">
       Campo é obrigatório.
     </div>
-    <div class="valid-feedback">
-      Parece bom.
-    </div>
+    <div class="valid-feedback">Parece bom.</div>
   </div>
   <div class="col-xl-2">
     <label for="timeslot" class="form-label">Horário</label>
-    <select class="form-select" id="timeslot" formControlName="timeslot" [ngClass]="applyValidationClass('timeslot')">
-      <option value="null" disabled="true" [selected]="true" disabled>Selecione o horário</option>
-      <option *ngFor="let timeslot of timeslots" [value]="timeslot">{{ timeslot }}</option>
+    <select
+      class="form-select"
+      id="timeslot"
+      formControlName="timeslot"
+      [ngClass]="applyValidationClass('timeslot')"
+    >
+      <option value="null" disabled="true" [selected]="true" disabled>
+        Selecione o horário
+      </option>
+      <option *ngFor="let timeslot of timeslots" [value]="timeslot">
+        {{ timeslot }}
+      </option>
     </select>
-    <div class="invalid-feedback" *ngIf="form.get('timeslot').errors?.['required']">
+    <div
+      class="invalid-feedback"
+      *ngIf="form.get('timeslot').errors?.['required']"
+    >
       Campo é obrigatório.
     </div>
-    <div class="valid-feedback">
-      Parece bom.
-    </div>
+    <div class="valid-feedback">Parece bom.</div>
   </div>
   <div class="col-12"></div>
   <div class="col-xl-6">
     <label for="patient" class="form-label">Paciente</label>
-    <ng-select [items]="patients"
-               bindLabel="searchLabel"
-               labelForId="patient"
-               placeholder="Selecione o paciente"
-               clearAllText="Limpar"
-               formControlName="patient"
-               [compareWith]="compareFnPatient"
-               [loading]="patientsLoading"
-               notFoundText="Nenhum item encontrado"
-               [virtualScroll]="true"
-               [ngClass]="submitted ? applyValidationClass('patient', true) : 'ng-untouched'">
+    <ng-select
+      [items]="patients"
+      bindLabel="searchLabel"
+      labelForId="patient"
+      placeholder="Selecione o paciente"
+      clearAllText="Limpar"
+      formControlName="patient"
+      [compareWith]="compareFnPatient"
+      [loading]="patientsLoading"
+      notFoundText="Nenhum item encontrado"
+      [virtualScroll]="true"
+      [ngClass]="
+        submitted ? applyValidationClass('patient', true) : 'ng-untouched'
+      "
+    >
       <ng-template ng-label-tmp let-item="item">
-        {{item.name + ' ' + item.surname}}
+        {{ item.name + " " + item.surname }}
       </ng-template>
-      <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-        <div style="margin: 10px 0;" class="card">
+      <ng-template
+        ng-option-tmp
+        let-item="item"
+        let-index="index"
+        let-search="searchTerm"
+      >
+        <div style="margin: 10px 0" class="card">
           <div class="card-body">
-              <h5 class="card-title">{{ item.name + ' ' +item.surname }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">CPF: {{ item.cpf }}</h6>
-              <h6 class="card-subtitle mb-2 text-muted">Telefone: {{ item.mobilePhone }}</h6>
+            <h5 class="card-title">{{ item.name + " " + item.surname }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">CPF: {{ item.cpf }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+              Telefone: {{ item.mobilePhone }}
+            </h6>
           </div>
         </div>
       </ng-template>
     </ng-select>
-    <div class="ng-select-invalid-feedback">
-      Campo é obrigatório.
-    </div>
-    <div class="ng-select-valid-feedback">
-      Parece bom.
-    </div>
+    <div class="ng-select-invalid-feedback">Campo é obrigatório.</div>
+    <div class="ng-select-valid-feedback">Parece bom.</div>
   </div>
   <div class="col-12"></div>
   <div class="col-xl-6">
     <label for="medic" class="form-label">Médico</label>
-    <ng-select [items]="medics"
-               bindLabel="searchLabel"
-               labelForId="medic"
-               placeholder="Selecione o médico"
-               clearAllText="Limpar"
-               formControlName="medic"
-               [compareWith]="compareFnMedic"
-               [loading]="medicsLoading"
-               notFoundText="Nenhum item encontrado"
-               [virtualScroll]="true"
-               [ngClass]="submitted ? applyValidationClass('medic', true) : 'ng-untouched'">
+    <ng-select
+      [items]="medics"
+      bindLabel="searchLabel"
+      labelForId="medic"
+      placeholder="Selecione o médico"
+      clearAllText="Limpar"
+      formControlName="medic"
+      [compareWith]="compareFnMedic"
+      [loading]="medicsLoading"
+      notFoundText="Nenhum item encontrado"
+      [virtualScroll]="true"
+      [ngClass]="
+        submitted ? applyValidationClass('medic', true) : 'ng-untouched'
+      "
+    >
       <ng-template ng-label-tmp let-item="item">
-        {{item.name + ' ' + item.surname}}
+        {{ item.name + " " + item.surname }}
       </ng-template>
-      <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-        <div style="margin: 10px 0;" class="card">
+      <ng-template
+        ng-option-tmp
+        let-item="item"
+        let-index="index"
+        let-search="searchTerm"
+      >
+        <div style="margin: 10px 0" class="card">
           <div class="card-body">
-              <h5 class="card-title">{{ item.name + ' ' +item.surname }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">CRM: {{ item.crm }}</h6>
-              <h6 class="card-subtitle mb-2 text-muted">Telefone: {{ item.mobilePhone }}</h6>
+            <h5 class="card-title">{{ item.name + " " + item.surname }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">CRM: {{ item.crm }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+              Telefone: {{ item.mobilePhone }}
+            </h6>
           </div>
         </div>
       </ng-template>
     </ng-select>
-    <div class="ng-select-invalid-feedback">
-      Campo é obrigatório.
-    </div>
-    <div class="ng-select-valid-feedback">
-      Parece bom.
-    </div>
+    <div class="ng-select-invalid-feedback">Campo é obrigatório.</div>
+    <div class="ng-select-valid-feedback">Parece bom.</div>
   </div>
   <div class="pt-4 mb-5">
-    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Salvar</button>
-    <button type="button" class="ms-2 btn btn-danger" (click)="onCancel()">Cancelar</button>
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+      Salvar
+    </button>
+    <button type="button" class="ms-2 btn btn-danger" (click)="onCancel()">
+      Cancelar
+    </button>
   </div>
 </form>

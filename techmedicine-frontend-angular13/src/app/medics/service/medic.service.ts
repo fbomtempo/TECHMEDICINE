@@ -8,8 +8,7 @@ import { Medic } from '../model/medic';
 @Injectable({
   providedIn: 'root'
 })
-export class MedicService extends CrudService<Medic>  {
-
+export class MedicService extends CrudService<Medic> {
   constructor(protected override http: HttpClient) {
     super(http, `${environment.API}medicos`);
   }

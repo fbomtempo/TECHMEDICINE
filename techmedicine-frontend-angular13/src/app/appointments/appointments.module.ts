@@ -39,4 +39,4 @@ FullCalendarModule.registerPlugins([
     NgSelectModule
   ]
 })
-export class AppointmentsModule { }
+export class AppointmentsModule {}

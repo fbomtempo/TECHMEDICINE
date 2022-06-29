@@ -10,7 +10,7 @@ import {
   Subject,
   Subscription,
   switchMap,
-  take,
+  take
 } from 'rxjs';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
@@ -21,18 +21,16 @@ import { EmployeeService } from '../service/employee.service';
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
-  styleUrls: ['./employee-list.component.css'],
+  styleUrls: ['./employee-list.component.css']
 })
 export class EmployeeListComponent implements OnInit, OnDestroy {
   employees$: Observable<Employee[]>;
   error: Subject<boolean> = new Subject();
   subscription: Subscription;
-
   page: number;
   currentPage: number;
   itemsPerPage: number;
   paginationSize: number;
-
   filter: string;
 
   constructor(
@@ -47,11 +45,13 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setPaginationSize();
     this.itemsPerPage = 10;
-    this.subscription = this.route.queryParams.subscribe((queryParams: Params) => {
-      this.page = queryParams['pagina'];
-      this.filter = queryParams['nome'];
-      this.currentPage = parseInt(this.page.toString());
-    });
+    this.subscription = this.route.queryParams.subscribe(
+      (queryParams: Params) => {
+        this.page = queryParams['pagina'];
+        this.filter = queryParams['nome'];
+        this.currentPage = parseInt(this.page.toString());
+      }
+    );
     this.onRefresh();
   }
 
@@ -60,35 +60,44 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   }
 
   onRefresh(): void | Observable<never> {
-    this.employees$ = this.employeeService.findAll()
-      .pipe(
-        map((employees: Employee[]) => {
-          return employees.map((employee: Employee) => {
-            return this.maskService.formatData(employee, [
-              'birthDate',
-              'cpf',
-              'homePhone',
-              'mobilePhone',
-              'cep',
-            ]);
-          });
-        }),
-        catchError(() => {
-          this.error.next(true);
-          return of();
-        })
-      );
+    this.employees$ = this.employeeService.findAll().pipe(
+      map((employees: Employee[]) => {
+        return employees.map((employee: Employee) => {
+          return this.maskService.formatData(employee, [
+            'birthDate',
+            'cpf',
+            'homePhone',
+            'mobilePhone',
+            'cep'
+          ]);
+        });
+      }),
+      catchError(() => {
+        this.error.next(true);
+        return of();
+      })
+    );
   }
 
   onDelete(employee: Employee): void {
-    this.modalService.showConfirmModal('Confirmação','Tem certeza que deseja remover esse funcionário?')
+    this.modalService
+      .showConfirmModal(
+        'Confirmação',
+        'Tem certeza que deseja remover esse funcionário?'
+      )
       .pipe(
         take(1),
-        switchMap((confirmResult: boolean) => confirmResult ? this.employeeService.delete(employee.id) : of())
+        switchMap((confirmResult: boolean) =>
+          confirmResult ? this.employeeService.delete(employee.id) : of()
+        )
       )
       .subscribe({
         next: () => setTimeout(() => this.onRefresh(), 100),
-        error: () => this.modalService.alertDanger('Erro ao remover funcionário!', 'Tente novamente mais tarde.'),
+        error: () =>
+          this.modalService.alertDanger(
+            'Erro ao remover funcionário!',
+            'Tente novamente mais tarde.'
+          )
       });
   }
 
@@ -110,9 +119,9 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: {
-          nome: filter.toLowerCase(),
+          nome: filter.toLowerCase()
         },
-        queryParamsHandling: 'merge',
+        queryParamsHandling: 'merge'
       });
     }
   }
@@ -123,9 +132,9 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: {
-          nome: null,
+          nome: null
         },
-        queryParamsHandling: 'merge',
+        queryParamsHandling: 'merge'
       });
     }
   }
@@ -134,9 +143,9 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        pagina: event.page,
+        pagina: event.page
       },
-      queryParamsHandling: 'merge',
+      queryParamsHandling: 'merge'
     });
   }
 

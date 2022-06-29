@@ -29,7 +29,7 @@
   border-color: #3f51b5;
   border-width: 2px;
   box-shadow:
-  10px 10px 0px 0px hsl(0, 0%, 80%);
+    10px 10px 0px 0px hsl(0, 0%, 80%);
 }
 
 @media only screen and (hover: none) {
@@ -38,7 +38,7 @@
     border-color: #3f51b5;
     border-width: 2px;
     box-shadow:
-    10px 10px 0px 0px hsl(0, 0%, 80%);
+      10px 10px 0px 0px hsl(0, 0%, 80%);
   }
 
 }
@@ -98,4 +98,3 @@
   }
 
 }
-

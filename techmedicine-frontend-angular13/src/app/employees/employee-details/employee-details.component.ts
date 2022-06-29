@@ -11,23 +11,19 @@ import { Employee } from '../model/employee';
   styleUrls: ['./employee-details.component.css']
 })
 export class EmployeeDetailsComponent implements OnInit {
-
   employee: Employee;
 
   constructor(
     private maskService: MaskService,
     private route: ActivatedRoute,
     private location: Location
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.employee = this.maskService.formatData(this.route.snapshot.data['employee'], [
-      'birthDate',
-      'cpf',
-      'homePhone',
-      'mobilePhone',
-      'cep'
-    ]);
+    this.employee = this.maskService.formatData(
+      this.route.snapshot.data['employee'],
+      ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep']
+    );
   }
 
   onBackToList(): void {

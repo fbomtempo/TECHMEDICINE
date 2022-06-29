@@ -9,7 +9,8 @@ import { EmployeesResolver } from './guards/employees.resolver';
 
 const routes: Routes = [
   {
-    path: '', component: EmployeeListComponent
+    path: '',
+    component: EmployeeListComponent
   },
   {
     path: 'novo',
@@ -33,4 +34,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class EmployeesRoutingModule { }
+export class EmployeesRoutingModule {}

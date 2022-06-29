@@ -6,10 +6,9 @@ import { CrudService } from '../../shared/services/crud-service';
 import { Employee } from '../model/employee';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class EmployeeService extends CrudService<Employee>  {
-
+export class EmployeeService extends CrudService<Employee> {
   constructor(protected override http: HttpClient) {
     super(http, `${environment.API}funcionarios`);
   }

@@ -13,45 +13,35 @@ import { State } from '../models/states';
   providedIn: 'root'
 })
 export class DropdownService {
-
   private readonly API: string = environment.API;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getStates(): Observable<State[]> {
-    return this.http.get<State[]>('assets/data/states.json')
-      .pipe(take(1));
+    return this.http.get<State[]>('assets/data/states.json').pipe(take(1));
   }
 
   getSpecialties(): Observable<Specialty[]> {
-    return this.http.get<Specialty[]>(`${this.API}especialidades/orderBy/descricao`)
-      .pipe(
-        delay(750),
-        take(1)
-      );
+    return this.http
+      .get<Specialty[]>(`${this.API}especialidades/orderBy/descricao`)
+      .pipe(delay(750), take(1));
   }
 
   getRoles(): Observable<Role[]> {
-    return this.http.get<Role[]>(`${this.API}cargos/orderBy/descricao`)
-      .pipe(
-        delay(750),
-        take(1)
-      );
+    return this.http
+      .get<Role[]>(`${this.API}cargos/orderBy/descricao`)
+      .pipe(delay(750), take(1));
   }
 
   getPatients(): Observable<Patient[]> {
-    return this.http.get<Patient[]>(`${this.API}pacientes`)
-      .pipe(
-        delay(750),
-        take(1)
-      );
+    return this.http
+      .get<Patient[]>(`${this.API}pacientes`)
+      .pipe(delay(750), take(1));
   }
 
   getMedics(): Observable<Medic[]> {
-    return this.http.get<Medic[]>(`${this.API}medicos`)
-      .pipe(
-        delay(750),
-        take(1)
-      );
+    return this.http
+      .get<Medic[]>(`${this.API}medicos`)
+      .pipe(delay(750), take(1));
   }
 }

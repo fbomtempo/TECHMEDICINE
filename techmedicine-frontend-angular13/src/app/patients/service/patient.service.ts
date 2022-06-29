@@ -9,7 +9,6 @@ import { Patient } from '../model/patient';
   providedIn: 'root'
 })
 export class PatientService extends CrudService<Patient> {
-
   constructor(protected override http: HttpClient) {
     super(http, `${environment.API}pacientes`);
   }

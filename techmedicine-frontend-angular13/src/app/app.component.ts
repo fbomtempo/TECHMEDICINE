@@ -8,7 +8,6 @@ import { TokenStorageService } from './auth/services/token-storage.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-
   title = 'techmedicine';
   dropdownTitle: string;
   dropdownTitle2: string;
@@ -16,16 +15,7 @@ export class AppComponent implements OnInit {
   dropdownTitleActive2: boolean;
   isLoggedIn: boolean = false;
 
-  selectedCar: any;
-
-  cars = [
-    { id: 1, name: 'Volvo' },
-    { id: 2, name: 'Saab' },
-    { id: 3, name: 'Opel' },
-    { id: 4, name: 'Audi' },
-  ];
-
-  constructor(private tokenStorageService: TokenStorageService) { }
+  constructor(private tokenStorageService: TokenStorageService) {}
 
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
@@ -68,19 +58,7 @@ export class AppComponent implements OnInit {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-  /*
+/*
   (isActiveChange)="onRouterLinkActiveHome($event)"
 
   setDropdownActive() {

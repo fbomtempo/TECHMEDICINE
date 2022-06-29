@@ -15,11 +15,16 @@ enum AlertType {
   providedIn: 'root'
 })
 export class ModalService {
+  constructor(private bsModalService: BsModalService) {}
 
-  constructor(private bsModalService: BsModalService) { }
-
-  showAlertModal(title: string, description: string, alertType: AlertType, timeout?: number): void {
-    const bsModalRef: BsModalRef = this.bsModalService.show(AlertModalComponent);
+  showAlertModal(
+    title: string,
+    description: string,
+    alertType: AlertType,
+    timeout?: number
+  ): void {
+    const bsModalRef: BsModalRef =
+      this.bsModalService.show(AlertModalComponent);
 
     bsModalRef.content.title = title;
     bsModalRef.content.description = description;
@@ -34,17 +39,18 @@ export class ModalService {
     this.showAlertModal(title, description, AlertType.DANGER);
   }
 
-  alertSuccess(title: string, description: string ): void {
+  alertSuccess(title: string, description: string): void {
     this.showAlertModal(title, description, AlertType.SUCCESS, 2000);
   }
 
   showConfirmModal(title: string, description: string): Subject<boolean> {
-    const bsModalRef: BsModalRef = this.bsModalService.show(ConfirmModalComponent);
+    const bsModalRef: BsModalRef = this.bsModalService.show(
+      ConfirmModalComponent
+    );
 
-    bsModalRef.content.title = title,
-    bsModalRef.content.description = description;
+    (bsModalRef.content.title = title),
+      (bsModalRef.content.description = description);
 
     return (<ConfirmModalComponent>bsModalRef.content).confirmResult;
   }
-
 }

@@ -10,13 +10,9 @@ import { Role } from '../model/role';
   styleUrls: ['./role-details.component.css']
 })
 export class RolesDetailsComponent implements OnInit {
-
   role: Role;
 
-  constructor(
-    private route: ActivatedRoute,
-    private location: Location
-  ) { }
+  constructor(private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit(): void {
     this.role = this.route.snapshot.data['role'];
