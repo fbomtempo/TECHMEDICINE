@@ -2,7 +2,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ptBrLocale } from 'ngx-bootstrap/locale';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 
@@ -11,17 +13,19 @@ import { AppComponent } from './app.component';
 import { authInterceptorProviders } from './auth/auth-interceptor';
 import { SharedModule } from './shared/shared.module';
 
+defineLocale('pt-br', ptBrLocale);
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     SharedModule,
     ModalModule.forRoot(),
     PaginationModule.forRoot(),
-    BrowserAnimationsModule,
-    ButtonsModule.forRoot()
+    BsDatepickerModule.forRoot()
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

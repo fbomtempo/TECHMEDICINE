@@ -19,7 +19,7 @@ import { AppointmentService } from '../service/appointment.service';
   styleUrls: ['./appointment-calendar.component.css']
 })
 export class AppointmentsCalendarComponent implements OnInit {
-  loadPage: boolean;
+  loadPage: boolean = false;
   calendarOptions: CalendarOptions = {
     initialView: 'timeGridWeek',
     locale: ptBrLocale,
@@ -95,7 +95,6 @@ export class AppointmentsCalendarComponent implements OnInit {
         map((medics: Medic[]) => {
           return medics.map((medic: Medic) => {
             return this.maskService.formatData(medic, [
-              'birthDate',
               'cpf',
               'homePhone',
               'mobilePhone',
@@ -111,25 +110,20 @@ export class AppointmentsCalendarComponent implements OnInit {
             return medic;
           });
         },
-        complete: () => (this.medicsLoading = false)
+        complete: () => {
+          this.medicsLoading = false;
+        }
       });
   }
 
   onRefresh(): void | Observable<never> {
-    this.loadPage = false;
-    let agendamentos: any[];
+    let appointments: any[];
     this.appointmentService
       .findAll()
       .pipe(
         take(1),
-        catchError(() => {
-          this.error.next(true);
-          return of();
-        })
-      )
-      .subscribe({
-        next: (appointments: Appointment[]) => {
-          agendamentos = appointments.map((appointment: Appointment) => {
+        map((appointments: Appointment[]) => {
+          return appointments.map((appointment: Appointment) => {
             return {
               id: appointment.id,
               title: `${appointment.patient.name} ${appointment.patient.surname}`,
@@ -137,9 +131,18 @@ export class AppointmentsCalendarComponent implements OnInit {
               end: appointment.endTimestamp
             };
           });
+        }),
+        catchError(() => {
+          this.error.next(true);
+          return of();
+        })
+      )
+      .subscribe({
+        next: (appointmentEvents: any[]) => {
+          appointments = appointmentEvents;
         },
         complete: () => {
-          this.calendarOptions.events = agendamentos;
+          this.calendarOptions.events = appointments;
           this.loadPage = true;
         }
       });

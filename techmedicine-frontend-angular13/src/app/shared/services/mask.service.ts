@@ -5,10 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class MaskService {
   readonly formatOptions = {
-    date(value: string): string {
-      const date: Date = new Date(value);
-      return date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-    },
     cpf(value: string): string {
       return value
         .replace(/\D+/g, '')
@@ -42,7 +38,7 @@ export class MaskService {
   constructor() {}
 
   formatData(obj: any, fields: string[]): any {
-    fields.forEach((field) => {
+    fields.forEach((field: string) => {
       if (obj[field] != null) {
         obj[field] = this.applyMask(field, obj[field]);
       }
@@ -50,43 +46,36 @@ export class MaskService {
     return obj;
   }
 
-  unformatData(obj: any, fields: string[]): any {
-    fields.forEach((field) => {
-      if (obj[field] != null) {
-        obj[field] = this.undoMask(field, obj[field]);
-      }
-    });
-    return obj;
-  }
-
   applyMask(mask: string, value: string): string {
     if (value != null) {
-      if (
-        mask !== 'cpf' &&
-        mask !== 'homePhone' &&
-        mask !== 'mobilePhone' &&
-        mask !== 'cep'
-      ) {
-        return this.formatOptions['date'](value);
-      }
       return this.formatOptions[mask](value);
     }
     return value;
   }
 
-  undoMask(mask: string, value: string): string {
-    if (value != null) {
-      if (
-        mask !== 'cpf' &&
-        mask !== 'homePhone' &&
-        mask !== 'mobilePhone' &&
-        mask !== 'cep'
-      ) {
-        const splitDate = value.split('/');
-        return `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}`;
+  unformatData(obj: any, fields: string[]): any {
+    fields.forEach((field: string) => {
+      if (obj[field] != null) {
+        obj[field] = this.undoMask(obj[field]);
       }
+    });
+    return obj;
+  }
+
+  undoMask(value: string): string {
+    if (value != null) {
       return value.replace(/\D/g, '');
     }
     return value;
+  }
+
+  createDateString(obj: any, dateFields: string[]): any {
+    if (dateFields) {
+      dateFields.forEach((dateField: string) => {
+        if (obj[dateField] != null) {
+          obj[dateField] = obj[dateField].toLocaleDateString('pt-BR');
+        }
+      });
+    }
   }
 }

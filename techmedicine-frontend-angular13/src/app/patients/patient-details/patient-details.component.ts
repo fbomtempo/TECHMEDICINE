@@ -22,7 +22,7 @@ export class PatientDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.patient = this.maskService.formatData(
       this.route.snapshot.data['patient'],
-      ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep']
+      ['cpf', 'homePhone', 'mobilePhone', 'cep']
     );
   }
 

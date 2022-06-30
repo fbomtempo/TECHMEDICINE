@@ -41,12 +41,11 @@ export class SpecialtyListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setPaginationSize();
-    this.itemsPerPage = 10;
     this.subscription = this.route.queryParams.subscribe(
       (queryParams: Params) => {
         this.page = queryParams['pagina'];
         this.filter = queryParams['descricao'];
-        this.currentPage = parseInt(this.page.toString());
+        setTimeout(() => (this.currentPage = parseInt(this.page.toString())));
       }
     );
     this.onRefresh();
@@ -56,6 +55,17 @@ export class SpecialtyListComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  private setPaginationSize(): void {
+    if (window.innerWidth < 576) {
+      this.paginationSize = 3;
+    } else if (window.innerWidth < 992) {
+      this.paginationSize = 7;
+    } else {
+      this.paginationSize = 10;
+    }
+    this.itemsPerPage = 10;
+  }
+
   onRefresh(): void | Observable<never> {
     this.specialties$ = this.specialtyService.findAll().pipe(
       catchError(() => {
@@ -63,6 +73,49 @@ export class SpecialtyListComponent implements OnInit, OnDestroy {
         return of();
       })
     );
+  }
+
+  showData(specialties: Specialty[]): Specialty[] {
+    if (!this.filter || this.filter == '') {
+      return specialties;
+    }
+    return specialties.filter((specialty: Specialty) => {
+      if (
+        specialty.description
+          .toLowerCase()
+          .indexOf(this.filter.toLowerCase()) >= 0
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+
+  setFilter(filter: string): void {
+    if (filter) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          pagina: 1,
+          descricao: filter.toLowerCase()
+        },
+        queryParamsHandling: 'merge'
+      });
+    }
+  }
+
+  clearFIlter(filterInput: HTMLInputElement): void {
+    filterInput.value = '';
+    if (this.route.snapshot.queryParams['descricao']) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          descricao: null
+        },
+        queryParamsHandling: 'merge'
+      });
+    }
   }
 
   onDelete(especialidade: Specialty): void {
@@ -87,48 +140,6 @@ export class SpecialtyListComponent implements OnInit, OnDestroy {
       });
   }
 
-  onShowData(specialties: Specialty[]): Specialty[] {
-    if (!this.filter || this.filter == '') {
-      return specialties;
-    }
-    return specialties.filter((specialty: Specialty) => {
-      if (
-        specialty.description
-          .toLowerCase()
-          .indexOf(this.filter.toLowerCase()) >= 0
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-  }
-
-  setFilter(filter: string): void {
-    if (filter) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          descricao: filter.toLowerCase()
-        },
-        queryParamsHandling: 'merge'
-      });
-    }
-  }
-
-  onClearFilter(filterInput: HTMLInputElement): void {
-    filterInput.value = '';
-    if (this.route.snapshot.queryParams['descricao']) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          descricao: null
-        },
-        queryParamsHandling: 'merge'
-      });
-    }
-  }
-
   pageChanged(event: PageChangedEvent): void {
     this.router.navigate([], {
       relativeTo: this.route,
@@ -141,16 +152,6 @@ export class SpecialtyListComponent implements OnInit, OnDestroy {
 
   reloadPage(): void {
     window.location.reload();
-  }
-
-  private setPaginationSize(): void {
-    if (window.innerWidth < 576) {
-      this.paginationSize = 3;
-    } else if (window.innerWidth < 992) {
-      this.paginationSize = 7;
-    } else {
-      this.paginationSize = 10;
-    }
   }
 
   onBack(): void {

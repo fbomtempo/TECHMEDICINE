@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Observable } from 'rxjs';
 import { State } from 'src/app/shared/models/states';
 import { CepSearchService } from 'src/app/shared/services/cep-search.service';
@@ -20,6 +21,12 @@ import { PatientService } from '../service/patient.service';
 })
 export class PatientsFormComponent extends FormService implements OnInit {
   states$: Observable<State[]>;
+  datepickerConfig: Partial<BsDatepickerConfig> = {
+    adaptivePosition: true,
+    showClearButton: true,
+    clearButtonLabel: 'Limpar',
+    containerClass: 'theme-dark-blue'
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,19 +42,20 @@ export class PatientsFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchData();
-    this.createForm();
+    const patient: Patient = this.fetchData();
+    this.createForm(patient);
   }
 
-  private fetchData(): void {
-    this.states$ = this.dropdownService.getStates();
-  }
-
-  private createForm(): void {
+  private fetchData(): Patient {
     const patient = this.maskService.formatData(
       this.route.snapshot.data['patient'],
       ['cpf', 'homePhone', 'mobilePhone', 'cep']
     );
+    this.states$ = this.dropdownService.getStates();
+    return patient;
+  }
+
+  private createForm(patient: Patient): void {
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
       id: [patient.id],
@@ -79,7 +87,10 @@ export class PatientsFormComponent extends FormService implements OnInit {
           Validators.maxLength(15)
         ]
       ],
-      email: [patient.email, [Validators.required, Validators.maxLength(35)]],
+      email: [
+        patient.email,
+        [Validators.required, Validators.maxLength(35), Validators.email]
+      ],
       cep: [
         patient.cep,
         [Validators.required, Validators.minLength(9), Validators.maxLength(9)]
@@ -134,12 +145,7 @@ export class PatientsFormComponent extends FormService implements OnInit {
   }
 
   onSubmit(): void {
-    const patient: Patient = this.maskService.unformatData(this.form.value, [
-      'cpf',
-      'homePhone',
-      'mobilePhone',
-      'cep'
-    ]);
+    const patient: Patient = this.createObject();
     this.submitted = true;
     if (this.form.valid && this.changed) {
       if (this.form.value['id']) {
@@ -188,6 +194,17 @@ export class PatientsFormComponent extends FormService implements OnInit {
         });
       }
     }
+  }
+
+  private createObject(): Patient {
+    let patient: Patient = this.maskService.unformatData(this.form.value, [
+      'cpf',
+      'homePhone',
+      'mobilePhone',
+      'cep'
+    ]);
+    this.maskService.createDateString(patient, ['birthDate']);
+    return patient;
   }
 
   onCancel(): void {

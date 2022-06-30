@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-color-primary">
+/*<nav class="navbar navbar-expand-lg navbar-dark bg-color-primary">
   <div class="container-fluid">
     <a class="navbar-brand" [routerLink]="['/home']">TECHMEDICINE</a>
     <button
@@ -20,7 +20,7 @@
             aria-current="page"
             [routerLink]="['/home']"
             [routerLinkActive]="['active']"
-            (isActiveChange)="onRouterLinkActive($event, -1)"
+            (isActiveChange)="onRouterLinkActiveHome($event)"
             >Home</a
           >
         </li>
@@ -31,9 +31,9 @@
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
-            [class.active]="dropdownTitlesActive[0]"
+            [class.active]="dropdownTitleActive"
           >
-            {{ dropdownTitles[0] }}
+            {{ dropdownTitle }}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
@@ -48,7 +48,7 @@
                   matrixParams: 'ignored',
                   fragment: 'ignored'
                 }"
-                (isActiveChange)="onRouterLinkActive($event, 0, 'Pacientes')"
+                (isActiveChange)="onRouterLinkActive($event, 'Pacientes')"
                 >Cadastro de Pacientes</a
               >
             </li>
@@ -65,7 +65,7 @@
                   matrixParams: 'ignored',
                   fragment: 'ignored'
                 }"
-                (isActiveChange)="onRouterLinkActive($event, 0, 'Médicos')"
+                (isActiveChange)="onRouterLinkActive($event, 'Médicos')"
                 >Cadastro de Médicos</a
               >
             </li>
@@ -81,7 +81,7 @@
                   matrixParams: 'ignored',
                   fragment: 'ignored'
                 }"
-                (isActiveChange)="onRouterLinkActive($event, 0, 'Funcionários')"
+                (isActiveChange)="onRouterLinkActive($event, 'Funcionários')"
                 >Cadastro de Funcionários</a
               >
             </li>
@@ -100,9 +100,7 @@
                   matrixParams: 'ignored',
                   fragment: 'ignored'
                 }"
-                (isActiveChange)="
-                  onRouterLinkActive($event, 0, 'Especialidades')
-                "
+                (isActiveChange)="onRouterLinkActive($event, 'Especialidades')"
                 >Cadastro de Especialidades</a
               >
             </li>
@@ -118,7 +116,7 @@
                   matrixParams: 'ignored',
                   fragment: 'ignored'
                 }"
-                (isActiveChange)="onRouterLinkActive($event, 0, 'Cargos')"
+                (isActiveChange)="onRouterLinkActive($event, 'Cargos')"
                 >Cadastro de Cargos</a
               >
             </li>
@@ -135,9 +133,9 @@
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
-            [class.active]="dropdownTitlesActive[1]"
+            [class.active]="dropdownTitleActive2"
           >
-            {{ dropdownTitles[1] }}
+            {{ dropdownTitle2 }}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
@@ -151,7 +149,7 @@
                   matrixParams: 'ignored',
                   fragment: 'ignored'
                 }"
-                (isActiveChange)="onRouterLinkActive($event, 1, 'Agendamentos')"
+                (isActiveChange)="onRouterLinkActive2($event, 'Agendamentos')"
                 >Realizar Agendamento</a
               >
             </li>
@@ -189,36 +187,96 @@
     </div>
   </div>
 </nav>
-<div class="container">
-  <router-outlet></router-outlet>
-</div>
-<footer
-  class="d-flex flex-wrap justify-content-between align-items-center footer mt-auto py-3 border-top bg-color-primary"
->
-  <p
-    class="text-center col-12 col-md-4 text-md-start ps-md-4 mb-md-0 text-light"
-  >
-    &copy; 2021 TechMedicine, Inc
-  </p>
-  <a
-    href="/"
-    class="col-12 col-md-4 d-flex align-items-center justify-content-center text-light link-light text-decoration-none"
-  >
-    <i class="fas fa-heartbeat" style="font-size: 40px"></i>
-  </a>
-  <ul
-    class="col-12 justify-content-center col-md-4 justify-content-md-end pe-md-4 nav"
-  >
-    <li class="nav-item">
-      <a href="#" class="nav-link px-2 text-light">Twitter</a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link px-2 text-light">Instagram</a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link px-2 text-light">Facebook</a>
-    </li>
-    <!--<li class="nav-item"><a href="#" class="nav-link px-2 text-light">FAQs</a></li>
-    <li class="nav-item"><a href="#" class="nav-link px-2 text-light">About</a></li>-->
-  </ul>
-</footer>
+
+title = 'techmedicine';
+  dropdownTitle: string;
+  dropdownTitle2: string;
+  dropdownTitleActive: boolean;
+  dropdownTitleActive2: boolean;
+  isLoggedIn: boolean = false;
+
+  constructor(private tokenStorageService: TokenStorageService) {}
+
+  ngOnInit() {
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
+    this.dropdownTitle = 'Cadastros';
+    this.dropdownTitle2 = 'Consultas';
+    this.dropdownTitleActive = false;
+    this.dropdownTitleActive2 = false;
+  }
+
+  onRouterLinkActiveHome(event: boolean) {
+    if (event === true) {
+      this.dropdownTitle = 'Cadastros';
+      this.dropdownTitle2 = 'Consultas';
+      this.dropdownTitleActive = false;
+      this.dropdownTitleActive2 = false;
+    }
+  }
+
+  onRouterLinkActive(event: boolean, dropdownTitle: string) {
+    if (event === true) {
+      this.dropdownTitle = dropdownTitle;
+      this.dropdownTitle2 = 'Consultas';
+      this.dropdownTitleActive = event;
+      this.dropdownTitleActive2 = false;
+    }
+  }
+
+  onRouterLinkActive2(event: boolean, dropdownTitle: string) {
+    if (event === true) {
+      this.dropdownTitle2 = dropdownTitle;
+      this.dropdownTitle = 'Cadastros';
+      this.dropdownTitleActive2 = event;
+      this.dropdownTitleActive = false;
+    }
+  }
+
+  logout(): void {
+    this.tokenStorageService.signOut();
+    window.location.reload();
+  }
+
+[------------------------------------------------------------------]
+
+/*
+  (isActiveChange)="onRouterLinkActiveHome($event)"
+
+  setDropdownActive() {
+    const queryParamsIndex = this.currentRoute.indexOf('?');
+    const baseUrl = (queryParamsIndex === -1) ? this.currentRoute : this.currentRoute.slice(0, queryParamsIndex);
+    if (this.currentRoute.includes(baseUrl) && this.currentRoute != '/home') {
+      this.dropdownTitleActive = true;
+      this.setDropdownTitle(this.dropdownTitleActive, baseUrl);
+    } else {
+      this.dropdownTitleActive = false;
+      this.setDropdownTitle(this.dropdownTitleActive);
+    }
+  }
+
+  private setDropdownTitle(isActive: boolean, baseUrl?: string) {
+    if (isActive) {
+      const endIndex = (baseUrl.substring(1).indexOf('/') === -1) ? undefined : baseUrl.substring(1).indexOf('/');
+      const capitalizeFirstLetter = baseUrl.charAt(1).toUpperCase();
+      this.dropdownTitle = (endIndex === undefined) ? capitalizeFirstLetter + baseUrl.slice(2, endIndex) : capitalizeFirstLetter + baseUrl.slice(2, endIndex + 1);
+    } else {
+      this.dropdownTitle = 'Cadastros';
+    }
+  }
+
+  setDropdownItemActive(item: string) {
+    return (this.dropdownTitleActive && this.dropdownTitle === item);
+  }
+
+  isLinkActive(url: string, dropdownTitle: string): boolean {
+    console.log(url)
+    const queryParamsIndex = this.router.url.indexOf('?');
+    const baseUrl = queryParamsIndex === -1 ? this.router.url : this.router.url.slice(0, queryParamsIndex);
+    if (baseUrl === url) {
+      this.dropdownTitle = dropdownTitle;
+      this.dropdownTitleActive = true;
+    }
+    return baseUrl === url;
+  }
+
+*/

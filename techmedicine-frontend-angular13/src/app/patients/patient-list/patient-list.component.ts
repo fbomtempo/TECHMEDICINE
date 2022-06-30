@@ -44,12 +44,11 @@ export class PatientsListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setPaginationSize();
-    this.itemsPerPage = 10;
     this.subscription = this.route.queryParams.subscribe(
       (queryParams: Params) => {
         this.page = queryParams['pagina'];
         this.filter = queryParams['nome'];
-        this.currentPage = parseInt(this.page.toString());
+        setTimeout(() => (this.currentPage = parseInt(this.page.toString())));
       }
     );
     this.onRefresh();
@@ -59,12 +58,22 @@ export class PatientsListComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  private setPaginationSize(): void {
+    if (window.innerWidth < 576) {
+      this.paginationSize = 3;
+    } else if (window.innerWidth < 992) {
+      this.paginationSize = 7;
+    } else {
+      this.paginationSize = 10;
+    }
+    this.itemsPerPage = 10;
+  }
+
   onRefresh(): void | Observable<never> {
     this.patients$ = this.patientService.findAll().pipe(
       map((patients: Patient[]) => {
         return patients.map((patient: Patient) => {
           return this.maskService.formatData(patient, [
-            'birthDate',
             'cpf',
             'homePhone',
             'mobilePhone',
@@ -77,6 +86,45 @@ export class PatientsListComponent implements OnInit, OnDestroy {
         return of();
       })
     );
+  }
+
+  showData(patients: Patient[]): Patient[] {
+    if (!this.filter || this.filter == '') {
+      return patients;
+    }
+    return patients.filter((patient: Patient) => {
+      if (patient.name.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+
+  setFilter(filter: string): void {
+    if (filter) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          pagina: 1,
+          nome: filter.toLowerCase()
+        },
+        queryParamsHandling: 'merge'
+      });
+    }
+  }
+
+  clearFilter(filterInput: HTMLInputElement): void {
+    filterInput.value = '';
+    if (this.route.snapshot.queryParams['nome']) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          nome: null
+        },
+        queryParamsHandling: 'merge'
+      });
+    }
   }
 
   onDelete(patient: Patient): void {
@@ -101,44 +149,6 @@ export class PatientsListComponent implements OnInit, OnDestroy {
       });
   }
 
-  onShowData(patients: Patient[]): Patient[] {
-    if (!this.filter || this.filter == '') {
-      return patients;
-    }
-    return patients.filter((patient: Patient) => {
-      if (patient.name.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-  }
-
-  setFilter(filter: string): void {
-    if (filter) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          nome: filter.toLowerCase()
-        },
-        queryParamsHandling: 'merge'
-      });
-    }
-  }
-
-  onClearFilter(filterInput: HTMLInputElement): void {
-    filterInput.value = '';
-    if (this.route.snapshot.queryParams['nome']) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          nome: null
-        },
-        queryParamsHandling: 'merge'
-      });
-    }
-  }
-
   pageChanged(event: PageChangedEvent): void {
     this.router.navigate([], {
       relativeTo: this.route,
@@ -151,16 +161,6 @@ export class PatientsListComponent implements OnInit, OnDestroy {
 
   reloadPage(): void {
     window.location.reload();
-  }
-
-  private setPaginationSize(): void {
-    if (window.innerWidth < 576) {
-      this.paginationSize = 3;
-    } else if (window.innerWidth < 992) {
-      this.paginationSize = 7;
-    } else {
-      this.paginationSize = 10;
-    }
   }
 
   onBack(): void {

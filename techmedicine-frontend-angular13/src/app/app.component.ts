@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 
 import { TokenStorageService } from './auth/services/token-storage.service';
 
@@ -9,46 +10,68 @@ import { TokenStorageService } from './auth/services/token-storage.service';
 })
 export class AppComponent implements OnInit {
   title = 'techmedicine';
-  dropdownTitle: string;
-  dropdownTitle2: string;
-  dropdownTitleActive: boolean;
-  dropdownTitleActive2: boolean;
+  dropdownTitles: string[] = new Array(2);
+  dropdownTitlesActive: boolean[] = new Array(2);
   isLoggedIn: boolean = false;
 
-  constructor(private tokenStorageService: TokenStorageService) {}
+  constructor(
+    private tokenStorageService: TokenStorageService,
+    private localeService: BsLocaleService
+  ) {}
 
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
-    this.dropdownTitle = 'Cadastros';
-    this.dropdownTitle2 = 'Consultas';
-    this.dropdownTitleActive = false;
-    this.dropdownTitleActive2 = false;
+    this.localeService.use('pt-br');
+    this.defaultDropdownsValues();
   }
 
-  onRouterLinkActiveHome(event: boolean) {
-    if (event === true) {
-      this.dropdownTitle = 'Cadastros';
-      this.dropdownTitle2 = 'Consultas';
-      this.dropdownTitleActive = false;
-      this.dropdownTitleActive2 = false;
-    }
+  defaultDropdownsValues(): void {
+    this.dropdownTitles = this.defaultTitles();
+    this.dropdownTitlesActive = this.defaultStates();
   }
 
-  onRouterLinkActive(event: boolean, dropdownTitle: string) {
-    if (event === true) {
-      this.dropdownTitle = dropdownTitle;
-      this.dropdownTitle2 = 'Consultas';
-      this.dropdownTitleActive = event;
-      this.dropdownTitleActive2 = false;
-    }
+  private defaultTitles(): string[] {
+    return ['Cadastros', 'Consultas'];
   }
 
-  onRouterLinkActive2(event: boolean, dropdownTitle: string) {
-    if (event === true) {
-      this.dropdownTitle2 = dropdownTitle;
-      this.dropdownTitle = 'Cadastros';
-      this.dropdownTitleActive2 = event;
-      this.dropdownTitleActive = false;
+  private defaultStates(): boolean[] {
+    return [false, false];
+  }
+
+  onRouterLinkActive(event: boolean, key: number, title?: string): void {
+    switch (key) {
+      case 0:
+        if (event) {
+          setTimeout(() => {
+            this.dropdownTitlesActive[key] = event;
+            this.dropdownTitles[key] = title;
+          });
+        } else {
+          this.dropdownTitlesActive[key] = event;
+          this.dropdownTitles[key] = this.defaultTitles()
+            .slice(key, key + 1)
+            .toString();
+        }
+        break;
+      case 1:
+        if (event) {
+          setTimeout(() => {
+            this.dropdownTitlesActive[key] = event;
+            this.dropdownTitles[key] = title;
+          });
+        } else {
+          this.dropdownTitlesActive[key] = event;
+          this.dropdownTitles[key] = this.defaultTitles()
+            .slice(key, key + 1)
+            .toString();
+        }
+        break;
+      default:
+        if (event) {
+          this.dropdownTitlesActive = this.defaultStates();
+          this.dropdownTitles = this.defaultTitles();
+        }
+        break;
     }
   }
 
@@ -57,44 +80,3 @@ export class AppComponent implements OnInit {
     window.location.reload();
   }
 }
-
-/*
-  (isActiveChange)="onRouterLinkActiveHome($event)"
-
-  setDropdownActive() {
-    const queryParamsIndex = this.currentRoute.indexOf('?');
-    const baseUrl = (queryParamsIndex === -1) ? this.currentRoute : this.currentRoute.slice(0, queryParamsIndex);
-    if (this.currentRoute.includes(baseUrl) && this.currentRoute != '/home') {
-      this.dropdownTitleActive = true;
-      this.setDropdownTitle(this.dropdownTitleActive, baseUrl);
-    } else {
-      this.dropdownTitleActive = false;
-      this.setDropdownTitle(this.dropdownTitleActive);
-    }
-  }
-
-  private setDropdownTitle(isActive: boolean, baseUrl?: string) {
-    if (isActive) {
-      const endIndex = (baseUrl.substring(1).indexOf('/') === -1) ? undefined : baseUrl.substring(1).indexOf('/');
-      const capitalizeFirstLetter = baseUrl.charAt(1).toUpperCase();
-      this.dropdownTitle = (endIndex === undefined) ? capitalizeFirstLetter + baseUrl.slice(2, endIndex) : capitalizeFirstLetter + baseUrl.slice(2, endIndex + 1);
-    } else {
-      this.dropdownTitle = 'Cadastros';
-    }
-  }
-
-  setDropdownItemActive(item: string) {
-    return (this.dropdownTitleActive && this.dropdownTitle === item);
-  }
-
-  isLinkActive(url: string, dropdownTitle: string): boolean {
-    console.log(url)
-    const queryParamsIndex = this.router.url.indexOf('?');
-    const baseUrl = queryParamsIndex === -1 ? this.router.url : this.router.url.slice(0, queryParamsIndex);
-    if (baseUrl === url) {
-      this.dropdownTitle = dropdownTitle;
-      this.dropdownTitleActive = true;
-    }
-    return baseUrl === url;
-  }
-  */

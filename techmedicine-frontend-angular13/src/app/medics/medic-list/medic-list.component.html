@@ -36,7 +36,7 @@
         <button
           type="button"
           class="btn btn-clear clear ms-2"
-          (click)="onClearFilter(filterInput)"
+          (click)="clearFilter(filterInput)"
         >
           Limpar
         </button>
@@ -59,7 +59,7 @@
       <tbody class="table-link">
         <tr
           *ngFor="
-            let medic of onShowData(medics) | pagination: page:itemsPerPage;
+            let medic of showData(medics) | pagination: page:itemsPerPage;
             let i = index
           "
         >
@@ -98,7 +98,7 @@
   </div>
   <div class="mb-3 d-flex justify-content-center">
     <pagination
-      [totalItems]="onShowData(medics).length"
+      [totalItems]="showData(medics).length"
       [maxSize]="paginationSize"
       (pageChanged)="pageChanged($event)"
       [(ngModel)]="currentPage"

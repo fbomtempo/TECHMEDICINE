@@ -36,7 +36,7 @@
         <button
           type="button"
           class="btn btn-clear clear ms-2"
-          (click)="onClearFilter(filterInput)"
+          (click)="clearFilter(filterInput)"
         >
           Limpar
         </button>
@@ -61,7 +61,7 @@
       <tbody class="table-link">
         <tr
           *ngFor="
-            let patient of onShowData(patients) | pagination: page:itemsPerPage;
+            let patient of showData(patients) | pagination: page:itemsPerPage;
             let i = index
           "
         >
@@ -100,7 +100,7 @@
   </div>
   <div class="mb-3 d-flex justify-content-center">
     <pagination
-      [totalItems]="onShowData(patients).length"
+      [totalItems]="showData(patients).length"
       [maxSize]="paginationSize"
       (pageChanged)="pageChanged($event)"
       [(ngModel)]="currentPage"
@@ -121,7 +121,7 @@
       style="height: 80vh"
       class="d-flex flex-column align-items-center justify-content-center"
     >
-      <p style="font-size: 1.65rem">Erro ao carregar patients.</p>
+      <p style="font-size: 1.65rem">Erro ao carregar pacientes.</p>
       <button
         type="button"
         class="btn btn-lg btn-secondary"

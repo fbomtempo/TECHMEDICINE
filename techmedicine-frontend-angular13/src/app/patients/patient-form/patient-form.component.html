@@ -48,7 +48,9 @@
   <div class="col-xl-2">
     <label for="birthDate" class="form-label">Nascimento</label>
     <input
-      type="date"
+      type="text"
+      bsDatepicker
+      [bsConfig]="datepickerConfig"
       class="form-control"
       id="birthDate"
       formControlName="birthDate"

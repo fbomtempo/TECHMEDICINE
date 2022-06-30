@@ -22,7 +22,7 @@ export class EmployeeDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.employee = this.maskService.formatData(
       this.route.snapshot.data['employee'],
-      ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep']
+      ['cpf', 'homePhone', 'mobilePhone', 'cep']
     );
   }
 

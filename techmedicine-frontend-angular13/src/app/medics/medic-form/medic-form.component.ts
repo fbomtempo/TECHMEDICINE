@@ -1,7 +1,7 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Observable } from 'rxjs';
 import { State } from 'src/app/shared/models/states';
 import { CepSearchService } from 'src/app/shared/services/cep-search.service';
@@ -26,6 +26,12 @@ export class MedicFormComponent extends FormService implements OnInit {
   compareFn(c1: Specialty, c2: Specialty): boolean {
     return c1 && c2 ? c1.id === c2.id : c1 === c2;
   }
+  datepickerConfig: Partial<BsDatepickerConfig> = {
+    adaptivePosition: true,
+    showClearButton: true,
+    clearButtonLabel: 'Limpar',
+    containerClass: 'theme-dark-blue'
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,23 +47,24 @@ export class MedicFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchData();
-    this.createForm();
+    const medic: Medic = this.fetchData();
+    this.createForm(medic);
   }
 
-  private fetchData(): void {
+  private fetchData(): Medic {
+    const medic = this.maskService.formatData(
+      this.route.snapshot.data['medic'],
+      ['cpf', 'homePhone', 'mobilePhone', 'cep']
+    );
     this.states$ = this.dropdownService.getStates();
     this.dropdownService.getSpecialties().subscribe({
       next: (specialties: Specialty[]) => (this.specialties = specialties),
       complete: () => (this.specialtiesLoading = false)
     });
+    return medic;
   }
 
-  private createForm(): void {
-    const medic = this.maskService.formatData(
-      this.route.snapshot.data['medic'],
-      ['cpf', 'homePhone', 'mobilePhone', 'cep']
-    );
+  private createForm(medic: Medic): void {
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
       id: [medic.id],
@@ -140,12 +147,7 @@ export class MedicFormComponent extends FormService implements OnInit {
   }
 
   onSubmit(): void {
-    const medic: Medic = this.maskService.unformatData(this.form.value, [
-      'cpf',
-      'homePhone',
-      'mobilePhone',
-      'cep'
-    ]);
+    const medic: Medic = this.createObject();
     this.submitted = true;
     if (this.form.valid && this.changed) {
       if (this.form.value['id']) {
@@ -194,6 +196,17 @@ export class MedicFormComponent extends FormService implements OnInit {
         });
       }
     }
+  }
+
+  private createObject(): Medic {
+    let medic: Medic = this.maskService.unformatData(this.form.value, [
+      'cpf',
+      'homePhone',
+      'mobilePhone',
+      'cep'
+    ]);
+    this.maskService.createDateString(medic, ['birthDate']);
+    return medic;
   }
 
   onCancel(): void {
