@@ -14,30 +14,33 @@ import com.tcc2022.techmedicine.repositories.AppointmentRepository;
 public class AppointmentService {
 
 	@Autowired
-	private AppointmentRepository agendamentoRepository;
+	private AppointmentRepository appointmentRepository;
 	
 	public List<Appointment> findAll() {
-		return agendamentoRepository.findAll();
+		return appointmentRepository.findAll();
 	}
 	
 	public Appointment findById(Long id) {
-		Optional<Appointment> obj = agendamentoRepository.findById(id);
+		Optional<Appointment> obj = appointmentRepository.findById(id);
 		return obj.get();
 	}
 	
 	public Appointment insert(Appointment obj) {
+		if (appointmentRepository.findByMedicAndScheduledTimestamp(obj.getMedic(), obj.getScheduledTimestamp()) != null) {
+			throw new IllegalStateException("Médico já possui esse horário agendado!");
+		}
 		obj.setAppointmentSituation(AppointmentSituation.AGENDADO);
-		return agendamentoRepository.save(obj);
+		return appointmentRepository.save(obj);
 	}
 	
 	public void delete(Long id) {
-		agendamentoRepository.deleteById(id);
+		appointmentRepository.deleteById(id);
 	}
 	
 	public Appointment update(Long id, Appointment obj) {
-		Appointment appointment = agendamentoRepository.findById(id).get();
+		Appointment appointment = appointmentRepository.findById(id).get();
 		updateData(appointment, obj);
-		return agendamentoRepository.save(appointment);
+		return appointmentRepository.save(appointment);
 	}
 	
 	private void updateData(Appointment appointment, Appointment obj) {

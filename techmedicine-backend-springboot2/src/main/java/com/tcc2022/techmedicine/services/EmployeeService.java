@@ -1,12 +1,16 @@
 package com.tcc2022.techmedicine.services;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.tcc2022.techmedicine.entities.Employee;
+import com.tcc2022.techmedicine.exceptions.exception.DatabaseException;
+import com.tcc2022.techmedicine.exceptions.exception.NotFoundException;
 import com.tcc2022.techmedicine.repositories.EmployeeRepository;
 
 @Service
@@ -21,22 +25,39 @@ public class EmployeeService {
 	}
 	
 	public Employee findById(Long id) {
-		Optional<Employee> obj = employeeRepository.findById(id);
-		return obj.get();
+		try {
+			return employeeRepository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			throw new NotFoundException("Funcionário de id " + id + " não existe");
+		}
 	}
 
 	public Employee insert(Employee obj) {
-		return employeeRepository.save(obj);
+		try {
+			return employeeRepository.save(obj);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Violação na integridade ou validações dos campos do banco");
+		}
 	}
 	
 	public void delete(Long id) {
-		employeeRepository.deleteById(id);
+		try {
+			employeeRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new NotFoundException("Funcionário de id " + id + " não existe");
+		}
 	}
 	
 	public Employee update(Long id, Employee obj) {
-		Employee employee = employeeRepository.findById(id).get();
-		updateData(employee, obj);
-		return employeeRepository.save(employee);
+		try {
+			Employee employee = employeeRepository.findById(id).get();
+			updateData(employee, obj);
+			return employeeRepository.save(employee);
+		} catch (NoSuchElementException e) {
+			throw new NotFoundException("Funcionário de id " + id + " não existe");
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Violação na integridade ou validações dos campos do banco");
+		}
 	}
 	
 	private void updateData(Employee employee, Employee obj) {

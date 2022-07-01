@@ -1,12 +1,16 @@
 package com.tcc2022.techmedicine.services;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.tcc2022.techmedicine.entities.Medic;
+import com.tcc2022.techmedicine.exceptions.exception.DatabaseException;
+import com.tcc2022.techmedicine.exceptions.exception.NotFoundException;
 import com.tcc2022.techmedicine.repositories.MedicRepository;
 
 @Service
@@ -20,22 +24,39 @@ public class MedicService {
 	}
 	
 	public Medic findById(Long id) {
-		Optional<Medic> medic = medicRepository.findById(id);
-		return medic.get();
+		try {
+			return medicRepository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			throw new NotFoundException("Médico de id " + id + " não existe");
+		}
 	}
 
 	public Medic insert(Medic obj) {
-		return medicRepository.save(obj);
+		try {
+			return medicRepository.save(obj);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Violação na integridade ou validações dos campos do banco");
+		}
 	}
 	
 	public void delete(Long id) {
-		medicRepository.deleteById(id);
+		try {
+			medicRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new NotFoundException("Médico de id " + id + " não existe");
+		}
 	}
 	
 	public Medic update(Long id, Medic obj) {
-		Medic medic = medicRepository.findById(id).get();
-		updateData(medic, obj);
-		return medicRepository.save(medic);
+		try {
+			Medic medic = medicRepository.findById(id).get();
+			updateData(medic, obj);
+			return medicRepository.save(medic);
+		} catch (NoSuchElementException e) {
+			throw new NotFoundException("Médico de id " + id + " não existe");
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Violação na integridade ou validações dos campos do banco");
+		}
 	}
 	
 	private void updateData(Medic medic, Medic obj) {

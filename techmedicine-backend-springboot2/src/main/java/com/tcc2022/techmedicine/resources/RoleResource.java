@@ -31,12 +31,6 @@ public class RoleResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@GetMapping(value = "/orderBy/descricao")
-	public ResponseEntity<List<Role>> findAllByOrderByDescriptionAsc() {
-		List<Role> list = roleService.findAllByOrderByDescriptionAsc();
-		return ResponseEntity.ok().body(list);
-	}
-	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Role> findById(@PathVariable Long id) {
 		Role obj = roleService.findById(id);

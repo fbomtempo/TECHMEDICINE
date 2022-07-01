@@ -31,12 +31,6 @@ public class SpecialtyResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@GetMapping(value = "/orderBy/descricao")
-	public ResponseEntity<List<Specialty>> findAllByOrderByDescriptionAsc() {
-		List<Specialty> list = especialidadeService.findAllByOrderByDescriptionAsc();
-		return ResponseEntity.ok().body(list);
-	}
-	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Specialty> findById(@PathVariable Long id) {
 		Specialty obj = especialidadeService.findById(id);

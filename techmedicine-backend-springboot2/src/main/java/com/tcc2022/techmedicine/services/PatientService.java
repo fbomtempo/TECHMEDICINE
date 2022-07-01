@@ -1,12 +1,16 @@
 package com.tcc2022.techmedicine.services;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.tcc2022.techmedicine.entities.Patient;
+import com.tcc2022.techmedicine.exceptions.exception.DatabaseException;
+import com.tcc2022.techmedicine.exceptions.exception.NotFoundException;
 import com.tcc2022.techmedicine.repositories.PatientRepository;
 
 @Service
@@ -20,22 +24,39 @@ public class PatientService {
 	}
 
 	public Patient findById(long id) {
-		Optional<Patient> obj = patientRepository.findById(id);
-		return obj.get();
+		try {
+			return patientRepository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			throw new NotFoundException("Paciente de id " + id + " não existe");
+		}
 	}
 	
 	public Patient insert(Patient obj) {
-		return patientRepository.save(obj);
+		try {
+			return patientRepository.save(obj);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Violação na integridade ou validações dos campos do banco");
+		}
 	}
 
 	public void delete(Long id) {
-		patientRepository.deleteById(id);
+		try {
+			patientRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new NotFoundException("Paciente de id " + id + " não existe");
+		}
 	}
 
 	public Patient update(Long id, Patient obj) {
-		Patient patient = patientRepository.findById(id).get();
-		updateData(patient, obj);
-		return patientRepository.save(patient);
+		try {
+			Patient patient = findById(id);
+			updateData(patient, obj);
+			return patientRepository.save(patient);
+		} catch (NoSuchElementException e) {
+			throw new NotFoundException("Paciente de id " + id + " não existe");
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Violação na integridade ou validações dos campos do banco");
+		}
 	}
 	
 	private void updateData(Patient patient, Patient obj) {
@@ -56,32 +77,4 @@ public class PatientService {
 		patient.setDistrict(obj.getDistrict());
 		patient.setComplement(obj.getComplement());
 	}
-	
-	/*public List<Paciente> findAll() {
-		try {
-			return pacienteRepository.findAll();
-		}
-		catch (NoSuchElementException e) {
-			throw new ResourceNotFoundException("Pacientes não encontrados");
-		}
-	}
-	
-	public Paciente findById(Long id) {
-		try {
-			Optional<Paciente> obj = pacienteRepository.findById(id);
-			return obj.get();
-		}
-		catch (NoSuchElementException e) {
-			throw new ResourceNotFoundException("Paciente de id '" + id + "' não encontrado");
-		}
-	}
-	
-	public Paciente insert(Paciente obj) {
-		try {
-			return pacienteRepository.save(obj);		
-		}
-		catch (DataIntegrityViolationException e) {
-			throw new DatabaseException("Chave PRIMÁRIA ou ÚNICA violada");	
-		}
-	}*/
 }
