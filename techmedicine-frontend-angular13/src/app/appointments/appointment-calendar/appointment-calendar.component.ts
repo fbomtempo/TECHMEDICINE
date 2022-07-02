@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CalendarOptions } from '@fullcalendar/angular';
+import { CalendarOptions, EventSourceInput } from '@fullcalendar/angular';
 import ptBrLocale from '@fullcalendar/core/locales/pt-br';
 import { catchError, map, Observable, of, Subject, take } from 'rxjs';
 import { AppointmentModalComponent } from 'src/app/appointments/appointment-modal/appointment-modal.component';
@@ -62,7 +62,7 @@ export class AppointmentsCalendarComponent implements OnInit {
     select: this.addAppointment.bind(this),
     selectAllow: this.maxSelectionAllowed.bind(this)
   };
-  appointments$: Observable<Appointment[]>;
+  events: any[];
   appointment: Appointment;
   error: Subject<boolean> = new Subject();
   medics: Medic[];
@@ -72,6 +72,8 @@ export class AppointmentsCalendarComponent implements OnInit {
   }
   @ViewChild('appointmentModal', { static: true })
   appointmentModal?: AppointmentModalComponent;
+  isChecked: boolean = false;
+  filterMedic: Medic;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -117,7 +119,6 @@ export class AppointmentsCalendarComponent implements OnInit {
   }
 
   onRefresh(): void | Observable<never> {
-    let appointments: any[];
     this.appointmentService
       .findAll()
       .pipe(
@@ -128,7 +129,10 @@ export class AppointmentsCalendarComponent implements OnInit {
               id: appointment.id,
               title: `${appointment.patient.name} ${appointment.patient.surname}`,
               start: appointment.scheduledTimestamp,
-              end: appointment.endTimestamp
+              end: appointment.endTimestamp,
+              color:
+                appointment.appointmentSituation === 'CANCELADO' ? 'red' : '',
+              appointment: appointment
             };
           });
         }),
@@ -139,13 +143,50 @@ export class AppointmentsCalendarComponent implements OnInit {
       )
       .subscribe({
         next: (appointmentEvents: any[]) => {
-          appointments = appointmentEvents;
+          this.events = appointmentEvents;
+          this.calendarOptions.events = appointmentEvents.filter(
+            (event: any) =>
+              event.appointment.appointmentSituation !== 'CANCELADO'
+          );
         },
         complete: () => {
-          this.calendarOptions.events = appointments;
           this.loadPage = true;
         }
       });
+  }
+
+  setFilterMedic(medic: Medic) {
+    this.filterMedic = medic;
+    this.filterAppointments();
+  }
+
+  filterAppointments(): void {
+    switch (this.isChecked) {
+      case true:
+        this.calendarOptions.events = this.filterMedic
+          ? this.events.filter(
+              (event: any) => event.appointment.medic.id === this.filterMedic.id
+            )
+          : this.events.filter(() => true);
+        break;
+      case false:
+        this.calendarOptions.events = this.filterMedic
+          ? this.events.filter(
+              (event: any) =>
+                event.appointment.medic.id === this.filterMedic.id &&
+                event.appointment.appointmentSituation !== 'CANCELADO'
+            )
+          : this.events.filter(
+              (event: any) =>
+                event.appointment.appointmentSituation !== 'CANCELADO'
+            );
+        break;
+      default:
+        this.calendarOptions.events = this.events.filter(
+          (event: any) => event.appointment.appointmentSituation !== 'CANCELADO'
+        );
+        break;
+    }
   }
 
   private addAppointment(arg: any): void {

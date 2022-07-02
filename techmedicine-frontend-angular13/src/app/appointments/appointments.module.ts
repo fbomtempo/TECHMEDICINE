@@ -11,7 +11,6 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { SharedModule } from '../shared/shared.module';
 import { AppointmentsCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 import { AppointmentFormComponent } from './appointment-form/appointment-form.component';
-import { AppointmentListComponent } from './appointment-list/appointment-list.component';
 import { AppointmentModalComponent } from './appointment-modal/appointment-modal.component';
 import { AppointmentsRoutingModule } from './appointments-routing.module';
 
@@ -25,8 +24,7 @@ FullCalendarModule.registerPlugins([
   declarations: [
     AppointmentsCalendarComponent,
     AppointmentFormComponent,
-    AppointmentModalComponent,
-    AppointmentListComponent
+    AppointmentModalComponent
   ],
   imports: [
     CommonModule,

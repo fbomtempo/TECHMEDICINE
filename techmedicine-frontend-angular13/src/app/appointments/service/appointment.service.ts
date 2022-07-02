@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 import { CrudService } from '../../shared/services/crud-service';
@@ -11,5 +12,14 @@ import { Appointment } from '../model/appointment';
 export class AppointmentService extends CrudService<Appointment> {
   constructor(protected override http: HttpClient) {
     super(http, `${environment.API}agendamentos`);
+  }
+
+  findAppointmentById(
+    medicId: number,
+    scheduledTimestamp: string
+  ): Observable<Appointment> {
+    return this.http
+      .get<Appointment>(`${this.API_URL}/${medicId}/${scheduledTimestamp}`)
+      .pipe(take(1));
   }
 }

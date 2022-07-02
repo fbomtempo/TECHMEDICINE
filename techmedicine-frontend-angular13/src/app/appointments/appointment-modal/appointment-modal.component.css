@@ -2,3 +2,8 @@
   background-color: #3788d8;
   color: white;
 }
+
+.modal-content-cancelled {
+  background-color: darkred;
+  color: white;
+}

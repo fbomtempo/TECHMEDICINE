@@ -46,6 +46,14 @@ export class AppointmentModalComponent implements OnInit {
     }
   }
 
+  modalBackgroundColor(): any {
+    return {
+      'modal-content': this.appointment.appointmentSituation !== 'CANCELADO',
+      'modal-content-cancelled':
+        this.appointment.appointmentSituation === 'CANCELADO'
+    };
+  }
+
   show(): void {
     this.bsModalRef = this.bsModalService.show(
       this.modalTemplate,
@@ -97,7 +105,7 @@ export class AppointmentModalComponent implements OnInit {
   }
 
   private formatData(appointment: Appointment): void {
-    const fields = ['birthDate', 'cpf', 'homePhone', 'mobilePhone', 'cep'];
+    const fields = ['cpf', 'homePhone', 'mobilePhone', 'cep'];
     this.appointment.patient = this.maskService.formatData(
       appointment.patient,
       fields

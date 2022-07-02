@@ -14,7 +14,6 @@ import { AppointmentService } from '../service/appointment.service';
   styleUrls: ['./appointment-list.component.css']
 })
 export class AppointmentListComponent implements OnInit {
-
   @Input() appointments: Appointment[];
   @Input() error: Subject<boolean> = new Subject();
 
@@ -35,19 +34,19 @@ export class AppointmentListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private location: Location
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.setPaginationSize();
     this.itemsPerPage = 10;
-    this.subscription = this.route.queryParams.subscribe(queryParams => {
+    this.subscription = this.route.queryParams.subscribe((queryParams) => {
       this.page = queryParams['pagina'];
       this.filter = queryParams['nome'];
       this.currentPage = parseInt(this.page.toString());
     });
-    this.appointments.forEach(appointment => {
+    this.appointments.forEach((appointment) => {
       this.formatData(appointment);
-    })
+    });
   }
 
   ngOnDestroy(): void {
@@ -64,7 +63,9 @@ export class AppointmentListComponent implements OnInit {
     const startTime: string = appointment.scheduledTimestamp.slice(11, 16);
     const endTime: string = appointment.endTimestamp.slice(11, 16);
     const timeslot: string = startTime + '-' + endTime;
-    appointment.scheduledTimestamp = date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+    appointment.scheduledTimestamp = date.toLocaleDateString('pt-BR', {
+      timeZone: 'UTC'
+    });
     appointment.endTimestamp = timeslot;
     /*appointment.patient.cpf = this.maskService.applyMask('cpf', appointment.patient.cpf);
     appointment.patient.homePhone = this.maskService.applyMask('homePhone', appointment.patient.homePhone);
@@ -74,14 +75,24 @@ export class AppointmentListComponent implements OnInit {
   }
 
   onDelete(appointment: Appointment): void {
-    this.modalService.showConfirmModal('Confirmação', 'Tem certeza que deseja remover esse agendamento?')
+    this.modalService
+      .showConfirmModal(
+        'Confirmação',
+        'Tem certeza que deseja remover esse agendamento?'
+      )
       .pipe(
         take(1),
-        switchMap(result => result ? this.appointmentService.delete(appointment.id) : of())
+        switchMap((result) =>
+          result ? this.appointmentService.delete(appointment.id) : of()
+        )
       )
       .subscribe({
         next: () => setTimeout(() => this.deleteEvent.emit(), 100),
-        error: () => this.modalService.alertDanger('Erro ao remover agendamento!', 'Tente novamente mais tarde.')
+        error: () =>
+          this.modalService.alertDanger(
+            'Erro ao remover agendamento!',
+            'Tente novamente mais tarde.'
+          )
       });
   }
 
@@ -89,13 +100,16 @@ export class AppointmentListComponent implements OnInit {
     if (!this.filter || this.filter == '') {
       return appointments;
     }
-    return appointments.filter(v => {
-      if (v.scheduledTimestamp.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0) {
+    return appointments.filter((v) => {
+      if (
+        v.scheduledTimestamp.toLowerCase().indexOf(this.filter.toLowerCase()) >=
+        0
+      ) {
         return true;
       } else {
         return false;
       }
-    })
+    });
   }
 
   setFilter(filter: string): void {
@@ -105,7 +119,7 @@ export class AppointmentListComponent implements OnInit {
         queryParams: {
           nome: filter.toLowerCase()
         },
-        queryParamsHandling: 'merge',
+        queryParamsHandling: 'merge'
       });
     }
   }
@@ -118,7 +132,7 @@ export class AppointmentListComponent implements OnInit {
         queryParams: {
           nome: null
         },
-        queryParamsHandling: 'merge',
+        queryParamsHandling: 'merge'
       });
     }
   }
@@ -129,7 +143,7 @@ export class AppointmentListComponent implements OnInit {
       queryParams: {
         pagina: event.page
       },
-      queryParamsHandling: 'merge',
+      queryParamsHandling: 'merge'
     });
   }
 
@@ -140,7 +154,7 @@ export class AppointmentListComponent implements OnInit {
   private setPaginationSize(): void {
     if (window.innerWidth < 576) {
       this.paginationSize = 3;
-    } else if (window.innerWidth < 992){
+    } else if (window.innerWidth < 992) {
       this.paginationSize = 7;
     } else {
       this.paginationSize = 10;
@@ -150,5 +164,4 @@ export class AppointmentListComponent implements OnInit {
   onBack(): void {
     this.location.back();
   }
-
 }

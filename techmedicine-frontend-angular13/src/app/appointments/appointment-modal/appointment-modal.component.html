@@ -1,5 +1,5 @@
 <ng-template #template>
-  <div class="modal-content">
+  <div class="modal-content" [ngClass]="modalBackgroundColor()">
     <div class="modal-header">
       <h5 class="modal-title">
         Agendamento ID {{ appointment.id }} -
@@ -15,6 +15,18 @@
     </div>
     <div class="modal-body">
       <div class="row">
+        <div class="col-xl-8 mb-4">
+          <strong>Médico: </strong>
+          <br />
+          <span>{{
+            appointment.medic.name + " " + appointment.medic.surname
+          }}</span>
+        </div>
+        <div class="col-xl-4 mb-4">
+          <strong>CRM: </strong>
+          <br />
+          <span>{{ appointment.medic.crm }}</span>
+        </div>
         <div class="col-xl-8 mb-4">
           <strong>Paciente: </strong>
           <br />
@@ -72,14 +84,22 @@
           <br />
           <span>{{ appointment.patient.district }}</span>
         </div>
-        <div class="col-xl-12">
+        <div class="col-xl-12 mb-4">
           <strong>Complemento: </strong>
           <br />
           <span>{{ appointment.patient.complement }}</span>
         </div>
+        <div class="col-xl-12">
+          <strong>Situação: </strong>
+          <br />
+          <span>{{ appointment.appointmentSituation }}</span>
+        </div>
       </div>
     </div>
-    <div class="modal-footer">
+    <div
+      class="modal-footer"
+      *ngIf="appointment.appointmentSituation !== 'CANCELADO'"
+    >
       <button
         type="button"
         class="btn btn-danger"
