@@ -13,7 +13,7 @@ import com.tcc2022.techmedicine.exceptions.exception.DatabaseException;
 import com.tcc2022.techmedicine.exceptions.exception.NotFoundException;
 
 @ControllerAdvice
-public class ControllerExceptionHandler {
+public class Handler {
 
 	@ExceptionHandler(NotFoundException.class)
 	public ResponseEntity<ExceptionDetails> notFound(NotFoundException e, HttpServletRequest request) {
