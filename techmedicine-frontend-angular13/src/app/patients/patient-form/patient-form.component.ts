@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +5,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Observable } from 'rxjs';
 import { State } from 'src/app/shared/models/states';
 import { CepSearchService } from 'src/app/shared/services/cep-search.service';
+import { DateService } from 'src/app/shared/services/date.service';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { FormService } from 'src/app/shared/services/form-service';
 import { MaskService } from 'src/app/shared/services/mask.service';
@@ -34,6 +34,7 @@ export class PatientsFormComponent extends FormService implements OnInit {
     private modalService: ModalService,
     private cepService: CepSearchService,
     private maskService: MaskService,
+    private dateService: DateService,
     private dropdownService: DropdownService,
     private router: Router,
     private route: ActivatedRoute
@@ -51,6 +52,7 @@ export class PatientsFormComponent extends FormService implements OnInit {
       this.route.snapshot.data['patient'],
       ['cpf', 'homePhone', 'mobilePhone', 'cep']
     );
+    patient.birthDate = this.dateService.createDateObject(patient.birthDate);
     this.states$ = this.dropdownService.getStates();
     return patient;
   }
@@ -197,13 +199,13 @@ export class PatientsFormComponent extends FormService implements OnInit {
   }
 
   private createObject(): Patient {
-    let patient: Patient = this.maskService.unformatData(this.form.value, [
+    const patient: Patient = this.maskService.unformatData(this.form.value, [
       'cpf',
       'homePhone',
       'mobilePhone',
       'cep'
     ]);
-    this.maskService.createDateString(patient, ['birthDate']);
+    this.dateService.toISODateString(patient, ['birthDate']);
     return patient;
   }
 

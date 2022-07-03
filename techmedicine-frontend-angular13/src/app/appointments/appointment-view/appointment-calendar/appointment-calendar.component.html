@@ -1,17 +1,21 @@
 <div *ngIf="loadPage; else loadingError">
   <div class="row">
-    <div class="col-md-12">
-      <div class="pt-4 pb-md-0 pb-3 col-md-3">
-        <a class="fs-5 display-1 back" (click)="onBack()"
-          ><i class="fas fa-arrow-left"></i><span class="ms-2">Voltar</span></a
-        >
+    <div class="col-lg-6 col-md-12 col-sm-12 pt-2 pb-3">
+      <div class="pb-4">
+        <div class="form-check form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            id="flexSwitchCheckDefault"
+            [(ngModel)]="isChecked"
+            (change)="showData()"
+          />
+          <label class="form-check-label" for="flexSwitchCheckDefault"
+            >Mostrar Cancelados</label
+          >
+        </div>
       </div>
-      <h1 class="text-center pb-4">Realização de Agendamentos</h1>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-6 pt-2 pb-3">
-      <label for="medic" class="form-label">Médico</label>
       <ng-select
         [items]="medics"
         (change)="setFilterMedic($event)"
@@ -44,25 +48,11 @@
           </div>
         </ng-template>
       </ng-select>
-      <div class="pt-4">
-        <div class="form-check form-switch">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            id="flexSwitchCheckDefault"
-            [(ngModel)]="isChecked"
-            (change)="filterAppointments()"
-          />
-          <label class="form-check-label" for="flexSwitchCheckDefault"
-            >Mostrar Cancelados</label
-          >
-        </div>
-      </div>
     </div>
   </div>
   <div>
     <full-calendar
+      #calendar
       [options]="calendarOptions"
       class="mt-3 mb-5"
     ></full-calendar>

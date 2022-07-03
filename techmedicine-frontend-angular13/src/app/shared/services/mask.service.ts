@@ -68,14 +68,4 @@ export class MaskService {
     }
     return value;
   }
-
-  createDateString(obj: any, dateFields: string[]): any {
-    if (dateFields) {
-      dateFields.forEach((dateField: string) => {
-        if (obj[dateField] != null) {
-          obj[dateField] = obj[dateField].toLocaleDateString('pt-BR');
-        }
-      });
-    }
-  }
 }

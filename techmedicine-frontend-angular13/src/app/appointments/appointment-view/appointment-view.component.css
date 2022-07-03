@@ -1,0 +1,10 @@
+.back {
+  color: black;
+  text-decoration: none;
+}
+
+.back:hover {
+  color: black;
+  cursor: pointer;
+  text-decoration: underline;
+}

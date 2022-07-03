@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { DateService } from 'src/app/shared/services/date.service';
 import { MaskService } from 'src/app/shared/services/mask.service';
 
 import { Medic } from '../model/medic';
@@ -15,6 +16,7 @@ export class MedicDetailsComponent implements OnInit {
 
   constructor(
     private maskService: MaskService,
+    private dateService: DateService,
     private route: ActivatedRoute,
     private location: Location
   ) {}
@@ -24,6 +26,7 @@ export class MedicDetailsComponent implements OnInit {
       this.route.snapshot.data['medic'],
       ['cpf', 'homePhone', 'mobilePhone', 'cep']
     );
+    this.dateService.toPtBrDateString(this.medic, ['birthDate']);
   }
 
   onBackToList(): void {

@@ -12,6 +12,7 @@ import {
   switchMap,
   take
 } from 'rxjs';
+import { DateService } from 'src/app/shared/services/date.service';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
@@ -37,6 +38,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
     private employeeService: EmployeeService,
     private modalService: ModalService,
     private maskService: MaskService,
+    private dateService: DateService,
     private route: ActivatedRoute,
     private router: Router,
     private location: Location
@@ -73,12 +75,14 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
     this.employees$ = this.employeeService.findAll().pipe(
       map((employees: Employee[]) => {
         return employees.map((employee: Employee) => {
-          return this.maskService.formatData(employee, [
+          this.maskService.formatData(employee, [
             'cpf',
             'homePhone',
             'mobilePhone',
             'cep'
           ]);
+          this.dateService.toPtBrDateString(employee, ['birthDate']);
+          return employee;
         });
       }),
       catchError(() => {

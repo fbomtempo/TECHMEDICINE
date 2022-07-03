@@ -14,3 +14,6 @@
   color: var(--color-primary, white);
 }
 
+.fc .fc-license-message {
+  display: none !important;
+}

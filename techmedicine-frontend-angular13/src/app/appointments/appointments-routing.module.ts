@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DeactivateGuard } from '../shared/guards/deactivate.guard';
-import { AppointmentsCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 import { AppointmentFormComponent } from './appointment-form/appointment-form.component';
+import { AppointmentViewComponent } from './appointment-view/appointment-view.component';
 import { AppointmentsResolver } from './guards/appointments.resolver';
 
 const routes: Routes = [
   {
     path: '',
-    component: AppointmentsCalendarComponent
+    component: AppointmentViewComponent
   },
   {
     path: 'novo',

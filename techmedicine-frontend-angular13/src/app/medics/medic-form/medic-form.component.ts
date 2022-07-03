@@ -5,6 +5,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Observable } from 'rxjs';
 import { State } from 'src/app/shared/models/states';
 import { CepSearchService } from 'src/app/shared/services/cep-search.service';
+import { DateService } from 'src/app/shared/services/date.service';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { FormService } from 'src/app/shared/services/form-service';
 import { MaskService } from 'src/app/shared/services/mask.service';
@@ -39,6 +40,7 @@ export class MedicFormComponent extends FormService implements OnInit {
     private modalService: ModalService,
     private cepService: CepSearchService,
     private maskService: MaskService,
+    private dateService: DateService,
     private dropdownService: DropdownService,
     private router: Router,
     private route: ActivatedRoute
@@ -56,6 +58,7 @@ export class MedicFormComponent extends FormService implements OnInit {
       this.route.snapshot.data['medic'],
       ['cpf', 'homePhone', 'mobilePhone', 'cep']
     );
+    medic.birthDate = this.dateService.createDateObject(medic.birthDate);
     this.states$ = this.dropdownService.getStates();
     this.dropdownService.getSpecialties().subscribe({
       next: (specialties: Specialty[]) => (this.specialties = specialties),
@@ -199,13 +202,13 @@ export class MedicFormComponent extends FormService implements OnInit {
   }
 
   private createObject(): Medic {
-    let medic: Medic = this.maskService.unformatData(this.form.value, [
+    const medic: Medic = this.maskService.unformatData(this.form.value, [
       'cpf',
       'homePhone',
       'mobilePhone',
       'cep'
     ]);
-    this.maskService.createDateString(medic, ['birthDate']);
+    this.dateService.toISODateString(medic, ['birthDate']);
     return medic;
   }
 

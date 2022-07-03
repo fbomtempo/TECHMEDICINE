@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Role } from 'src/app/roles/model/role';
 import { State } from 'src/app/shared/models/states';
 import { CepSearchService } from 'src/app/shared/services/cep-search.service';
+import { DateService } from 'src/app/shared/services/date.service';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { FormService } from 'src/app/shared/services/form-service';
 import { MaskService } from 'src/app/shared/services/mask.service';
@@ -40,6 +40,7 @@ export class EmployeeFormComponent extends FormService implements OnInit {
     private modalService: ModalService,
     private cepService: CepSearchService,
     private maskService: MaskService,
+    private dateService: DateService,
     private dropdownService: DropdownService,
     private router: Router,
     private route: ActivatedRoute
@@ -57,6 +58,7 @@ export class EmployeeFormComponent extends FormService implements OnInit {
       this.route.snapshot.data['employee'],
       ['cpf', 'homePhone', 'mobilePhone', 'cep']
     );
+    employee.birthDate = this.dateService.createDateObject(employee.birthDate);
     this.states$ = this.dropdownService.getStates();
     this.dropdownService.getRoles().subscribe({
       next: (roles: Role[]) => (this.roles = roles),
@@ -205,13 +207,13 @@ export class EmployeeFormComponent extends FormService implements OnInit {
   }
 
   private createObject(): Employee {
-    let employee: Employee = this.maskService.unformatData(this.form.value, [
+    const employee: Employee = this.maskService.unformatData(this.form.value, [
       'cpf',
       'homePhone',
       'mobilePhone',
       'cep'
     ]);
-    this.maskService.createDateString(employee, ['birthDate']);
+    this.dateService.toISODateString(employee, ['birthDate']);
     return employee;
   }
 

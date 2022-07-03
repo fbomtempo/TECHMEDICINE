@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CalendarOptions, EventSourceInput } from '@fullcalendar/angular';
+import { CalendarOptions } from '@fullcalendar/angular';
 import ptBrLocale from '@fullcalendar/core/locales/pt-br';
 import { catchError, map, Observable, of, Subject, take } from 'rxjs';
 import { AppointmentModalComponent } from 'src/app/appointments/appointment-modal/appointment-modal.component';
@@ -10,15 +10,15 @@ import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
-import { Appointment } from '../model/appointment';
-import { AppointmentService } from '../service/appointment.service';
+import { Appointment } from '../../model/appointment';
+import { AppointmentService } from '../../service/appointment.service';
 
 @Component({
   selector: 'app-appointment-calendar',
   templateUrl: './appointment-calendar.component.html',
   styleUrls: ['./appointment-calendar.component.css']
 })
-export class AppointmentsCalendarComponent implements OnInit {
+export class AppointmentCalendarComponent implements OnInit {
   loadPage: boolean = false;
   calendarOptions: CalendarOptions = {
     initialView: 'timeGridWeek',
@@ -28,6 +28,8 @@ export class AppointmentsCalendarComponent implements OnInit {
       center: 'title',
       right: 'timeGridWeek,timeGridDay'
     },
+    dayMinWidth: 150,
+    eventShortHeight: 40,
     stickyHeaderDates: true,
     allDaySlot: false,
     expandRows: true,
@@ -57,12 +59,13 @@ export class AppointmentsCalendarComponent implements OnInit {
     eventDrop: this.eventDropUpdate.bind(this),
     eventClick: this.viewAppointment.bind(this),
     eventOverlap: false,
+    eventMaxStack: 1,
     selectable: true,
     selectConstraint: 'businessHours',
     select: this.addAppointment.bind(this),
     selectAllow: this.maxSelectionAllowed.bind(this)
   };
-  events: any[];
+  allEvents: any[];
   appointment: Appointment;
   error: Subject<boolean> = new Subject();
   medics: Medic[];
@@ -132,7 +135,9 @@ export class AppointmentsCalendarComponent implements OnInit {
               end: appointment.endTimestamp,
               color:
                 appointment.appointmentSituation === 'CANCELADO' ? 'red' : '',
-              appointment: appointment
+              extendedProps: {
+                appointment: appointment
+              }
             };
           });
         }),
@@ -143,10 +148,11 @@ export class AppointmentsCalendarComponent implements OnInit {
       )
       .subscribe({
         next: (appointmentEvents: any[]) => {
-          this.events = appointmentEvents;
+          this.allEvents = appointmentEvents;
           this.calendarOptions.events = appointmentEvents.filter(
             (event: any) =>
-              event.appointment.appointmentSituation !== 'CANCELADO'
+              event.extendedProps.appointment.appointmentSituation !==
+              'CANCELADO'
           );
         },
         complete: () => {
@@ -157,33 +163,38 @@ export class AppointmentsCalendarComponent implements OnInit {
 
   setFilterMedic(medic: Medic) {
     this.filterMedic = medic;
-    this.filterAppointments();
+    this.showData();
   }
 
-  filterAppointments(): void {
+  showData(): void {
     switch (this.isChecked) {
       case true:
         this.calendarOptions.events = this.filterMedic
-          ? this.events.filter(
-              (event: any) => event.appointment.medic.id === this.filterMedic.id
+          ? this.allEvents.filter(
+              (event: any) =>
+                event.extendedProps.appointment.medic.id === this.filterMedic.id
             )
-          : this.events.filter(() => true);
+          : this.allEvents.filter(() => true);
         break;
       case false:
         this.calendarOptions.events = this.filterMedic
-          ? this.events.filter(
+          ? this.allEvents.filter(
               (event: any) =>
-                event.appointment.medic.id === this.filterMedic.id &&
-                event.appointment.appointmentSituation !== 'CANCELADO'
+                event.extendedProps.appointment.medic.id ===
+                  this.filterMedic.id &&
+                event.extendedProps.appointment.appointmentSituation !==
+                  'CANCELADO'
             )
-          : this.events.filter(
+          : this.allEvents.filter(
               (event: any) =>
-                event.appointment.appointmentSituation !== 'CANCELADO'
+                event.extendedProps.appointment.appointmentSituation !==
+                'CANCELADO'
             );
         break;
       default:
-        this.calendarOptions.events = this.events.filter(
-          (event: any) => event.appointment.appointmentSituation !== 'CANCELADO'
+        this.calendarOptions.events = this.allEvents.filter(
+          (event: any) =>
+            event.extendedProps.appointment.appointmentSituation !== 'CANCELADO'
         );
         break;
     }
@@ -211,17 +222,22 @@ export class AppointmentsCalendarComponent implements OnInit {
     appointment.scheduledTimestamp = info.event.startStr.slice(0, 16);
     appointment.endTimestamp = info.event.endStr.slice(0, 16);
     this.appointmentService.update(appointment).subscribe({
-      error: () =>
+      error: () => {
         this.modalService.alertDanger(
           'Erro ao atualizar agendamento!',
           'Tente novamente mais tarde.'
-        ),
+        );
+      },
       complete: () => {
         this.modalService.alertSuccess(
           'Agendamento atualizado com sucesso!',
           'Atualizando a página...'
         );
-        setTimeout(() => this.onRefresh(), 2000);
+        setTimeout(() => {
+          this.isChecked = false;
+          this.loadPage = false;
+          this.onRefresh();
+        }, 2000);
       }
     });
   }

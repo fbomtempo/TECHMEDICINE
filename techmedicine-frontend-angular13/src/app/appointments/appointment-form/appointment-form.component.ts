@@ -1,10 +1,11 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { map } from 'rxjs';
 import { Medic } from 'src/app/medics/model/medic';
 import { Patient } from 'src/app/patients/model/patient';
+import { DateService } from 'src/app/shared/services/date.service';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { FormService } from 'src/app/shared/services/form-service';
 import { MaskService } from 'src/app/shared/services/mask.service';
@@ -19,6 +20,12 @@ import { AppointmentService } from '../service/appointment.service';
   styleUrls: ['./appointment-form.component.css']
 })
 export class AppointmentFormComponent extends FormService implements OnInit {
+  datepickerConfig: Partial<BsDatepickerConfig> = {
+    adaptivePosition: true,
+    showClearButton: true,
+    clearButtonLabel: 'Limpar',
+    containerClass: 'theme-dark-blue'
+  };
   timeslots: string[] = [
     '08:00-08:30',
     '08:30-09:00',
@@ -39,7 +46,7 @@ export class AppointmentFormComponent extends FormService implements OnInit {
     '18:00-18:30',
     '18:30-19:00'
   ];
-  date: string;
+  date: Date;
   timeslot: string;
   patients: Patient[];
   patientsLoading: boolean = true;
@@ -58,6 +65,7 @@ export class AppointmentFormComponent extends FormService implements OnInit {
     private modalService: ModalService,
     private dropdownService: DropdownService,
     private maskService: MaskService,
+    private dateService: DateService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -116,7 +124,8 @@ export class AppointmentFormComponent extends FormService implements OnInit {
       date: [this.date, [Validators.required]],
       timeslot: [this.timeslot, [Validators.required]],
       patient: [appointment.patient, [Validators.required]],
-      medic: [appointment.medic, [Validators.required]]
+      medic: [appointment.medic, [Validators.required]],
+      appointmentSituation: [appointment.appointmentSituation]
     });
     this.subscribeToChanges();
   }
@@ -125,19 +134,19 @@ export class AppointmentFormComponent extends FormService implements OnInit {
     appointment: Appointment,
     fullTimestamp: string
   ): void {
-    let startTime: string;
-    let endTime: string;
     if (fullTimestamp) {
-      this.date = fullTimestamp.slice(0, 10);
-      startTime = fullTimestamp.slice(11, 16);
-      endTime = fullTimestamp.slice(17);
-      this.timeslot = `${startTime}-${endTime}`;
+      const dateTime: string[] = fullTimestamp.split('T');
+      const times: string[] = dateTime[1].split('-');
+      this.date = this.dateService.createDateObject(dateTime[0]);
+      this.timeslot = `${times[0]}-${times[1]}`;
       return;
     } else if (appointment.id) {
-      this.date = appointment.scheduledTimestamp.slice(0, 10);
-      startTime = appointment.scheduledTimestamp.slice(11, 16);
-      endTime = appointment.endTimestamp.slice(11, 16);
-      this.timeslot = `${startTime}-${endTime}`;
+      const date: string = appointment.scheduledTimestamp.slice(0, 16);
+      const times: string[] = [];
+      times.push(appointment.scheduledTimestamp.split('T')[1].slice(0, 5));
+      times.push(appointment.endTimestamp.split('T')[1].slice(0, 5));
+      this.date = this.dateService.createDateObject(date);
+      this.timeslot = `${times[0]}-${times[1]}`;
     } else {
       this.date = null;
       this.timeslot = null;
@@ -145,7 +154,7 @@ export class AppointmentFormComponent extends FormService implements OnInit {
   }
 
   onSubmit(): void {
-    const appointment: Appointment = this.createAppointment(this.form.value);
+    const appointment: Appointment = this.createObject(this.form.value);
     this.submitted = true;
     if (this.form.valid && this.changed) {
       if (this.form.value['id']) {
@@ -184,16 +193,13 @@ export class AppointmentFormComponent extends FormService implements OnInit {
     }
   }
 
-  private createAppointment(data: any): Appointment {
-    const times: string[] = data.timeslot.split('-');
-    return {
-      id: data.id,
-      patient: data.patient,
-      medic: data.medic,
-      scheduledTimestamp: data.date + 'T' + times[0],
-      endTimestamp: data.date + 'T' + times[1],
-      appointmentSituation: null
-    };
+  private createObject(form: any): Appointment {
+    const { date, timeslot, ...appointment } = form;
+    const dateStr = date.toISOString().slice(0, 11);
+    const times: string[] = timeslot.split('-');
+    appointment.scheduledTimestamp = `${dateStr}${times[0]}`;
+    appointment.endTimestamp = `${dateStr}${times[1]}`;
+    return appointment;
   }
 
   onCancel(): void {

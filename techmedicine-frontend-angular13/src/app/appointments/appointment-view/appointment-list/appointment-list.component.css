@@ -4,36 +4,13 @@
 }
 
 .back:hover {
-  color:black;
+  color: black;
   cursor: pointer;
   text-decoration: underline;
 }
 
 .btn-radius {
   border-radius: 35px;
-}
-
-.btn-search {
-  border: 1px solid black;
-  border-radius: 5px;
-  background-color: transparent;
-  color: black;
-  padding: 5px 25px;
-  cursor: pointer;
-  border-color: black;
-  color: black;
-}
-
-.btn-search:hover {
-  border-color: black;
-  background-color: black;
-  color: white;
-}
-
-.search:hover {
-  border-color: black;
-  background-color: black;
-  color: white;
 }
 
 .btn-clear {
@@ -110,3 +87,23 @@
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
+.loader {
+  border: 14px solid #f3f3f3;
+  /* Light grey */
+  border-top: 14px solid #3498db;
+  /* Blue */
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 1.25s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
