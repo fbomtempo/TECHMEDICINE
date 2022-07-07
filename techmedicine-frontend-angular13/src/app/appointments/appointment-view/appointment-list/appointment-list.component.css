@@ -87,6 +87,30 @@
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
+.appointment-label-scheduled {
+  background-color: #3788d8;
+}
+
+.appointment-label-cancelled {
+  background-color: #D90000;
+}
+
+.appointment-label {
+  font-family: Roboto-Bold, sans-serif;
+  font-size: 13px;
+  font-weight: bolder;
+  text-transform: uppercase;
+  border-radius: 3px;
+  color: #fff;
+  display: inline-block;
+  min-width: 20px;
+  overflow-y: hidden;
+  padding: 3px 12px;
+  text-align: left;
+  vertical-align: middle;
+  width: auto;
+}
+
 .loader {
   border: 14px solid #f3f3f3;
   /* Light grey */

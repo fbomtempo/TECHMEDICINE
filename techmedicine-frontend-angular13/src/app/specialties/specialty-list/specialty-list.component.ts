@@ -92,32 +92,6 @@ export class SpecialtyListComponent implements OnInit, OnDestroy {
     });
   }
 
-  setFilter(filter: string): void {
-    if (filter) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          pagina: 1,
-          descricao: filter.toLowerCase()
-        },
-        queryParamsHandling: 'merge'
-      });
-    }
-  }
-
-  clearFIlter(filterInput: HTMLInputElement): void {
-    filterInput.value = '';
-    if (this.route.snapshot.queryParams['descricao']) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          descricao: null
-        },
-        queryParamsHandling: 'merge'
-      });
-    }
-  }
-
   onDelete(especialidade: Specialty): void {
     this.modalService
       .showConfirmModal(

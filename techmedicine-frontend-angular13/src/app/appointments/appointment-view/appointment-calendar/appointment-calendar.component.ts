@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarOptions } from '@fullcalendar/angular';
 import ptBrLocale from '@fullcalendar/core/locales/pt-br';
-import { catchError, map, Observable, of, Subject, take } from 'rxjs';
+import { catchError, map, Observable, of, Subject } from 'rxjs';
 import { AppointmentModalComponent } from 'src/app/appointments/appointment-modal/appointment-modal.component';
 import { Medic } from 'src/app/medics/model/medic';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
@@ -65,7 +65,7 @@ export class AppointmentCalendarComponent implements OnInit {
     select: this.addAppointment.bind(this),
     selectAllow: this.maxSelectionAllowed.bind(this)
   };
-  allEvents: any[];
+  events: any[];
   appointment: Appointment;
   error: Subject<boolean> = new Subject();
   medics: Medic[];
@@ -89,6 +89,10 @@ export class AppointmentCalendarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { pagina: null }
+    });
     this.fetchData();
     this.onRefresh();
   }
@@ -125,7 +129,6 @@ export class AppointmentCalendarComponent implements OnInit {
     this.appointmentService
       .findAll()
       .pipe(
-        take(1),
         map((appointments: Appointment[]) => {
           return appointments.map((appointment: Appointment) => {
             return {
@@ -134,10 +137,18 @@ export class AppointmentCalendarComponent implements OnInit {
               start: appointment.scheduledTimestamp,
               end: appointment.endTimestamp,
               color:
-                appointment.appointmentSituation === 'CANCELADO' ? 'red' : '',
+                appointment.appointmentSituation === 'CANCELADO'
+                  ? '#D90000'
+                  : '',
               extendedProps: {
                 appointment: appointment
-              }
+              },
+              constraint:
+                appointment.appointmentSituation === 'CANCELADO'
+                  ? {
+                      daysOfWeek: []
+                    }
+                  : null
             };
           });
         }),
@@ -148,12 +159,8 @@ export class AppointmentCalendarComponent implements OnInit {
       )
       .subscribe({
         next: (appointmentEvents: any[]) => {
-          this.allEvents = appointmentEvents;
-          this.calendarOptions.events = appointmentEvents.filter(
-            (event: any) =>
-              event.extendedProps.appointment.appointmentSituation !==
-              'CANCELADO'
-          );
+          this.events = appointmentEvents;
+          this.showData();
         },
         complete: () => {
           this.loadPage = true;
@@ -170,29 +177,29 @@ export class AppointmentCalendarComponent implements OnInit {
     switch (this.isChecked) {
       case true:
         this.calendarOptions.events = this.filterMedic
-          ? this.allEvents.filter(
+          ? this.events.filter(
               (event: any) =>
                 event.extendedProps.appointment.medic.id === this.filterMedic.id
             )
-          : this.allEvents.filter(() => true);
+          : this.events.filter(() => true);
         break;
       case false:
         this.calendarOptions.events = this.filterMedic
-          ? this.allEvents.filter(
+          ? this.events.filter(
               (event: any) =>
                 event.extendedProps.appointment.medic.id ===
                   this.filterMedic.id &&
                 event.extendedProps.appointment.appointmentSituation !==
                   'CANCELADO'
             )
-          : this.allEvents.filter(
+          : this.events.filter(
               (event: any) =>
                 event.extendedProps.appointment.appointmentSituation !==
                 'CANCELADO'
             );
         break;
       default:
-        this.calendarOptions.events = this.allEvents.filter(
+        this.calendarOptions.events = this.events.filter(
           (event: any) =>
             event.extendedProps.appointment.appointmentSituation !== 'CANCELADO'
         );

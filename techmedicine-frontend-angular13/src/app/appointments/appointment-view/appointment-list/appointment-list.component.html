@@ -1,28 +1,22 @@
-<div *ngIf="loadPage; else loadingError">
+<div *ngIf="appointments$ | async as appointments; else loadingError">
   <div class="row">
-    <!--<div class="col">
-      <a type="button" class="btn btn-primary" [routerLink]="['novo']"
-        >Novo Funcionário <i class="fas fa-plus-circle"></i
-      ></a>
-    </div>-->
-    <div
-      class="col-xxl-6 col-xl-6 col-lg-8 col-md-8 col-sm-12 col-xs-12 mt-md-0 mt-2"
-    >
-      <div class="pb-4">
-        <div class="form-check form-switch">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            id="flexSwitchCheckDefault"
-            [(ngModel)]="isChecked"
-            (change)="showData()"
-          />
-          <label class="form-check-label" for="flexSwitchCheckDefault"
-            >Mostrar Cancelados</label
-          >
-        </div>
+    <div class="col-12 pb-4">
+      <div class="form-check form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="flexSwitchCheckDefault"
+          [(ngModel)]="isChecked"
+        />
+        <label class="form-check-label" for="flexSwitchCheckDefault"
+          >Mostrar Cancelados</label
+        >
       </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-xs-12 mt-md-0 mt-2">
       <div class="d-flex">
         <input
           class="form-control"
@@ -31,16 +25,20 @@
           aria-label="Search"
           id="search"
           [(ngModel)]="filter"
-          (input)="showData()"
         />
         <button
           type="button"
           class="btn btn-clear clear ms-2"
-          (click)="filter = ''; showData()"
+          (click)="filter = ''"
         >
           Limpar
         </button>
       </div>
+    </div>
+    <div class="col text-md-end text-sm-start text-start pt-md-0 pt-sm-4 pt-4">
+      <a type="button" class="btn btn-primary" [routerLink]="['novo']"
+        >Novo Agendamento <i class="fas fa-plus-circle"></i
+      ></a>
     </div>
   </div>
   <div class="table-responsive">
@@ -60,7 +58,8 @@
       <tbody class="table-link">
         <tr
           *ngFor="
-            let appointment of appointments | pagination: page:itemsPerPage;
+            let appointment of showData(appointments)
+              | pagination: page:itemsPerPage;
             let i = index
           "
         >
@@ -74,7 +73,15 @@
           </td>
           <td>{{ appointment.scheduledTimestamp }}</td>
           <td>{{ appointment.endTimestamp }}</td>
-          <td>{{ appointment.appointmentSituation }}</td>
+          <td>
+            <span
+              class="appointment-label"
+              [ngClass]="
+                situationLabelBackground(appointment.appointmentSituation)
+              "
+              >{{ appointment.appointmentSituation }}</span
+            >
+          </td>
           <td>
             <button
               type="button"
@@ -104,7 +111,7 @@
   </div>
   <div class="mb-3 d-flex justify-content-center">
     <pagination
-      [totalItems]="appointments.length"
+      [totalItems]="showData(appointments).length"
       [itemsPerPage]="itemsPerPage"
       [maxSize]="paginationSize"
       (pageChanged)="pageChanged($event)"

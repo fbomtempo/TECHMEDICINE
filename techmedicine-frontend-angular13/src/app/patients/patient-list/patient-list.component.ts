@@ -49,7 +49,6 @@ export class PatientsListComponent implements OnInit, OnDestroy {
     this.subscription = this.route.queryParams.subscribe(
       (queryParams: Params) => {
         this.page = queryParams['pagina'];
-        this.filter = queryParams['nome'];
         setTimeout(() => (this.currentPage = parseInt(this.page.toString())));
       }
     );
@@ -97,38 +96,16 @@ export class PatientsListComponent implements OnInit, OnDestroy {
       return patients;
     }
     return patients.filter((patient: Patient) => {
-      if (patient.name.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0) {
+      if (
+        `${patient.name} ${patient.surname}`
+          .toLowerCase()
+          .indexOf(this.filter.toLowerCase()) >= 0
+      ) {
         return true;
       } else {
         return false;
       }
     });
-  }
-
-  setFilter(filter: string): void {
-    if (filter) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          pagina: 1,
-          nome: filter.toLowerCase()
-        },
-        queryParamsHandling: 'merge'
-      });
-    }
-  }
-
-  clearFilter(filterInput: HTMLInputElement): void {
-    filterInput.value = '';
-    if (this.route.snapshot.queryParams['nome']) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          nome: null
-        },
-        queryParamsHandling: 'merge'
-      });
-    }
   }
 
   onDelete(patient: Patient): void {

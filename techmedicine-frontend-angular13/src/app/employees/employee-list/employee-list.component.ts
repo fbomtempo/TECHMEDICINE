@@ -49,7 +49,6 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
     this.subscription = this.route.queryParams.subscribe(
       (queryParams: Params) => {
         this.page = queryParams['pagina'];
-        this.filter = queryParams['nome'];
         setTimeout(() => (this.currentPage = parseInt(this.page.toString())));
       }
     );
@@ -97,38 +96,16 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
       return employees;
     }
     return employees.filter((employee: Employee) => {
-      if (employee.name.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0) {
+      if (
+        `${employee.name} ${employee.surname}`
+          .toLowerCase()
+          .indexOf(this.filter.toLowerCase()) >= 0
+      ) {
         return true;
       } else {
         return false;
       }
     });
-  }
-
-  setFilter(filter: string): void {
-    if (filter) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          pagina: 1,
-          nome: filter.toLowerCase()
-        },
-        queryParamsHandling: 'merge'
-      });
-    }
-  }
-
-  clearFilter(filterInput: HTMLInputElement): void {
-    filterInput.value = '';
-    if (this.route.snapshot.queryParams['nome']) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          nome: null
-        },
-        queryParamsHandling: 'merge'
-      });
-    }
   }
 
   onDelete(employee: Employee): void {

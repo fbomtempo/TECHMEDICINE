@@ -18,6 +18,7 @@ import { AppointmentCalendarComponent } from './appointment-view/appointment-cal
 import { AppointmentListComponent } from './appointment-view/appointment-list/appointment-list.component';
 import { AppointmentViewComponent } from './appointment-view/appointment-view.component';
 import { AppointmentsRoutingModule } from './appointments-routing.module';
+import { AppointmentDetailsComponent } from './appointment-details/appointment-details.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -32,7 +33,8 @@ FullCalendarModule.registerPlugins([
     AppointmentCalendarComponent,
     AppointmentListComponent,
     AppointmentFormComponent,
-    AppointmentModalComponent
+    AppointmentModalComponent,
+    AppointmentDetailsComponent
   ],
   imports: [
     CommonModule,

@@ -1,7 +1,7 @@
 <h1 class="mt-4">{{ formType }} Agendamento</h1>
 <form class="mt-4 row g-3 needs-validation" novalidate [formGroup]="form">
   <div class="col-xl-2">
-    <label for="date" class="form-label">Nascimento</label>
+    <label for="date" class="form-label">Data</label>
     <input
       type="text"
       bsDatepicker
@@ -9,7 +9,7 @@
       class="form-control"
       id="date"
       formControlName="date"
-      placeholder="Data"
+      placeholder="Selecione a data"
       [ngClass]="applyValidationClass('date')"
     />
     <div class="invalid-feedback" *ngIf="form.get('date').errors?.['required']">
@@ -17,20 +17,6 @@
     </div>
     <div class="valid-feedback">Parece bom.</div>
   </div>
-  <!--<div class="col-xl-2">
-    <label for="date" class="form-label">Data</label>
-    <input
-      type="date"
-      class="form-control"
-      id="date"
-      formControlName="date"
-      [ngClass]="applyValidationClass('date')"
-    />
-    <div class="invalid-feedback" *ngIf="form.get('date').errors?.['required']">
-      Campo é obrigatório.
-    </div>
-    <div class="valid-feedback">Parece bom.</div>
-  </div>-->
   <div class="col-xl-2">
     <label for="timeslot" class="form-label">Horário</label>
     <select

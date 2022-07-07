@@ -4,6 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import {
   catchError,
+  map,
   Observable,
   of,
   Subject,
@@ -11,6 +12,7 @@ import {
   switchMap,
   take
 } from 'rxjs';
+import { DateService } from 'src/app/shared/services/date.service';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
@@ -23,9 +25,7 @@ import { AppointmentService } from '../../service/appointment.service';
   styleUrls: ['./appointment-list.component.css']
 })
 export class AppointmentListComponent implements OnInit, OnDestroy {
-  loadPage: boolean = false;
-  allAppointments: Appointment[];
-  appointments: Appointment[];
+  appointments$: Observable<Appointment[]>;
   error: Subject<boolean> = new Subject();
   subscription: Subscription;
   page: number;
@@ -39,6 +39,7 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
     private appointmentService: AppointmentService,
     private modalService: ModalService,
     private maskService: MaskService,
+    private dateService: DateService,
     private route: ActivatedRoute,
     private router: Router,
     private location: Location
@@ -57,10 +58,6 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { pagina: null }
-    });
   }
 
   private setPaginationSize(): void {
@@ -74,17 +71,34 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
     this.itemsPerPage = 10;
   }
 
+  situationLabelBackground(appointmentSituation: string): any {
+    return {
+      'appointment-label-scheduled': appointmentSituation === 'AGENDADO',
+      'appointment-label-cancelled': appointmentSituation === 'CANCELADO'
+    };
+  }
+
   onRefresh(): void | Observable<never> {
-    this.appointmentService
-      .findAll()
-      .pipe(
-        /*map((appointments: Appointment[]) => {
+    this.appointments$ = this.appointmentService.findAll().pipe(
+      map((appointments: Appointment[]) => {
         return appointments.map((appointment: Appointment) => {
-          appointment.patient = this.maskService.formatData(
-            appointment.patient,
-            ['cpf', 'homePhone', 'mobilePhone', 'cep']
+          const scheduledTime: string = appointment.scheduledTimestamp.slice(
+            11,
+            16
           );
-          appointment.medic = this.maskService.formatData(appointment.medic, [
+          const endTime: string = appointment.endTimestamp.slice(11, 16);
+          const date: string = this.dateService.toPtBrDateString(appointment, [
+            'scheduledTimestamp'
+          ])['scheduledTimestamp'];
+          appointment.scheduledTimestamp = `${date} ${scheduledTime}`;
+          appointment.endTimestamp = `${date} ${endTime}`;
+          this.maskService.formatData(appointment.patient, [
+            'cpf',
+            'homePhone',
+            'mobilePhone',
+            'cep'
+          ]);
+          this.maskService.formatData(appointment.medic, [
             'cpf',
             'homePhone',
             'mobilePhone',
@@ -92,48 +106,19 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
           ]);
           return appointment;
         });
-      }),*/
-        catchError(() => {
-          this.error.next(true);
-          return of();
-        })
-      )
-      .subscribe({
-        next: (appointments: Appointment[]) => {
-          this.allAppointments = appointments;
-          this.appointments = appointments.filter(
-            (appointment: Appointment) =>
-              appointment.appointmentSituation !== 'CANCELADO'
-          );
-        },
-        complete: () => {
-          this.loadPage = true;
-        }
-      });
+      }),
+      catchError(() => {
+        this.error.next(true);
+        return of();
+      })
+    );
   }
 
-  /*showData(appointments: Appointment[]): Appointment[] {
-    if (!this.filter || this.filter === '') {
-      return appointments;
-    }
-    return appointments.filter((appointment: Appointment) => {
-      if (
-        `${appointment.patient.name} ${appointment.patient.surname}`
-          .toLowerCase()
-          .indexOf(this.filter.toLowerCase()) >= 0
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-  }*/
-
-  showData(): void {
+  showData(appointments: Appointment[]): Appointment[] {
     switch (this.isChecked) {
       case true:
-        this.appointments = this.filter
-          ? this.allAppointments.filter((appointment: Appointment) => {
+        appointments = this.filter
+          ? appointments.filter((appointment: Appointment) => {
               if (
                 `${appointment.patient.name} ${appointment.patient.surname}`
                   .toLowerCase()
@@ -144,11 +129,11 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
                 return false;
               }
             })
-          : this.allAppointments.filter(() => true);
+          : appointments;
         break;
       case false:
-        this.appointments = this.filter
-          ? this.allAppointments.filter((appointment: Appointment) => {
+        appointments = this.filter
+          ? appointments.filter((appointment: Appointment) => {
               if (
                 `${appointment.patient.name} ${appointment.patient.surname}`
                   .toLowerCase()
@@ -160,7 +145,7 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
                 return false;
               }
             })
-          : this.allAppointments.filter((appointment: Appointment) => {
+          : appointments.filter((appointment: Appointment) => {
               if (appointment.appointmentSituation !== 'CANCELADO') {
                 return true;
               } else {
@@ -169,12 +154,13 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
             });
         break;
       default:
-        this.appointments = this.allAppointments.filter(
+        appointments = appointments.filter(
           (event: any) =>
             event.extendedProps.appointment.appointmentSituation !== 'CANCELADO'
         );
         break;
     }
+    return appointments;
   }
 
   onDelete(appointment: Appointment): void {

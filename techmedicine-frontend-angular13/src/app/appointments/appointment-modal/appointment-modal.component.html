@@ -1,9 +1,9 @@
 <ng-template #template>
-  <div class="modal-content" [ngClass]="modalBackgroundColor()">
-    <div class="modal-header">
+  <div class="modal-content">
+    <div class="modal-header" [ngClass]="modalBackgroundColor()">
       <h5 class="modal-title">
-        Agendamento ID {{ appointment.id }} -
-        {{ appointment.scheduledTimestamp }}
+        Agendamento ID {{ appointment.id }} —
+        {{ appointmentHeader }}
       </h5>
       <button
         type="button"
@@ -15,84 +15,115 @@
     </div>
     <div class="modal-body">
       <div class="row">
+        <div class="col-xl-12 mb-4">
+          <strong>Situação: </strong>
+          <strong [ngStyle]="appointmentSituationTextColor()"
+            ><span>{{ appointment.appointmentSituation }}</span></strong
+          >
+        </div>
+        <hr data-content="MÉDICO" class="hr-text" />
         <div class="col-xl-8 mb-4">
-          <strong>Médico: </strong>
-          <br />
-          <span>{{
-            appointment.medic.name + " " + appointment.medic.surname
-          }}</span>
+          <div class="cell-background cell-padding">
+            <strong>Nome: </strong>
+            <br />
+            <span>{{
+              appointment.medic.name + " " + appointment.medic.surname
+            }}</span>
+          </div>
         </div>
         <div class="col-xl-4 mb-4">
-          <strong>CRM: </strong>
-          <br />
-          <span>{{ appointment.medic.crm }}</span>
+          <div class="cell-background cell-padding">
+            <strong>CRM: </strong>
+            <br />
+            <span>{{ appointment.medic.crm }}</span>
+          </div>
         </div>
+        <hr data-content="PACIENTE" class="hr-text" />
         <div class="col-xl-8 mb-4">
-          <strong>Paciente: </strong>
-          <br />
-          <span>{{
-            appointment.patient.name + " " + appointment.patient.surname
-          }}</span>
+          <div class="cell-background cell-padding">
+            <strong>Nome: </strong>
+            <br />
+            <span>{{
+              appointment.patient.name + " " + appointment.patient.surname
+            }}</span>
+          </div>
         </div>
         <div class="col-xl-4 mb-4">
-          <strong>Nascimento: </strong>
-          <br />
-          <span>{{ appointment.patient.birthDate }}</span>
+          <div class="cell-background cell-padding">
+            <strong>Nascimento: </strong>
+            <br />
+            <span>{{ appointment.patient.birthDate }}</span>
+          </div>
         </div>
         <div class="col-xl-3 mb-4">
-          <strong>CPF: </strong>
-          <br />
-          <span>{{ appointment.patient.cpf }}</span>
+          <div class="cell-background cell-padding">
+            <strong>CPF: </strong>
+            <br />
+            <span>{{ appointment.patient.cpf }}</span>
+          </div>
         </div>
         <div class="col-xl-3 mb-4">
-          <strong>Tel. Celular: </strong>
-          <br />
-          <span>{{ appointment.patient.mobilePhone }}</span>
+          <div class="cell-background cell-padding">
+            <strong>Tel. Celular: </strong>
+            <br />
+            <span>{{ appointment.patient.mobilePhone }}</span>
+          </div>
         </div>
         <div class="col-xl-6 mb-4">
-          <strong>E-mail: </strong>
-          <br />
-          <span>{{ appointment.patient.email }}</span>
+          <div class="cell-background cell-padding">
+            <strong>E-mail: </strong>
+            <br />
+            <span>{{ appointment.patient.email }}</span>
+          </div>
         </div>
         <div class="col-xl-3 mb-4">
-          <strong>CEP: </strong>
-          <br />
-          <span>{{ appointment.patient.cep }}</span>
+          <div class="cell-background cell-padding">
+            <strong>CEP: </strong>
+            <br />
+            <span>{{ appointment.patient.cep }}</span>
+          </div>
         </div>
         <div class="col-xl-6 mb-4">
-          <strong>Cidade: </strong>
-          <br />
-          <span>{{ appointment.patient.city }}</span>
+          <div class="cell-background cell-padding">
+            <strong>Cidade: </strong>
+            <br />
+            <span>{{ appointment.patient.city }}</span>
+          </div>
         </div>
         <div class="col-xl-3 mb-4">
-          <strong>Estado: </strong>
-          <br />
-          <span>{{ appointment.patient.state }}</span>
+          <div class="cell-background cell-padding">
+            <strong>Estado: </strong>
+            <br />
+            <span>{{ appointment.patient.state }}</span>
+          </div>
         </div>
         <div class="col-xl-5 mb-4">
-          <strong>Endereço: </strong>
-          <br />
-          <span>{{ appointment.patient.address }}</span>
+          <div class="cell-background cell-padding">
+            <strong>Endereço: </strong>
+            <br />
+            <span>{{ appointment.patient.address }}</span>
+          </div>
         </div>
         <div class="col-xl-2 mb-4">
-          <strong>Número: </strong>
-          <br />
-          <span>{{ appointment.patient.number }}</span>
+          <div class="cell-background cell-padding">
+            <strong>Número: </strong>
+            <br />
+            <span>{{ appointment.patient.number }}</span>
+          </div>
         </div>
         <div class="col-xl-5 mb-4">
-          <strong>Bairro: </strong>
-          <br />
-          <span>{{ appointment.patient.district }}</span>
-        </div>
-        <div class="col-xl-12 mb-4">
-          <strong>Complemento: </strong>
-          <br />
-          <span>{{ appointment.patient.complement }}</span>
+          <div class="cell-background cell-padding">
+            <strong>Bairro: </strong>
+            <br />
+            <span>{{ appointment.patient.district }}</span>
+          </div>
         </div>
         <div class="col-xl-12">
-          <strong>Situação: </strong>
-          <br />
-          <span>{{ appointment.appointmentSituation }}</span>
+          <div class="cell-background cell-padding">
+            <strong>Complemento: </strong>
+            <br />
+            <span>{{ appointment.patient.complement }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -106,7 +137,7 @@
         data-bs-dismiss="modal"
         (click)="onDelete()"
       >
-        Deletar
+        Cancelar
       </button>
       <button
         type="button"

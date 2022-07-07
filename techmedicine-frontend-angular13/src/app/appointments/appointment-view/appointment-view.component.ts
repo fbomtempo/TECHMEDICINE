@@ -31,15 +31,15 @@ export class AppointmentViewComponent implements OnInit, AfterViewInit {
     this.route.snapshot.queryParams['pagina'];
   }
 
-  activeListTab(): boolean {
-    return this.route.snapshot.queryParams['pagina'];
-  }
-
   selectListTab(): void {
     this.router.navigate([], {
       queryParams: { pagina: 1 },
       queryParamsHandling: 'merge'
     });
+  }
+
+  activeListTab(): boolean {
+    return this.route.snapshot.queryParams['pagina'];
   }
 
   log() {

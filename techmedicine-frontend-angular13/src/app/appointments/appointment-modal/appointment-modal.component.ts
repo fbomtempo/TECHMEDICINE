@@ -10,6 +10,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { of, switchMap, take } from 'rxjs';
+import { DateService } from 'src/app/shared/services/date.service';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 import { Appointment } from '../model/appointment';
@@ -24,6 +25,7 @@ export class AppointmentModalComponent implements OnInit {
   @Input() appointment: Appointment;
   @Output() deletionEvent: EventEmitter<void> = new EventEmitter();
   @ViewChild('template') modalTemplate;
+  appointmentHeader: string;
 
   constructor(
     private bsModalRef: BsModalRef,
@@ -31,6 +33,7 @@ export class AppointmentModalComponent implements OnInit {
     private appointmentService: AppointmentService,
     private modalService: ModalService,
     private maskService: MaskService,
+    private dateService: DateService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -46,11 +49,40 @@ export class AppointmentModalComponent implements OnInit {
     }
   }
 
+  private formatData(appointment: Appointment): void {
+    const fields = ['cpf', 'homePhone', 'mobilePhone', 'cep'];
+    this.appointment.patient = this.maskService.formatData(
+      appointment.patient,
+      fields
+    );
+    this.dateService.toPtBrDateString(this.appointment.patient, ['birthDate']);
+    this.formatAppointmentHeader(this.appointment);
+  }
+
+  private formatAppointmentHeader(appointment: Appointment): void {
+    const scheduledTime: string = appointment.scheduledTimestamp.slice(11, 16);
+    const endTime: string = appointment.endTimestamp.slice(11, 16);
+    const date: string = this.dateService.toPtBrDateString(this.appointment, [
+      'scheduledTimestamp'
+    ])['scheduledTimestamp'];
+    this.appointmentHeader = `${date} ${scheduledTime}-${endTime}`;
+  }
+
   modalBackgroundColor(): any {
     return {
-      'modal-content': this.appointment.appointmentSituation !== 'CANCELADO',
-      'modal-content-cancelled':
+      'modal-header-scheduled':
+        this.appointment.appointmentSituation !== 'CANCELADO',
+      'modal-header-cancelled':
         this.appointment.appointmentSituation === 'CANCELADO'
+    };
+  }
+
+  appointmentSituationTextColor(): any {
+    return {
+      color:
+        this.appointment.appointmentSituation !== 'CANCELADO'
+          ? '#3788d8'
+          : '#D90000'
     };
   }
 
@@ -74,7 +106,7 @@ export class AppointmentModalComponent implements OnInit {
     this.modalService
       .showConfirmModal(
         'Confirmação',
-        'Tem certeza que deseja remover esse agendamento?'
+        'Tem certeza que deseja cancelar esse agendamento?'
       )
       .pipe(
         take(1),
@@ -89,11 +121,12 @@ export class AppointmentModalComponent implements OnInit {
           this.close();
           setTimeout(() => this.deletionEvent.emit(), 100);
         },
-        error: () =>
+        error: () => {
           this.modalService.alertDanger(
-            'Erro ao remover agendamento!',
+            'Erro ao cancelar agendamento!',
             'Tente novamente mais tarde.'
-          )
+          );
+        }
       });
   }
 
@@ -102,13 +135,5 @@ export class AppointmentModalComponent implements OnInit {
     this.router.navigate(['editar/', this.appointment.id], {
       relativeTo: this.route
     });
-  }
-
-  private formatData(appointment: Appointment): void {
-    const fields = ['cpf', 'homePhone', 'mobilePhone', 'cep'];
-    this.appointment.patient = this.maskService.formatData(
-      appointment.patient,
-      fields
-    );
   }
 }

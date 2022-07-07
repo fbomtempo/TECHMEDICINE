@@ -44,7 +44,6 @@ export class RoleListComponent implements OnInit, OnDestroy {
     this.subscription = this.route.queryParams.subscribe(
       (queryParams: Params) => {
         this.page = queryParams['pagina'];
-        this.filter = queryParams['descricao'];
         setTimeout(() => (this.currentPage = parseInt(this.page.toString())));
       }
     );
@@ -88,32 +87,6 @@ export class RoleListComponent implements OnInit, OnDestroy {
         return false;
       }
     });
-  }
-
-  setFilter(filter: string): void {
-    if (filter) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          pagina: 1,
-          descricao: filter.toLowerCase()
-        },
-        queryParamsHandling: 'merge'
-      });
-    }
-  }
-
-  clearFilter(filterInput: HTMLInputElement): void {
-    filterInput.value = '';
-    if (this.route.snapshot.queryParams['descricao']) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          descricao: null
-        },
-        queryParamsHandling: 'merge'
-      });
-    }
   }
 
   onDelete(Role: Role): void {

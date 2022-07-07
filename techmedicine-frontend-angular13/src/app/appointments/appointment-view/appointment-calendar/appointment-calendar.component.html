@@ -63,7 +63,7 @@
 <app-appointment-modal
   [appointment]="appointment"
   #appointmentModal
-  (deletionEvent)="onRefresh()"
+  (deletionEvent)="this.isChecked = false; this.loadPage = false; onRefresh()"
 ></app-appointment-modal>
 
 <!-- TEMPLATES -->
