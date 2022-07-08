@@ -13,6 +13,7 @@ import { of, switchMap, take } from 'rxjs';
 import { DateService } from 'src/app/shared/services/date.service';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
+
 import { Appointment } from '../model/appointment';
 import { AppointmentService } from '../service/appointment.service';
 
@@ -50,12 +51,8 @@ export class AppointmentModalComponent implements OnInit {
   }
 
   private formatData(appointment: Appointment): void {
-    const fields = ['cpf', 'homePhone', 'mobilePhone', 'cep'];
-    this.appointment.patient = this.maskService.formatData(
-      appointment.patient,
-      fields
-    );
-    this.dateService.toPtBrDateString(this.appointment.patient, ['birthDate']);
+    this.appointment.patient = this.maskService.formatData(appointment.patient);
+    this.dateService.toPtBrDateString(this.appointment.patient);
     this.formatAppointmentHeader(this.appointment);
   }
 

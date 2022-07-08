@@ -22,11 +22,13 @@ export class PatientDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.patient = this.maskService.formatData(
-      this.route.snapshot.data['patient'],
-      ['cpf', 'homePhone', 'mobilePhone', 'cep']
-    );
-    this.dateService.toPtBrDateString(this.patient, ['birthDate']);
+    this.fetchData();
+  }
+
+  fetchData(): void {
+    this.patient = this.route.snapshot.data['patient'];
+    this.maskService.formatData(this.patient);
+    this.dateService.toPtBrDateString(this.patient);
   }
 
   onBackToList(): void {

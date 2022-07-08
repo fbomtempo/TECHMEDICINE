@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class MaskService {
+  readonly defaultFields = ['cpf', 'homePhone', 'mobilePhone', 'cep'];
   readonly formatOptions = {
     cpf(value: string): string {
       return value
@@ -37,12 +38,20 @@ export class MaskService {
 
   constructor() {}
 
-  formatData(obj: any, fields: string[]): any {
-    fields.forEach((field: string) => {
-      if (obj[field] != null) {
-        obj[field] = this.applyMask(field, obj[field]);
-      }
-    });
+  formatData(obj: any, fields?: string[]): any {
+    if (fields) {
+      fields.forEach((field: string) => {
+        if (obj[field] != null) {
+          obj[field] = this.applyMask(field, obj[field]);
+        }
+      });
+    } else {
+      this.defaultFields.forEach((field: string) => {
+        if (obj[field] != null) {
+          obj[field] = this.applyMask(field, obj[field]);
+        }
+      });
+    }
     return obj;
   }
 
@@ -53,12 +62,20 @@ export class MaskService {
     return value;
   }
 
-  unformatData(obj: any, fields: string[]): any {
-    fields.forEach((field: string) => {
-      if (obj[field] != null) {
-        obj[field] = this.undoMask(obj[field]);
-      }
-    });
+  unformatData(obj: any, fields?: string[]): any {
+    if (fields) {
+      fields.forEach((field: string) => {
+        if (obj[field] != null) {
+          obj[field] = this.undoMask(obj[field]);
+        }
+      });
+    } else {
+      this.defaultFields.forEach((field: string) => {
+        if (obj[field] != null) {
+          obj[field] = this.undoMask(obj[field]);
+        }
+      });
+    }
     return obj;
   }
 

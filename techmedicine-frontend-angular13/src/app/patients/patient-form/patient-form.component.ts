@@ -20,6 +20,7 @@ import { PatientService } from '../service/patient.service';
   styleUrls: ['./patient-form.component.css']
 })
 export class PatientsFormComponent extends FormService implements OnInit {
+  patient: Patient;
   states$: Observable<State[]>;
   datepickerConfig: Partial<BsDatepickerConfig> = {
     adaptivePosition: true,
@@ -43,34 +44,39 @@ export class PatientsFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
-    const patient: Patient = this.fetchData();
-    this.createForm(patient);
+    this.fetchData();
+    this.createForm();
   }
 
-  private fetchData(): Patient {
-    const patient = this.maskService.formatData(
-      this.route.snapshot.data['patient'],
-      ['cpf', 'homePhone', 'mobilePhone', 'cep']
-    );
-    patient.birthDate = this.dateService.createDateObject(patient.birthDate);
+  private fetchData(): void {
+    this.patient = this.route.snapshot.data['patient'];
+    this.maskService.formatData(this.patient);
     this.states$ = this.dropdownService.getStates();
-    return patient;
   }
 
-  private createForm(patient: Patient): void {
+  private createForm(): void {
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
-      id: [patient.id],
-      name: [patient.name, [Validators.required, Validators.maxLength(20)]],
+      id: [this.patient.id],
+      name: [
+        this.patient.name,
+        [Validators.required, Validators.maxLength(20)]
+      ],
       surname: [
-        patient.surname,
+        this.patient.surname,
         [Validators.required, Validators.maxLength(50)]
       ],
-      birthDate: [patient.birthDate, [Validators.required]],
-      gender: [patient.gender, [Validators.required, Validators.maxLength(9)]],
-      rg: [patient.rg, [Validators.required, Validators.maxLength(12)]],
+      birthDate: [
+        this.dateService.createDateObject(this.patient.birthDate, false),
+        [Validators.required]
+      ],
+      gender: [
+        this.patient.gender,
+        [Validators.required, Validators.maxLength(9)]
+      ],
+      rg: [this.patient.rg, [Validators.required, Validators.maxLength(12)]],
       cpf: [
-        patient.cpf,
+        this.patient.cpf,
         [
           Validators.required,
           Validators.minLength(14),
@@ -78,11 +84,11 @@ export class PatientsFormComponent extends FormService implements OnInit {
         ]
       ],
       homePhone: [
-        patient.homePhone,
+        this.patient.homePhone,
         [Validators.minLength(14), Validators.maxLength(14)]
       ],
       mobilePhone: [
-        patient.mobilePhone,
+        this.patient.mobilePhone,
         [
           Validators.minLength(15),
           Validators.required,
@@ -90,28 +96,31 @@ export class PatientsFormComponent extends FormService implements OnInit {
         ]
       ],
       email: [
-        patient.email,
+        this.patient.email,
         [Validators.required, Validators.maxLength(35), Validators.email]
       ],
       cep: [
-        patient.cep,
+        this.patient.cep,
         [Validators.required, Validators.minLength(9), Validators.maxLength(9)]
       ],
-      city: [patient.city, [Validators.required, Validators.maxLength(30)]],
-      state: [patient.state, [Validators.required]],
+      city: [
+        this.patient.city,
+        [Validators.required, Validators.maxLength(30)]
+      ],
+      state: [this.patient.state, [Validators.required]],
       address: [
-        patient.address,
+        this.patient.address,
         [Validators.required, Validators.maxLength(70)]
       ],
       number: [
-        patient.number,
+        this.patient.number,
         [Validators.required, Validators.min(1), Validators.max(9999)]
       ],
       district: [
-        patient.district,
+        this.patient.district,
         [Validators.required, Validators.maxLength(30)]
       ],
-      complement: [patient.complement, [Validators.maxLength(70)]]
+      complement: [this.patient.complement, [Validators.maxLength(70)]]
     });
     this.subscribeToChanges();
   }
@@ -147,9 +156,9 @@ export class PatientsFormComponent extends FormService implements OnInit {
   }
 
   onSubmit(): void {
-    const patient: Patient = this.createObject();
     this.submitted = true;
     if (this.form.valid && this.changed) {
+      const patient: Patient = this.createObject();
       if (this.form.value['id']) {
         this.patientService.update(patient).subscribe({
           error: () =>
@@ -199,13 +208,8 @@ export class PatientsFormComponent extends FormService implements OnInit {
   }
 
   private createObject(): Patient {
-    const patient: Patient = this.maskService.unformatData(this.form.value, [
-      'cpf',
-      'homePhone',
-      'mobilePhone',
-      'cep'
-    ]);
-    this.dateService.toISODateString(patient, ['birthDate']);
+    const patient: Patient = this.maskService.unformatData(this.form.value);
+    this.dateService.toISODateString(patient);
     return patient;
   }
 

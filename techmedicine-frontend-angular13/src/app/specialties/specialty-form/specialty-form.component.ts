@@ -1,10 +1,10 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormService } from 'src/app/shared/services/form-service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
+import { Specialty } from '../model/specialty';
 import { SpecialtyService } from '../service/specialty.service';
 
 @Component({
@@ -13,6 +13,8 @@ import { SpecialtyService } from '../service/specialty.service';
   styleUrls: ['./specialty-form.component.css']
 })
 export class SpecialtyFormComponent extends FormService implements OnInit {
+  specialty: Specialty;
+
   constructor(
     private formBuilder: FormBuilder,
     private specialtyService: SpecialtyService,
@@ -24,16 +26,20 @@ export class SpecialtyFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fetchData();
     this.createForm();
   }
 
+  fetchData(): void {
+    this.specialty = this.route.snapshot.data['specialty'];
+  }
+
   private createForm(): void {
-    const specialty = this.route.snapshot.data['specialty'];
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Nova';
     this.form = this.formBuilder.group({
-      id: [specialty.id],
+      id: [this.specialty.id],
       description: [
-        specialty.description,
+        this.specialty.description,
         [Validators.required, Validators.maxLength(45)]
       ]
     });
@@ -42,7 +48,7 @@ export class SpecialtyFormComponent extends FormService implements OnInit {
 
   onSubmit(): void {
     this.submitted = true;
-    if (this.form.valid) {
+    if (this.form.valid && this.changed) {
       if (this.form.value['id']) {
         this.specialtyService.update(this.form.value).subscribe({
           error: () =>

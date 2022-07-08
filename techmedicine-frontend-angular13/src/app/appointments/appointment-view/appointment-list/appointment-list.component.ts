@@ -4,7 +4,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import {
   catchError,
-  map,
   Observable,
   of,
   Subject,
@@ -12,8 +11,6 @@ import {
   switchMap,
   take
 } from 'rxjs';
-import { DateService } from 'src/app/shared/services/date.service';
-import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
 import { Appointment } from '../../model/appointment';
@@ -38,8 +35,6 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
   constructor(
     private appointmentService: AppointmentService,
     private modalService: ModalService,
-    private maskService: MaskService,
-    private dateService: DateService,
     private route: ActivatedRoute,
     private router: Router,
     private location: Location
@@ -79,34 +74,7 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
   }
 
   onRefresh(): void | Observable<never> {
-    this.appointments$ = this.appointmentService.findAll().pipe(
-      map((appointments: Appointment[]) => {
-        return appointments.map((appointment: Appointment) => {
-          const scheduledTime: string = appointment.scheduledTimestamp.slice(
-            11,
-            16
-          );
-          const endTime: string = appointment.endTimestamp.slice(11, 16);
-          const date: string = this.dateService.toPtBrDateString(appointment, [
-            'scheduledTimestamp'
-          ])['scheduledTimestamp'];
-          appointment.scheduledTimestamp = `${date} ${scheduledTime}`;
-          appointment.endTimestamp = `${date} ${endTime}`;
-          this.maskService.formatData(appointment.patient, [
-            'cpf',
-            'homePhone',
-            'mobilePhone',
-            'cep'
-          ]);
-          this.maskService.formatData(appointment.medic, [
-            'cpf',
-            'homePhone',
-            'mobilePhone',
-            'cep'
-          ]);
-          return appointment;
-        });
-      }),
+    this.appointments$ = this.appointmentService.findAllFormatted().pipe(
       catchError(() => {
         this.error.next(true);
         return of();

@@ -21,6 +21,7 @@ import { MedicService } from '../service/medic.service';
   styleUrls: ['./medic-form.component.css']
 })
 export class MedicFormComponent extends FormService implements OnInit {
+  medic: Medic;
   states$: Observable<State[]>;
   specialties: Specialty[];
   specialtiesLoading: boolean = true;
@@ -49,37 +50,46 @@ export class MedicFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
-    const medic: Medic = this.fetchData();
-    this.createForm(medic);
+    this.fetchData();
+    this.createForm();
   }
 
-  private fetchData(): Medic {
-    const medic = this.maskService.formatData(
-      this.route.snapshot.data['medic'],
-      ['cpf', 'homePhone', 'mobilePhone', 'cep']
-    );
-    medic.birthDate = this.dateService.createDateObject(medic.birthDate);
+  private fetchData(): void {
+    this.medic = this.route.snapshot.data['medic'];
+    this.maskService.formatData(this.medic);
     this.states$ = this.dropdownService.getStates();
     this.dropdownService.getSpecialties().subscribe({
-      next: (specialties: Specialty[]) => (this.specialties = specialties),
-      complete: () => (this.specialtiesLoading = false)
+      next: (specialties: Specialty[]) => {
+        this.specialties = specialties;
+      },
+      complete: () => {
+        this.specialtiesLoading = false;
+      }
     });
-    return medic;
   }
 
-  private createForm(medic: Medic): void {
+  private createForm(): void {
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
-      id: [medic.id],
-      name: [medic.name, [Validators.required, Validators.maxLength(20)]],
-      surname: [medic.surname, [Validators.required, Validators.maxLength(50)]],
-      birthDate: [medic.birthDate, [Validators.required]],
-      gender: [medic.gender, [Validators.required, Validators.maxLength(9)]],
-      crm: [medic.crm, [Validators.required, Validators.maxLength(12)]],
-      specialty: [medic.specialty, [Validators.required]],
-      rg: [medic.rg, [Validators.required, Validators.maxLength(12)]],
+      id: [this.medic.id],
+      name: [this.medic.name, [Validators.required, Validators.maxLength(20)]],
+      surname: [
+        this.medic.surname,
+        [Validators.required, Validators.maxLength(50)]
+      ],
+      birthDate: [
+        this.dateService.createDateObject(this.medic.birthDate, false),
+        [Validators.required]
+      ],
+      gender: [
+        this.medic.gender,
+        [Validators.required, Validators.maxLength(9)]
+      ],
+      crm: [this.medic.crm, [Validators.required, Validators.maxLength(12)]],
+      specialty: [this.medic.specialty, [Validators.required]],
+      rg: [this.medic.rg, [Validators.required, Validators.maxLength(12)]],
       cpf: [
-        medic.cpf,
+        this.medic.cpf,
         [
           Validators.required,
           Validators.minLength(14),
@@ -87,34 +97,40 @@ export class MedicFormComponent extends FormService implements OnInit {
         ]
       ],
       homePhone: [
-        medic.homePhone,
+        this.medic.homePhone,
         [Validators.minLength(14), Validators.maxLength(14)]
       ],
       mobilePhone: [
-        medic.mobilePhone,
+        this.medic.mobilePhone,
         [
           Validators.minLength(15),
           Validators.required,
           Validators.maxLength(15)
         ]
       ],
-      email: [medic.email, [Validators.required, Validators.maxLength(35)]],
+      email: [
+        this.medic.email,
+        [Validators.required, Validators.maxLength(35)]
+      ],
       cep: [
-        medic.cep,
+        this.medic.cep,
         [Validators.required, Validators.minLength(9), Validators.maxLength(9)]
       ],
-      city: [medic.city, [Validators.required, Validators.maxLength(30)]],
-      state: [medic.state, [Validators.required]],
-      address: [medic.address, [Validators.required, Validators.maxLength(70)]],
+      city: [this.medic.city, [Validators.required, Validators.maxLength(30)]],
+      state: [this.medic.state, [Validators.required]],
+      address: [
+        this.medic.address,
+        [Validators.required, Validators.maxLength(70)]
+      ],
       number: [
-        medic.number,
+        this.medic.number,
         [Validators.required, Validators.min(1), Validators.max(9999)]
       ],
       district: [
-        medic.district,
+        this.medic.district,
         [Validators.required, Validators.maxLength(30)]
       ],
-      complement: [medic.complement, [Validators.maxLength(70)]]
+      complement: [this.medic.complement, [Validators.maxLength(70)]]
     });
     this.subscribeToChanges();
   }
@@ -150,9 +166,9 @@ export class MedicFormComponent extends FormService implements OnInit {
   }
 
   onSubmit(): void {
-    const medic: Medic = this.createObject();
     this.submitted = true;
     if (this.form.valid && this.changed) {
+      const medic: Medic = this.createObject();
       if (this.form.value['id']) {
         this.medicService.update(medic).subscribe({
           error: () =>
@@ -202,13 +218,8 @@ export class MedicFormComponent extends FormService implements OnInit {
   }
 
   private createObject(): Medic {
-    const medic: Medic = this.maskService.unformatData(this.form.value, [
-      'cpf',
-      'homePhone',
-      'mobilePhone',
-      'cep'
-    ]);
-    this.dateService.toISODateString(medic, ['birthDate']);
+    const medic: Medic = this.maskService.unformatData(this.form.value);
+    this.dateService.toISODateString(medic);
     return medic;
   }
 

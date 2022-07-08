@@ -15,6 +15,10 @@ export class SpecialtyDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit(): void {
+    this.fetchData();
+  }
+
+  fetchData(): void {
     this.specialty = this.route.snapshot.data['specialty'];
   }
 

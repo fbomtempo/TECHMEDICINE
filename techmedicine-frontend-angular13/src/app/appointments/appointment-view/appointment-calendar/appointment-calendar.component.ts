@@ -3,11 +3,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarOptions } from '@fullcalendar/angular';
 import ptBrLocale from '@fullcalendar/core/locales/pt-br';
-import { catchError, map, Observable, of, Subject } from 'rxjs';
+import { catchError, Observable, of, Subject } from 'rxjs';
 import { AppointmentModalComponent } from 'src/app/appointments/appointment-modal/appointment-modal.component';
 import { Medic } from 'src/app/medics/model/medic';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
-import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
 import { Appointment } from '../../model/appointment';
@@ -81,7 +80,6 @@ export class AppointmentCalendarComponent implements OnInit {
   constructor(
     private appointmentService: AppointmentService,
     private dropdownService: DropdownService,
-    private maskService: MaskService,
     private modalService: ModalService,
     private route: ActivatedRoute,
     private router: Router,
@@ -98,60 +96,23 @@ export class AppointmentCalendarComponent implements OnInit {
   }
 
   private fetchData(): void {
-    this.dropdownService
-      .getMedics()
-      .pipe(
-        map((medics: Medic[]) => {
-          return medics.map((medic: Medic) => {
-            return this.maskService.formatData(medic, [
-              'cpf',
-              'homePhone',
-              'mobilePhone',
-              'cep'
-            ]);
-          });
-        })
-      )
-      .subscribe({
-        next: (medics: Medic[]) => {
-          this.medics = medics.map((medic: any) => {
-            medic.searchLabel = `${medic.name} ${medic.surname}`;
-            return medic;
-          });
-        },
-        complete: () => {
-          this.medicsLoading = false;
-        }
-      });
+    this.dropdownService.getMedics().subscribe({
+      next: (medics: Medic[]) => {
+        this.medics = medics.map((medic: any) => {
+          medic.searchLabel = `${medic.name} ${medic.surname}`;
+          return medic;
+        });
+      },
+      complete: () => {
+        this.medicsLoading = false;
+      }
+    });
   }
 
   onRefresh(): void | Observable<never> {
     this.appointmentService
-      .findAll()
+      .findAllAsEvents()
       .pipe(
-        map((appointments: Appointment[]) => {
-          return appointments.map((appointment: Appointment) => {
-            return {
-              id: appointment.id,
-              title: `${appointment.patient.name} ${appointment.patient.surname}`,
-              start: appointment.scheduledTimestamp,
-              end: appointment.endTimestamp,
-              color:
-                appointment.appointmentSituation === 'CANCELADO'
-                  ? '#D90000'
-                  : '',
-              extendedProps: {
-                appointment: appointment
-              },
-              constraint:
-                appointment.appointmentSituation === 'CANCELADO'
-                  ? {
-                      daysOfWeek: []
-                    }
-                  : null
-            };
-          });
-        }),
         catchError(() => {
           this.error.next(true);
           return of();

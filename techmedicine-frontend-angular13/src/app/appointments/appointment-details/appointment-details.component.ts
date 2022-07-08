@@ -22,28 +22,14 @@ export class AppointmentDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.fetchData();
+  }
+
+  fetchData(): void {
     this.appointment = this.route.snapshot.data['appointment'];
-    this.formatData();
-    this.formatTimestamps();
-  }
-
-  formatData(): void {
-    const fields: string[] = ['cpf', 'homePhone', 'mobilePhone', 'cep'];
-    this.maskService.formatData(this.appointment.patient, fields);
-    this.maskService.formatData(this.appointment.medic, fields);
-  }
-
-  formatTimestamps(): void {
-    const scheduledTime: string = this.appointment.scheduledTimestamp.slice(
-      11,
-      16
-    );
-    const endTime: string = this.appointment.endTimestamp.slice(11, 16);
-    const date: string = this.dateService.toPtBrDateString(this.appointment, [
-      'scheduledTimestamp'
-    ])['scheduledTimestamp'];
-    this.appointment.scheduledTimestamp = `${date} ${scheduledTime}`;
-    this.appointment.endTimestamp = `${date} ${endTime}`;
+    this.dateService.toPtBrTimestampString(this.appointment);
+    this.maskService.formatData(this.appointment.patient);
+    this.maskService.formatData(this.appointment.medic);
   }
 
   onBackToList(): void {

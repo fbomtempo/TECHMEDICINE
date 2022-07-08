@@ -4,7 +4,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import {
   catchError,
-  map,
   Observable,
   of,
   Subject,
@@ -12,8 +11,6 @@ import {
   switchMap,
   take
 } from 'rxjs';
-import { DateService } from 'src/app/shared/services/date.service';
-import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
 import { Employee } from '../model/employee';
@@ -37,8 +34,6 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   constructor(
     private employeeService: EmployeeService,
     private modalService: ModalService,
-    private maskService: MaskService,
-    private dateService: DateService,
     private route: ActivatedRoute,
     private router: Router,
     private location: Location
@@ -71,19 +66,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   }
 
   onRefresh(): void | Observable<never> {
-    this.employees$ = this.employeeService.findAll().pipe(
-      map((employees: Employee[]) => {
-        return employees.map((employee: Employee) => {
-          this.maskService.formatData(employee, [
-            'cpf',
-            'homePhone',
-            'mobilePhone',
-            'cep'
-          ]);
-          this.dateService.toPtBrDateString(employee, ['birthDate']);
-          return employee;
-        });
-      }),
+    this.employees$ = this.employeeService.findAllFormatted().pipe(
       catchError(() => {
         this.error.next(true);
         return of();

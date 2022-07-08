@@ -1,10 +1,10 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormService } from 'src/app/shared/services/form-service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
+import { Role } from '../model/role';
 import { RoleService } from '../service/role.service';
 
 @Component({
@@ -13,6 +13,8 @@ import { RoleService } from '../service/role.service';
   styleUrls: ['./role-form.component.css']
 })
 export class RoleFormComponent extends FormService implements OnInit {
+  role: Role;
+
   constructor(
     private formBuilder: FormBuilder,
     private roleService: RoleService,
@@ -24,16 +26,20 @@ export class RoleFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fetchData();
     this.createForm();
   }
 
+  fetchData(): void {
+    this.role = this.route.snapshot.data['role'];
+  }
+
   private createForm(): void {
-    const role = this.route.snapshot.data['role'];
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
-      id: [role.id],
+      id: [this.role.id],
       description: [
-        role.description,
+        this.role.description,
         [Validators.required, Validators.maxLength(35)]
       ]
     });
@@ -42,7 +48,7 @@ export class RoleFormComponent extends FormService implements OnInit {
 
   onSubmit(): void {
     this.submitted = true;
-    if (this.form.valid) {
+    if (this.form.valid && this.changed) {
       if (this.form.value['id']) {
         this.roleService.update(this.form.value).subscribe({
           error: () =>

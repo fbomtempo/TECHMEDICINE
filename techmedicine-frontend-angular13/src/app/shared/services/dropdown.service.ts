@@ -8,6 +8,8 @@ import { Specialty } from 'src/app/specialties/model/specialty';
 import { environment } from 'src/environments/environment';
 
 import { State } from '../models/states';
+import { DateService } from './date.service';
+import { MaskService } from './mask.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,11 @@ import { State } from '../models/states';
 export class DropdownService {
   private readonly API: string = environment.API;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private maskService: MaskService,
+    private dateService: DateService
+  ) {}
 
   getStates(): Observable<State[]> {
     return this.http.get<State[]>('assets/data/states.json').pipe(take(1));
@@ -57,15 +63,24 @@ export class DropdownService {
     return this.http.get<Patient[]>(`${this.API}pacientes`).pipe(
       delay(750),
       take(1),
-      map((patients) =>
-        patients.sort((a, b) =>
+      map((patients) => {
+        patients = patients.map((patient: Patient) => {
+          this.maskService.formatData(patient, [
+            'cpf',
+            'homePhone',
+            'mobilePhone',
+            'cep'
+          ]);
+          return patient;
+        });
+        return patients.sort((a, b) =>
           a.name + ' ' + a.surname > b.name + ' ' + b.surname
             ? 1
             : b.name + ' ' + b.surname > a.name + ' ' + a.surname
             ? -1
             : 0
-        )
-      )
+        );
+      })
     );
   }
 
@@ -73,15 +88,24 @@ export class DropdownService {
     return this.http.get<Medic[]>(`${this.API}medicos`).pipe(
       delay(750),
       take(1),
-      map((medics) =>
-        medics.sort((a, b) =>
+      map((medics) => {
+        medics = medics.map((medic: Medic) => {
+          this.maskService.formatData(medic, [
+            'cpf',
+            'homePhone',
+            'mobilePhone',
+            'cep'
+          ]);
+          return medic;
+        });
+        return medics.sort((a, b) =>
           a.name + ' ' + a.surname > b.name + ' ' + b.surname
             ? 1
             : b.name + ' ' + b.surname > a.name + ' ' + a.surname
             ? -1
             : 0
-        )
-      )
+        );
+      })
     );
   }
 }

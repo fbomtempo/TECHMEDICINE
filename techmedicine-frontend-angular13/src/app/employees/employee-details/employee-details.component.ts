@@ -22,11 +22,13 @@ export class EmployeeDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.employee = this.maskService.formatData(
-      this.route.snapshot.data['employee'],
-      ['cpf', 'homePhone', 'mobilePhone', 'cep']
-    );
-    this.dateService.toPtBrDateString(this.employee, ['birthDate']);
+    this.fetchData();
+  }
+
+  fetchData(): void {
+    this.employee = this.route.snapshot.data['employee'];
+    this.maskService.formatData(this.employee);
+    this.dateService.toPtBrDateString(this.employee);
   }
 
   onBackToList(): void {

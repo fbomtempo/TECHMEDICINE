@@ -21,6 +21,7 @@ import { EmployeeService } from '../service/employee.service';
   styleUrls: ['./employee-form.component.css']
 })
 export class EmployeeFormComponent extends FormService implements OnInit {
+  employee: Employee;
   states$: Observable<State[]>;
   roles: Role[];
   rolesLoading: boolean = true;
@@ -49,39 +50,44 @@ export class EmployeeFormComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
-    const employee: Employee = this.fetchData();
-    this.createForm(employee);
+    this.fetchData();
+    this.createForm();
   }
 
-  private fetchData(): Employee {
-    const employee = this.maskService.formatData(
-      this.route.snapshot.data['employee'],
-      ['cpf', 'homePhone', 'mobilePhone', 'cep']
-    );
-    employee.birthDate = this.dateService.createDateObject(employee.birthDate);
+  private fetchData(): void {
+    this.employee = this.route.snapshot.data['employee'];
+    this.maskService.formatData(this.employee);
     this.states$ = this.dropdownService.getStates();
     this.dropdownService.getRoles().subscribe({
       next: (roles: Role[]) => (this.roles = roles),
       complete: () => (this.rolesLoading = false)
     });
-    return employee;
   }
 
-  private createForm(employee: Employee): void {
+  private createForm(): void {
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
-      id: [employee.id],
-      name: [employee.name, [Validators.required, Validators.maxLength(20)]],
+      id: [this.employee.id],
+      name: [
+        this.employee.name,
+        [Validators.required, Validators.maxLength(20)]
+      ],
       surname: [
-        employee.surname,
+        this.employee.surname,
         [Validators.required, Validators.maxLength(50)]
       ],
-      birthDate: [employee.birthDate, [Validators.required]],
-      gender: [employee.gender, [Validators.required, Validators.maxLength(9)]],
-      role: [employee.role, [Validators.required]],
-      rg: [employee.rg, [Validators.required, Validators.maxLength(12)]],
+      birthDate: [
+        this.dateService.createDateObject(this.employee.birthDate, false),
+        [Validators.required]
+      ],
+      gender: [
+        this.employee.gender,
+        [Validators.required, Validators.maxLength(9)]
+      ],
+      role: [this.employee.role, [Validators.required]],
+      rg: [this.employee.rg, [Validators.required, Validators.maxLength(12)]],
       cpf: [
-        employee.cpf,
+        this.employee.cpf,
         [
           Validators.required,
           Validators.minLength(14),
@@ -89,37 +95,43 @@ export class EmployeeFormComponent extends FormService implements OnInit {
         ]
       ],
       homePhone: [
-        employee.homePhone,
+        this.employee.homePhone,
         [Validators.minLength(14), Validators.maxLength(14)]
       ],
       mobilePhone: [
-        employee.mobilePhone,
+        this.employee.mobilePhone,
         [
           Validators.minLength(15),
           Validators.required,
           Validators.maxLength(15)
         ]
       ],
-      email: [employee.email, [Validators.required, Validators.maxLength(35)]],
+      email: [
+        this.employee.email,
+        [Validators.required, Validators.maxLength(35)]
+      ],
       cep: [
-        employee.cep,
+        this.employee.cep,
         [Validators.required, Validators.minLength(9), Validators.maxLength(9)]
       ],
-      city: [employee.city, [Validators.required, Validators.maxLength(30)]],
-      state: [employee.state, [Validators.required]],
+      city: [
+        this.employee.city,
+        [Validators.required, Validators.maxLength(30)]
+      ],
+      state: [this.employee.state, [Validators.required]],
       address: [
-        employee.address,
+        this.employee.address,
         [Validators.required, Validators.maxLength(70)]
       ],
       number: [
-        employee.number,
+        this.employee.number,
         [Validators.required, Validators.min(1), Validators.max(9999)]
       ],
       district: [
-        employee.district,
+        this.employee.district,
         [Validators.required, Validators.maxLength(30)]
       ],
-      complement: [employee.complement, [Validators.maxLength(70)]]
+      complement: [this.employee.complement, [Validators.maxLength(70)]]
     });
     this.subscribeToChanges();
   }
@@ -155,9 +167,9 @@ export class EmployeeFormComponent extends FormService implements OnInit {
   }
 
   onSubmit(): void {
-    const employee: Employee = this.createObject();
     this.submitted = true;
     if (this.form.valid && this.changed) {
+      const employee: Employee = this.createObject();
       if (this.form.value['id']) {
         this.employeeService.update(employee).subscribe({
           error: () =>
@@ -207,13 +219,8 @@ export class EmployeeFormComponent extends FormService implements OnInit {
   }
 
   private createObject(): Employee {
-    const employee: Employee = this.maskService.unformatData(this.form.value, [
-      'cpf',
-      'homePhone',
-      'mobilePhone',
-      'cep'
-    ]);
-    this.dateService.toISODateString(employee, ['birthDate']);
+    const employee: Employee = this.maskService.unformatData(this.form.value);
+    this.dateService.toISODateString(employee);
     return employee;
   }
 

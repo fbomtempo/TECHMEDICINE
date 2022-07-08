@@ -4,7 +4,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import {
   catchError,
-  map,
   Observable,
   of,
   Subject,
@@ -71,19 +70,7 @@ export class PatientsListComponent implements OnInit, OnDestroy {
   }
 
   onRefresh(): void | Observable<never> {
-    this.patients$ = this.patientService.findAll().pipe(
-      map((patients: Patient[]) => {
-        return patients.map((patient: Patient) => {
-          this.maskService.formatData(patient, [
-            'cpf',
-            'homePhone',
-            'mobilePhone',
-            'cep'
-          ]);
-          this.dateService.toPtBrDateString(patient, ['birthDate']);
-          return patient;
-        });
-      }),
+    this.patients$ = this.patientService.findAllFormatted().pipe(
       catchError(() => {
         this.error.next(true);
         return of();

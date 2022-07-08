@@ -2,13 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
-import { map } from 'rxjs';
 import { Medic } from 'src/app/medics/model/medic';
 import { Patient } from 'src/app/patients/model/patient';
 import { DateService } from 'src/app/shared/services/date.service';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { FormService } from 'src/app/shared/services/form-service';
-import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
 import { Appointment } from '../model/appointment';
@@ -20,6 +18,7 @@ import { AppointmentService } from '../service/appointment.service';
   styleUrls: ['./appointment-form.component.css']
 })
 export class AppointmentFormComponent extends FormService implements OnInit {
+  appointment: Appointment;
   datepickerConfig: Partial<BsDatepickerConfig> = {
     adaptivePosition: true,
     showClearButton: true,
@@ -64,7 +63,6 @@ export class AppointmentFormComponent extends FormService implements OnInit {
     private appointmentService: AppointmentService,
     private modalService: ModalService,
     private dropdownService: DropdownService,
-    private maskService: MaskService,
     private dateService: DateService,
     private router: Router,
     private route: ActivatedRoute
@@ -78,74 +76,58 @@ export class AppointmentFormComponent extends FormService implements OnInit {
   }
 
   private fetchData(): void {
-    this.dropdownService
-      .getPatients()
-      .pipe(
-        map((patients: Patient[]) => {
-          return patients.map((patient: Patient) => {
-            return this.maskService.formatData(patient, ['cpf', 'mobilePhone']);
-          });
-        })
-      )
-      .subscribe({
-        next: (patients: Patient[]) => {
-          this.patients = patients.map((patient: any) => {
-            patient.searchLabel = `${patient.name} ${patient.surname}`;
-            return patient;
-          });
-        },
-        complete: () => (this.patientsLoading = false)
-      });
-    this.dropdownService
-      .getMedics()
-      .pipe(
-        map((medics: Medic[]) => {
-          return medics.map((medic: Medic) => {
-            return this.maskService.formatData(medic, ['mobilePhone']);
-          });
-        })
-      )
-      .subscribe((medics: Medic[]) => {
+    this.appointment = this.route.snapshot.data['appointment'];
+    this.dropdownService.getPatients().subscribe({
+      next: (patients: Patient[]) => {
+        this.patients = patients.map((patient: any) => {
+          patient.searchLabel = `${patient.name} ${patient.surname}`;
+          return patient;
+        });
+      },
+      complete: () => {
+        this.patientsLoading = false;
+      }
+    });
+    this.dropdownService.getMedics().subscribe({
+      next: (medics: Medic[]) => {
         this.medics = medics.map((medic: any) => {
           medic.searchLabel = `${medic.name} ${medic.surname}`;
           return medic;
         });
+      },
+      complete: () => {
         this.medicsLoading = false;
-      });
+      }
+    });
   }
 
   private createForm(): void {
-    const appointment = this.route.snapshot.data['appointment'];
     const fullTimestamp = this.route.snapshot.queryParams['data'];
-    this.formatTimestamp(appointment, fullTimestamp);
+    this.formatTimestamp(fullTimestamp);
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
-      id: [appointment.id],
+      id: [this.appointment.id],
       date: [this.date, [Validators.required]],
       timeslot: [this.timeslot, [Validators.required]],
-      patient: [appointment.patient, [Validators.required]],
-      medic: [appointment.medic, [Validators.required]],
-      appointmentSituation: [appointment.appointmentSituation]
+      patient: [this.appointment.patient, [Validators.required]],
+      medic: [this.appointment.medic, [Validators.required]],
+      appointmentSituation: [this.appointment.appointmentSituation]
     });
     this.subscribeToChanges();
   }
 
-  private formatTimestamp(
-    appointment: Appointment,
-    fullTimestamp: string
-  ): void {
+  private formatTimestamp(fullTimestamp: string): void {
     if (fullTimestamp) {
       const dateTime: string[] = fullTimestamp.split('T');
       const times: string[] = dateTime[1].split('-');
-      this.date = this.dateService.createDateObject(dateTime[0]);
+      this.date = this.dateService.createDateObject(dateTime[0], false);
       this.timeslot = `${times[0]}-${times[1]}`;
-      return;
-    } else if (appointment.id) {
-      const date: string = appointment.scheduledTimestamp.slice(0, 16);
+    } else if (this.appointment.id) {
+      const date: string = this.appointment.scheduledTimestamp.slice(0, 16);
       const times: string[] = [];
-      times.push(appointment.scheduledTimestamp.split('T')[1].slice(0, 5));
-      times.push(appointment.endTimestamp.split('T')[1].slice(0, 5));
-      this.date = this.dateService.createDateObject(date);
+      times.push(this.appointment.scheduledTimestamp.split('T')[1].slice(0, 5));
+      times.push(this.appointment.endTimestamp.split('T')[1].slice(0, 5));
+      this.date = this.dateService.createDateObject(date, false);
       this.timeslot = `${times[0]}-${times[1]}`;
     } else {
       this.date = null;
@@ -154,9 +136,9 @@ export class AppointmentFormComponent extends FormService implements OnInit {
   }
 
   onSubmit(): void {
-    const appointment: Appointment = this.createObject(this.form.value);
     this.submitted = true;
     if (this.form.valid && this.changed) {
+      const appointment: Appointment = this.createObject();
       if (this.form.value['id']) {
         this.appointmentService.update(appointment).subscribe({
           error: () =>
@@ -193,8 +175,8 @@ export class AppointmentFormComponent extends FormService implements OnInit {
     }
   }
 
-  private createObject(form: any): Appointment {
-    const { date, timeslot, ...appointment } = form;
+  private createObject(): Appointment {
+    const { date, timeslot, ...appointment } = this.form.value;
     const dateStr = date.toISOString().slice(0, 11);
     const times: string[] = timeslot.split('-');
     appointment.scheduledTimestamp = `${dateStr}${times[0]}`;

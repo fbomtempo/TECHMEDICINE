@@ -15,6 +15,10 @@ export class RolesDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private location: Location) {}
 
   ngOnInit(): void {
+    this.fetchData();
+  }
+
+  fetchData(): void {
     this.role = this.route.snapshot.data['role'];
   }
 

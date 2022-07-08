@@ -37,7 +37,7 @@
     </dd>
     <dt class="col-sm-2">Telefone Residencial:</dt>
     <dd class="col-sm-10">
-      {{ employee.homePhone }}
+      {{ employee.homePhone ? employee.homePhone : "-" }}
     </dd>
     <dt class="col-sm-2">Telefone Celular:</dt>
     <dd class="col-sm-10">
@@ -73,7 +73,7 @@
     </dd>
     <dt class="col-sm-2">Complemento:</dt>
     <dd class="col-sm-10">
-      {{ employee.complement }}
+      {{ employee.complement ? employee.complement : "-" }}
     </dd>
   </dl>
 </div>

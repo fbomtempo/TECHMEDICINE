@@ -4,7 +4,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import {
   catchError,
-  map,
   Observable,
   of,
   Subject,
@@ -12,8 +11,6 @@ import {
   switchMap,
   take
 } from 'rxjs';
-import { DateService } from 'src/app/shared/services/date.service';
-import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
 import { Medic } from '../model/medic';
@@ -37,8 +34,6 @@ export class MedicListComponent implements OnInit, OnDestroy {
   constructor(
     private medicService: MedicService,
     private modalService: ModalService,
-    private maskService: MaskService,
-    private dateService: DateService,
     private route: ActivatedRoute,
     private router: Router,
     private location: Location
@@ -71,19 +66,7 @@ export class MedicListComponent implements OnInit, OnDestroy {
   }
 
   onRefresh(): void | Observable<never> {
-    this.medics$ = this.medicService.findAll().pipe(
-      map((medics: Medic[]) => {
-        return medics.map((medic: Medic) => {
-          this.maskService.formatData(medic, [
-            'cpf',
-            'homePhone',
-            'mobilePhone',
-            'cep'
-          ]);
-          this.dateService.toPtBrDateString(medic, ['birthDate']);
-          return medic;
-        });
-      }),
+    this.medics$ = this.medicService.findAllFormatted().pipe(
       catchError(() => {
         this.error.next(true);
         return of();
