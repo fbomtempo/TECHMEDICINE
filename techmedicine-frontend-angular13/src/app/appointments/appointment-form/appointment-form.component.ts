@@ -45,6 +45,7 @@ export class AppointmentFormComponent extends FormService implements OnInit {
     '18:00-18:30',
     '18:30-19:00'
   ];
+  timestamp: string;
   date: Date;
   timeslot: string;
   patients: Patient[];
@@ -102,8 +103,8 @@ export class AppointmentFormComponent extends FormService implements OnInit {
   }
 
   private createForm(): void {
-    const fullTimestamp = this.route.snapshot.queryParams['data'];
-    this.formatTimestamp(fullTimestamp);
+    this.timestamp = this.route.snapshot.queryParams['data'];
+    this.formatTimestamp();
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
       id: [this.appointment.id],
@@ -116,17 +117,18 @@ export class AppointmentFormComponent extends FormService implements OnInit {
     this.subscribeToChanges();
   }
 
-  private formatTimestamp(fullTimestamp: string): void {
-    if (fullTimestamp) {
-      const dateTime: string[] = fullTimestamp.split('T');
+  private formatTimestamp(): void {
+    if (this.timestamp) {
+      const dateTime: string[] = this.timestamp.split('T');
       const times: string[] = dateTime[1].split('-');
       this.date = this.dateService.createDateObject(dateTime[0], false);
       this.timeslot = `${times[0]}-${times[1]}`;
     } else if (this.appointment.id) {
-      const date: string = this.appointment.scheduledTimestamp.slice(0, 16);
-      const times: string[] = [];
-      times.push(this.appointment.scheduledTimestamp.split('T')[1].slice(0, 5));
-      times.push(this.appointment.endTimestamp.split('T')[1].slice(0, 5));
+      const date: string = this.appointment.scheduledDate;
+      const times: string[] = [
+        this.appointment.startTime,
+        this.appointment.endTime
+      ];
       this.date = this.dateService.createDateObject(date, false);
       this.timeslot = `${times[0]}-${times[1]}`;
     } else {
@@ -177,14 +179,19 @@ export class AppointmentFormComponent extends FormService implements OnInit {
 
   private createObject(): Appointment {
     const { date, timeslot, ...appointment } = this.form.value;
-    const dateStr = date.toISOString().slice(0, 11);
+    const dateStr = date.toISOString().slice(0, 10);
     const times: string[] = timeslot.split('-');
-    appointment.scheduledTimestamp = `${dateStr}${times[0]}`;
-    appointment.endTimestamp = `${dateStr}${times[1]}`;
+    appointment.scheduledDate = dateStr;
+    appointment.startTime = times[0];
+    appointment.endTime = times[1];
     return appointment;
   }
 
   onCancel(): void {
-    this.router.navigate(['agendamentos']);
+    if (this.timestamp) {
+      this.router.navigate(['agendamentos']);
+    } else {
+      this.router.navigate(['agendamentos'], { queryParams: { pagina: 1 } });
+    }
   }
 }

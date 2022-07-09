@@ -5,7 +5,8 @@ export interface Appointment {
   id: number;
   patient: Patient;
   medic: Medic;
-  scheduledTimestamp: string;
-  endTimestamp: string;
+  scheduledDate: string;
+  startTime: string;
+  endTime: string;
   appointmentSituation: string;
 }

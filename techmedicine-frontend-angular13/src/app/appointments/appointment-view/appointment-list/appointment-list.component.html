@@ -50,7 +50,8 @@
           <th scope="col">Paciente</th>
           <th scope="col">Médico</th>
           <th scope="col">Data Agendada</th>
-          <th scope="col">Data Término</th>
+          <th scope="col">Início</th>
+          <th scope="col">Término</th>
           <th scope="col">Situação</th>
           <th scope="col">Ações</th>
         </tr>
@@ -71,8 +72,9 @@
           <td>
             {{ appointment.medic.name + " " + appointment.medic.surname }}
           </td>
-          <td>{{ appointment.scheduledTimestamp }}</td>
-          <td>{{ appointment.endTimestamp }}</td>
+          <td>{{ appointment.scheduledDate }}</td>
+          <td>{{ appointment.startTime }}</td>
+          <td>{{ appointment.endTime }}</td>
           <td>
             <span
               class="appointment-label"
@@ -85,6 +87,7 @@
           <td>
             <button
               type="button"
+              title="Editar"
               class="btn btn-round btn-outline-edit me-2"
               [routerLink]="['editar/', appointment.id]"
             >
@@ -92,6 +95,7 @@
             </button>
             <button
               type="button"
+              title="Deletar"
               class="btn-round btn-outline-delete me-2"
               (click)="onDelete(appointment)"
             >
@@ -99,10 +103,19 @@
             </button>
             <button
               type="button"
-              class="btn-round btn-outline-view"
+              title="Visualizar"
+              class="btn-round btn-outline-view me-2"
               [routerLink]="['visualizar/', appointment.id]"
             >
               <i class="fas fa-eye"></i>
+            </button>
+            <button
+              type="button"
+              title="Criar Atendimento"
+              class="btn-round btn-outline-attend"
+              [routerLink]="['visualizar/', appointment.id]"
+            >
+              <i class="fas fa-external-link-alt"></i>
             </button>
           </td>
         </tr>

@@ -25,7 +25,7 @@ export class AppointmentService extends CrudService<Appointment> {
       delay(750),
       map((appointments: Appointment[]) => {
         return appointments.map((appointment: Appointment) => {
-          this.dateService.toPtBrTimestampString(appointment);
+          this.dateService.toPtBrDateString(appointment);
           this.maskService.formatData(appointment.patient);
           this.maskService.formatData(appointment.medic);
           return appointment;
@@ -42,8 +42,8 @@ export class AppointmentService extends CrudService<Appointment> {
           return {
             id: appointment.id,
             title: `${appointment.patient.name} ${appointment.patient.surname}`,
-            start: appointment.scheduledTimestamp,
-            end: appointment.endTimestamp,
+            start: `${appointment.scheduledDate} ${appointment.startTime}`,
+            end: `${appointment.scheduledDate} ${appointment.endTime}`,
             color:
               appointment.appointmentSituation === 'CANCELADO' ? '#D90000' : '',
             extendedProps: {

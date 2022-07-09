@@ -26,7 +26,6 @@ export class AppointmentModalComponent implements OnInit {
   @Input() appointment: Appointment;
   @Output() deletionEvent: EventEmitter<void> = new EventEmitter();
   @ViewChild('template') modalTemplate;
-  appointmentHeader: string;
 
   constructor(
     private bsModalRef: BsModalRef,
@@ -51,18 +50,12 @@ export class AppointmentModalComponent implements OnInit {
   }
 
   private formatData(appointment: Appointment): void {
-    this.appointment.patient = this.maskService.formatData(appointment.patient);
+    this.appointment = appointment;
+    this.maskService.formatData(this.appointment.patient);
+    this.maskService.formatData(this.appointment.medic);
+    this.dateService.toPtBrDateString(this.appointment);
     this.dateService.toPtBrDateString(this.appointment.patient);
-    this.formatAppointmentHeader(this.appointment);
-  }
-
-  private formatAppointmentHeader(appointment: Appointment): void {
-    const scheduledTime: string = appointment.scheduledTimestamp.slice(11, 16);
-    const endTime: string = appointment.endTimestamp.slice(11, 16);
-    const date: string = this.dateService.toPtBrDateString(this.appointment, [
-      'scheduledTimestamp'
-    ])['scheduledTimestamp'];
-    this.appointmentHeader = `${date} ${scheduledTime}-${endTime}`;
+    this.dateService.toPtBrDateString(this.appointment.medic);
   }
 
   modalBackgroundColor(): any {

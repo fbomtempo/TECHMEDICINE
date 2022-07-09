@@ -59,6 +59,7 @@
           <td>
             <button
               type="button"
+              title="Editar"
               class="btn btn-round btn-outline-edit me-2"
               [routerLink]="['editar/', specialty.id]"
             >
@@ -66,6 +67,7 @@
             </button>
             <button
               type="button"
+              title="Deletar"
               class="btn-round btn-outline-delete me-2"
               (click)="onDelete(specialty)"
             >
@@ -73,6 +75,7 @@
             </button>
             <button
               type="button"
+              title="Visualizar"
               class="btn-round btn-outline-view"
               [routerLink]="['visualizar/', specialty.id]"
             >

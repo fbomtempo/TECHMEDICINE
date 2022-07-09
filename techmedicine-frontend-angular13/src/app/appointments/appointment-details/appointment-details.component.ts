@@ -27,7 +27,7 @@ export class AppointmentDetailsComponent implements OnInit {
 
   fetchData(): void {
     this.appointment = this.route.snapshot.data['appointment'];
-    this.dateService.toPtBrTimestampString(this.appointment);
+    this.dateService.toPtBrDateString(this.appointment);
     this.maskService.formatData(this.appointment.patient);
     this.maskService.formatData(this.appointment.medic);
   }

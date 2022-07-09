@@ -34,7 +34,7 @@ public class AppointmentService {
 	
 	public Appointment insert(Appointment obj) {
 		try {
-			Appointment appointment = appointmentRepository.findByMedicAndScheduledTimestamp(obj.getMedic(), obj.getScheduledTimestamp());
+			Appointment appointment = appointmentRepository.findByMedicAndScheduledDateAndStartTime(obj.getMedic(), obj.getScheduledDate(), obj.getStartTime());
 			if (appointment != null) {
 				if (appointment.getAppointmentSituation() != AppointmentSituation.CANCELADO) {
 					throw new DatabaseException("Médico já possui consulta agendada para o horário informado");
@@ -77,7 +77,8 @@ public class AppointmentService {
 	private void updateData(Appointment appointment, Appointment obj) {
 		appointment.setPatient(obj.getPatient());
 		appointment.setMedic(obj.getMedic());
-		appointment.setScheduledTimestamp(obj.getScheduledTimestamp());
-		appointment.setEndTimestamp(obj.getEndTimestamp());
+		appointment.setScheduledDate(obj.getScheduledDate());
+		appointment.setStartTime(obj.getStartTime());
+		appointment.setEndTime(obj.getEndTime());
 	}
 }

@@ -1,7 +1,8 @@
 package com.tcc2022.techmedicine.entities;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tcc2022.techmedicine.entities.enums.AppointmentSituation;
 
 @Entity
@@ -35,12 +37,16 @@ public class Appointment implements Serializable {
 	private Medic medic;
 	
 	@Column(nullable = false)
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-	private LocalDateTime scheduledTimestamp;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate scheduledDate;
 	
 	@Column(nullable = false)
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-	private LocalDateTime endTimestamp;
+	@JsonFormat(pattern = "HH:mm")
+	private LocalTime startTime;
+	
+	@Column(nullable = false)
+	@JsonFormat(pattern = "HH:mm")
+	private LocalTime endTime;
 	
 	@Column(length = 30, nullable = false)
 	private String appointmentSituation;
@@ -48,12 +54,13 @@ public class Appointment implements Serializable {
 	public Appointment() {
 	}
 
-	public Appointment(Long id, Patient patient, Medic medic, LocalDateTime scheduledTimestamp, LocalDateTime endTimestamp, AppointmentSituation appointmentSituation) {
+	public Appointment(Long id, Patient patient, Medic medic, LocalDate scheduledDate, LocalTime startTime, LocalTime endTime, AppointmentSituation appointmentSituation) {
 		this.id = id;
 		this.patient = patient;
 		this.medic = medic;
-		this.scheduledTimestamp = scheduledTimestamp;
-		this.endTimestamp = endTimestamp;
+		this.scheduledDate = scheduledDate;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		setAppointmentSituation(appointmentSituation);
 	}
 
@@ -81,20 +88,28 @@ public class Appointment implements Serializable {
 		this.medic = medic;
 	}
 
-	public LocalDateTime getScheduledTimestamp() {
-		return scheduledTimestamp;
+	public LocalDate getScheduledDate() {
+		return scheduledDate;
 	}
 
-	public void setScheduledTimestamp(LocalDateTime scheduledTimestamp) {
-		this.scheduledTimestamp = scheduledTimestamp;
-	}
-	
-	public LocalDateTime getEndTimestamp() {
-		return endTimestamp;
+	public void setScheduledDate(LocalDate scheduledDate) {
+		this.scheduledDate = scheduledDate;
 	}
 
-	public void setEndTimestamp(LocalDateTime endTimestamp) {
-		this.endTimestamp = endTimestamp;
+	public LocalTime getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(LocalTime startTime) {
+		this.startTime = startTime;
+	}
+
+	public LocalTime getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(LocalTime endTime) {
+		this.endTime = endTime;
 	}
 
 	public AppointmentSituation getAppointmentSituation() {

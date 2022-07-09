@@ -16,6 +16,7 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tcc2022.techmedicine.entities.enums.AttendanceSituation;
 
 @Entity
@@ -28,7 +29,7 @@ public class AttendanceHeader implements Serializable {
 	private Long id;
 	
 	@OneToOne
-	@JoinColumn(name = "appointment_id", nullable = true, unique = true )
+	@JoinColumn(name = "appointment_id", nullable = true)
 	private Appointment appointment;
 	
 	@ManyToOne
@@ -40,7 +41,7 @@ public class AttendanceHeader implements Serializable {
 	private Medic medic;
 	
 	@Column(nullable = false)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate attendanceDate;
 	
 	private String attendanceSituation;

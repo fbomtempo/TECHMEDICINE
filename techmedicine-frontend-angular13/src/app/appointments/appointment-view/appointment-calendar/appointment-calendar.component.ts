@@ -179,16 +179,17 @@ export class AppointmentCalendarComponent implements OnInit {
   }
 
   private eventDropUpdate(info: any): void {
-    let appointment: Appointment;
-    this.appointmentService.findById(info.oldEvent.id).subscribe((result) => {
-      appointment = result;
-      this.updateEvent(appointment, info);
-    });
+    this.appointmentService
+      .findById(info.oldEvent.id)
+      .subscribe((appointment: Appointment) => {
+        this.updateEvent(appointment, info);
+      });
   }
 
   private updateEvent(appointment: Appointment, info: any): void {
-    appointment.scheduledTimestamp = info.event.startStr.slice(0, 16);
-    appointment.endTimestamp = info.event.endStr.slice(0, 16);
+    appointment.scheduledDate = info.event.startStr.slice(0, 10);
+    appointment.startTime = info.event.startStr.slice(11, 16);
+    appointment.endTime = info.event.endStr.slice(11, 16);
     this.appointmentService.update(appointment).subscribe({
       error: () => {
         this.modalService.alertDanger(
