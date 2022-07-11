@@ -15,44 +15,44 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.tcc2022.techmedicine.entities.AttendanceHeader;
-import com.tcc2022.techmedicine.services.AttendanceHeaderService;
+import com.tcc2022.techmedicine.entities.CheckUpHeader;
+import com.tcc2022.techmedicine.services.CheckUpHeaderService;
 
 @RestController
-@RequestMapping(value = "/atendimentos")
-public class AttendanceHeaderResource {
+@RequestMapping(value = "/cabecalhos-atendimento")
+public class CheckUpHeaderResource {
 
 	@Autowired
-	private AttendanceHeaderService attendanceHeaderService;
+	private CheckUpHeaderService checkUpHeaderService;
 	
 	@GetMapping
-	public ResponseEntity<List<AttendanceHeader>> findAll() {
-		List<AttendanceHeader> list = attendanceHeaderService.findAll();
+	public ResponseEntity<List<CheckUpHeader>> findAll() {
+		List<CheckUpHeader> list = checkUpHeaderService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<AttendanceHeader> findById(@PathVariable Long id) {
-		AttendanceHeader obj = attendanceHeaderService.findById(id);
+	public ResponseEntity<CheckUpHeader> findById(@PathVariable Long id) {
+		CheckUpHeader obj = checkUpHeaderService.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
-	public ResponseEntity<AttendanceHeader> insert(@RequestBody AttendanceHeader obj) {
-		obj = attendanceHeaderService.insert(obj);
+	public ResponseEntity<CheckUpHeader> insert(@RequestBody CheckUpHeader obj) {
+		obj = checkUpHeaderService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		attendanceHeaderService.delete(id);
+		checkUpHeaderService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<AttendanceHeader> update(@PathVariable Long id, @RequestBody AttendanceHeader obj) {
-		obj = attendanceHeaderService.update(id, obj);
+	public ResponseEntity<CheckUpHeader> update(@PathVariable Long id, @RequestBody CheckUpHeader obj) {
+		obj = checkUpHeaderService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}
 }

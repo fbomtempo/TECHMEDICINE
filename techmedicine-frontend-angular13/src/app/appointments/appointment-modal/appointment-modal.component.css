@@ -8,6 +8,11 @@
   color: white;
 }
 
+.modal-header-finished {
+  background-color: #00b28e;
+  color: white;
+}
+
 .cell-padding {
   padding: 0 6px;
 }

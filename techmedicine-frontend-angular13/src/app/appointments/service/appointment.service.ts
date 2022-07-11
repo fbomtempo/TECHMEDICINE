@@ -45,12 +45,17 @@ export class AppointmentService extends CrudService<Appointment> {
             start: `${appointment.scheduledDate} ${appointment.startTime}`,
             end: `${appointment.scheduledDate} ${appointment.endTime}`,
             color:
-              appointment.appointmentSituation === 'CANCELADO' ? '#D90000' : '',
+              appointment.appointmentSituation === 'AGENDADO'
+                ? ''
+                : appointment.appointmentSituation === 'CANCELADO'
+                ? '#D90000'
+                : '#00b28e',
             extendedProps: {
               appointment: appointment
             },
             constraint:
-              appointment.appointmentSituation === 'CANCELADO'
+              appointment.appointmentSituation === 'CANCELADO' ||
+              appointment.appointmentSituation === 'ATENDIDO'
                 ? {
                     daysOfWeek: []
                   }

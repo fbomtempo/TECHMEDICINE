@@ -46,6 +46,13 @@ const routes: Routes = [
       )
   },
   {
+    path: 'atendimentos',
+    loadChildren: () =>
+      import('./check-up-headers/check-up-headers.module').then(
+        (m) => m.CheckUpHeadersModule
+      )
+  },
+  {
     path: '',
     redirectTo: '/home',
     pathMatch: 'full'

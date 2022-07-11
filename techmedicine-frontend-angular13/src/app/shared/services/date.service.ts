@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class DateService {
-  readonly defaultDateFields = ['birthDate', 'scheduledDate'];
+  readonly defaultDateFields = ['birthDate', 'scheduledDate', 'date'];
   readonly defaultTimestampFields = ['scheduledTimestamp', 'endTimestamp'];
 
   constructor() {}

@@ -7,11 +7,37 @@
             class="form-check-input"
             type="checkbox"
             role="switch"
-            id="flexSwitchCheckDefault"
-            [(ngModel)]="isChecked"
+            id="opened-filter-switch"
+            [(ngModel)]="filterSwitches.opened"
             (change)="showData()"
           />
-          <label class="form-check-label" for="flexSwitchCheckDefault"
+          <label class="form-check-label" for="opened-filter-switch"
+            >Mostrar Agendados</label
+          >
+        </div>
+        <div class="form-check form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            id="finished-filter-switch"
+            [(ngModel)]="filterSwitches.finished"
+            (change)="showData()"
+          />
+          <label class="form-check-label" for="finished-filter-switch"
+            >Mostrar Finalizados</label
+          >
+        </div>
+        <div class="form-check form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            id="cancelled-filter-switch"
+            [(ngModel)]="filterSwitches.cancelled"
+            (change)="showData()"
+          />
+          <label class="form-check-label" for="cancelled-filter-switch"
             >Mostrar Cancelados</label
           >
         </div>
@@ -63,7 +89,7 @@
 <app-appointment-modal
   [appointment]="appointment"
   #appointmentModal
-  (deletionEvent)="this.isChecked = false; this.loadPage = false; onRefresh()"
+  (deletionEvent)="loadPage = false; filterMedic = undefined; onRefresh()"
 ></app-appointment-modal>
 
 <!-- TEMPLATES -->

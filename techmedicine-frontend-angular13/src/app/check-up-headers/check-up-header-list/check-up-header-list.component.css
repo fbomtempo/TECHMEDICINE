@@ -65,12 +65,12 @@
   border-color: #0dcaf0;
 }
 
-.btn-outline-checkup {
+.btn-outline-attend {
   color: black;
   border-color: black;
 }
 
-.btn-outline-checkup:hover {
+.btn-outline-attend:hover {
   color: #fff;
   background-color: #198754;
   border-color: #198754;
@@ -98,19 +98,15 @@
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.appointment-label-scheduled {
+.check-up-header-label-open {
   background-color: #3788d8;
 }
 
-.appointment-label-cancelled {
+.check-up-header-label-cancelled {
   background-color: #D90000;
 }
 
-.appointment-label-finished {
-  background-color: #00b28e;
-}
-
-.appointment-label {
+.check-up-header-label {
   font-family: Roboto-Bold, sans-serif;
   font-size: 13px;
   font-weight: bolder;

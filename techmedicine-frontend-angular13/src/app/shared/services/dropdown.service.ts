@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { delay, map, Observable, take } from 'rxjs';
+import { Appointment } from 'src/app/appointments/model/appointment';
 import { Medic } from 'src/app/medics/model/medic';
 import { Patient } from 'src/app/patients/model/patient';
 import { Role } from 'src/app/roles/model/role';
@@ -65,12 +66,7 @@ export class DropdownService {
       take(1),
       map((patients) => {
         patients = patients.map((patient: Patient) => {
-          this.maskService.formatData(patient, [
-            'cpf',
-            'homePhone',
-            'mobilePhone',
-            'cep'
-          ]);
+          this.maskService.formatData(patient);
           return patient;
         });
         return patients.sort((a, b) =>
@@ -90,12 +86,7 @@ export class DropdownService {
       take(1),
       map((medics) => {
         medics = medics.map((medic: Medic) => {
-          this.maskService.formatData(medic, [
-            'cpf',
-            'homePhone',
-            'mobilePhone',
-            'cep'
-          ]);
+          this.maskService.formatData(medic);
           return medic;
         });
         return medics.sort((a, b) =>
@@ -105,6 +96,21 @@ export class DropdownService {
             ? -1
             : 0
         );
+      })
+    );
+  }
+
+  getAppointments(): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(`${this.API}agendamentos`).pipe(
+      delay(750),
+      take(1),
+      map((appointments: Appointment[]) => {
+        appointments = appointments.map((appointment: Appointment) => {
+          this.maskService.formatData(appointment.patient);
+          this.maskService.formatData(appointment.medic);
+          return appointment;
+        });
+        return appointments;
       })
     );
   }

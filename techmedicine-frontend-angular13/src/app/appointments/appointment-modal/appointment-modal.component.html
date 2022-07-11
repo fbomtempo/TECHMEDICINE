@@ -26,6 +26,12 @@
           <strong [ngStyle]="appointmentSituationTextColor()"
             ><span>{{ appointment.appointmentSituation }}</span></strong
           >
+          <a
+            *ngIf="appointment.appointmentSituation === 'AGENDADO'"
+            class="ps-2"
+            [routerLink]="['visualizar/', appointment.id]"
+            >Criar Atendimento <i class="fas fa-external-link-alt"></i
+          ></a>
         </div>
         <hr data-content="PACIENTE" class="hr-text" />
         <div class="col-xl-8 pb-4">
@@ -139,7 +145,7 @@
     </div>
     <div
       class="modal-footer"
-      *ngIf="appointment.appointmentSituation !== 'CANCELADO'"
+      *ngIf="appointment.appointmentSituation === 'AGENDADO'"
     >
       <button
         type="button"
@@ -148,13 +154,6 @@
         (click)="onDelete()"
       >
         Cancelar
-      </button>
-      <button
-        type="button"
-        class="btn btn-success d-block"
-        (click)="onUpdate()"
-      >
-        Criar Atendimento
       </button>
       <button
         type="button"

@@ -74,7 +74,11 @@ export class AppointmentCalendarComponent implements OnInit {
   }
   @ViewChild('appointmentModal', { static: true })
   appointmentModal?: AppointmentModalComponent;
-  isChecked: boolean = false;
+  filterSwitches: any = {
+    opened: true,
+    finished: false,
+    cancelled: false
+  };
   filterMedic: Medic;
 
   constructor(
@@ -135,37 +139,32 @@ export class AppointmentCalendarComponent implements OnInit {
   }
 
   showData(): void {
-    switch (this.isChecked) {
-      case true:
-        this.calendarOptions.events = this.filterMedic
-          ? this.events.filter(
-              (event: any) =>
-                event.extendedProps.appointment.medic.id === this.filterMedic.id
-            )
-          : this.events.filter(() => true);
-        break;
-      case false:
-        this.calendarOptions.events = this.filterMedic
-          ? this.events.filter(
-              (event: any) =>
-                event.extendedProps.appointment.medic.id ===
-                  this.filterMedic.id &&
-                event.extendedProps.appointment.appointmentSituation !==
-                  'CANCELADO'
-            )
-          : this.events.filter(
-              (event: any) =>
-                event.extendedProps.appointment.appointmentSituation !==
-                'CANCELADO'
-            );
-        break;
-      default:
-        this.calendarOptions.events = this.events.filter(
-          (event: any) =>
-            event.extendedProps.appointment.appointmentSituation !== 'CANCELADO'
-        );
-        break;
+    let events: any[] = this.events;
+    if (!this.filterSwitches.opened) {
+      events = events.filter(
+        (event: any) =>
+          event.extendedProps.appointment.appointmentSituation !== 'AGENDADO'
+      );
     }
+    if (!this.filterSwitches.finished) {
+      events = events.filter(
+        (event: any) =>
+          event.extendedProps.appointment.appointmentSituation !== 'ATENDIDO'
+      );
+    }
+    if (!this.filterSwitches.cancelled) {
+      events = events.filter(
+        (event: any) =>
+          event.extendedProps.appointment.appointmentSituation !== 'CANCELADO'
+      );
+    }
+    if (this.filterMedic) {
+      events = events.filter(
+        (event: any) =>
+          event.extendedProps.appointment.medic.id === this.filterMedic.id
+      );
+    }
+    this.calendarOptions.events = events;
   }
 
   private addAppointment(arg: any): void {
@@ -203,8 +202,8 @@ export class AppointmentCalendarComponent implements OnInit {
           'Atualizando a página...'
         );
         setTimeout(() => {
-          this.isChecked = false;
           this.loadPage = false;
+          this.filterMedic = undefined;
           this.onRefresh();
         }, 2000);
       }
@@ -227,11 +226,11 @@ export class AppointmentCalendarComponent implements OnInit {
     return duration < 1;
   }
 
-  onBack(): void {
-    this.location.back();
-  }
-
   reloadPage(): void {
     window.location.reload();
+  }
+
+  onBack(): void {
+    this.location.back();
   }
 }

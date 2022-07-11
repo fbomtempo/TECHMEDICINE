@@ -111,8 +111,7 @@ export class AppointmentFormComponent extends FormService implements OnInit {
       date: [this.date, [Validators.required]],
       timeslot: [this.timeslot, [Validators.required]],
       patient: [this.appointment.patient, [Validators.required]],
-      medic: [this.appointment.medic, [Validators.required]],
-      appointmentSituation: [this.appointment.appointmentSituation]
+      medic: [this.appointment.medic, [Validators.required]]
     });
     this.subscribeToChanges();
   }

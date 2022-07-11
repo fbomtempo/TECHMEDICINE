@@ -2,6 +2,7 @@ package com.tcc2022.techmedicine.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -14,14 +15,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tcc2022.techmedicine.entities.enums.AttendanceSituation;
 
 @Entity
-@Table(name = "tb_attendance_header")
-public class AttendanceHeader implements Serializable {
+@Table(name = "tb_checkup_header")
+public class CheckUpHeader implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -42,19 +41,29 @@ public class AttendanceHeader implements Serializable {
 	
 	@Column(nullable = false)
 	@JsonFormat(pattern = "yyyy-MM-dd")
-	private LocalDate attendanceDate;
+	private LocalDate date;
+	
+	@Column(nullable = false)
+	@JsonFormat(pattern = "HH:mm")
+	private LocalTime startTime;
+	
+	@Column(nullable = true)
+	@JsonFormat(pattern = "HH:mm")
+	private LocalTime endTime;
 	
 	private String attendanceSituation;
 	
-	public AttendanceHeader() {
+	public CheckUpHeader() {
 	}
 
-	public AttendanceHeader(Long id, Appointment appointment, Patient patient, Medic medic, LocalDate attendanceDate, AttendanceSituation attendanceSituation) {
+	public CheckUpHeader(Long id, Appointment appointment, Patient patient, Medic medic, LocalDate date, LocalTime startTime, LocalTime endTime, AttendanceSituation attendanceSituation) {
 		this.id = id;
 		this.appointment = appointment;
 		this.patient = patient;
 		this.medic = medic;
-		this.attendanceDate = attendanceDate;
+		this.date = date;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		setAttendanceSituation(attendanceSituation);
 	}
 
@@ -66,11 +75,11 @@ public class AttendanceHeader implements Serializable {
 		this.id = id;
 	}
 	
-	public Appointment getAttendance() {
+	public Appointment getAppointment() {
 		return appointment;
 	}
 
-	public void setAttendance(Appointment appointment) {
+	public void setAppointment(Appointment appointment) {
 		this.appointment = appointment;
 	}
 
@@ -89,13 +98,29 @@ public class AttendanceHeader implements Serializable {
 	public void setMedic(Medic medic) {
 		this.medic = medic;
 	}
-
-	public LocalDate getAttendanceDate() {
-		return attendanceDate;
+	
+	public LocalDate getDate() {
+		return date;
 	}
 
-	public void setAttendanceDate(LocalDate attendanceDate) {
-		this.attendanceDate = attendanceDate;
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+
+	public LocalTime getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(LocalTime startTime) {
+		this.startTime = startTime;
+	}
+
+	public LocalTime getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(LocalTime endTime) {
+		this.endTime = endTime;
 	}
 
 	public AttendanceSituation getAttendanceSituation() {
@@ -121,7 +146,7 @@ public class AttendanceHeader implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AttendanceHeader other = (AttendanceHeader) obj;
+		CheckUpHeader other = (CheckUpHeader) obj;
 		return Objects.equals(id, other.id);
 	}
 }

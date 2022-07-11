@@ -6,14 +6,15 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 import { SharedModule } from '../shared/shared.module';
-import { AttendanceListComponent } from './attendance-list/attendance-list.component';
-import { AttendancesRoutingModule } from './attendances-routing.module';
+import { CheckUpHeaderFormComponent } from './check-up-header-form/check-up-header-form.component';
+import { CheckUpHeaderHeaderListComponent } from './check-up-header-list/check-up-header-list.component';
+import { CheckUpHeadersRoutingModule } from './check-up-headers-routing.module';
 
 @NgModule({
-  declarations: [AttendanceListComponent],
+  declarations: [CheckUpHeaderHeaderListComponent, CheckUpHeaderFormComponent],
   imports: [
     CommonModule,
-    AttendancesRoutingModule,
+    CheckUpHeadersRoutingModule,
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
@@ -22,4 +23,4 @@ import { AttendancesRoutingModule } from './attendances-routing.module';
     NgSelectModule
   ]
 })
-export class AttendancesModule {}
+export class CheckUpHeadersModule {}

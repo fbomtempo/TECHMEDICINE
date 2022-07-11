@@ -61,18 +61,22 @@ export class AppointmentModalComponent implements OnInit {
   modalBackgroundColor(): any {
     return {
       'modal-header-scheduled':
-        this.appointment.appointmentSituation !== 'CANCELADO',
+        this.appointment.appointmentSituation === 'AGENDADO',
       'modal-header-cancelled':
-        this.appointment.appointmentSituation === 'CANCELADO'
+        this.appointment.appointmentSituation === 'CANCELADO',
+      'modal-header-finished':
+        this.appointment.appointmentSituation === 'ATENDIDO'
     };
   }
 
   appointmentSituationTextColor(): any {
     return {
       color:
-        this.appointment.appointmentSituation !== 'CANCELADO'
+        this.appointment.appointmentSituation === 'AGENDADO'
           ? '#3788d8'
-          : '#D90000'
+          : this.appointment.appointmentSituation === 'CANCELADO'
+          ? '#D90000'
+          : '#00b28e'
     };
   }
 

@@ -1,4 +1,12 @@
-<div *ngIf="appointments$ | async as appointments; else loadingError">
+<div *ngIf="checkUpHeaders$ | async as checkUpHeaders; else loadingError">
+  <div class="row">
+    <div class="pt-4 pb-md-0 pb-3 col-md-3">
+      <a class="fs-5 display-1 back" (click)="onBack()"
+        ><i class="fas fa-arrow-left"></i><span class="ms-2">Voltar</span></a
+      >
+    </div>
+    <h1 class="text-center pb-5">Realização de Atendimentos</h1>
+  </div>
   <div class="row">
     <div class="col-12 pb-4">
       <div class="form-check form-switch">
@@ -6,34 +14,10 @@
           class="form-check-input"
           type="checkbox"
           role="switch"
-          id="opened-filter-switch"
-          [(ngModel)]="filterSwitches.opened"
+          id="flexSwitchCheckDefault"
+          [(ngModel)]="isChecked"
         />
-        <label class="form-check-label" for="opened-filter-switch"
-          >Mostrar Agendados</label
-        >
-      </div>
-      <div class="form-check form-switch">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          role="switch"
-          id="finished-filter-switch"
-          [(ngModel)]="filterSwitches.finished"
-        />
-        <label class="form-check-label" for="finished-filter-switch"
-          >Mostrar Finalizados</label
-        >
-      </div>
-      <div class="form-check form-switch">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          role="switch"
-          id="cancelled-filter-switch"
-          [(ngModel)]="filterSwitches.cancelled"
-        />
-        <label class="form-check-label" for="cancelled-filter-switch"
+        <label class="form-check-label" for="flexSwitchCheckDefault"
           >Mostrar Cancelados</label
         >
       </div>
@@ -61,7 +45,7 @@
     </div>
     <div class="col text-md-end text-sm-start text-start pt-md-0 pt-sm-4 pt-4">
       <a type="button" class="btn btn-primary" [routerLink]="['novo']"
-        >Novo Agendamento <i class="fas fa-plus-circle"></i
+        >Iniciar Atendimento <i class="fas fa-plus-circle"></i
       ></a>
     </div>
   </div>
@@ -73,58 +57,61 @@
           <th scope="col">ID</th>
           <th scope="col">Paciente</th>
           <th scope="col">Médico</th>
-          <th scope="col">Data Agendada</th>
+          <th scope="col">Data</th>
           <th scope="col">Início</th>
           <th scope="col">Término</th>
           <th scope="col">Situação</th>
           <th scope="col">Ações</th>
-          <th></th>
         </tr>
       </thead>
       <tbody class="table-link">
         <tr
           *ngFor="
-            let appointment of showData(appointments)
+            let attendanceHeader of showData(checkUpHeaders)
               | pagination: page:itemsPerPage;
             let i = index
           "
         >
           <th scope="row">{{ i + 1 + (page - 1) * itemsPerPage }}</th>
-          <td>{{ appointment.id }}</td>
+          <td>{{ attendanceHeader.id }}</td>
           <td>
-            {{ appointment.patient.name + " " + appointment.patient.surname }}
+            {{
+              attendanceHeader.patient.name +
+                " " +
+                attendanceHeader.patient.surname
+            }}
           </td>
           <td>
-            {{ appointment.medic.name + " " + appointment.medic.surname }}
+            {{
+              attendanceHeader.medic.name + " " + attendanceHeader.medic.surname
+            }}
           </td>
-          <td>{{ appointment.scheduledDate }}</td>
-          <td>{{ appointment.startTime }}</td>
-          <td>{{ appointment.endTime }}</td>
+          <td>{{ attendanceHeader.date }}</td>
+          <td>{{ attendanceHeader.startTime }}</td>
+          <td>{{ attendanceHeader.endTime }}</td>
           <td>
             <span
-              class="appointment-label"
+              class="check-up-header-label"
               [ngClass]="
-                situationLabelBackground(appointment.appointmentSituation)
+                situationLabelBackground(attendanceHeader.attendanceSituation)
               "
-              >{{ appointment.appointmentSituation }}</span
+              >{{ attendanceHeader.attendanceSituation }}</span
             >
           </td>
           <td>
             <button
-              *ngIf="appointment.appointmentSituation === 'AGENDADO'"
               type="button"
               title="Editar"
               class="btn btn-round btn-outline-edit me-2"
-              [routerLink]="['editar/', appointment.id]"
+              [routerLink]="['editar/', attendanceHeader.id]"
             >
               <i class="fas fa-pencil-alt"></i>
             </button>
             <button
-              *ngIf="appointment.appointmentSituation === 'AGENDADO'"
               type="button"
               title="Deletar"
               class="btn-round btn-outline-delete me-2"
-              (click)="onDelete(appointment)"
+              (click)="onDelete(attendanceHeader)"
             >
               <i class="fas fa-trash-alt"></i>
             </button>
@@ -132,17 +119,18 @@
               type="button"
               title="Visualizar"
               class="btn-round btn-outline-view me-2"
-              [routerLink]="['visualizar/', appointment.id]"
+              [routerLink]="['visualizar/', attendanceHeader.id]"
             >
               <i class="fas fa-eye"></i>
             </button>
-          </td>
-          <td>
-            <a
-              *ngIf="appointment.appointmentSituation === 'AGENDADO'"
-              [routerLink]="['visualizar/', appointment.id]"
-              >Criar Atendimento <i class="fas fa-external-link-alt"></i
-            ></a>
+            <button
+              type="button"
+              title="Atender"
+              class="btn-round btn-outline-attend"
+              [routerLink]="['visualizar/', attendanceHeader.id]"
+            >
+              <i class="fas fa-external-link-alt"></i>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -150,7 +138,7 @@
   </div>
   <div class="mb-3 d-flex justify-content-center">
     <pagination
-      [totalItems]="showData(appointments).length"
+      [totalItems]="showData(checkUpHeaders).length"
       [itemsPerPage]="itemsPerPage"
       [maxSize]="paginationSize"
       (pageChanged)="pageChanged($event)"
