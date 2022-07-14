@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { map } from 'rxjs';
 import { Appointment } from 'src/app/appointments/model/appointment';
+import { AppointmentService } from 'src/app/appointments/service/appointment.service';
 import { Medic } from 'src/app/medics/model/medic';
 import { Patient } from 'src/app/patients/model/patient';
 import { DateService } from 'src/app/shared/services/date.service';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { FormService } from 'src/app/shared/services/form-service';
+import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
 import { CheckUpHeader } from '../model/check-up-header';
@@ -26,7 +29,7 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
     clearButtonLabel: 'Limpar',
     containerClass: 'theme-dark-blue'
   };
-  hasAppointment: boolean = false;
+  hasAppointment: boolean = true;
   appointments: Appointment[];
   appointmentsLoading: boolean = true;
   compareFnAppointment(c1: Appointment, c2: Appointment): boolean {
@@ -46,8 +49,10 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private checkUpHeaderService: CheckUpHeaderService,
+    private appointmentService: AppointmentService,
     private modalService: ModalService,
     private dropdownService: DropdownService,
+    private maskService: MaskService,
     private dateService: DateService,
     private router: Router,
     private route: ActivatedRoute
@@ -62,28 +67,26 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
 
   private fetchData(): void {
     this.checkUpHeader = this.route.snapshot.data['checkUpHeader'];
-    this.dropdownService.getAppointments().subscribe({
-      next: (appointments: Appointment[]) => {
-        this.appointments = appointments.map((appointment: any) => {
-          appointment.searchLabel = `${appointment.patient.name} ${appointment.patient.surname}`;
-          return appointment;
-        });
-      },
-      complete: () => {
-        this.appointmentsLoading = false;
-      }
-    });
-    this.dropdownService.getPatients().subscribe({
-      next: (patients: Patient[]) => {
-        this.patients = patients.map((patient: any) => {
-          patient.searchLabel = `${patient.name} ${patient.surname}`;
-          return patient;
-        });
-      },
-      complete: () => {
-        this.patientsLoading = false;
-      }
-    });
+    this.dropdownService
+      .getAppointments()
+      .pipe(
+        map((appointments: Appointment[]) => {
+          return appointments.filter((appointment: Appointment) => {
+            return appointment.appointmentSituation === 'AGENDADO';
+          });
+        })
+      )
+      .subscribe({
+        next: (appointments: Appointment[]) => {
+          this.appointments = appointments.map((appointment: any) => {
+            appointment.searchLabel = `${appointment.patient.name} ${appointment.patient.surname}`;
+            return appointment;
+          });
+        },
+        complete: () => {
+          this.appointmentsLoading = false;
+        }
+      });
     this.dropdownService.getPatients().subscribe({
       next: (patients: Patient[]) => {
         this.patients = patients.map((patient: any) => {
@@ -124,30 +127,53 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
       medic: [this.checkUpHeader.medic, [Validators.required]],
       date: [date, [Validators.required]]
     });
+    this.checkAppointmentQueryParam();
     this.subscribeToChanges();
   }
 
+  private checkAppointmentQueryParam(): void {
+    if (this.route.snapshot.queryParams['agendamento']) {
+      this.appointmentService
+        .findById(this.route.snapshot.queryParams['agendamento'])
+        .subscribe({
+          next: (appointment: Appointment) => {
+            this.hasAppointment = true;
+            this.onSelectChange(appointment);
+          }
+        });
+    }
+  }
+
   onSwitchChange(): void {
-    this.hasAppointment = !this.hasAppointment;
     if (!this.hasAppointment) {
-      this.form.get('appointment').setValue(null);
+      this.form.patchValue({
+        appointment: null,
+        patient: null,
+        medic: null
+      });
       this.form.get('appointment').markAsUntouched();
+      this.form.get('patient').markAsUntouched();
+      this.form.get('medic').markAsUntouched();
     }
   }
 
   onSelectChange(obj: any): void {
     if (obj) {
       this.form.patchValue({
+        appointment: obj,
         patient: obj.patient,
         medic: obj.medic
       });
+      this.form.get('appointment').markAsTouched();
       this.form.get('patient').markAsTouched();
       this.form.get('medic').markAsTouched();
     } else {
       this.form.patchValue({
+        appointment: null,
         patient: null,
         medic: null
       });
+      this.form.get('appointment').markAsUntouched();
       this.form.get('patient').markAsUntouched();
       this.form.get('medic').markAsUntouched();
     }
@@ -170,7 +196,13 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
               'Cabeçalho de atendimento atualizado com sucesso!',
               'Redirecionando a página...'
             );
-            setTimeout(() => this.router.navigate(['/agendamentos']), 2000);
+            setTimeout(
+              () =>
+                this.router.navigate(['/iniciar-atendimentos'], {
+                  queryParams: { pagina: 1 }
+                }),
+              2000
+            );
             this.submittedSucess = true;
           }
         });
@@ -178,15 +210,21 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
         this.checkUpHeaderService.create(checkUpHeader).subscribe({
           error: () =>
             this.modalService.alertDanger(
-              'Erro ao realizar cabeçalho de atendimento!',
+              'Erro ao criar cabeçalho de atendimento!',
               'Tente novamente mais tarde.'
             ),
           complete: () => {
             this.modalService.alertSuccess(
-              'Cabeçalho de atendimento realizado com sucesso!',
+              'Cabeçalho de atendimento criado com sucesso!',
               'Redirecionando a página...'
             );
-            setTimeout(() => this.router.navigate(['/agendamentos']), 2000);
+            setTimeout(
+              () =>
+                this.router.navigate(['/iniciar-atendimentos'], {
+                  queryParams: { pagina: 1 }
+                }),
+              2000
+            );
             this.submittedSucess = true;
           }
         });
@@ -201,6 +239,8 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['atendimentos'], { queryParams: { pagina: 1 } });
+    this.router.navigate(['iniciar-atendimentos'], {
+      queryParams: { pagina: 1 }
+    });
   }
 }

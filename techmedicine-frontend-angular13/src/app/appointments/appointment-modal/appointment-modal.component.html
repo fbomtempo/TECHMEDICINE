@@ -29,7 +29,8 @@
           <a
             *ngIf="appointment.appointmentSituation === 'AGENDADO'"
             class="ps-2"
-            [routerLink]="['visualizar/', appointment.id]"
+            [routerLink]="['/iniciar-atendimentos/novo']"
+            [queryParams]="{ agendamento: appointment.id }"
             >Criar Atendimento <i class="fas fa-external-link-alt"></i
           ></a>
         </div>

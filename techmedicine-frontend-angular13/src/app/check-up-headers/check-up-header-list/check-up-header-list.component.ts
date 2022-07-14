@@ -30,7 +30,11 @@ export class CheckUpHeaderHeaderListComponent implements OnInit, OnDestroy {
   itemsPerPage: number;
   paginationSize: number;
   filter: string;
-  isChecked: boolean = false;
+  filterSwitches: any = {
+    opened: true,
+    finished: false,
+    cancelled: false
+  };
 
   constructor(
     private checkUpHeaderService: CheckUpHeaderService,
@@ -83,51 +87,36 @@ export class CheckUpHeaderHeaderListComponent implements OnInit, OnDestroy {
   }
 
   showData(checkUpHeaders: CheckUpHeader[]): CheckUpHeader[] {
-    switch (this.isChecked) {
-      case true:
-        checkUpHeaders = this.filter
-          ? checkUpHeaders.filter((checkUpHeader: CheckUpHeader) => {
-              if (
-                `${checkUpHeader.patient.name} ${checkUpHeader.patient.surname}`
-                  .toLowerCase()
-                  .indexOf(this.filter.toLowerCase()) >= 0
-              ) {
-                return true;
-              } else {
-                return false;
-              }
-            })
-          : checkUpHeaders;
-        break;
-      case false:
-        checkUpHeaders = this.filter
-          ? checkUpHeaders.filter((checkUpHeader: CheckUpHeader) => {
-              if (
-                `${checkUpHeader.patient.name} ${checkUpHeader.patient.surname}`
-                  .toLowerCase()
-                  .indexOf(this.filter.toLowerCase()) >= 0 &&
-                checkUpHeader.attendancetSituation !== 'CANCELADO'
-              ) {
-                return true;
-              } else {
-                return false;
-              }
-            })
-          : checkUpHeaders.filter((checkUpHeader: CheckUpHeader) => {
-              if (checkUpHeader.attendancetSituation !== 'CANCELADO') {
-                return true;
-              } else {
-                return false;
-              }
-            });
-        break;
-      default:
-        checkUpHeaders = checkUpHeaders.filter(
-          (event: any) =>
-            event.extendedProps.checkUpHeader.checkUpHeaderSituation !==
-            'CANCELADO'
-        );
-        break;
+    if (!this.filterSwitches.opened) {
+      checkUpHeaders = checkUpHeaders.filter(
+        (checkUpHeader: CheckUpHeader) =>
+          checkUpHeader.checkUpSituation !== 'ABERTO'
+      );
+    }
+    if (!this.filterSwitches.finished) {
+      checkUpHeaders = checkUpHeaders.filter(
+        (checkUpHeader: CheckUpHeader) =>
+          checkUpHeader.checkUpSituation !== 'FINALIZADO'
+      );
+    }
+    if (!this.filterSwitches.cancelled) {
+      checkUpHeaders = checkUpHeaders.filter(
+        (checkUpHeader: CheckUpHeader) =>
+          checkUpHeader.checkUpSituation !== 'CANCELADO'
+      );
+    }
+    if (this.filter) {
+      checkUpHeaders = checkUpHeaders.filter((checkUpHeader: CheckUpHeader) => {
+        if (
+          `${checkUpHeader.patient.name} ${checkUpHeader.patient.surname}`
+            .toLowerCase()
+            .indexOf(this.filter.toLowerCase()) >= 0
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
     }
     return checkUpHeaders;
   }
@@ -136,7 +125,7 @@ export class CheckUpHeaderHeaderListComponent implements OnInit, OnDestroy {
     this.modalService
       .showConfirmModal(
         'Confirmação',
-        'Tem certeza que deseja cancelar esse atendimento?'
+        'Tem certeza que deseja cancelar esse cabeçalho de atendimento?'
       )
       .pipe(
         take(1),
@@ -150,7 +139,7 @@ export class CheckUpHeaderHeaderListComponent implements OnInit, OnDestroy {
         next: () => setTimeout(() => this.onRefresh(), 100),
         error: () =>
           this.modalService.alertDanger(
-            'Erro ao cancelar atendimento!',
+            'Erro ao cancelar cabeçalho de atendimento!',
             'Tente novamente mais tarde.'
           )
       });

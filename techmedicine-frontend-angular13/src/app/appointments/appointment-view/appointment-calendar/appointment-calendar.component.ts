@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarOptions } from '@fullcalendar/angular';
 import ptBrLocale from '@fullcalendar/core/locales/pt-br';
@@ -17,7 +17,7 @@ import { AppointmentService } from '../../service/appointment.service';
   templateUrl: './appointment-calendar.component.html',
   styleUrls: ['./appointment-calendar.component.css']
 })
-export class AppointmentCalendarComponent implements OnInit {
+export class AppointmentCalendarComponent implements OnInit, OnDestroy {
   loadPage: boolean = false;
   calendarOptions: CalendarOptions = {
     initialView: 'timeGridWeek',
@@ -97,6 +97,10 @@ export class AppointmentCalendarComponent implements OnInit {
     });
     this.fetchData();
     this.onRefresh();
+  }
+
+  ngOnDestroy(): void {
+    this.appointmentModal.close();
   }
 
   private fetchData(): void {

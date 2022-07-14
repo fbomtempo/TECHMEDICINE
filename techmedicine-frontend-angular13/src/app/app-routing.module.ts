@@ -46,7 +46,7 @@ const routes: Routes = [
       )
   },
   {
-    path: 'atendimentos',
+    path: 'iniciar-atendimentos',
     loadChildren: () =>
       import('./check-up-headers/check-up-headers.module').then(
         (m) => m.CheckUpHeadersModule

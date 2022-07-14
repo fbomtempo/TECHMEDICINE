@@ -158,7 +158,7 @@
             <li>
               <a
                 class="dropdown-item"
-                [routerLink]="['atendimentos']"
+                [routerLink]="['iniciar-atendimentos']"
                 [queryParams]="{ pagina: 1 }"
                 [routerLinkActive]="['active']"
                 [routerLinkActiveOptions]="{
@@ -167,8 +167,10 @@
                   matrixParams: 'ignored',
                   fragment: 'ignored'
                 }"
-                (isActiveChange)="onRouterLinkActive($event, 1, 'Atendimentos')"
-                >Realização de Atendimentos</a
+                (isActiveChange)="
+                  onRouterLinkActive($event, 1, 'Inic. Atendimentos')
+                "
+                >Inicialização de Atendimentos</a
               >
             </li>
             <li>

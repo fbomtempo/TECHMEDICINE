@@ -2,10 +2,11 @@
 <form class="mt-4 row g-3 needs-validation" novalidate [formGroup]="form">
   <div class="col-xl-6">
     <div class="col-12"></div>
-    <!--<label for="patient" class="form-label">Agendamento</label>-->
     <div class="form-check form-switch">
       <input
         class="form-check-input"
+        [(ngModel)]="hasAppointment"
+        [ngModelOptions]="{ standalone: true }"
         type="checkbox"
         role="switch"
         id="hasAppointment"

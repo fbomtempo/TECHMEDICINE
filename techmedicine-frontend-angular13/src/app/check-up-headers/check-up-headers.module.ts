@@ -9,9 +9,10 @@ import { SharedModule } from '../shared/shared.module';
 import { CheckUpHeaderFormComponent } from './check-up-header-form/check-up-header-form.component';
 import { CheckUpHeaderHeaderListComponent } from './check-up-header-list/check-up-header-list.component';
 import { CheckUpHeadersRoutingModule } from './check-up-headers-routing.module';
+import { CheckUpHeaderDetailsComponent } from './check-up-header-details/check-up-header-details.component';
 
 @NgModule({
-  declarations: [CheckUpHeaderHeaderListComponent, CheckUpHeaderFormComponent],
+  declarations: [CheckUpHeaderHeaderListComponent, CheckUpHeaderFormComponent, CheckUpHeaderDetailsComponent],
   imports: [
     CommonModule,
     CheckUpHeadersRoutingModule,
