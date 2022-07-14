@@ -16,7 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.tcc2022.techmedicine.entities.enums.AttendanceSituation;
+import com.tcc2022.techmedicine.entities.enums.CheckUpSituation;
 
 @Entity
 @Table(name = "tb_checkup_header")
@@ -51,12 +51,12 @@ public class CheckUpHeader implements Serializable {
 	@JsonFormat(pattern = "HH:mm")
 	private LocalTime endTime;
 	
-	private String attendanceSituation;
+	private String checkUpSituation;
 	
 	public CheckUpHeader() {
 	}
 
-	public CheckUpHeader(Long id, Appointment appointment, Patient patient, Medic medic, LocalDate date, LocalTime startTime, LocalTime endTime, AttendanceSituation attendanceSituation) {
+	public CheckUpHeader(Long id, Appointment appointment, Patient patient, Medic medic, LocalDate date, LocalTime startTime, LocalTime endTime, CheckUpSituation checkUpSituation) {
 		this.id = id;
 		this.appointment = appointment;
 		this.patient = patient;
@@ -64,7 +64,7 @@ public class CheckUpHeader implements Serializable {
 		this.date = date;
 		this.startTime = startTime;
 		this.endTime = endTime;
-		setAttendanceSituation(attendanceSituation);
+		setCheckUpSituation(checkUpSituation);
 	}
 
 	public Long getId() {
@@ -123,13 +123,13 @@ public class CheckUpHeader implements Serializable {
 		this.endTime = endTime;
 	}
 
-	public AttendanceSituation getAttendanceSituation() {
-		return AttendanceSituation.valueOf(attendanceSituation);
+	public CheckUpSituation getCheckUpSituation() {
+		return CheckUpSituation.valueOf(checkUpSituation);
 	}
 	
-	public void setAttendanceSituation(AttendanceSituation attendanceSituation) {
-		if (attendanceSituation != null) {
-			this.attendanceSituation = attendanceSituation.getCode();
+	public void setCheckUpSituation(CheckUpSituation checkUpSituation) {
+		if (checkUpSituation != null) {
+			this.checkUpSituation = checkUpSituation.getCode();
 		}
 	}
 

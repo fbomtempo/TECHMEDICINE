@@ -1,6 +1,6 @@
 package com.tcc2022.techmedicine.entities.enums;
 
-public enum AttendanceSituation {
+public enum CheckUpSituation {
 
 	ABERTO("ABERTO"),
 	FINALIZADO("FINALIZADO"),
@@ -8,7 +8,7 @@ public enum AttendanceSituation {
 	
 	private String code;
 	
-	private AttendanceSituation(String code) {
+	private CheckUpSituation(String code) {
 		this.code = code;
 	}
 	

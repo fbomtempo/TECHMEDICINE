@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.tcc2022.techmedicine.entities.Appointment;
 import com.tcc2022.techmedicine.entities.CheckUpHeader;
 import com.tcc2022.techmedicine.entities.enums.AppointmentSituation;
-import com.tcc2022.techmedicine.entities.enums.AttendanceSituation;
+import com.tcc2022.techmedicine.entities.enums.CheckUpSituation;
 import com.tcc2022.techmedicine.exceptions.exception.DatabaseException;
 import com.tcc2022.techmedicine.exceptions.exception.NotFoundException;
 import com.tcc2022.techmedicine.repositories.AppointmentRepository;
@@ -49,7 +49,7 @@ public class CheckUpHeaderService {
 			if (appointment != null) {
 				appointment.setAppointmentSituation(AppointmentSituation.ATENDIDO);				
 			}
-			obj.setAttendanceSituation(AttendanceSituation.ABERTO);
+			obj.setCheckUpSituation(CheckUpSituation.ABERTO);
 			obj.setStartTime(LocalTime.now());
 			appointmentRepository.save(appointment);
 			return checkUpHeaderRepository.save(obj);
@@ -62,7 +62,7 @@ public class CheckUpHeaderService {
 		try {
 			CheckUpHeader checkUpHeader = findById(id);
 			Appointment appointment = checkUpHeader.getAppointment();
-			checkUpHeader.setAttendanceSituation(AttendanceSituation.CANCELADO);
+			checkUpHeader.setCheckUpSituation(CheckUpSituation.CANCELADO);
 			appointment.setAppointmentSituation(AppointmentSituation.AGENDADO);
 			checkUpHeaderRepository.save(checkUpHeader);
 			appointmentRepository.save(appointment);
@@ -76,7 +76,7 @@ public class CheckUpHeaderService {
 	public CheckUpHeader update(Long id, CheckUpHeader obj) {
 		try {
 			CheckUpHeader checkUpHeader = checkUpHeaderRepository.findById(id).get();
-			if (checkUpHeader.getAttendanceSituation() == AttendanceSituation.CANCELADO) {
+			if (checkUpHeader.getCheckUpSituation() == CheckUpSituation.CANCELADO) {
 				throw new DatabaseException("Não é possivel alterar um agendamento cancelado");
 			}
 			updateData(checkUpHeader, obj);
