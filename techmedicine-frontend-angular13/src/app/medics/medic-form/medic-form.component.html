@@ -98,11 +98,11 @@
   <div class="col-xl-4">
     <label for="specialty" class="form-label">Especialidade</label>
     <ng-select
-      formControlName="specialty"
+      formControlName="role"
       [items]="specialties"
       bindLabel="description"
-      labelForId="specialty"
-      placeholder="Selecione a especialidade"
+      labelForId="role"
+      placeholder="Selecione o cargo"
       clearAllText="Limpar"
       [compareWith]="compareFn"
       [loading]="specialtiesLoading"
@@ -114,8 +114,6 @@
       "
     >
     </ng-select>
-    <div class="ng-select-invalid-feedback">Campo é obrigatório.</div>
-    <div class="ng-select-valid-feedback">Parece bom.</div>
   </div>
   <div class="col-xl-4"></div>
   <div class="col-xl-4">
@@ -424,7 +422,12 @@
     <button type="submit" class="btn btn-primary" (click)="onSubmit()">
       Salvar
     </button>
-    <button type="button" class="ms-2 btn btn-danger" (click)="onCancel()">
+    <button
+      type="button"
+      class="ms-2 btn btn-danger"
+      [routerLink]="['/medicos']"
+      [queryParams]="{ pagina: 1 }"
+    >
       Cancelar
     </button>
   </div>

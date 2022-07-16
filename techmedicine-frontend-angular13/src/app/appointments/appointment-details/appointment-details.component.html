@@ -1,39 +1,117 @@
 <h1 class="mt-4">Visualizar Agendamento</h1>
 <div>
-  <h4 class="pt-4">Agendamento</h4>
+  <h4 class="pt-4">
+    Agendamento ID {{ appointment.id }} —
+    {{
+      appointment.scheduledDate +
+        " " +
+        appointment.startTime +
+        "-" +
+        appointment.endTime
+    }}
+  </h4>
   <hr />
-  <dl class="row">
-    <dt class="col-sm-2">ID:</dt>
-    <dd class="col-sm-10">
-      {{ appointment.id }}
-    </dd>
-    <dt class="col-sm-2">Paciente:</dt>
-    <dd class="col-sm-10">
-      {{ appointment.patient.name + " " + appointment.patient.surname }}
-    </dd>
-    <dt class="col-sm-2">Médico:</dt>
-    <dd class="col-sm-10">
-      {{ appointment.medic.name + " " + appointment.medic.surname }}
-    </dd>
-    <dt class="col-sm-2">Data Agendada:</dt>
-    <dd class="col-sm-10">
-      {{ appointment.scheduledDate }}
-    </dd>
-    <dt class="col-sm-2">Início:</dt>
-    <dd class="col-sm-10">
-      {{ appointment.startTime }}
-    </dd>
-    <dt class="col-sm-2">Término:</dt>
-    <dd class="col-sm-10">
-      {{ appointment.endTime }}
-    </dd>
-    <dt class="col-sm-2">Situação:</dt>
-    <dd class="col-sm-10">
-      {{ appointment.appointmentSituation }}
-    </dd>
-  </dl>
+  <div class="row">
+    <div class="col-lg-12 pb-4">
+      <strong>Situação: </strong>
+      <strong [ngStyle]="appointmentSituationTextColor()"
+        ><span>{{ appointment.appointmentSituation }}</span></strong
+      >
+    </div>
+    <hr data-content="PACIENTE" class="hr-text" />
+    <span class="pt-2"></span>
+    <div class="col-lg-10 pb-4">
+      <div class="cell-background cell-padding">
+        <strong>Nome: </strong>
+        <br />
+        <span>{{
+          appointment.patient.name + " " + appointment.patient.surname
+        }}</span>
+      </div>
+    </div>
+    <div class="col-lg-2 pb-4">
+      <div class="cell-background cell-padding">
+        <strong>Nascimento: </strong>
+        <br />
+        <span>{{ appointment.patient.birthDate }}</span>
+      </div>
+    </div>
+    <div class="col-lg-4 pb-4">
+      <div class="cell-background cell-padding">
+        <strong>CPF: </strong>
+        <br />
+        <span>{{ appointment.patient.cpf }}</span>
+      </div>
+    </div>
+    <div class="col-lg-4 pb-4">
+      <div class="cell-background cell-padding">
+        <strong>Tel. Residencial: </strong>
+        <br />
+        <span>{{
+          appointment.patient.homePhone ? appointment.patient.homePhone : "-"
+        }}</span>
+      </div>
+    </div>
+    <div class="col-lg-4 pb-4">
+      <div class="cell-background cell-padding">
+        <strong>Tel. Celular: </strong>
+        <br />
+        <span>{{ appointment.patient.mobilePhone }}</span>
+      </div>
+    </div>
+    <span class="pt-4"></span>
+    <hr data-content="MÉDICO" class="hr-text" />
+    <span class="pt-2"></span>
+    <div class="col-lg-10 pb-lg-0 pb-4">
+      <div class="cell-background cell-padding">
+        <strong>Nome: </strong>
+        <br />
+        <span>{{
+          appointment.medic.name + " " + appointment.medic.surname
+        }}</span>
+      </div>
+    </div>
+    <div class="col-lg-2 pb-4">
+      <div class="cell-background cell-padding">
+        <strong>Nascimento: </strong>
+        <br />
+        <span>{{ appointment.medic.birthDate }}</span>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="cell-background cell-padding">
+        <strong>CRM: </strong>
+        <br />
+        <span>{{ appointment.medic.crm }}</span>
+      </div>
+    </div>
+    <div class="col-lg-4 pb-4">
+      <div class="cell-background cell-padding">
+        <strong>Tel. Residencial: </strong>
+        <br />
+        <span>{{
+          appointment.medic.homePhone ? appointment.medic.homePhone : "-"
+        }}</span>
+      </div>
+    </div>
+    <div class="col-lg-4 pb-4">
+      <div class="cell-background cell-padding">
+        <strong>Tel. Celular: </strong>
+        <br />
+        <span>{{ appointment.medic.mobilePhone }}</span>
+      </div>
+    </div>
+    <div class="col-lg-8 pb-4">
+      <div class="cell-background cell-padding">
+        <strong>E-Mail: </strong>
+        <br />
+        <span>{{ appointment.medic.email }}</span>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="pt-4 mb-5">
+<hr />
+<div class="pt-2 mb-5">
   <button
     type="button"
     class="btn btn-primary"
@@ -41,7 +119,12 @@
   >
     Editar
   </button>
-  <button type="button" class="ms-2 btn btn-secondary" (click)="onBackToList()">
+  <button
+    type="button"
+    class="ms-2 btn btn-secondary"
+    [routerLink]="['/agendamentos']"
+    [queryParams]="{ pagina: 1 }"
+  >
     Voltar a Lista
   </button>
 </div>

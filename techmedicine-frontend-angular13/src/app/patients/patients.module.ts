@@ -7,12 +7,12 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { SharedModule } from '../shared/shared.module';
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
 import { PatientsFormComponent } from './patient-form/patient-form.component';
-import { PatientsListComponent } from './patient-list/patient-list.component';
+import { PatientListComponent } from './patient-list/patient-list.component';
 import { PatientsRoutingModule } from './patients-routing.module';
 
 @NgModule({
   declarations: [
-    PatientsListComponent,
+    PatientListComponent,
     PatientsFormComponent,
     PatientDetailsComponent
   ],

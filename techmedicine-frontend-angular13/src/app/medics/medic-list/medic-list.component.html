@@ -17,11 +17,12 @@
           aria-label="Search"
           id="search"
           [(ngModel)]="filter"
+          (input)="onFilterInput()"
         />
         <button
           type="button"
           class="btn btn-clear clear ms-2"
-          (click)="filter = ''"
+          (click)="clearFilter()"
         >
           Limpar
         </button>

@@ -59,17 +59,6 @@ export class CheckUpHeaderHeaderListComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  private setPaginationSize(): void {
-    if (window.innerWidth < 576) {
-      this.paginationSize = 3;
-    } else if (window.innerWidth < 992) {
-      this.paginationSize = 7;
-    } else {
-      this.paginationSize = 10;
-    }
-    this.itemsPerPage = 10;
-  }
-
   situationLabelBackground(checkUpHeaderSituation: string): any {
     return {
       'check-up-header-label-open': checkUpHeaderSituation === 'ABERTO',
@@ -84,6 +73,20 @@ export class CheckUpHeaderHeaderListComponent implements OnInit, OnDestroy {
         return of();
       })
     );
+  }
+
+  onFilterInput(): void {
+    if (this.currentPage !== 1) {
+      this.toFirstPage();
+    }
+    if (this.filter == '') {
+      this.toFirstPage();
+    }
+  }
+
+  clearFilter(): void {
+    this.filter = '';
+    this.toFirstPage();
   }
 
   showData(checkUpHeaders: CheckUpHeader[]): CheckUpHeader[] {
@@ -143,6 +146,27 @@ export class CheckUpHeaderHeaderListComponent implements OnInit, OnDestroy {
             'Tente novamente mais tarde.'
           )
       });
+  }
+
+  private toFirstPage(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        pagina: 1
+      },
+      queryParamsHandling: 'merge'
+    });
+  }
+
+  private setPaginationSize(): void {
+    if (window.innerWidth < 576) {
+      this.paginationSize = 3;
+    } else if (window.innerWidth < 992) {
+      this.paginationSize = 7;
+    } else {
+      this.paginationSize = 10;
+    }
+    this.itemsPerPage = 10;
   }
 
   pageChanged(event: PageChangedEvent): void {

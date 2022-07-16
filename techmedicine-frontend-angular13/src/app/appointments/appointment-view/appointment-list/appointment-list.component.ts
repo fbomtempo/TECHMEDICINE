@@ -11,6 +11,8 @@ import {
   switchMap,
   take
 } from 'rxjs';
+import { Medic } from 'src/app/medics/model/medic';
+import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
 import { Appointment } from '../../model/appointment';
@@ -29,15 +31,23 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
   currentPage: number;
   itemsPerPage: number;
   paginationSize: number;
-  filter: string;
+  isCollapsed: boolean = true;
   filterSwitches: any = {
     opened: true,
     finished: false,
     cancelled: false
   };
+  medics: Medic[];
+  medicsLoading: boolean = true;
+  compareFnMedic(c1: Medic, c2: Medic): boolean {
+    return c1 && c2 ? c1.id === c2.id : c1 === c2;
+  }
+  filterMedic: Medic;
+  filter: string;
 
   constructor(
     private appointmentService: AppointmentService,
+    private dropdownService: DropdownService,
     private modalService: ModalService,
     private route: ActivatedRoute,
     private router: Router,
@@ -52,6 +62,7 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
         setTimeout(() => (this.currentPage = parseInt(this.page.toString())));
       }
     );
+    this.fetchData();
     this.onRefresh();
   }
 
@@ -59,15 +70,27 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  private setPaginationSize(): void {
-    if (window.innerWidth < 576) {
-      this.paginationSize = 3;
-    } else if (window.innerWidth < 992) {
-      this.paginationSize = 7;
-    } else {
-      this.paginationSize = 10;
-    }
-    this.itemsPerPage = 10;
+  private fetchData(): void {
+    this.dropdownService.getMedics().subscribe({
+      next: (medics: Medic[]) => {
+        this.medics = medics.map((medic: any) => {
+          medic.searchLabel = `${medic.name} ${medic.surname}`;
+          return medic;
+        });
+      },
+      complete: () => {
+        this.medicsLoading = false;
+      }
+    });
+  }
+
+  onRefresh(): void | Observable<never> {
+    this.appointments$ = this.appointmentService.findAllFormatted().pipe(
+      catchError(() => {
+        this.error.next(true);
+        return of();
+      })
+    );
   }
 
   situationLabelBackground(appointmentSituation: string): any {
@@ -78,13 +101,8 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
     };
   }
 
-  onRefresh(): void | Observable<never> {
-    this.appointments$ = this.appointmentService.findAllFormatted().pipe(
-      catchError(() => {
-        this.error.next(true);
-        return of();
-      })
-    );
+  setFilterMedic(medic: Medic) {
+    this.filterMedic = medic;
   }
 
   showData(appointments: Appointment[]): Appointment[] {
@@ -104,6 +122,11 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
       appointments = appointments.filter(
         (appointment: Appointment) =>
           appointment.appointmentSituation !== 'CANCELADO'
+      );
+    }
+    if (this.filterMedic) {
+      appointments = appointments.filter(
+        (appointment: any) => appointment.medic.id === this.filterMedic.id
       );
     }
     if (this.filter) {
@@ -142,6 +165,17 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
             'Tente novamente mais tarde.'
           )
       });
+  }
+
+  private setPaginationSize(): void {
+    if (window.innerWidth < 576) {
+      this.paginationSize = 3;
+    } else if (window.innerWidth < 992) {
+      this.paginationSize = 7;
+    } else {
+      this.paginationSize = 10;
+    }
+    this.itemsPerPage = 10;
   }
 
   pageChanged(appointment: PageChangedEvent): void {

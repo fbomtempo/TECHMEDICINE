@@ -49,8 +49,9 @@ export class PatientsFormComponent extends FormService implements OnInit {
   }
 
   private fetchData(): void {
-    this.patient = this.route.snapshot.data['patient'];
-    this.maskService.formatData(this.patient);
+    this.patient = this.maskService.formatData(
+      this.route.snapshot.data['patient']
+    );
     this.states$ = this.dropdownService.getStates();
   }
 
@@ -67,7 +68,9 @@ export class PatientsFormComponent extends FormService implements OnInit {
         [Validators.required, Validators.maxLength(50)]
       ],
       birthDate: [
-        this.dateService.createDateObject(this.patient.birthDate, false),
+        this.patient.birthDate
+          ? this.dateService.createDateObject(this.patient.birthDate, false)
+          : this.patient.birthDate,
         [Validators.required]
       ],
       gender: [
@@ -211,9 +214,5 @@ export class PatientsFormComponent extends FormService implements OnInit {
     const patient: Patient = this.maskService.unformatData(this.form.value);
     this.dateService.toISODateString(patient);
     return patient;
-  }
-
-  onCancel(): void {
-    this.router.navigate(['/pacientes'], { queryParams: { pagina: 1 } });
   }
 }

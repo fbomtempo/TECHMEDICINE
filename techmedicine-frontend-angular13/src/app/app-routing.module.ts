@@ -46,11 +46,18 @@ const routes: Routes = [
       )
   },
   {
-    path: 'iniciar-atendimentos',
+    path: 'atendimentos',
     loadChildren: () =>
       import('./check-up-headers/check-up-headers.module').then(
         (m) => m.CheckUpHeadersModule
       )
+  },
+  {
+    path: 'pep',
+    loadChildren: () =>
+      import(
+        './patient-eletronic-records/patient-eletronic-records.module'
+      ).then((m) => m.PatientEletronicRecordsModule)
   },
   {
     path: '',

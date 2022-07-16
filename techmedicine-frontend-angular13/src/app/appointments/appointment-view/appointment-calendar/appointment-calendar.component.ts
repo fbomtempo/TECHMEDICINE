@@ -67,19 +67,21 @@ export class AppointmentCalendarComponent implements OnInit, OnDestroy {
   events: any[];
   appointment: Appointment;
   error: Subject<boolean> = new Subject();
-  medics: Medic[];
-  medicsLoading: boolean = true;
-  compareFnMedic(c1: Medic, c2: Medic): boolean {
-    return c1 && c2 ? c1.id === c2.id : c1 === c2;
-  }
-  @ViewChild('appointmentModal', { static: true })
-  appointmentModal?: AppointmentModalComponent;
+  isCollapsed: boolean = true;
   filterSwitches: any = {
     opened: true,
     finished: false,
     cancelled: false
   };
+  medics: Medic[];
+  medicsLoading: boolean = true;
+  compareFnMedic(c1: Medic, c2: Medic): boolean {
+    return c1 && c2 ? c1.id === c2.id : c1 === c2;
+  }
   filterMedic: Medic;
+  filter: string;
+  @ViewChild('appointmentModal', { static: true })
+  appointmentModal?: AppointmentModalComponent;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -93,7 +95,8 @@ export class AppointmentCalendarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { pagina: null }
+      queryParams: { pagina: null },
+      queryParamsHandling: 'merge'
     });
     this.fetchData();
     this.onRefresh();

@@ -54,17 +54,6 @@ export class RoleListComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  private setPaginationSize(): void {
-    if (window.innerWidth < 576) {
-      this.paginationSize = 3;
-    } else if (window.innerWidth < 992) {
-      this.paginationSize = 7;
-    } else {
-      this.paginationSize = 10;
-    }
-    this.itemsPerPage = 10;
-  }
-
   onRefresh(): void | Observable<never> {
     this.roles$ = this.roleService.findAll().pipe(
       catchError(() => {
@@ -72,6 +61,20 @@ export class RoleListComponent implements OnInit, OnDestroy {
         return of();
       })
     );
+  }
+
+  onFilterInput(): void {
+    if (this.currentPage !== 1) {
+      this.toFirstPage();
+    }
+    if (this.filter == '') {
+      this.toFirstPage();
+    }
+  }
+
+  clearFilter(): void {
+    this.filter = '';
+    this.toFirstPage();
   }
 
   showData(roles: Role[]): Role[] {
@@ -109,6 +112,27 @@ export class RoleListComponent implements OnInit, OnDestroy {
             'Tente novamente mais tarde.'
           )
       });
+  }
+
+  private toFirstPage(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        pagina: 1
+      },
+      queryParamsHandling: 'merge'
+    });
+  }
+
+  private setPaginationSize(): void {
+    if (window.innerWidth < 576) {
+      this.paginationSize = 3;
+    } else if (window.innerWidth < 992) {
+      this.paginationSize = 7;
+    } else {
+      this.paginationSize = 10;
+    }
+    this.itemsPerPage = 10;
   }
 
   pageChanged(event: PageChangedEvent): void {

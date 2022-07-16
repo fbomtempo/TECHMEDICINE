@@ -158,7 +158,7 @@
             <li>
               <a
                 class="dropdown-item"
-                [routerLink]="['iniciar-atendimentos']"
+                [routerLink]="['atendimentos']"
                 [queryParams]="{ pagina: 1 }"
                 [routerLinkActive]="['active']"
                 [routerLinkActiveOptions]="{
@@ -167,10 +167,24 @@
                   matrixParams: 'ignored',
                   fragment: 'ignored'
                 }"
-                (isActiveChange)="
-                  onRouterLinkActive($event, 1, 'Inic. Atendimentos')
-                "
+                (isActiveChange)="onRouterLinkActive($event, 1, 'Atendimentos')"
                 >Inicialização de Atendimentos</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['pep']"
+                [queryParams]="{ pagina: 1 }"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{
+                  paths: 'subset',
+                  queryParams: 'ignored',
+                  matrixParams: 'ignored',
+                  fragment: 'ignored'
+                }"
+                (isActiveChange)="onRouterLinkActive($event, 1, 'PEP')"
+                >Prontuário Eletrônico do Paciente</a
               >
             </li>
             <li>

@@ -55,13 +55,18 @@ export class EmployeeFormComponent extends FormService implements OnInit {
   }
 
   private fetchData(): void {
-    this.employee = this.route.snapshot.data['employee'];
-    this.maskService.formatData(this.employee);
-    this.states$ = this.dropdownService.getStates();
+    this.employee = this.maskService.formatData(
+      this.route.snapshot.data['employee']
+    );
     this.dropdownService.getRoles().subscribe({
-      next: (roles: Role[]) => (this.roles = roles),
-      complete: () => (this.rolesLoading = false)
+      next: (roles: Role[]) => {
+        this.roles = roles;
+      },
+      complete: () => {
+        this.rolesLoading = false;
+      }
     });
+    this.states$ = this.dropdownService.getStates();
   }
 
   private createForm(): void {
@@ -77,7 +82,9 @@ export class EmployeeFormComponent extends FormService implements OnInit {
         [Validators.required, Validators.maxLength(50)]
       ],
       birthDate: [
-        this.dateService.createDateObject(this.employee.birthDate, false),
+        this.employee.birthDate
+          ? this.dateService.createDateObject(this.employee.birthDate, false)
+          : this.employee.birthDate,
         [Validators.required]
       ],
       gender: [
@@ -222,9 +229,5 @@ export class EmployeeFormComponent extends FormService implements OnInit {
     const employee: Employee = this.maskService.unformatData(this.form.value);
     this.dateService.toISODateString(employee);
     return employee;
-  }
-
-  onCancel(): void {
-    this.router.navigate(['/funcionarios'], { queryParams: { pagina: 1 } });
   }
 }

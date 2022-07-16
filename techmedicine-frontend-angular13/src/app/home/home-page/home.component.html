@@ -64,9 +64,8 @@
       </div>
       <div class="pb-5 pt-3 pt-lg-4 col d-flex justify-content-center">
         <a
-          asp-area=""
-          asp-controller="Produtos"
-          asp-action="Index"
+          [routerLink]="['/atendimentos']"
+          [queryParams]="{ pagina: 1 }"
           class="icon-link"
         >
           <div class="card">
@@ -81,9 +80,8 @@
       </div>
       <div class="pb-5 pt-3 pt-lg-4 col d-flex justify-content-center">
         <a
-          asp-area=""
-          asp-controller="Movimentacoes"
-          asp-action="Index"
+          [routerLink]="['/pep']"
+          [queryParams]="{ pagina: 1 }"
           class="icon-link"
         >
           <div class="card">

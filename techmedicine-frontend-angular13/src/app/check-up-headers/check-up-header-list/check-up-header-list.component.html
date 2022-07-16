@@ -57,11 +57,12 @@
           aria-label="Search"
           id="search"
           [(ngModel)]="filter"
+          (input)="onFilterInput()"
         />
         <button
           type="button"
           class="btn btn-clear clear ms-2"
-          (click)="filter = ''"
+          (click)="clearFilter()"
         >
           Limpar
         </button>
@@ -114,14 +115,14 @@
             <span
               class="check-up-header-label"
               [ngClass]="
-                situationLabelBackground(checkUpHeader.attendanceSituation)
+                situationLabelBackground(checkUpHeader.checkUpSituation)
               "
-              >{{ checkUpHeader.attendanceSituation }}</span
+              >{{ checkUpHeader.checkUpSituation }}</span
             >
           </td>
           <td>
             <button
-              *ngIf="checkUpHeader.attendanceSituation === 'ABERTO'"
+              *ngIf="checkUpHeader.checkUpSituation === 'ABERTO'"
               type="button"
               title="Editar"
               class="btn btn-round btn-outline-edit me-2"
@@ -130,7 +131,7 @@
               <i class="fas fa-pencil-alt"></i>
             </button>
             <button
-              *ngIf="checkUpHeader.attendanceSituation === 'ABERTO'"
+              *ngIf="checkUpHeader.checkUpSituation === 'ABERTO'"
               type="button"
               title="Deletar"
               class="btn-round btn-outline-delete me-2"
@@ -149,7 +150,7 @@
           </td>
           <td>
             <a
-              *ngIf="checkUpHeader.attendanceSituation === 'ABERTO'"
+              *ngIf="checkUpHeader.checkUpSituation === 'ABERTO'"
               [routerLink]="['']"
               [queryParams]="{ agendamento: checkUpHeader.id }"
               >Atender <i class="fas fa-external-link-alt"></i

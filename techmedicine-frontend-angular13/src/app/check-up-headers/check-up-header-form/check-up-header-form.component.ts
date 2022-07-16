@@ -10,7 +10,6 @@ import { Patient } from 'src/app/patients/model/patient';
 import { DateService } from 'src/app/shared/services/date.service';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { FormService } from 'src/app/shared/services/form-service';
-import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
 import { CheckUpHeader } from '../model/check-up-header';
@@ -52,7 +51,6 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
     private appointmentService: AppointmentService,
     private modalService: ModalService,
     private dropdownService: DropdownService,
-    private maskService: MaskService,
     private dateService: DateService,
     private router: Router,
     private route: ActivatedRoute
@@ -198,7 +196,7 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
             );
             setTimeout(
               () =>
-                this.router.navigate(['/iniciar-atendimentos'], {
+                this.router.navigate(['/atendimentos'], {
                   queryParams: { pagina: 1 }
                 }),
               2000
@@ -220,7 +218,7 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
             );
             setTimeout(
               () =>
-                this.router.navigate(['/iniciar-atendimentos'], {
+                this.router.navigate(['/atendimentos'], {
                   queryParams: { pagina: 1 }
                 }),
               2000
@@ -236,11 +234,5 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
     const checkUpHeader: CheckUpHeader = this.form.value;
     this.dateService.toISODateString(checkUpHeader);
     return checkUpHeader;
-  }
-
-  onCancel(): void {
-    this.router.navigate(['iniciar-atendimentos'], {
-      queryParams: { pagina: 1 }
-    });
   }
 }

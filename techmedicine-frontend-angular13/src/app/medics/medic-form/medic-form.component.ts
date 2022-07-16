@@ -55,9 +55,7 @@ export class MedicFormComponent extends FormService implements OnInit {
   }
 
   private fetchData(): void {
-    this.medic = this.route.snapshot.data['medic'];
-    this.maskService.formatData(this.medic);
-    this.states$ = this.dropdownService.getStates();
+    this.medic = this.maskService.formatData(this.route.snapshot.data['medic']);
     this.dropdownService.getSpecialties().subscribe({
       next: (specialties: Specialty[]) => {
         this.specialties = specialties;
@@ -66,6 +64,7 @@ export class MedicFormComponent extends FormService implements OnInit {
         this.specialtiesLoading = false;
       }
     });
+    this.states$ = this.dropdownService.getStates();
   }
 
   private createForm(): void {
@@ -78,7 +77,9 @@ export class MedicFormComponent extends FormService implements OnInit {
         [Validators.required, Validators.maxLength(50)]
       ],
       birthDate: [
-        this.dateService.createDateObject(this.medic.birthDate, false),
+        this.medic.birthDate
+          ? this.dateService.createDateObject(this.medic.birthDate, false)
+          : this.medic.birthDate,
         [Validators.required]
       ],
       gender: [
@@ -221,9 +222,5 @@ export class MedicFormComponent extends FormService implements OnInit {
     const medic: Medic = this.maskService.unformatData(this.form.value);
     this.dateService.toISODateString(medic);
     return medic;
-  }
-
-  onCancel(): void {
-    this.router.navigate(['/medicos'], { queryParams: { pagina: 1 } });
   }
 }

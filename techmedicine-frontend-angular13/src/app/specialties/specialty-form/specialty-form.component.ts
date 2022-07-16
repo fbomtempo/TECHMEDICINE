@@ -96,8 +96,4 @@ export class SpecialtyFormComponent extends FormService implements OnInit {
       }
     }
   }
-
-  onCancel(): void {
-    this.router.navigate(['especialidades'], { queryParams: { pagina: 1 } });
-  }
 }

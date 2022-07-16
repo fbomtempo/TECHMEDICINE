@@ -30,14 +30,13 @@
     <button type="submit" class="btn btn-primary" (click)="onSubmit()">
       Salvar
     </button>
-    <button type="button" class="ms-2 btn btn-danger" (click)="onCancel()">
+    <button
+      type="button"
+      class="ms-2 btn btn-danger"
+      [routerLink]="['/especialidades']"
+      [queryParams]="{ pagina: 1 }"
+    >
       Cancelar
     </button>
   </div>
 </form>
-
-<!--<ng-template [ngTemplateOutlet]="outlet" [ngOutletContext]="context"></ng-template><ng-template #maxlengthError>
-      <div class="invalid-feedback">
-        mt grande cachorro.
-      </div>
-    </ng-template>-->

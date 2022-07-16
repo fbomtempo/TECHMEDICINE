@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -12,7 +11,7 @@ import { Role } from '../model/role';
 export class RolesDetailsComponent implements OnInit {
   role: Role;
 
-  constructor(private route: ActivatedRoute, private location: Location) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.fetchData();
@@ -20,9 +19,5 @@ export class RolesDetailsComponent implements OnInit {
 
   fetchData(): void {
     this.role = this.route.snapshot.data['role'];
-  }
-
-  onBackToList(): void {
-    this.location.back();
   }
 }

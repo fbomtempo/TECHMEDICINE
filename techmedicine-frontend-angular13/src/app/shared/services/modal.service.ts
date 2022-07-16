@@ -4,6 +4,9 @@ import { Subject } from 'rxjs';
 
 import { AlertModalComponent } from '../alert-modal/alert-modal.component';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
+import { LookupModalComponent } from '../lookup-modal/lookup-modal.component';
+import { DateService } from './date.service';
+import { MaskService } from './mask.service';
 
 enum AlertType {
   DANGER = 'danger',
@@ -15,7 +18,11 @@ enum AlertType {
   providedIn: 'root'
 })
 export class ModalService {
-  constructor(private bsModalService: BsModalService) {}
+  constructor(
+    private bsModalService: BsModalService,
+    private maskService: MaskService,
+    private dateService: DateService
+  ) {}
 
   showAlertModal(
     title: string,
@@ -47,10 +54,8 @@ export class ModalService {
     const bsModalRef: BsModalRef = this.bsModalService.show(
       ConfirmModalComponent
     );
-
     (bsModalRef.content.title = title),
       (bsModalRef.content.description = description);
-
     return (<ConfirmModalComponent>bsModalRef.content).confirmResult;
   }
 }

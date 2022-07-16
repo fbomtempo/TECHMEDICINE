@@ -1,79 +1,96 @@
 <div *ngIf="loadPage; else loadingError">
-  <div class="row">
-    <div class="col-lg-6 col-md-12 col-sm-12 pt-2 pb-3">
-      <div class="pb-4">
-        <div class="form-check form-switch">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            id="opened-filter-switch"
-            [(ngModel)]="filterSwitches.opened"
-            (change)="showData()"
-          />
-          <label class="form-check-label" for="opened-filter-switch"
-            >Mostrar Agendados</label
-          >
+  <button
+    type="button"
+    class="btn btn-primary mb-3"
+    (click)="isCollapsed = !isCollapsed"
+    [attr.aria-expanded]="!isCollapsed"
+    aria-controls="collapseBasic"
+  >
+    Filtros
+  </button>
+  <div id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
+    <div class="row">
+      <div class="col-lg-6 col-md-12 col-sm-12 pt-2 pb-3">
+        <div class="pb-4">
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="opened-filter-switch"
+              [(ngModel)]="filterSwitches.opened"
+              (change)="showData()"
+            />
+            <label class="form-check-label" for="opened-filter-switch"
+              >Mostrar Agendados</label
+            >
+          </div>
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="cancelled-filter-switch"
+              [(ngModel)]="filterSwitches.cancelled"
+              (change)="showData()"
+            />
+            <label class="form-check-label" for="cancelled-filter-switch"
+              >Mostrar Cancelados</label
+            >
+          </div>
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="finished-filter-switch"
+              [(ngModel)]="filterSwitches.finished"
+              (change)="showData()"
+            />
+            <label class="form-check-label" for="finished-filter-switch"
+              >Mostrar Finalizados</label
+            >
+          </div>
         </div>
-        <div class="form-check form-switch">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            id="finished-filter-switch"
-            [(ngModel)]="filterSwitches.finished"
-            (change)="showData()"
-          />
-          <label class="form-check-label" for="finished-filter-switch"
-            >Mostrar Finalizados</label
+        <div class="row">
+          <ng-select
+            [items]="medics"
+            (change)="setFilterMedic($event)"
+            bindLabel="searchLabel"
+            labelForId="medic"
+            placeholder="Selecione o médico"
+            clearAllText="Limpar"
+            [compareWith]="compareFnMedic"
+            [loading]="medicsLoading"
+            notFoundText="Nenhum item encontrado"
+            [virtualScroll]="true"
           >
-        </div>
-        <div class="form-check form-switch">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            id="cancelled-filter-switch"
-            [(ngModel)]="filterSwitches.cancelled"
-            (change)="showData()"
-          />
-          <label class="form-check-label" for="cancelled-filter-switch"
-            >Mostrar Cancelados</label
-          >
+            <ng-template ng-label-tmp let-item="item">
+              {{ item.name + " " + item.surname }}
+            </ng-template>
+            <ng-template
+              ng-option-tmp
+              let-item="item"
+              let-index="index"
+              let-search="searchTerm"
+            >
+              <div style="margin: 10px 0" class="card">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    {{ item.name + " " + item.surname }}
+                  </h5>
+                  <h6 class="card-subtitle mb-2 text-muted">
+                    CPF: {{ item.cpf }}
+                  </h6>
+                  <h6 class="card-subtitle mb-2 text-muted">
+                    Telefone: {{ item.mobilePhone }}
+                  </h6>
+                </div>
+              </div>
+            </ng-template>
+          </ng-select>
         </div>
       </div>
-      <ng-select
-        [items]="medics"
-        (change)="setFilterMedic($event)"
-        bindLabel="searchLabel"
-        labelForId="medic"
-        placeholder="Selecione o médico"
-        clearAllText="Limpar"
-        [compareWith]="compareFnMedic"
-        [loading]="medicsLoading"
-        notFoundText="Nenhum item encontrado"
-        [virtualScroll]="true"
-      >
-        <ng-template ng-label-tmp let-item="item">
-          {{ item.name + " " + item.surname }}
-        </ng-template>
-        <ng-template
-          ng-option-tmp
-          let-item="item"
-          let-index="index"
-          let-search="searchTerm"
-        >
-          <div style="margin: 10px 0" class="card">
-            <div class="card-body">
-              <h5 class="card-title">{{ item.name + " " + item.surname }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">CPF: {{ item.cpf }}</h6>
-              <h6 class="card-subtitle mb-2 text-muted">
-                Telefone: {{ item.mobilePhone }}
-              </h6>
-            </div>
-          </div>
-        </ng-template>
-      </ng-select>
     </div>
   </div>
   <div>

@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DateService } from 'src/app/shared/services/date.service';
@@ -17,8 +16,7 @@ export class PatientDetailsComponent implements OnInit {
   constructor(
     private maskService: MaskService,
     private dateService: DateService,
-    private route: ActivatedRoute,
-    private location: Location
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -29,9 +27,5 @@ export class PatientDetailsComponent implements OnInit {
     this.patient = this.route.snapshot.data['patient'];
     this.maskService.formatData(this.patient);
     this.dateService.toPtBrDateString(this.patient);
-  }
-
-  onBackToList(): void {
-    this.location.back();
   }
 }

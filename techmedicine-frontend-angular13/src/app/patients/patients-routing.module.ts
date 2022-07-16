@@ -5,12 +5,12 @@ import { DeactivateGuard } from '../shared/guards/deactivate.guard';
 import { PatientsResolver } from './guards/patients.resolver';
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
 import { PatientsFormComponent } from './patient-form/patient-form.component';
-import { PatientsListComponent } from './patient-list/patient-list.component';
+import { PatientListComponent } from './patient-list/patient-list.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: PatientsListComponent
+    component: PatientListComponent
   },
   {
     path: 'novo',

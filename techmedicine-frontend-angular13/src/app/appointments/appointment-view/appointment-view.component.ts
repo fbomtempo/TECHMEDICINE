@@ -33,7 +33,10 @@ export class AppointmentViewComponent implements OnInit, AfterViewInit {
 
   selectListTab(): void {
     this.router.navigate([], {
-      queryParams: { pagina: 1 },
+      relativeTo: this.route,
+      queryParams: {
+        pagina: 1
+      },
       queryParamsHandling: 'merge'
     });
   }

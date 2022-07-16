@@ -1,6 +1,6 @@
 <h1 class="mt-4">{{ formType }} Cabeçalho de Atendimento</h1>
 <form class="mt-4 row g-3 needs-validation" novalidate [formGroup]="form">
-  <div class="col-xl-6">
+  <div class="col-xl-8">
     <div class="col-12"></div>
     <div class="form-check form-switch">
       <input
@@ -63,7 +63,7 @@
   </div>
   <div class="col-6"></div>
   <div class="col-12"></div>
-  <div class="col-xl-6">
+  <div class="col-xl-8">
     <label for="patient" class="form-label">Paciente</label>
     <ng-select
       [items]="patients"
@@ -105,7 +105,7 @@
     <div class="ng-select-valid-feedback">Parece bom.</div>
   </div>
   <div class="col-12"></div>
-  <div class="col-xl-6">
+  <div class="col-xl-8">
     <label for="medic" class="form-label">Médico</label>
     <ng-select
       [items]="medics"
@@ -168,7 +168,12 @@
     <button type="submit" class="btn btn-primary" (click)="onSubmit()">
       Salvar
     </button>
-    <button type="button" class="ms-2 btn btn-danger" (click)="onCancel()">
+    <button
+      type="button"
+      class="ms-2 btn btn-danger"
+      [routerLink]="['/atendimentos']"
+      [queryParams]="{ pagina: 1 }"
+    >
       Cancelar
     </button>
   </div>

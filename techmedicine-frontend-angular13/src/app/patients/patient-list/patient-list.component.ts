@@ -11,8 +11,6 @@ import {
   switchMap,
   take
 } from 'rxjs';
-import { DateService } from 'src/app/shared/services/date.service';
-import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
 import { Patient } from '../model/patient';
@@ -23,7 +21,7 @@ import { PatientService } from '../service/patient.service';
   templateUrl: './patient-list.component.html',
   styleUrls: ['./patient-list.component.css']
 })
-export class PatientsListComponent implements OnInit, OnDestroy {
+export class PatientListComponent implements OnInit, OnDestroy {
   patients$: Observable<Patient[]>;
   error: Subject<boolean> = new Subject();
   subscription: Subscription;
@@ -36,8 +34,6 @@ export class PatientsListComponent implements OnInit, OnDestroy {
   constructor(
     private patientService: PatientService,
     private modalService: ModalService,
-    private maskService: MaskService,
-    private dateService: DateService,
     private route: ActivatedRoute,
     private router: Router,
     private location: Location
@@ -58,17 +54,6 @@ export class PatientsListComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  private setPaginationSize(): void {
-    if (window.innerWidth < 576) {
-      this.paginationSize = 3;
-    } else if (window.innerWidth < 992) {
-      this.paginationSize = 7;
-    } else {
-      this.paginationSize = 10;
-    }
-    this.itemsPerPage = 10;
-  }
-
   onRefresh(): void | Observable<never> {
     this.patients$ = this.patientService.findAllFormatted().pipe(
       catchError(() => {
@@ -76,6 +61,20 @@ export class PatientsListComponent implements OnInit, OnDestroy {
         return of();
       })
     );
+  }
+
+  onFilterInput(): void {
+    if (this.currentPage !== 1) {
+      this.toFirstPage();
+    }
+    if (this.filter == '') {
+      this.toFirstPage();
+    }
+  }
+
+  clearFilter(): void {
+    this.filter = '';
+    this.toFirstPage();
   }
 
   showData(patients: Patient[]): Patient[] {
@@ -115,6 +114,27 @@ export class PatientsListComponent implements OnInit, OnDestroy {
             'Tente novamente mais tarde.'
           )
       });
+  }
+
+  private toFirstPage(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        pagina: 1
+      },
+      queryParamsHandling: 'merge'
+    });
+  }
+
+  private setPaginationSize(): void {
+    if (window.innerWidth < 576) {
+      this.paginationSize = 3;
+    } else if (window.innerWidth < 992) {
+      this.paginationSize = 7;
+    } else {
+      this.paginationSize = 10;
+    }
+    this.itemsPerPage = 10;
   }
 
   pageChanged(event: PageChangedEvent): void {

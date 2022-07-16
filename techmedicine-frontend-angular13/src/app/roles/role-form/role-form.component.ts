@@ -96,8 +96,4 @@ export class RoleFormComponent extends FormService implements OnInit {
       }
     }
   }
-
-  onCancel(): void {
-    this.router.navigate(['cargos'], { queryParams: { pagina: 1 } });
-  }
 }

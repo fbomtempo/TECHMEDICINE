@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { defineLocale } from 'ngx-bootstrap/chronos';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -27,7 +28,8 @@ defineLocale('pt-br', ptBrLocale);
     ModalModule.forRoot(),
     PaginationModule.forRoot(),
     BsDatepickerModule.forRoot(),
-    TabsModule.forRoot()
+    TabsModule.forRoot(),
+    CollapseModule.forRoot()
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

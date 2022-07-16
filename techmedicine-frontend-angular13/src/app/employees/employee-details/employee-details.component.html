@@ -85,7 +85,12 @@
   >
     Editar
   </button>
-  <button type="button" class="ms-2 btn btn-secondary" (click)="onBackToList()">
+  <button
+    type="button"
+    class="ms-2 btn btn-secondary"
+    [routerLink]="['/funcionarios']"
+    [queryParams]="{ pagina: 1 }"
+  >
     Voltar a Lista
   </button>
 </div>

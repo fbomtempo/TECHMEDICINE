@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DateService } from 'src/app/shared/services/date.service';
@@ -17,8 +16,7 @@ export class AppointmentDetailsComponent implements OnInit {
   constructor(
     private maskService: MaskService,
     private dateService: DateService,
-    private route: ActivatedRoute,
-    private location: Location
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -28,11 +26,20 @@ export class AppointmentDetailsComponent implements OnInit {
   fetchData(): void {
     this.appointment = this.route.snapshot.data['appointment'];
     this.dateService.toPtBrDateString(this.appointment);
+    this.dateService.toPtBrDateString(this.appointment.patient);
+    this.dateService.toPtBrDateString(this.appointment.medic);
     this.maskService.formatData(this.appointment.patient);
     this.maskService.formatData(this.appointment.medic);
   }
 
-  onBackToList(): void {
-    this.location.back();
+  appointmentSituationTextColor(): any {
+    return {
+      color:
+        this.appointment.appointmentSituation === 'AGENDADO'
+          ? '#3788d8'
+          : this.appointment.appointmentSituation === 'CANCELADO'
+          ? '#D90000'
+          : '#00b28e'
+    };
   }
 }

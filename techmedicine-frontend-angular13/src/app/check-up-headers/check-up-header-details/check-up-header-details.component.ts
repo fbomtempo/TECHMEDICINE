@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { DateService } from 'src/app/shared/services/date.service';
 import { MaskService } from 'src/app/shared/services/mask.service';
 
@@ -16,8 +16,7 @@ export class CheckUpHeaderDetailsComponent implements OnInit {
   constructor(
     private maskService: MaskService,
     private dateService: DateService,
-    private route: ActivatedRoute,
-    private router: Router
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -29,11 +28,5 @@ export class CheckUpHeaderDetailsComponent implements OnInit {
     this.dateService.toPtBrDateString(this.checkUpHeader);
     this.maskService.formatData(this.checkUpHeader.patient);
     this.maskService.formatData(this.checkUpHeader.medic);
-  }
-
-  onBackToList(): void {
-    this.router.navigate(['iniciar-atendimentos'], {
-      queryParams: { pagina: 1 }
-    });
   }
 }
