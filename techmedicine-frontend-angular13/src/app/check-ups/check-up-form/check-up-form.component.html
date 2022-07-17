@@ -1,0 +1,142 @@
+<h1 class="mt-4">{{ formType }} Atendimento</h1>
+<form class="mt-4 needs-validation" novalidate [formGroup]="form">
+  <tabset>
+    <tab heading="Informações" id="tab1">
+      <div class="row g-3">
+        <div class="col-xl-8" class="pt-4">
+          <label for="checkUpHeader" class="form-label">Atendimento:</label>
+          <ng-select
+            [items]="checkUpHeaders"
+            bindLabel="searchLabel"
+            labelForId="checkUpHeader"
+            placeholder="Selecione o atendimento"
+            clearAllText="Limpar"
+            formControlName="checkUpHeader"
+            [compareWith]="compareFnCheckUpHeaders"
+            [loading]="checkUpHeadersLoading"
+            loadingText="Carregando..."
+            notFoundText="Nenhum item encontrado"
+            [virtualScroll]="true"
+            (change)="onSelectChange($event)"
+            [ngClass]="
+              submitted
+                ? applyValidationClass('checkUpHeader', true)
+                : 'ng-untouched'
+            "
+          >
+            <ng-template ng-label-tmp let-item="item">
+              {{ "Atendimento ID " + item.id }}
+            </ng-template>
+            <ng-template
+              ng-option-tmp
+              let-item="item"
+              let-index="index"
+              let-search="searchTerm"
+            >
+              <div style="margin: 10px 0" class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{{ "Atendimento ID " + item.id }}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">
+                    Paciente:
+                    {{ item.patient.name + " " + item.patient.surname }}
+                  </h6>
+                  <h6 class="card-subtitle mb-2 text-muted">
+                    Médico: {{ item.medic.name + " " + item.medic.surname }}
+                  </h6>
+                </div>
+              </div>
+            </ng-template>
+          </ng-select>
+          <div class="ng-select-invalid-feedback">Campo é obrigatório.</div>
+          <div class="ng-select-valid-feedback">Parece bom.</div>
+        </div>
+        <div class="col-xl-8">
+          <label for="complaint" class="form-label">Queixa:</label>
+          <textarea
+            class="form-control"
+            formControlName="complaint"
+            id="complaint"
+            rows="3"
+            [ngClass]="applyValidationClass('complaint')"
+          ></textarea>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('complaint').errors?.['required']"
+          >
+            Campo é obrigatório.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('complaint').errors?.['maxlength']"
+          >
+            Campo deve possuir no máximo 300 caracteres.
+          </div>
+          <div class="valid-feedback">Parece bom.</div>
+        </div>
+      </div>
+    </tab>
+    <tab heading="Basic title 2" id="tab2">
+      <div class="row g-3">
+        <div class="col-xl-8">
+          <label for="complaint" class="form-label">Medicamentos:</label>
+          <input
+            class="form-control"
+            formControlName="medicines"
+            id="medicines"
+            rows="3"
+            [ngClass]="applyValidationClass('medicines')"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('medicines').errors?.['required']"
+          >
+            Campo é obrigatório.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('medicines').errors?.['maxlength']"
+          >
+            Campo deve possuir no máximo 300 caracteres.
+          </div>
+          <div class="valid-feedback">Parece bom.</div>
+        </div>
+        <div class="col-xl-8">
+          <label for="exams" class="form-label">Exames:</label>
+          <input
+            class="form-control"
+            formControlName="exams"
+            id="exams"
+            rows="3"
+            [ngClass]="applyValidationClass('exams')"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('exams').errors?.['required']"
+          >
+            Campo é obrigatório.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('exams').errors?.['maxlength']"
+          >
+            Campo deve possuir no máximo 300 caracteres.
+          </div>
+          <div class="valid-feedback">Parece bom.</div>
+        </div>
+        <div class="pt-4 mb-5">
+          <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+            Salvar
+          </button>
+          <button
+            type="button"
+            class="ms-2 btn btn-danger"
+            [routerLink]="['/atendimentos/iniciar']"
+            [queryParams]="{ pagina: 1 }"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </tab>
+  </tabset>
+</form>

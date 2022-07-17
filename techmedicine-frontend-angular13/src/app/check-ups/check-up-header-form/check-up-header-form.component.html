@@ -1,0 +1,180 @@
+<h1 class="mt-4">{{ formType }} Cabeçalho de Atendimento</h1>
+<form class="mt-4 row g-3 needs-validation" novalidate [formGroup]="form">
+  <div class="col-xl-8">
+    <div class="col-12"></div>
+    <div class="form-check form-switch">
+      <input
+        class="form-check-input"
+        [(ngModel)]="hasAppointment"
+        [ngModelOptions]="{ standalone: true }"
+        type="checkbox"
+        role="switch"
+        id="hasAppointment"
+        (change)="onSwitchChange()"
+      />
+      <label class="form-check-label form-label" for="hasAppointment"
+        >Agendamento</label
+      >
+    </div>
+    <ng-select
+      [items]="appointments"
+      bindLabel="searchLabel"
+      labelForId="appointment"
+      placeholder="Selecione o agendamento"
+      clearAllText="Limpar"
+      formControlName="appointment"
+      [compareWith]="compareFnAppointment"
+      [loading]="appointmentsLoading"
+      loadingText="Carregando..."
+      notFoundText="Nenhum item encontrado"
+      [virtualScroll]="true"
+      [readonly]="!hasAppointment"
+      (change)="onSelectChange($event)"
+      [ngClass]="
+        submitted && hasAppointment
+          ? applyValidationClass('appointment', true)
+          : 'ng-untouched'
+      "
+    >
+      <ng-template ng-label-tmp let-item="item">
+        {{ "Agendamento ID " + item.id }}
+      </ng-template>
+      <ng-template
+        ng-option-tmp
+        let-item="item"
+        let-index="index"
+        let-search="searchTerm"
+      >
+        <div style="margin: 10px 0" class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ "Agendamento ID " + item.id }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">
+              Paciente: {{ item.patient.name + " " + item.patient.surname }}
+            </h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+              Médico: {{ item.medic.name + " " + item.medic.surname }}
+            </h6>
+          </div>
+        </div>
+      </ng-template>
+    </ng-select>
+    <div class="ng-select-invalid-feedback">Campo é obrigatório.</div>
+    <div class="ng-select-valid-feedback">Parece bom.</div>
+  </div>
+  <div class="col-6"></div>
+  <div class="col-12"></div>
+  <div class="col-xl-8">
+    <label for="patient" class="form-label">Paciente</label>
+    <ng-select
+      [items]="patients"
+      bindLabel="searchLabel"
+      labelForId="patient"
+      placeholder="Selecione o paciente"
+      clearAllText="Limpar"
+      formControlName="patient"
+      [compareWith]="compareFnPatient"
+      [loading]="patientsLoading"
+      loadingText="Carregando..."
+      notFoundText="Nenhum item encontrado"
+      [virtualScroll]="true"
+      [ngClass]="
+        submitted ? applyValidationClass('patient', true) : 'ng-untouched'
+      "
+    >
+      <ng-template ng-label-tmp let-item="item">
+        {{ item.name + " " + item.surname }}
+      </ng-template>
+      <ng-template
+        ng-option-tmp
+        let-item="item"
+        let-index="index"
+        let-search="searchTerm"
+      >
+        <div style="margin: 10px 0" class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.name + " " + item.surname }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">CPF: {{ item.cpf }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+              Telefone: {{ item.mobilePhone }}
+            </h6>
+          </div>
+        </div>
+      </ng-template>
+    </ng-select>
+    <div class="ng-select-invalid-feedback">Campo é obrigatório.</div>
+    <div class="ng-select-valid-feedback">Parece bom.</div>
+  </div>
+  <div class="col-12"></div>
+  <div class="col-xl-8">
+    <label for="medic" class="form-label">Médico</label>
+    <ng-select
+      [items]="medics"
+      bindLabel="searchLabel"
+      labelForId="medic"
+      placeholder="Selecione o médico"
+      clearAllText="Limpar"
+      formControlName="medic"
+      [compareWith]="compareFnMedic"
+      [loading]="medicsLoading"
+      loadingText="Carregando..."
+      notFoundText="Nenhum item encontrado"
+      [virtualScroll]="true"
+      [ngClass]="
+        submitted ? applyValidationClass('medic', true) : 'ng-untouched'
+      "
+    >
+      <ng-template ng-label-tmp let-item="item">
+        {{ item.name + " " + item.surname }}
+      </ng-template>
+      <ng-template
+        ng-option-tmp
+        let-item="item"
+        let-index="index"
+        let-search="searchTerm"
+      >
+        <div style="margin: 10px 0" class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.name + " " + item.surname }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">CRM: {{ item.crm }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+              Telefone: {{ item.mobilePhone }}
+            </h6>
+          </div>
+        </div>
+      </ng-template>
+    </ng-select>
+    <div class="ng-select-invalid-feedback">Campo é obrigatório.</div>
+    <div class="ng-select-valid-feedback">Parece bom.</div>
+  </div>
+  <div class="col-12"></div>
+  <div class="col-xl-2">
+    <label for="date" class="form-label">Data</label>
+    <input
+      type="text"
+      bsDatepicker
+      [bsConfig]="datepickerConfig"
+      class="form-control"
+      id="date"
+      formControlName="date"
+      placeholder="Selecione a data"
+      [ngClass]="applyValidationClass('date')"
+    />
+    <div class="invalid-feedback" *ngIf="form.get('date').errors?.['required']">
+      Campo é obrigatório.
+    </div>
+    <div class="valid-feedback">Parece bom.</div>
+  </div>
+  <div class="pt-4 mb-5">
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+      Salvar
+    </button>
+    <button
+      type="button"
+      class="ms-2 btn btn-danger"
+      [routerLink]="['/atendimentos/iniciar']"
+      [queryParams]="{ pagina: 1 }"
+    >
+      Cancelar
+    </button>
+  </div>
+</form>

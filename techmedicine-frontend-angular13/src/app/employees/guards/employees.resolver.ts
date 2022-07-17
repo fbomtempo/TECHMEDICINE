@@ -24,12 +24,13 @@ export class EmployeesResolver implements Resolve<Employee> {
     state: RouterStateSnapshot
   ): Observable<Employee> | Observable<any> {
     if (route.params && route.params['id']) {
-      const employee = this.employeeService.findById(route.params['id']).pipe(
-        catchError(() => {
-          this.router.navigate(['nao-encontrado']);
-          return of({});
-        })
-      );
+      const employee: Observable<Employee> | Observable<any> =
+        this.employeeService.findById(route.params['id']).pipe(
+          catchError(() => {
+            this.router.navigate(['nao-encontrado']);
+            return of({});
+          })
+        );
       return employee;
     }
     return of({});

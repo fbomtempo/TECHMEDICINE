@@ -1,0 +1,32 @@
+<h1 class="mt-4">Visualizar Medicamento</h1>
+<div>
+  <h4 class="pt-4">Medicamento</h4>
+  <hr />
+  <dl class="row">
+    <dt class="col-sm-2">ID:</dt>
+    <dd class="col-sm-10">
+      {{ drug.id }}
+    </dd>
+    <dt class="col-sm-2">Descrição:</dt>
+    <dd class="col-sm-10">
+      {{ drug.description }}
+    </dd>
+  </dl>
+</div>
+<div class="pt-4 mb-5">
+  <button
+    type="button"
+    class="btn btn-primary"
+    [routerLink]="['../../editar/', drug.id]"
+  >
+    Editar
+  </button>
+  <button
+    type="button"
+    class="ms-2 btn btn-secondary"
+    [routerLink]="['/medicamentos']"
+    [queryParams]="{ pagina: 1 }"
+  >
+    Voltar a Lista
+  </button>
+</div>

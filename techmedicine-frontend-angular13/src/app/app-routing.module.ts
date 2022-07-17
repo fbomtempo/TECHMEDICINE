@@ -39,6 +39,16 @@ const routes: Routes = [
       import('./roles/roles.module').then((m) => m.RolesModule)
   },
   {
+    path: 'exames',
+    loadChildren: () =>
+      import('./exams/exams.module').then((m) => m.ExamsModule)
+  },
+  {
+    path: 'medicamentos',
+    loadChildren: () =>
+      import('./drugs/drugs.module').then((m) => m.DrugsModule)
+  },
+  {
     path: 'agendamentos',
     loadChildren: () =>
       import('./appointments/appointments.module').then(
@@ -48,8 +58,8 @@ const routes: Routes = [
   {
     path: 'atendimentos',
     loadChildren: () =>
-      import('./check-up-headers/check-up-headers.module').then(
-        (m) => m.CheckUpHeadersModule
+      import('./check-ups/check-up-headers.module').then(
+        (m) => m.CheckUpsModule
       )
   },
   {

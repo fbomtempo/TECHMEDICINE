@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { delay, map, Observable, take } from 'rxjs';
 import { Appointment } from 'src/app/appointments/model/appointment';
+import { CheckUpHeader } from 'src/app/check-ups/model/check-up-header';
 import { Medic } from 'src/app/medics/model/medic';
 import { Patient } from 'src/app/patients/model/patient';
 import { Role } from 'src/app/roles/model/role';
@@ -113,5 +114,24 @@ export class DropdownService {
         return appointments;
       })
     );
+  }
+
+  getCheckUpHeaders(): Observable<CheckUpHeader[]> {
+    return this.http
+      .get<CheckUpHeader[]>(`${this.API}cabecalhos-atendimento`)
+      .pipe(
+        delay(750),
+        take(1),
+        map((checkUpHeaders: CheckUpHeader[]) => {
+          checkUpHeaders = checkUpHeaders.map(
+            (checkUpHeader: CheckUpHeader) => {
+              this.maskService.formatData(checkUpHeader.patient);
+              this.maskService.formatData(checkUpHeader.medic);
+              return checkUpHeader;
+            }
+          );
+          return checkUpHeaders;
+        })
+      );
   }
 }

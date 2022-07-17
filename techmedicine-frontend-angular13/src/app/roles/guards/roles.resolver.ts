@@ -21,12 +21,14 @@ export class RolesResolver implements Resolve<Role> {
     state: RouterStateSnapshot
   ): Observable<Role> | Observable<any> {
     if (route.params && route.params['id']) {
-      const role = this.roleService.findById(route.params['id']).pipe(
-        catchError(() => {
-          this.router.navigate(['nao-encontrado']);
-          return of({});
-        })
-      );
+      const role: Observable<Role> | Observable<any> = this.roleService
+        .findById(route.params['id'])
+        .pipe(
+          catchError(() => {
+            this.router.navigate(['nao-encontrado']);
+            return of({});
+          })
+        );
       return role;
     }
     return of({});

@@ -21,12 +21,14 @@ export class MedicsResolver implements Resolve<Medic> {
     state: RouterStateSnapshot
   ): Observable<Medic> | Observable<any> {
     if (route.params && route.params['id']) {
-      const medic = this.medicService.findById(route.params['id']).pipe(
-        catchError(() => {
-          this.router.navigate(['nao-encontrado']);
-          return of({});
-        })
-      );
+      const medic: Observable<Medic> | Observable<any> = this.medicService
+        .findById(route.params['id'])
+        .pipe(
+          catchError(() => {
+            this.router.navigate(['nao-encontrado']);
+            return of({});
+          })
+        );
       return medic;
     }
     return of({});

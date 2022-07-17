@@ -24,9 +24,8 @@ export class AppointmentsResolver implements Resolve<Appointment> {
     state: RouterStateSnapshot
   ): Observable<Appointment> | Observable<any> {
     if (route.params && route.params['id']) {
-      const appointment = this.appointmentService
-        .findById(route.params['id'])
-        .pipe(
+      const appointment: Observable<Appointment> | Observable<any> =
+        this.appointmentService.findById(route.params['id']).pipe(
           catchError(() => {
             this.router.navigate(['nao-encontrado']);
             return of({});

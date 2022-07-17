@@ -24,12 +24,13 @@ export class SpecialtiesResolver implements Resolve<Specialty> {
     state: RouterStateSnapshot
   ): Observable<Specialty> | Observable<any> {
     if (route.params && route.params['id']) {
-      const specialty = this.specialtyService.findById(route.params['id']).pipe(
-        catchError(() => {
-          this.router.navigate(['nao-encontrado']);
-          return of({});
-        })
-      );
+      const specialty: Observable<Specialty> | Observable<any> =
+        this.specialtyService.findById(route.params['id']).pipe(
+          catchError(() => {
+            this.router.navigate(['nao-encontrado']);
+            return of({});
+          })
+        );
       return specialty;
     }
     return of({});

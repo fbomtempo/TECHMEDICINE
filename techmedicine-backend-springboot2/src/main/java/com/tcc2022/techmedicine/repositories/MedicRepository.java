@@ -9,5 +9,4 @@ import com.tcc2022.techmedicine.entities.Medic;
 public interface MedicRepository extends JpaRepository<Medic, Long> {
 
 	List<Medic> findAllByOrderByIdDesc();
-
 }

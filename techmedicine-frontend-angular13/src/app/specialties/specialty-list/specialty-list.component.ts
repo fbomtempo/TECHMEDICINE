@@ -43,7 +43,6 @@ export class SpecialtyListComponent implements OnInit, OnDestroy {
     this.setPaginationSize();
     this.subscription = this.route.queryParams.subscribe(
       (queryParams: Params) => {
-        this.page = queryParams['pagina'];
         this.filter = queryParams['descricao'];
         setTimeout(() => (this.currentPage = parseInt(this.page.toString())));
       }
@@ -95,7 +94,7 @@ export class SpecialtyListComponent implements OnInit, OnDestroy {
     });
   }
 
-  onDelete(especialidade: Specialty): void {
+  onDelete(specialty: Specialty): void {
     this.modalService
       .showConfirmModal(
         'Confirmação',
@@ -104,7 +103,7 @@ export class SpecialtyListComponent implements OnInit, OnDestroy {
       .pipe(
         take(1),
         switchMap((confirmResult: boolean) =>
-          confirmResult ? this.specialtyService.delete(especialidade.id) : of()
+          confirmResult ? this.specialtyService.delete(specialty.id) : of()
         )
       )
       .subscribe({

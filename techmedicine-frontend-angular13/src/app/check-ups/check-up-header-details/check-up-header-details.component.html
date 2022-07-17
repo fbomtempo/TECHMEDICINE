@@ -1,0 +1,56 @@
+<h1 class="mt-4">Visualizar Cabeçalho de Atendimento</h1>
+<div>
+  <h4 class="pt-4">Cabeçalho de Atendimento</h4>
+  <hr />
+  <dl class="row">
+    <dt class="col-sm-2">ID:</dt>
+    <dd class="col-sm-10">
+      {{ checkUpHeader.id }}
+    </dd>
+    <dt class="col-sm-2">Agendamento:</dt>
+    <dd class="col-sm-10">
+      {{ checkUpHeader.appointment ? checkUpHeader.appointment.id : "-" }}
+    </dd>
+    <dt class="col-sm-2">Paciente:</dt>
+    <dd class="col-sm-10">
+      {{ checkUpHeader.patient.name + " " + checkUpHeader.patient.surname }}
+    </dd>
+    <dt class="col-sm-2">Médico:</dt>
+    <dd class="col-sm-10">
+      {{ checkUpHeader.medic.name + " " + checkUpHeader.medic.surname }}
+    </dd>
+    <dt class="col-sm-2">Data Agendada:</dt>
+    <dd class="col-sm-10">
+      {{ checkUpHeader.date }}
+    </dd>
+    <dt class="col-sm-2">Início:</dt>
+    <dd class="col-sm-10">
+      {{ checkUpHeader.startTime }}
+    </dd>
+    <dt class="col-sm-2">Término:</dt>
+    <dd class="col-sm-10">
+      {{ checkUpHeader.endTime ? checkUpHeader.endTime : "-" }}
+    </dd>
+    <dt class="col-sm-2">Situação:</dt>
+    <dd class="col-sm-10">
+      {{ checkUpHeader.checkUpSituation }}
+    </dd>
+  </dl>
+</div>
+<div class="pt-4 mb-5">
+  <button
+    type="button"
+    class="btn btn-primary"
+    [routerLink]="['../../editar/', checkUpHeader.id]"
+  >
+    Editar
+  </button>
+  <button
+    type="button"
+    class="ms-2 btn btn-secondary"
+    [routerLink]="['/atendimentos/iniciar']"
+    [queryParams]="{ pagina: 1 }"
+  >
+    Voltar a Lista
+  </button>
+</div>
