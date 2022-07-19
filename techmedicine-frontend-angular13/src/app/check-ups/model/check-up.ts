@@ -4,6 +4,11 @@ export interface CheckUp {
   id: number;
   checkUpHeader: CheckUpHeader;
   complaint: string;
-  medicines: string;
+  diseaseHistory: string;
+  familyHistory: string;
+  patientHistory: string;
+  disease: string;
+  conduct: string;
+  prescription: string;
   exams: string;
 }

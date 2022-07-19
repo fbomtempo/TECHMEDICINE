@@ -194,7 +194,7 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
             );
             setTimeout(
               () =>
-                this.router.navigate(['/atendimentos/iniciar'], {
+                this.router.navigate(['/atendimentos'], {
                   queryParams: { pagina: 1 }
                 }),
               2000
@@ -216,7 +216,7 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
             );
             setTimeout(
               () =>
-                this.router.navigate(['/atendimentos/iniciar'], {
+                this.router.navigate(['/atendimentos'], {
                   queryParams: { pagina: 1 }
                 }),
               2000

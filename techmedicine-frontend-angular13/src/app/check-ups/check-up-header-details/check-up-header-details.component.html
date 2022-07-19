@@ -33,7 +33,7 @@
     </dd>
     <dt class="col-sm-2">Situação:</dt>
     <dd class="col-sm-10">
-      {{ checkUpHeader.checkUpSituation }}
+      {{ checkUpHeader.checkUpHeaderSituation }}
     </dd>
   </dl>
 </div>
@@ -48,7 +48,7 @@
   <button
     type="button"
     class="ms-2 btn btn-secondary"
-    [routerLink]="['/atendimentos/iniciar']"
+    [routerLink]="['/atendimentos']"
     [queryParams]="{ pagina: 1 }"
   >
     Voltar a Lista

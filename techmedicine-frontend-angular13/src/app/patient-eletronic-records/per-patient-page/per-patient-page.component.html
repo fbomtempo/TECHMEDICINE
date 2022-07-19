@@ -1,0 +1,289 @@
+<div *ngIf="checkUps$ | async as checkUps; else loading">
+  <div class="row">
+    <div class="pt-4 pb-md-0 pb-3 col-md-3">
+      <a class="fs-5 display-1 back" (click)="onBack()"
+        ><i class="fas fa-arrow-left"></i><span class="ms-2">Voltar</span></a
+      >
+    </div>
+    <h1 class="text-center pb-5">Página do paciente</h1>
+  </div>
+  <div class="row border mb-4">
+    <span class="mb-3"></span>
+    <div class="col-md-2 col-12">
+      <img
+        src="../../../assets/images/user_profile.jpg"
+        class="img-fluid d-block mx-md-0 mx-auto"
+        style="width: 140px"
+      />
+    </div>
+    <div class="col-md-8 col-10">
+      <div class="row">
+        <h3>{{ patient.name + " " + patient.surname }}</h3>
+        <div class="col-md-8 col-sm-12">
+          <h6>Nascimento: {{ patient.birthDate }}</h6>
+          <h6>Total de Consultas: {{ checkUps.length }}</h6>
+          <h6>CPF: {{ patient.cpf }}</h6>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <h6>Tel. Residencial: {{ patient.homePhone }}</h6>
+          <h6>Tel. Celular: {{ patient.mobilePhone }}</h6>
+          <h6>E-Mail: {{ patient.email }}</h6>
+        </div>
+        <h6><a href="">Ver todos os dados </a></h6>
+      </div>
+    </div>
+    <div class="col-md-2 col-12 text-end">
+      <div class="dropdown">
+        <button
+          class="btn dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Ações
+        </button>
+        <ul
+          class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="dropdownMenuButton1"
+        >
+          <li>
+            <a
+              class="dropdown-item"
+              [routerLink]="['/pacientes/editar/', patient.id]"
+            >
+              <div class="row">
+                <div class="col-6">Editar</div>
+                <div class="col-6 text-end">
+                  <i class="fa fa-edit"></i>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a type="button" class="dropdown-item" (click)="onDelete(patient)">
+              <div class="row">
+                <div class="col-6">Deletar</div>
+                <div class="col-6 text-end">
+                  <i class="fa fa-trash-alt"></i>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <button
+    type="button"
+    class="btn btn-secondary mb-3"
+    (click)="isCollapsed = !isCollapsed"
+    [attr.aria-expanded]="!isCollapsed"
+    aria-controls="collapseBasic"
+  >
+    Filtros <i class="fas fa-arrows-alt-v"></i>
+  </button>
+  <div id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
+    <div class="row">
+      <div class="pb-3">
+        <div class="row">
+          <div class="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <label for="medic" class="form-label">Médico:</label>
+            <ng-select
+              [items]="medics"
+              (change)="setFilterMedic($event)"
+              bindLabel="searchLabel"
+              labelForId="medic"
+              placeholder="Selecione o médico"
+              clearAllText="Limpar"
+              [compareWith]="compareFnMedic"
+              [loading]="medicsLoading"
+              notFoundText="Nenhum item encontrado"
+              [virtualScroll]="true"
+            >
+              <ng-template ng-label-tmp let-item="item">
+                {{ item.name + " " + item.surname }}
+              </ng-template>
+              <ng-template
+                ng-option-tmp
+                let-item="item"
+                let-index="index"
+                let-search="searchTerm"
+              >
+                <div style="margin: 10px 0" class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      {{ item.name + " " + item.surname }}
+                    </h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                      CPF: {{ item.cpf }}
+                    </h6>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                      Telefone: {{ item.mobilePhone }}
+                    </h6>
+                  </div>
+                </div>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-3 mb-5">
+    <div class="row">
+      <div
+        class="col-md-12"
+        *ngIf="showData(checkUps).length > 0; else noCheckUpFound"
+      >
+        <h4>Atendimentos</h4>
+        <ul class="timeline">
+          <li class="checkUp-list" *ngFor="let checkUp of showData(checkUps)">
+            <div class="row">
+              <div class="col-12">
+                <span class="fs-4">
+                  <strong>{{ checkUp.checkUpHeader.date }}</strong>
+                </span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-8 col-12">
+                <span>
+                  {{
+                    checkUp.checkUpHeader.medic.gender === "Masculino"
+                      ? "Dr. "
+                      : "Dra.  "
+                  }}{{
+                    checkUp.checkUpHeader.medic.name +
+                      " " +
+                      checkUp.checkUpHeader.medic.surname
+                  }}
+                </span>
+              </div>
+              <div class="col-md-4 col-12 text-md-end">
+                <span
+                  >Duração do atendimento:
+                  {{
+                    getCheckUpDuration(
+                      checkUp.checkUpHeader.startTime,
+                      checkUp.checkUpHeader.endTime
+                    )
+                  }}</span
+                >
+              </div>
+            </div>
+            <div class="row">
+              <accordion class="pt-3">
+                <accordion-group heading="Anamnese">
+                  <div class="pb-2">
+                    <strong>Queixa:</strong>
+                  </div>
+                  <p class="border pt-1 pb-1">
+                    <span class="ms-2">{{ checkUp.complaint }}</span>
+                  </p>
+                  <div class="pb-2">
+                    <strong>História da Doença:</strong>
+                  </div>
+                  <p class="border pt-1 pb-1">
+                    <span class="ms-2">{{ checkUp.diseaseHistory }}</span>
+                  </p>
+                  <div class="pb-2">
+                    <strong>História da Família:</strong>
+                  </div>
+                  <p class="border pt-1 pb-1">
+                    <span class="ms-2">{{ checkUp.familyHistory }}</span>
+                  </p>
+                  <div class="pb-2">
+                    <strong>História Pessoal:</strong>
+                  </div>
+                  <p class="border pt-1 pb-1">
+                    <span class="ms-2">{{ checkUp.patientHistory }}</span>
+                  </p>
+                  <div class="pb-2">
+                    <strong>CID:</strong>
+                  </div>
+                  <p class="border pt-1 pb-1">
+                    <span class="ms-2">{{ checkUp.disease }}</span>
+                  </p>
+                  <div class="pb-2">
+                    <strong>Conduta:</strong>
+                  </div>
+                  <p class="border pt-1 pb-1">
+                    <span class="ms-2">{{ checkUp.conduct }}</span>
+                  </p>
+                </accordion-group>
+                <accordion-group heading="Receituário">
+                  <div class="pb-2">
+                    <strong>Receituário:</strong>
+                  </div>
+                  <p class="border pt-1 pb-1">
+                    <span class="ms-2">{{ checkUp.prescription }}</span>
+                  </p>
+                </accordion-group>
+                <accordion-group heading="Exames">
+                  <div class="pb-2">
+                    <strong>Exames:</strong>
+                  </div>
+                  <p class="border pt-1 pb-1">
+                    <span class="ms-2">{{ checkUp.exams }}</span>
+                  </p>
+                </accordion-group>
+              </accordion>
+            </div>
+            <div class="pt-4">
+              <div class="text-end">
+                <button
+                  type="button"
+                  title="Editar"
+                  class="btn btn-round btn-outline-edit me-2"
+                  [routerLink]="['/atendimentos/realizar/editar/', checkUp.id]"
+                >
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+
+                <button
+                  type="button"
+                  title="Deletar"
+                  class="btn-round btn-outline-delete me-2"
+                >
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+                <hr />
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingError>
+  <div *ngIf="error | async; else loading">
+    <div
+      style="height: 80vh"
+      class="d-flex flex-column align-items-center justify-content-center"
+    >
+      <p style="font-size: 1.65rem">Erro ao carregar atendimentos.</p>
+      <button
+        type="button"
+        class="btn btn-lg btn-secondary"
+        (click)="reloadPage()"
+      >
+        Tentar Novamente <i class="fas fa-sync-alt"></i>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div
+    style="height: 80vh"
+    class="d-flex align-items-center justify-content-center"
+  >
+    <div class="loader"></div>
+  </div>
+</ng-template>
+
+<ng-template #noCheckUpFound>
+  <div class="text-center"><strong>Nenhum atendimento encontrado.</strong></div>
+</ng-template>

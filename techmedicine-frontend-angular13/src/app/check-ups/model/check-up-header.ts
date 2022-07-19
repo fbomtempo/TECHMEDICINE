@@ -10,5 +10,5 @@ export interface CheckUpHeader {
   date: string;
   startTime: string;
   endTime: string;
-  checkUpSituation: string;
+  checkUpHeaderSituation: string;
 }

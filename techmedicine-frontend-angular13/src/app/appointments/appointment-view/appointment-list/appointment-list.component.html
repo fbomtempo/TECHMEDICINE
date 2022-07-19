@@ -1,16 +1,16 @@
 <div *ngIf="appointments$ | async as appointments; else loadingError">
   <button
     type="button"
-    class="btn btn-primary mb-3"
+    class="btn btn-secondary mb-3"
     (click)="isCollapsed = !isCollapsed"
     [attr.aria-expanded]="!isCollapsed"
     aria-controls="collapseBasic"
   >
-    Filtros
+    Filtros <i class="fas fa-arrows-alt-v"></i>
   </button>
   <div id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
     <div class="row">
-      <div class="col-12 pb-4">
+      <div class="col-12 pt-2 pb-3">
         <div class="form-check form-switch">
           <input
             class="form-check-input"
@@ -49,6 +49,7 @@
         </div>
         <div class="row pt-4">
           <div class="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <label for="medic" class="form-label">Médico:</label>
             <ng-select
               [items]="medics"
               (change)="setFilterMedic($event)"
@@ -87,11 +88,10 @@
             </ng-select>
           </div>
         </div>
-        <hr />
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row pt-3">
     <div class="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-xs-12 mt-md-0 mt-2">
       <div class="d-flex">
         <input
@@ -126,8 +126,7 @@
           <th scope="col">Paciente</th>
           <th scope="col">Médico</th>
           <th scope="col">Data Agendada</th>
-          <th scope="col">Início</th>
-          <th scope="col">Término</th>
+          <th scope="col">Horário Marcado</th>
           <th scope="col">Situação</th>
           <th scope="col">Ações</th>
           <th></th>
@@ -150,8 +149,7 @@
             {{ appointment.medic.name + " " + appointment.medic.surname }}
           </td>
           <td>{{ appointment.scheduledDate }}</td>
-          <td>{{ appointment.startTime }}</td>
-          <td>{{ appointment.endTime }}</td>
+          <td>{{ appointment.startTime + "-" + appointment.endTime }}</td>
           <td>
             <span
               class="appointment-label"
@@ -192,7 +190,7 @@
           <td>
             <a
               *ngIf="appointment.appointmentSituation === 'AGENDADO'"
-              [routerLink]="['/iniciar-atendimentos/novo']"
+              [routerLink]="['/atendimentos/novo']"
               [queryParams]="{ agendamento: appointment.id }"
               >Criar Atendimento <i class="fas fa-external-link-alt"></i
             ></a>
@@ -204,8 +202,8 @@
   <div class="mb-3 d-flex justify-content-center">
     <pagination
       [totalItems]="showData(appointments).length"
-      [itemsPerPage]="itemsPerPage"
       [maxSize]="paginationSize"
+      [itemsPerPage]="itemsPerPage"
       (pageChanged)="pageChanged($event)"
       [(ngModel)]="currentPage"
       [boundaryLinks]="true"

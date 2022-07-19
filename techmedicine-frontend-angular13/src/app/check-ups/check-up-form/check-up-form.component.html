@@ -1,9 +1,9 @@
 <h1 class="mt-4">{{ formType }} Atendimento</h1>
 <form class="mt-4 needs-validation" novalidate [formGroup]="form">
-  <tabset>
+  <tabset #staticTabs>
     <tab heading="Informações" id="tab1">
       <div class="row g-3">
-        <div class="col-xl-8" class="pt-4">
+        <div class="col-xl-12" class="pt-4">
           <label for="checkUpHeader" class="form-label">Atendimento:</label>
           <ng-select
             [items]="checkUpHeaders"
@@ -18,6 +18,7 @@
             notFoundText="Nenhum item encontrado"
             [virtualScroll]="true"
             (change)="onSelectChange($event)"
+            [readonly]="true"
             [ngClass]="
               submitted
                 ? applyValidationClass('checkUpHeader', true)
@@ -50,7 +51,7 @@
           <div class="ng-select-invalid-feedback">Campo é obrigatório.</div>
           <div class="ng-select-valid-feedback">Parece bom.</div>
         </div>
-        <div class="col-xl-8">
+        <div class="col-xl-12">
           <label for="complaint" class="form-label">Queixa:</label>
           <textarea
             class="form-control"
@@ -73,42 +74,206 @@
           </div>
           <div class="valid-feedback">Parece bom.</div>
         </div>
-      </div>
-    </tab>
-    <tab heading="Basic title 2" id="tab2">
-      <div class="row g-3">
-        <div class="col-xl-8">
-          <label for="complaint" class="form-label">Medicamentos:</label>
-          <input
+        <div class="col-xl-12">
+          <label for="diseaseHistory" class="form-label"
+            >História da Doença:</label
+          >
+          <textarea
             class="form-control"
-            formControlName="medicines"
-            id="medicines"
+            formControlName="diseaseHistory"
+            id="diseaseHistory"
             rows="3"
-            [ngClass]="applyValidationClass('medicines')"
-          />
+            [ngClass]="applyValidationClass('diseaseHistory')"
+          ></textarea>
           <div
             class="invalid-feedback"
-            *ngIf="form.get('medicines').errors?.['required']"
+            *ngIf="form.get('diseaseHistory').errors?.['required']"
           >
             Campo é obrigatório.
           </div>
           <div
             class="invalid-feedback"
-            *ngIf="form.get('medicines').errors?.['maxlength']"
+            *ngIf="form.get('diseaseHistory').errors?.['maxlength']"
           >
-            Campo deve possuir no máximo 300 caracteres.
+            Campo deve possuir no máximo 500 caracteres.
           </div>
           <div class="valid-feedback">Parece bom.</div>
         </div>
-        <div class="col-xl-8">
-          <label for="exams" class="form-label">Exames:</label>
+        <div class="col-xl-12">
+          <label for="familyHistory" class="form-label"
+            >História da Família:</label
+          >
+          <textarea
+            class="form-control"
+            formControlName="familyHistory"
+            id="familyHistory"
+            rows="3"
+            [ngClass]="applyValidationClass('familyHistory')"
+          ></textarea>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('familyHistory').errors?.['required']"
+          >
+            Campo é obrigatório.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('familyHistory').errors?.['maxlength']"
+          >
+            Campo deve possuir no máximo 500 caracteres.
+          </div>
+          <div class="valid-feedback">Parece bom.</div>
+        </div>
+        <div class="col-xl-12">
+          <label for="patientHistory" class="form-label"
+            >Histórico Pessoal:</label
+          >
+          <textarea
+            class="form-control"
+            formControlName="patientHistory"
+            id="patientHistory"
+            rows="3"
+            [ngClass]="applyValidationClass('patientHistory')"
+          ></textarea>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('patientHistory').errors?.['required']"
+          >
+            Campo é obrigatório.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('patientHistory').errors?.['maxlength']"
+          >
+            Campo deve possuir no máximo 500 caracteres.
+          </div>
+          <div class="valid-feedback">Parece bom.</div>
+        </div>
+        <div class="col-xl-12">
+          <label for="disease" class="form-label">CID:</label>
           <input
+            class="form-control"
+            formControlName="disease"
+            id="disease"
+            [ngClass]="applyValidationClass('disease')"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('disease').errors?.['required']"
+          >
+            Campo é obrigatório.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('disease').errors?.['maxlength']"
+          >
+            Campo deve possuir no máximo 50 caracteres.
+          </div>
+          <div class="valid-feedback">Parece bom.</div>
+        </div>
+        <div class="col-xl-12">
+          <label for="conduct" class="form-label">Conduta:</label>
+          <textarea
+            class="form-control"
+            formControlName="conduct"
+            id="conduct"
+            rows="3"
+            [ngClass]="applyValidationClass('conduct')"
+          ></textarea>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('conduct').errors?.['required']"
+          >
+            Campo é obrigatório.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('conduct').errors?.['maxlength']"
+          >
+            Campo deve possuir no máximo 500 caracteres.
+          </div>
+          <div class="valid-feedback">Parece bom.</div>
+        </div>
+        <div class="pt-4 mb-5">
+          <button type="submit" class="btn btn-primary" (click)="selectTab(1)">
+            Próximo
+          </button>
+          <button
+            type="button"
+            class="ms-2 btn btn-danger"
+            [routerLink]="
+              formType === 'Novo'
+                ? ['/atendimentos']
+                : [
+                    '/pep/paciente',
+                    form.get('checkUpHeader').value['patient']['id']
+                  ]
+            "
+            [queryParams]="formType === 'Novo' ? { pagina: 1 } : {}"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </tab>
+    <tab heading="Receituário" id="tab2">
+      <div class="row g-3">
+        <div class="col-xl-12 pt-4">
+          <label for="prescription" class="form-label">Receituário:</label>
+          <textarea
+            class="form-control"
+            formControlName="prescription"
+            id="prescription"
+            rows="5"
+            [ngClass]="applyValidationClass('prescription')"
+          ></textarea>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('prescription').errors?.['required']"
+          >
+            Campo é obrigatório.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('prescription').errors?.['maxlength']"
+          >
+            Campo deve possuir no máximo 500 caracteres.
+          </div>
+          <div class="valid-feedback">Parece bom.</div>
+        </div>
+        <div class="pt-4 mb-5">
+          <button type="submit" class="btn btn-primary" (click)="selectTab(2)">
+            Próximo
+          </button>
+          <button
+            type="button"
+            class="ms-2 btn btn-danger"
+            [routerLink]="
+              formType === 'Novo'
+                ? ['/atendimentos']
+                : [
+                    '/pep/paciente',
+                    form.get('checkUpHeader').value['patient']['id']
+                  ]
+            "
+            [queryParams]="formType === 'Novo' ? { pagina: 1 } : {}"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </tab>
+    <tab heading="Exames" id="tab3">
+      <div class="row g-3">
+        <div class="col-xl-12 pt-4">
+          <label for="exams" class="form-label">Exames:</label>
+          <textarea
             class="form-control"
             formControlName="exams"
             id="exams"
-            rows="3"
+            rows="5"
             [ngClass]="applyValidationClass('exams')"
-          />
+          ></textarea>
           <div
             class="invalid-feedback"
             *ngIf="form.get('exams').errors?.['required']"
@@ -119,7 +284,7 @@
             class="invalid-feedback"
             *ngIf="form.get('exams').errors?.['maxlength']"
           >
-            Campo deve possuir no máximo 300 caracteres.
+            Campo deve possuir no máximo 500 caracteres.
           </div>
           <div class="valid-feedback">Parece bom.</div>
         </div>
@@ -130,8 +295,15 @@
           <button
             type="button"
             class="ms-2 btn btn-danger"
-            [routerLink]="['/atendimentos/iniciar']"
-            [queryParams]="{ pagina: 1 }"
+            [routerLink]="
+              formType === 'Novo'
+                ? ['/atendimentos']
+                : [
+                    '/pep/paciente',
+                    form.get('checkUpHeader').value['patient']['id']
+                  ]
+            "
+            [queryParams]="formType === 'Novo' ? { pagina: 1 } : {}"
           >
             Cancelar
           </button>

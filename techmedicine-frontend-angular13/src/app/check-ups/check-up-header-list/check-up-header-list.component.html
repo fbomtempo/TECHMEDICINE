@@ -1,53 +1,105 @@
 <div *ngIf="checkUpHeaders$ | async as checkUpHeaders; else loadingError">
   <div class="row">
     <div class="pt-4 pb-md-0 pb-3 col-md-3">
-      <a class="fs-5 display-1 back" (click)="onBack()"
-        ><i class="fas fa-arrow-left"></i><span class="ms-2">Voltar</span></a
+      <a class="fs-5 display-1 back" (click)="onHome()"
+        ><i class="fas fa-home"></i><span class="ms-2">Home</span></a
       >
     </div>
-    <h1 class="text-center pb-5">Inicialização de Atendimentos</h1>
+    <h1 class="text-center pb-5">Realização de Atendimentos</h1>
   </div>
-  <div class="row">
-    <div class="col-12 pb-4">
-      <div class="form-check form-switch">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          role="switch"
-          id="opened-filter-switch"
-          [(ngModel)]="filterSwitches.opened"
-        />
-        <label class="form-check-label" for="opened-filter-switch"
-          >Mostrar Abertos</label
-        >
-      </div>
-      <div class="form-check form-switch">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          role="switch"
-          id="finished-filter-switch"
-          [(ngModel)]="filterSwitches.finished"
-        />
-        <label class="form-check-label" for="finished-filter-switch"
-          >Mostrar Finalizados</label
-        >
-      </div>
-      <div class="form-check form-switch">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          role="switch"
-          id="cancelled-filter-switch"
-          [(ngModel)]="filterSwitches.cancelled"
-        />
-        <label class="form-check-label" for="cancelled-filter-switch"
-          >Mostrar Cancelados</label
-        >
+  <button
+    type="button"
+    class="btn btn-secondary mb-3"
+    (click)="isCollapsed = !isCollapsed"
+    [attr.aria-expanded]="!isCollapsed"
+    aria-controls="collapseBasic"
+  >
+    Filtros <i class="fas fa-arrows-alt-v"></i>
+  </button>
+  <div id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
+    <div class="row">
+      <div class="col-lg-6 col-md-12 col-sm-12 pt-2 pb-3">
+        <div class="pb-4">
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="opened-filter-switch"
+              [(ngModel)]="filterSwitches.opened"
+            />
+            <label class="form-check-label" for="opened-filter-switch"
+              >Mostrar Agendados</label
+            >
+          </div>
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="cancelled-filter-switch"
+              [(ngModel)]="filterSwitches.cancelled"
+            />
+            <label class="form-check-label" for="cancelled-filter-switch"
+              >Mostrar Cancelados</label
+            >
+          </div>
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="finished-filter-switch"
+              [(ngModel)]="filterSwitches.finished"
+            />
+            <label class="form-check-label" for="finished-filter-switch"
+              >Mostrar Finalizados</label
+            >
+          </div>
+        </div>
+        <div class="row">
+          <label for="medic" class="form-label">Médico:</label>
+          <ng-select
+            [items]="medics"
+            (change)="setFilterMedic($event)"
+            bindLabel="searchLabel"
+            labelForId="medic"
+            placeholder="Selecione o médico"
+            clearAllText="Limpar"
+            [compareWith]="compareFnMedic"
+            [loading]="medicsLoading"
+            notFoundText="Nenhum item encontrado"
+            [virtualScroll]="true"
+          >
+            <ng-template ng-label-tmp let-item="item">
+              {{ item.name + " " + item.surname }}
+            </ng-template>
+            <ng-template
+              ng-option-tmp
+              let-item="item"
+              let-index="index"
+              let-search="searchTerm"
+            >
+              <div style="margin: 10px 0" class="card">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    {{ item.name + " " + item.surname }}
+                  </h5>
+                  <h6 class="card-subtitle mb-2 text-muted">
+                    CPF: {{ item.cpf }}
+                  </h6>
+                  <h6 class="card-subtitle mb-2 text-muted">
+                    Telefone: {{ item.mobilePhone }}
+                  </h6>
+                </div>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row pt-3">
     <div class="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-xs-12 mt-md-0 mt-2">
       <div class="d-flex">
         <input
@@ -115,14 +167,14 @@
             <span
               class="check-up-header-label"
               [ngClass]="
-                situationLabelBackground(checkUpHeader.checkUpSituation)
+                situationLabelBackground(checkUpHeader.checkUpHeaderSituation)
               "
-              >{{ checkUpHeader.checkUpSituation }}</span
+              >{{ checkUpHeader.checkUpHeaderSituation }}</span
             >
           </td>
           <td>
             <button
-              *ngIf="checkUpHeader.checkUpSituation === 'ABERTO'"
+              *ngIf="checkUpHeader.checkUpHeaderSituation === 'ABERTO'"
               type="button"
               title="Editar"
               class="btn btn-round btn-outline-edit me-2"
@@ -131,7 +183,7 @@
               <i class="fas fa-pencil-alt"></i>
             </button>
             <button
-              *ngIf="checkUpHeader.checkUpSituation === 'ABERTO'"
+              *ngIf="checkUpHeader.checkUpHeaderSituation === 'ABERTO'"
               type="button"
               title="Deletar"
               class="btn-round btn-outline-delete me-2"
@@ -150,8 +202,8 @@
           </td>
           <td>
             <a
-              *ngIf="checkUpHeader.checkUpSituation === 'ABERTO'"
-              [routerLink]="['../realizar/novo']"
+              *ngIf="checkUpHeader.checkUpHeaderSituation === 'ABERTO'"
+              [routerLink]="['realizar/novo']"
               [queryParams]="{ atendimento: checkUpHeader.id }"
               >Atender <i class="fas fa-external-link-alt"></i
             ></a>
@@ -163,8 +215,8 @@
   <div class="mb-3 d-flex justify-content-center">
     <pagination
       [totalItems]="showData(checkUpHeaders).length"
-      [itemsPerPage]="itemsPerPage"
       [maxSize]="paginationSize"
+      [itemsPerPage]="itemsPerPage"
       (pageChanged)="pageChanged($event)"
       [(ngModel)]="currentPage"
       [boundaryLinks]="true"

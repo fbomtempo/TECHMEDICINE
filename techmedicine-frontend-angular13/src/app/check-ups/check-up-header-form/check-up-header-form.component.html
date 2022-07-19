@@ -62,7 +62,6 @@
     <div class="ng-select-valid-feedback">Parece bom.</div>
   </div>
   <div class="col-6"></div>
-  <div class="col-12"></div>
   <div class="col-xl-8">
     <label for="patient" class="form-label">Paciente</label>
     <ng-select
@@ -171,7 +170,7 @@
     <button
       type="button"
       class="ms-2 btn btn-danger"
-      [routerLink]="['/atendimentos/iniciar']"
+      [routerLink]="['/atendimentos']"
       [queryParams]="{ pagina: 1 }"
     >
       Cancelar

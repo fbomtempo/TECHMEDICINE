@@ -7,37 +7,41 @@ import { CheckUpHeaderDetailsComponent } from './check-up-header-details/check-u
 import { CheckUpHeaderFormComponent } from './check-up-header-form/check-up-header-form.component';
 import { CheckUpHeaderHeaderListComponent } from './check-up-header-list/check-up-header-list.component';
 import { CheckUpHeadersResolver } from './guards/check-up-headers.resolver';
+import { CheckUpsResolver } from './guards/check-ups.resolver';
 
 const routes: Routes = [
   {
-    path: 'iniciar',
+    path: '',
     component: CheckUpHeaderHeaderListComponent
   },
   {
-    path: 'iniciar/novo',
+    path: 'novo',
     component: CheckUpHeaderFormComponent,
     resolve: { checkUpHeader: CheckUpHeadersResolver },
     canDeactivate: [DeactivateGuard]
   },
   {
-    path: 'iniciar/editar/:id',
+    path: 'editar/:id',
     component: CheckUpHeaderFormComponent,
     resolve: { checkUpHeader: CheckUpHeadersResolver },
     canDeactivate: [DeactivateGuard]
   },
   {
-    path: 'iniciar/visualizar/:id',
+    path: 'visualizar/:id',
     component: CheckUpHeaderDetailsComponent,
     resolve: { checkUpHeader: CheckUpHeadersResolver }
   },
   {
     path: 'realizar/novo',
-    component: CheckUpFormComponent
+    component: CheckUpFormComponent,
+    resolve: { checkUp: CheckUpsResolver },
+    canDeactivate: [DeactivateGuard]
   },
   {
-    path: '',
-    redirectTo: '/iniciar',
-    pathMatch: 'full'
+    path: 'realizar/editar/:id',
+    component: CheckUpFormComponent,
+    resolve: { checkUp: CheckUpsResolver },
+    canDeactivate: [DeactivateGuard]
   }
 ];
 

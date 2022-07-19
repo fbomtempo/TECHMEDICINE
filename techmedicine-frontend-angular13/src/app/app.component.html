@@ -123,38 +123,6 @@
               >
             </li>
             <li>
-              <a
-                class="dropdown-item"
-                [routerLink]="['exames']"
-                [queryParams]="{ pagina: 1 }"
-                [routerLinkActive]="['active']"
-                [routerLinkActiveOptions]="{
-                  paths: 'subset',
-                  queryParams: 'ignored',
-                  matrixParams: 'ignored',
-                  fragment: 'ignored'
-                }"
-                (isActiveChange)="onRouterLinkActive($event, 0, 'Exames')"
-                >Cadastro de Exames</a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item"
-                [routerLink]="['medicamentos']"
-                [queryParams]="{ pagina: 1 }"
-                [routerLinkActive]="['active']"
-                [routerLinkActiveOptions]="{
-                  paths: 'subset',
-                  queryParams: 'ignored',
-                  matrixParams: 'ignored',
-                  fragment: 'ignored'
-                }"
-                (isActiveChange)="onRouterLinkActive($event, 0, 'Medicamentos')"
-                >Cadastro de Medicamentos</a
-              >
-            </li>
-            <li>
               <hr class="dropdown-divider" />
             </li>
             <li><a class="dropdown-item" href="#">Something else here</a></li>
@@ -190,7 +158,7 @@
             <li>
               <a
                 class="dropdown-item"
-                [routerLink]="['atendimentos/iniciar']"
+                [routerLink]="['atendimentos']"
                 [queryParams]="{ pagina: 1 }"
                 [routerLinkActive]="['active']"
                 [routerLinkActiveOptions]="{

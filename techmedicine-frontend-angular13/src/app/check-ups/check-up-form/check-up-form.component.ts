@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { map } from 'rxjs';
 import { DateService } from 'src/app/shared/services/date.service';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
@@ -31,6 +32,7 @@ export class CheckUpFormComponent extends FormService implements OnInit {
   compareFnCheckUpHeaders(c1: CheckUpHeader, c2: CheckUpHeader): boolean {
     return c1 && c2 ? c1.id === c2.id : c1 === c2;
   }
+  @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,7 +59,7 @@ export class CheckUpFormComponent extends FormService implements OnInit {
       .pipe(
         map((checkUpHeaders: CheckUpHeader[]) => {
           return checkUpHeaders.filter((checkUpHeader: CheckUpHeader) => {
-            return checkUpHeader.checkUpSituation === 'ABERTO';
+            return checkUpHeader.checkUpHeaderSituation === 'ABERTO';
           });
         })
       )
@@ -77,21 +79,38 @@ export class CheckUpFormComponent extends FormService implements OnInit {
   private createForm(): void {
     this.formType = this.route.snapshot.params['id'] ? 'Editar' : 'Novo';
     this.form = this.formBuilder.group({
-      id: [/*this.checkUp.id*/ null],
-      checkUpHeader: [
-        /*this.checkUp.checkUpHeader*/ null,
-        [Validators.required]
-      ],
+      id: [this.checkUp.id],
+      checkUpHeader: [this.checkUp.checkUpHeader, [Validators.required]],
       complaint: [
-        /*this.checkUp.complaint*/ null,
+        this.checkUp.complaint,
         [Validators.required, Validators.maxLength(10)]
       ],
-      medicines: [
-        /*this.checkUp.medicines*/ null,
+      diseaseHistory: [
+        this.checkUp.diseaseHistory,
+        [Validators.required, Validators.maxLength(500)]
+      ],
+      familyHistory: [
+        this.checkUp.familyHistory,
+        [Validators.required, Validators.maxLength(500)]
+      ],
+      patientHistory: [
+        this.checkUp.patientHistory,
+        [Validators.required, Validators.maxLength(500)]
+      ],
+      disease: [
+        this.checkUp.disease,
+        [Validators.required, Validators.maxLength(50)]
+      ],
+      conduct: [
+        this.checkUp.conduct,
+        [Validators.required, Validators.maxLength(500)]
+      ],
+      prescription: [
+        this.checkUp.prescription,
         [Validators.required, Validators.maxLength(300)]
       ],
       exams: [
-        /*this.checkUp.exams*/ null,
+        this.checkUp.exams,
         [Validators.required, Validators.maxLength(300)]
       ]
     });
@@ -125,48 +144,55 @@ export class CheckUpFormComponent extends FormService implements OnInit {
     }
   }
 
+  selectTab(tabId: number) {
+    if (this.staticTabs?.tabs[tabId]) {
+      this.staticTabs.tabs[tabId].active = true;
+    }
+  }
+
   onSubmit(): void {
     this.submitted = true;
     if (this.form.valid && this.changed) {
       const checkUp: CheckUp = this.form.value;
       console.log(checkUp);
-      /*if (this.form.value['id']) {
-        this.checkUpHeaderService.update(checkUpHeader).subscribe({
+      if (this.form.value['id']) {
+        this.checkUpService.update(checkUp).subscribe({
           error: () =>
             this.modalService.alertDanger(
-              'Erro ao atualizar cabeçalho de atendimento!',
+              'Erro ao atualizar atendimento!',
               'Tente novamente mais tarde.'
             ),
           complete: () => {
             this.modalService.alertSuccess(
-              'Cabeçalho de atendimento atualizado com sucesso!',
+              'Atendimento atualizado com sucesso!',
               'Redirecionando a página...'
             );
             setTimeout(
               () =>
-                this.router.navigate(['/atendimentos/iniciar'], {
-                  queryParams: { pagina: 1 }
-                }),
+                this.router.navigate([
+                  '/pep/paciente/',
+                  this.form.get('checkUpHeader').value['patient']['id']
+                ]),
               2000
             );
             this.submittedSucess = true;
           }
         });
       } else {
-        this.checkUpHeaderService.create(checkUpHeader).subscribe({
+        this.checkUpService.create(checkUp).subscribe({
           error: () =>
             this.modalService.alertDanger(
-              'Erro ao criar cabeçalho de atendimento!',
+              'Erro ao criar atendimento!',
               'Tente novamente mais tarde.'
             ),
           complete: () => {
             this.modalService.alertSuccess(
-              'Cabeçalho de atendimento criado com sucesso!',
+              'Atendimento criado com sucesso!',
               'Redirecionando a página...'
             );
             setTimeout(
               () =>
-                this.router.navigate(['/atendimentos/iniciar'], {
+                this.router.navigate(['/atendimentos'], {
                   queryParams: { pagina: 1 }
                 }),
               2000
@@ -174,13 +200,7 @@ export class CheckUpFormComponent extends FormService implements OnInit {
             this.submittedSucess = true;
           }
         });
-      }*/
+      }
     }
   }
-
-  /*private createObject(): CheckUpHeader {
-    const checkUpHeader: CheckUpHeader = this.form.value;
-    this.dateService.toISODateString(checkUpHeader);
-    return checkUpHeader;
-  }*/
 }

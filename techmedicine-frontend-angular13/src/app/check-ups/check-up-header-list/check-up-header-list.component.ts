@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
@@ -11,6 +10,8 @@ import {
   switchMap,
   take
 } from 'rxjs';
+import { Medic } from 'src/app/medics/model/medic';
+import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
 import { CheckUpHeader } from '../model/check-up-header';
@@ -29,19 +30,26 @@ export class CheckUpHeaderHeaderListComponent implements OnInit, OnDestroy {
   currentPage: number;
   itemsPerPage: number;
   paginationSize: number;
-  filter: string;
+  isCollapsed: boolean = true;
   filterSwitches: any = {
     opened: true,
     finished: false,
     cancelled: false
   };
+  medics: Medic[];
+  medicsLoading: boolean = true;
+  compareFnMedic(c1: Medic, c2: Medic): boolean {
+    return c1 && c2 ? c1.id === c2.id : c1 === c2;
+  }
+  filterMedic: Medic;
+  filter: string;
 
   constructor(
     private checkUpHeaderService: CheckUpHeaderService,
     private modalService: ModalService,
+    private dropdownService: DropdownService,
     private route: ActivatedRoute,
-    private router: Router,
-    private location: Location
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +61,7 @@ export class CheckUpHeaderHeaderListComponent implements OnInit, OnDestroy {
       }
     );
     this.onRefresh();
+    this.fetchData();
   }
 
   ngOnDestroy(): void {
@@ -62,8 +71,23 @@ export class CheckUpHeaderHeaderListComponent implements OnInit, OnDestroy {
   situationLabelBackground(checkUpHeaderSituation: string): any {
     return {
       'check-up-header-label-open': checkUpHeaderSituation === 'ABERTO',
-      'check-up-header-label-cancelled': checkUpHeaderSituation === 'CANCELADO'
+      'check-up-header-label-cancelled': checkUpHeaderSituation === 'CANCELADO',
+      'check-up-header-label-finished': checkUpHeaderSituation === 'FINALIZADO'
     };
+  }
+
+  private fetchData(): void {
+    this.dropdownService.getMedics().subscribe({
+      next: (medics: Medic[]) => {
+        this.medics = medics.map((medic: any) => {
+          medic.searchLabel = `${medic.name} ${medic.surname}`;
+          return medic;
+        });
+      },
+      complete: () => {
+        this.medicsLoading = false;
+      }
+    });
   }
 
   onRefresh(): void | Observable<never> {
@@ -89,23 +113,33 @@ export class CheckUpHeaderHeaderListComponent implements OnInit, OnDestroy {
     this.toFirstPage();
   }
 
+  setFilterMedic(medic: Medic) {
+    this.filterMedic = medic;
+  }
+
   showData(checkUpHeaders: CheckUpHeader[]): CheckUpHeader[] {
     if (!this.filterSwitches.opened) {
       checkUpHeaders = checkUpHeaders.filter(
         (checkUpHeader: CheckUpHeader) =>
-          checkUpHeader.checkUpSituation !== 'ABERTO'
+          checkUpHeader.checkUpHeaderSituation !== 'ABERTO'
       );
     }
     if (!this.filterSwitches.finished) {
       checkUpHeaders = checkUpHeaders.filter(
         (checkUpHeader: CheckUpHeader) =>
-          checkUpHeader.checkUpSituation !== 'FINALIZADO'
+          checkUpHeader.checkUpHeaderSituation !== 'FINALIZADO'
       );
     }
     if (!this.filterSwitches.cancelled) {
       checkUpHeaders = checkUpHeaders.filter(
         (checkUpHeader: CheckUpHeader) =>
-          checkUpHeader.checkUpSituation !== 'CANCELADO'
+          checkUpHeader.checkUpHeaderSituation !== 'CANCELADO'
+      );
+    }
+    if (this.filterMedic) {
+      checkUpHeaders = checkUpHeaders.filter(
+        (checkUpHeader: CheckUpHeader) =>
+          checkUpHeader.medic.id === this.filterMedic.id
       );
     }
     if (this.filter) {
@@ -183,7 +217,7 @@ export class CheckUpHeaderHeaderListComponent implements OnInit, OnDestroy {
     window.location.reload();
   }
 
-  onBack(): void {
-    this.location.back();
+  onHome(): void {
+    this.router.navigate(['/home']);
   }
 }

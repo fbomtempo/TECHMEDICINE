@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -29,7 +30,8 @@ defineLocale('pt-br', ptBrLocale);
     PaginationModule.forRoot(),
     BsDatepickerModule.forRoot(),
     TabsModule.forRoot(),
-    CollapseModule.forRoot()
+    CollapseModule.forRoot(),
+    AccordionModule.forRoot()
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

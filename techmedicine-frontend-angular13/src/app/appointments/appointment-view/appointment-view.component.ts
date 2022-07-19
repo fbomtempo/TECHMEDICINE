@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -14,7 +13,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AppointmentViewComponent implements OnInit, AfterViewInit {
   constructor(
-    private location: Location,
     private router: Router,
     private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef
@@ -24,11 +22,6 @@ export class AppointmentViewComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
-  }
-
-  onBack(): void {
-    this.location.back();
-    this.route.snapshot.queryParams['pagina'];
   }
 
   selectListTab(): void {
@@ -47,5 +40,9 @@ export class AppointmentViewComponent implements OnInit, AfterViewInit {
 
   log() {
     console.log('teste');
+  }
+
+  onHome(): void {
+    this.router.navigate(['/home']);
   }
 }

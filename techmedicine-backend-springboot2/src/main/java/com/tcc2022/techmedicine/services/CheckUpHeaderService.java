@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.tcc2022.techmedicine.entities.Appointment;
 import com.tcc2022.techmedicine.entities.CheckUpHeader;
 import com.tcc2022.techmedicine.entities.enums.AppointmentSituation;
-import com.tcc2022.techmedicine.entities.enums.CheckUpSituation;
+import com.tcc2022.techmedicine.entities.enums.CheckUpHeaderSituation;
 import com.tcc2022.techmedicine.exceptions.exception.DatabaseException;
 import com.tcc2022.techmedicine.exceptions.exception.NotFoundException;
 import com.tcc2022.techmedicine.repositories.AppointmentRepository;
@@ -43,13 +43,15 @@ public class CheckUpHeaderService {
 		try {
 			CheckUpHeader checkUpHeader = checkUpHeaderRepository.findByAppointment(obj.getAppointment());
 			if (checkUpHeader != null) {
-				throw new DatabaseException("Agendamento informado já possui um atendimento cadastrado");
+				if (checkUpHeader.getCheckUpHeaderSituation() != CheckUpHeaderSituation.CANCELADO) {
+					throw new DatabaseException("Agendamento informado já possui um atendimento cadastrado");
+				}
 			}
 			Appointment appointment = obj.getAppointment();
 			if (appointment != null) {
 				appointment.setAppointmentSituation(AppointmentSituation.ATENDIDO);				
 			}
-			obj.setCheckUpSituation(CheckUpSituation.ABERTO);
+			obj.setCheckUpHeaderSituation(CheckUpHeaderSituation.ABERTO);
 			obj.setStartTime(LocalTime.now());
 			appointmentRepository.save(appointment);
 			return checkUpHeaderRepository.save(obj);
@@ -61,8 +63,14 @@ public class CheckUpHeaderService {
 	public void delete(Long id) {
 		try {
 			CheckUpHeader checkUpHeader = findById(id);
+			if (checkUpHeader.getCheckUpHeaderSituation() == CheckUpHeaderSituation.CANCELADO) {
+				throw new DatabaseException("Cabeçalho de atendimento já está cancelado");
+			}
+			if (checkUpHeader.getCheckUpHeaderSituation() == CheckUpHeaderSituation.FINALIZADO) {
+				throw new DatabaseException("Não é possivel cancelar um cabeçalho de atendimento finalizado");
+			}
 			Appointment appointment = checkUpHeader.getAppointment();
-			checkUpHeader.setCheckUpSituation(CheckUpSituation.CANCELADO);
+			checkUpHeader.setCheckUpHeaderSituation(CheckUpHeaderSituation.CANCELADO);
 			appointment.setAppointmentSituation(AppointmentSituation.AGENDADO);
 			checkUpHeaderRepository.save(checkUpHeader);
 			appointmentRepository.save(appointment);
@@ -76,8 +84,11 @@ public class CheckUpHeaderService {
 	public CheckUpHeader update(Long id, CheckUpHeader obj) {
 		try {
 			CheckUpHeader checkUpHeader = checkUpHeaderRepository.findById(id).get();
-			if (checkUpHeader.getCheckUpSituation() == CheckUpSituation.CANCELADO) {
-				throw new DatabaseException("Não é possivel alterar um agendamento cancelado");
+			if (checkUpHeader.getCheckUpHeaderSituation() == CheckUpHeaderSituation.CANCELADO) {
+				throw new DatabaseException("Não é possivel alterar um cabeçalho de atendimento cancelado");
+			}
+			if (checkUpHeader.getCheckUpHeaderSituation() == CheckUpHeaderSituation.FINALIZADO) {
+				throw new DatabaseException("Não é possivel alterar um cabeçalho de atendimento finalizado");
 			}
 			updateData(checkUpHeader, obj);
 			return checkUpHeaderRepository.save(checkUpHeader);

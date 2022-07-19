@@ -1,12 +1,12 @@
 <div *ngIf="loadPage; else loadingError">
   <button
     type="button"
-    class="btn btn-primary mb-3"
+    class="btn btn-secondary mb-3"
     (click)="isCollapsed = !isCollapsed"
     [attr.aria-expanded]="!isCollapsed"
     aria-controls="collapseBasic"
   >
-    Filtros
+    Filtros <i class="fas fa-arrows-alt-v"></i>
   </button>
   <div id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
     <div class="row">
@@ -53,6 +53,7 @@
           </div>
         </div>
         <div class="row">
+          <label for="medic" class="form-label">Médico:</label>
           <ng-select
             [items]="medics"
             (change)="setFilterMedic($event)"

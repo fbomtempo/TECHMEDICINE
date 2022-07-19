@@ -1,13 +1,15 @@
 package com.tcc2022.techmedicine.entities.enums;
 
-public enum CheckUpSituation {
+public enum CheckUpHeaderSituation {
 
+	ABERTO("ABERTO"),
+	EM_ATENDIMENTO("EM ATENDIMENTO"),
 	FINALIZADO("FINALIZADO"),
 	CANCELADO("CANCELADO");
 	
 	private String code;
 	
-	private CheckUpSituation(String code) {
+	private CheckUpHeaderSituation(String code) {
 		this.code = code;
 	}
 	

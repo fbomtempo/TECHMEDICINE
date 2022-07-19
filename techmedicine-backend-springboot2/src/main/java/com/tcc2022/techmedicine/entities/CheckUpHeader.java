@@ -16,7 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.tcc2022.techmedicine.entities.enums.CheckUpSituation;
+import com.tcc2022.techmedicine.entities.enums.CheckUpHeaderSituation;
 
 @Entity
 @Table(name = "tb_checkup_header")
@@ -44,19 +44,19 @@ public class CheckUpHeader implements Serializable {
 	private LocalDate date;
 	
 	@Column(nullable = false)
-	@JsonFormat(pattern = "HH:mm")
+	@JsonFormat(pattern = "HH:mm:ss")
 	private LocalTime startTime;
 	
 	@Column(nullable = true)
-	@JsonFormat(pattern = "HH:mm")
+	@JsonFormat(pattern = "HH:mm:ss")
 	private LocalTime endTime;
 	
-	private String checkUpSituation;
+	private String checkUpHeaderSituation;
 	
 	public CheckUpHeader() {
 	}
 
-	public CheckUpHeader(Long id, Appointment appointment, Patient patient, Medic medic, LocalDate date, LocalTime startTime, LocalTime endTime, CheckUpSituation checkUpSituation) {
+	public CheckUpHeader(Long id, Appointment appointment, Patient patient, Medic medic, LocalDate date, LocalTime startTime, LocalTime endTime, CheckUpHeaderSituation checkUpHeaderSituation) {
 		this.id = id;
 		this.appointment = appointment;
 		this.patient = patient;
@@ -64,7 +64,7 @@ public class CheckUpHeader implements Serializable {
 		this.date = date;
 		this.startTime = startTime;
 		this.endTime = endTime;
-		setCheckUpSituation(checkUpSituation);
+		setCheckUpHeaderSituation(checkUpHeaderSituation);
 	}
 
 	public Long getId() {
@@ -123,13 +123,13 @@ public class CheckUpHeader implements Serializable {
 		this.endTime = endTime;
 	}
 
-	public CheckUpSituation getCheckUpSituation() {
-		return CheckUpSituation.valueOf(checkUpSituation);
+	public CheckUpHeaderSituation getCheckUpHeaderSituation() {
+		return CheckUpHeaderSituation.valueOf(checkUpHeaderSituation);
 	}
 	
-	public void setCheckUpSituation(CheckUpSituation checkUpSituation) {
-		if (checkUpSituation != null) {
-			this.checkUpSituation = checkUpSituation.getCode();
+	public void setCheckUpHeaderSituation(CheckUpHeaderSituation checkUpHeaderSituation) {
+		if (checkUpHeaderSituation != null) {
+			this.checkUpHeaderSituation = checkUpHeaderSituation.getCode();
 		}
 	}
 

@@ -50,6 +50,12 @@ public class AppointmentService {
 	public void delete(Long id) {
 		try {
 			Appointment appointment = findById(id);
+			if (appointment.getAppointmentSituation() == AppointmentSituation.CANCELADO) {
+				throw new DatabaseException("Agendamento já está cancelado");
+			}
+			if (appointment.getAppointmentSituation() == AppointmentSituation.ATENDIDO) {
+				throw new DatabaseException("Não é possível cancelar um agendamento que já possui um atendimento associado");
+			}
 			appointment.setAppointmentSituation(AppointmentSituation.CANCELADO);
 			appointmentRepository.save(appointment);
 		} catch (EmptyResultDataAccessException e) {
@@ -66,7 +72,7 @@ public class AppointmentService {
 				throw new DatabaseException("Não é possivel alterar um agendamento cancelado");
 			}
 			if (appointment.getAppointmentSituation() == AppointmentSituation.ATENDIDO) {
-				throw new DatabaseException("Não é possivel alterar um agendamento que já possui um atendimento cadastrado");
+				throw new DatabaseException("Não é possivel alterar um agendamento que já possui um atendimento associado");
 			}
 			updateData(appointment, obj);
 			return appointmentRepository.save(appointment);

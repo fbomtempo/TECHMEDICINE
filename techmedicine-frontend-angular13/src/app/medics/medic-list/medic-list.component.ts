@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
@@ -35,8 +34,7 @@ export class MedicListComponent implements OnInit, OnDestroy {
     private medicService: MedicService,
     private modalService: ModalService,
     private route: ActivatedRoute,
-    private router: Router,
-    private location: Location
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -151,7 +149,7 @@ export class MedicListComponent implements OnInit, OnDestroy {
     window.location.reload();
   }
 
-  onBack(): void {
-    this.location.back();
+  onHome(): void {
+    this.router.navigate(['/home']);
   }
 }

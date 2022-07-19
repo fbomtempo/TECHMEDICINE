@@ -20,8 +20,22 @@ export class CheckUpService extends CrudService<CheckUp> {
     super(http, `${environment.API}atendimentos`);
   }
 
-  findAllFormatted(): Observable<any[]> {
+  findAllFormatted(): Observable<CheckUp[]> {
     return this.http.get<CheckUp[]>(this.API_URL).pipe(
+      delay(750),
+      map((checkUps: CheckUp[]) => {
+        return checkUps.map((checkUp: CheckUp) => {
+          this.dateService.toPtBrDateString(checkUp.checkUpHeader);
+          this.maskService.formatData(checkUp.checkUpHeader.patient);
+          this.maskService.formatData(checkUp.checkUpHeader.medic);
+          return checkUp;
+        });
+      })
+    );
+  }
+
+  findAllByPatient(id: number): Observable<CheckUp[]> {
+    return this.http.get<CheckUp[]>(`${this.API_URL}/paciente/${id}`).pipe(
       delay(750),
       map((checkUps: CheckUp[]) => {
         return checkUps.map((checkUp: CheckUp) => {

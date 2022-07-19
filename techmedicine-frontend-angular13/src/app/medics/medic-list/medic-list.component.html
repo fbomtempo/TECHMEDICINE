@@ -1,8 +1,8 @@
 <div *ngIf="medics$ | async as medics; else loadingError">
   <div class="row">
     <div class="pt-4 pb-md-0 pb-3 col-md-3">
-      <a class="fs-5 display-1 back" (click)="onBack()"
-        ><i class="fas fa-arrow-left"></i><span class="ms-2">Voltar</span></a
+      <a class="fs-5 display-1 back" (click)="onHome()"
+        ><i class="fas fa-home"></i><span class="ms-2">Home</span></a
       >
     </div>
     <h1 class="text-center pb-5">Cadastro de Médicos</h1>
@@ -94,6 +94,7 @@
     <pagination
       [totalItems]="showData(medics).length"
       [maxSize]="paginationSize"
+      [itemsPerPage]="itemsPerPage"
       (pageChanged)="pageChanged($event)"
       [(ngModel)]="currentPage"
       [boundaryLinks]="true"
