@@ -219,7 +219,7 @@ export class MedicFormComponent extends FormService implements OnInit {
   }
 
   private createObject(): Medic {
-    const medic: Medic = this.maskService.unformatData(this.form.value);
+    const medic: Medic = this.maskService.unformatData({ ...this.form.value });
     this.dateService.toISODateString(medic);
     return medic;
   }

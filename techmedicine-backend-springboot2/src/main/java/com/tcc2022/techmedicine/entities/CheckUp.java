@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.tcc2022.techmedicine.entities.enums.CheckUpHeaderSituation;
 import com.tcc2022.techmedicine.entities.enums.CheckUpSituation;
 
 @Entity

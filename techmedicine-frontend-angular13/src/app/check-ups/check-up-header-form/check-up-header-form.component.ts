@@ -112,7 +112,10 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
   private createForm(): void {
     if (this.route.snapshot.params['id']) {
       this.formType = 'Editar';
-      var date: Date = new Date(this.checkUpHeader.date);
+      var date: Date = this.dateService.createDateObject(
+        this.checkUpHeader.date,
+        false
+      );
     } else {
       this.formType = 'Novo';
       var date: Date = new Date();
@@ -229,7 +232,7 @@ export class CheckUpHeaderFormComponent extends FormService implements OnInit {
   }
 
   private createObject(): CheckUpHeader {
-    const checkUpHeader: CheckUpHeader = this.form.value;
+    const checkUpHeader: CheckUpHeader = { ...this.form.value };
     this.dateService.toISODateString(checkUpHeader);
     return checkUpHeader;
   }

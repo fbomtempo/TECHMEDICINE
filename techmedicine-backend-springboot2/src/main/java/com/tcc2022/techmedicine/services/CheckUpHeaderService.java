@@ -103,7 +103,5 @@ public class CheckUpHeaderService {
 		checkUpHeader.setPatient(obj.getPatient());
 		checkUpHeader.setMedic(obj.getMedic());
 		checkUpHeader.setDate(obj.getDate());
-		checkUpHeader.setStartTime(obj.getStartTime());
-		checkUpHeader.setEndTime(obj.getEndTime());
 	}
 }

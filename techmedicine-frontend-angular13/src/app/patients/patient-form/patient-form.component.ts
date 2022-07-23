@@ -211,7 +211,9 @@ export class PatientsFormComponent extends FormService implements OnInit {
   }
 
   private createObject(): Patient {
-    const patient: Patient = this.maskService.unformatData(this.form.value);
+    const patient: Patient = this.maskService.unformatData({
+      ...this.form.value
+    });
     this.dateService.toISODateString(patient);
     return patient;
   }

@@ -8,32 +8,32 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.tcc2022.techmedicine.entities.Specialty;
+import com.tcc2022.techmedicine.entities.Icd;
 import com.tcc2022.techmedicine.exceptions.exception.DatabaseException;
 import com.tcc2022.techmedicine.exceptions.exception.NotFoundException;
-import com.tcc2022.techmedicine.repositories.SpecialtyRepository;
+import com.tcc2022.techmedicine.repositories.IcdRepository;
 
 @Service
-public class SpecialtyService {
+public class IcdService {
 
 	@Autowired
-	private SpecialtyRepository specialtyRepository;
+	private IcdRepository icdRepository;
 	
-	public List<Specialty> findAll() {
-		return specialtyRepository.findAllByOrderByIdDesc();
+	public List<Icd> findAll() {
+		return icdRepository.findAllByOrderByIdDesc();
 	}
 
-	public Specialty findById(Long id) {
+	public Icd findById(Long id) {
 		try {	
-			return specialtyRepository.findById(id).get();
+			return icdRepository.findById(id).get();
 		} catch (NoSuchElementException e) {
 			throw new NotFoundException("Especialidade de id " + id + " não existe");
 		}
 	}
 	
-	public Specialty insert(Specialty obj) {
+	public Icd insert(Icd obj) {
 		try {
-			return specialtyRepository.save(obj);
+			return icdRepository.save(obj);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityViolationException("Integridade do banco de dados violada.");
 		}
@@ -41,17 +41,17 @@ public class SpecialtyService {
 	
 	public void delete(Long id) {
 		try {
-			specialtyRepository.deleteById(id);
+			icdRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new NotFoundException("Especialidade de id " + id + " não existe");
 		}
 	}
 	
-	public Specialty update(Long id, Specialty obj) {
+	public Icd update(Long id, Icd obj) {
 		try {
-			Specialty specialty = specialtyRepository.findById(id).get();
+			Icd specialty = icdRepository.findById(id).get();
 			updateData(specialty, obj);
-			return specialtyRepository.save(specialty);
+			return icdRepository.save(specialty);
 		} catch (NoSuchElementException e) {
 			throw new NotFoundException("Especialidade de id " + id + " não existe");
 		} catch (DataIntegrityViolationException e) {
@@ -59,7 +59,7 @@ public class SpecialtyService {
 		}
 	}
 	
-	private void updateData(Specialty specialty, Specialty obj) {
+	private void updateData(Icd specialty, Icd obj) {
 		specialty.setDescription(obj.getDescription());
 	}
 }

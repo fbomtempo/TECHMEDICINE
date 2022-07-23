@@ -39,6 +39,10 @@ const routes: Routes = [
       import('./roles/roles.module').then((m) => m.RolesModule)
   },
   {
+    path: 'doencas',
+    loadChildren: () => import('./icds/icds.module').then((m) => m.IcdsModule)
+  },
+  {
     path: 'agendamentos',
     loadChildren: () =>
       import('./appointments/appointments.module').then(

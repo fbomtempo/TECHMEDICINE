@@ -123,6 +123,22 @@
               >
             </li>
             <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['doencas']"
+                [queryParams]="{ pagina: 1 }"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{
+                  paths: 'subset',
+                  queryParams: 'ignored',
+                  matrixParams: 'ignored',
+                  fragment: 'ignored'
+                }"
+                (isActiveChange)="onRouterLinkActive($event, 0, 'Doenças')"
+                >Cadastro de Doenças</a
+              >
+            </li>
+            <li>
               <hr class="dropdown-divider" />
             </li>
             <li><a class="dropdown-item" href="#">Something else here</a></li>
@@ -219,9 +235,13 @@
     </div>
   </div>
 </nav>
-<div class="container">
-  <router-outlet></router-outlet>
+
+<div class="w-100 row">
+  <div class="col-1"></div>
+  <div class="col-10"><router-outlet></router-outlet></div>
+  <div class="col-1"></div>
 </div>
+
 <footer
   class="d-flex flex-wrap justify-content-between align-items-center footer mt-auto py-3 border-top bg-color-primary"
 >

@@ -226,7 +226,9 @@ export class EmployeeFormComponent extends FormService implements OnInit {
   }
 
   private createObject(): Employee {
-    const employee: Employee = this.maskService.unformatData(this.form.value);
+    const employee: Employee = this.maskService.unformatData({
+      ...this.form.value
+    });
     this.dateService.toISODateString(employee);
     return employee;
   }

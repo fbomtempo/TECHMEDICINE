@@ -16,6 +16,6 @@ public interface CheckUpRepository extends JpaRepository<CheckUp, Long> {
 	
 	@Query("SELECT c from CheckUp c "
 			+ "WHERE c.checkUpHeader.patient = :patient "
-			+ "ORDER BY c.checkUpHeader.date, c.checkUpHeader.endTime DESC")
+			+ "ORDER BY c.checkUpHeader.date DESC")
 	List<CheckUp> findAllByPatient(@Param("patient")Patient patient);
 }
