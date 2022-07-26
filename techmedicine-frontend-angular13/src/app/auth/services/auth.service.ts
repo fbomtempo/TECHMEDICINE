@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -7,18 +7,28 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-
   private readonly API_URL: string = environment.API;
-
-  private readonly httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  private readonly clientId: string = 'techmedicine';
+  private readonly clientSecret: string = 'techmedicineSecretKey';
+  private readonly httpOptions: any = {
+    headers: new HttpHeaders({
+      Authorization: 'Basic ' + btoa(`${this.clientId}:${this.clientSecret}`),
+      'Content-Type': 'application/x-www-form-urlencoded'
+    })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   login(username: string, password: string): Observable<any> {
-    console.log({ username, password });
-    return this.http.post(`${this.API_URL}login`, { usuario: username, senha: password }, this.httpOptions);
+    const params: HttpParams = new HttpParams()
+      .set('username', username)
+      .set('password', password)
+      .set('grant_type', 'password');
+    return this.http.post<any>(
+      `${this.API_URL}oauth/token`,
+      params.toString(),
+      this.httpOptions
+    );
   }
 
   /*register(username: string, email: string, password: string): Observable<any> {

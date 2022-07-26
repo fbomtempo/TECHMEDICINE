@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 import { SharedModule } from '../shared/shared.module';
@@ -21,7 +22,8 @@ import { PerPatientPageComponent } from './per-patient-page/per-patient-page.com
     NgSelectModule,
     CollapseModule,
     PaginationModule,
-    AccordionModule
+    AccordionModule,
+    BsDatepickerModule
   ]
 })
 export class PatientEletronicRecordsModule {}

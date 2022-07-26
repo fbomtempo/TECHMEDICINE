@@ -9,8 +9,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.tcc2022.techmedicine.entities.Medic;
-import com.tcc2022.techmedicine.exceptions.exception.DatabaseException;
-import com.tcc2022.techmedicine.exceptions.exception.NotFoundException;
+import com.tcc2022.techmedicine.exceptions.custom.DatabaseException;
+import com.tcc2022.techmedicine.exceptions.custom.NotFoundException;
 import com.tcc2022.techmedicine.repositories.MedicRepository;
 
 @Service

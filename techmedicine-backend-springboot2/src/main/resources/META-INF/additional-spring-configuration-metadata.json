@@ -1,0 +1,47 @@
+{"properties": [
+  {
+    "name": "security.jwt.signing-key",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.signing-key'"
+  },
+  {
+    "name": "techmedicine.app.client-id",
+    "type": "java.lang.String",
+    "description": "A description for 'techmedicine.app.client-id'"
+  },
+  {
+    "name": "techmedicine.app.token-validity",
+    "type": "java.lang.String",
+    "description": "A description for 'techmedicine.app.token-validity'"
+  },
+  {
+    "name": "techmedicine.app.client-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'techmedicine.app.client-secret'"
+  },
+  {
+    "name": "techmedicine.app.oauth2.client-id",
+    "type": "java.lang.String",
+    "description": "A description for 'techmedicine.app.oauth2.client-id'"
+  },
+  {
+    "name": "techmedicine.app.oauth2.client-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'techmedicine.app.oauth2.client-secret'"
+  },
+  {
+    "name": "techmedicine.app.oauth2.token-validity",
+    "type": "java.lang.String",
+    "description": "A description for 'techmedicine.app.oauth2.token-validity'"
+  },
+  {
+    "name": "techmedicine.app.jwt.signin-key",
+    "type": "java.lang.String",
+    "description": "A description for 'techmedicine.app.jwt.signin-key'"
+  },
+  {
+    "name": "techmedicine.app.jwt.signing-key",
+    "type": "java.lang.String",
+    "description": "A description for 'techmedicine.app.jwt.signing-key'"
+  }
+]}

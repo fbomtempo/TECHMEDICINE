@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { delay, map, Observable, take } from 'rxjs';
 import { Appointment } from 'src/app/appointments/model/appointment';
 import { CheckUpHeader } from 'src/app/check-ups/model/check-up-header';
+import { Disease } from 'src/app/diseases/model/disease';
 import { Medic } from 'src/app/medics/model/medic';
 import { Patient } from 'src/app/patients/model/patient';
 import { Role } from 'src/app/roles/model/role';
@@ -47,6 +48,22 @@ export class DropdownService {
 
   getRoles(): Observable<Role[]> {
     return this.http.get<Role[]>(`${this.API}cargos`).pipe(
+      delay(750),
+      take(1),
+      map((roles) =>
+        roles.sort((a, b) =>
+          a.description > b.description
+            ? 1
+            : b.description > a.description
+            ? -1
+            : 0
+        )
+      )
+    );
+  }
+
+  getDiseases(): Observable<Disease[]> {
+    return this.http.get<Disease[]>(`${this.API}doencas`).pipe(
       delay(750),
       take(1),
       map((roles) =>

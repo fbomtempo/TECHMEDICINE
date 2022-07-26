@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.tcc2022.techmedicine.exceptions.exception.DatabaseException;
-import com.tcc2022.techmedicine.exceptions.exception.NotFoundException;
+import com.tcc2022.techmedicine.exceptions.custom.DatabaseException;
+import com.tcc2022.techmedicine.exceptions.custom.NotFoundException;
 
 @ControllerAdvice
 public class Handler {

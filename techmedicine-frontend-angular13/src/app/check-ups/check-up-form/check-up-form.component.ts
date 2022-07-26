@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { map } from 'rxjs';
+import { Disease } from 'src/app/diseases/model/disease';
 import { DateService } from 'src/app/shared/services/date.service';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { FormService } from 'src/app/shared/services/form-service';
@@ -30,6 +31,11 @@ export class CheckUpFormComponent extends FormService implements OnInit {
   checkUpHeaders: CheckUpHeader[];
   checkUpHeadersLoading: boolean = true;
   compareFnCheckUpHeaders(c1: CheckUpHeader, c2: CheckUpHeader): boolean {
+    return c1 && c2 ? c1.id === c2.id : c1 === c2;
+  }
+  diseases: Disease[];
+  diseasesLoading: boolean = true;
+  compareFnDiseases(c1: Disease, c2: Disease): boolean {
     return c1 && c2 ? c1.id === c2.id : c1 === c2;
   }
   @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
@@ -74,6 +80,14 @@ export class CheckUpFormComponent extends FormService implements OnInit {
           this.checkUpHeadersLoading = false;
         }
       });
+    this.dropdownService.getDiseases().subscribe({
+      next: (diseases: Disease[]) => {
+        this.diseases = diseases;
+      },
+      complete: () => {
+        this.diseasesLoading = false;
+      }
+    });
   }
 
   private createForm(): void {

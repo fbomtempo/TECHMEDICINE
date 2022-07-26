@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../../auth/services/auth.service';
 import { TokenStorageService } from '../../auth/services/token-storage.service';
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private tokenStorage: TokenStorageService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +42,7 @@ export class LoginComponent implements OnInit {
     const { usuario, senha } = this.form.value;
     this.authService.login(usuario, senha).subscribe({
       next: (data: any) => {
-        this.tokenStorage.saveToken(data.accessToken);
+        this.tokenStorage.saveToken(data.access_token);
         this.tokenStorage.saveUser(data);
         this.isLoginFailed = false;
         this.isLoggedIn = true;
@@ -49,7 +51,6 @@ export class LoginComponent implements OnInit {
       },
       error: (err: any) => {
         this.errorMessage = err.error.message;
-        console.log(err);
         this.isLoginFailed = true;
       }
     });
@@ -57,5 +58,11 @@ export class LoginComponent implements OnInit {
 
   reloadPage(): void {
     window.location.reload();
+  }
+
+  redirectToHome() {
+    if (this.isLoggedIn) {
+      this.router.navigate(['/home']);
+    }
   }
 }

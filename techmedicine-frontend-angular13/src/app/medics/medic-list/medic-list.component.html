@@ -24,7 +24,7 @@
           class="btn btn-clear clear ms-2"
           (click)="clearFilter()"
         >
-          Limpar
+          <i class="fas fa-times"></i>
         </button>
       </div>
     </div>
@@ -61,30 +61,32 @@
           <td>{{ medic.crm }}</td>
           <td>{{ medic.specialty.description }}</td>
           <td>
-            <button
-              type="button"
-              title="Editar"
-              class="btn btn-round btn-outline-edit me-2"
-              [routerLink]="['editar/', medic.id]"
-            >
-              <i class="fas fa-pencil-alt"></i>
-            </button>
-            <button
-              type="button"
-              title="Deletar"
-              class="btn-round btn-outline-delete me-2"
-              (click)="onDelete(medic)"
-            >
-              <i class="fas fa-trash-alt"></i>
-            </button>
-            <button
-              type="button"
-              title="Visualizar"
-              class="btn-round btn-outline-view"
-              [routerLink]="['visualizar/', medic.id]"
-            >
-              <i class="fas fa-eye"></i>
-            </button>
+            <div class="d-flex">
+              <button
+                type="button"
+                title="Editar"
+                class="btn btn-round btn-outline-edit me-2"
+                [routerLink]="['editar/', medic.id]"
+              >
+                <i class="fas fa-pencil-alt"></i>
+              </button>
+              <button
+                type="button"
+                title="Deletar"
+                class="btn-round btn-outline-delete me-2"
+                (click)="onDelete(medic)"
+              >
+                <i class="fas fa-trash-alt"></i>
+              </button>
+              <button
+                type="button"
+                title="Visualizar"
+                class="btn-round btn-outline-view"
+                [routerLink]="['visualizar/', medic.id]"
+              >
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>

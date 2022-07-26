@@ -14,8 +14,8 @@ import com.tcc2022.techmedicine.entities.CheckUpHeader;
 import com.tcc2022.techmedicine.entities.Patient;
 import com.tcc2022.techmedicine.entities.enums.CheckUpHeaderSituation;
 import com.tcc2022.techmedicine.entities.enums.CheckUpSituation;
-import com.tcc2022.techmedicine.exceptions.exception.DatabaseException;
-import com.tcc2022.techmedicine.exceptions.exception.NotFoundException;
+import com.tcc2022.techmedicine.exceptions.custom.DatabaseException;
+import com.tcc2022.techmedicine.exceptions.custom.NotFoundException;
 import com.tcc2022.techmedicine.repositories.CheckUpHeaderRepository;
 import com.tcc2022.techmedicine.repositories.CheckUpRepository;
 import com.tcc2022.techmedicine.repositories.PatientRepository;
@@ -96,7 +96,7 @@ public class CheckUpService {
 	private void updateData(CheckUp checkUp, CheckUp obj) {
 		checkUp.setCheckUpHeader(obj.getCheckUpHeader());
 		checkUp.setComplaint(obj.getComplaint());
-		checkUp.setDiseaseHistory(obj.getDisease());
+		checkUp.setDiseaseHistory(obj.getDiseaseHistory());
 		checkUp.setFamilyHistory(obj.getFamilyHistory());
 		checkUp.setPatientHistory(obj.getPatientHistory());
 		checkUp.setDisease(obj.getDisease());

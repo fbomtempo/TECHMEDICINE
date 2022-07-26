@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.tcc2022.techmedicine.entities.Appointment;
 import com.tcc2022.techmedicine.entities.enums.AppointmentSituation;
-import com.tcc2022.techmedicine.exceptions.exception.DatabaseException;
-import com.tcc2022.techmedicine.exceptions.exception.NotFoundException;
+import com.tcc2022.techmedicine.exceptions.custom.DatabaseException;
+import com.tcc2022.techmedicine.exceptions.custom.NotFoundException;
 import com.tcc2022.techmedicine.repositories.AppointmentRepository;
 
 @Service

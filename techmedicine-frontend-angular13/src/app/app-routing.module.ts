@@ -1,53 +1,62 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ActivateGuard } from './shared/guards/activate.guard';
 
 const routes: Routes = [
-  {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule)
-  },
   {
     path: 'login',
     loadChildren: () =>
       import('./login/login.module').then((m) => m.LoginModule)
   },
   {
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule)
+  },
+  {
     path: 'pacientes',
     loadChildren: () =>
-      import('./patients/patients.module').then((m) => m.PatientsModule)
+      import('./patients/patients.module').then((m) => m.PatientsModule),
+    canActivate: [ActivateGuard]
   },
   {
     path: 'medicos',
     loadChildren: () =>
-      import('./medics/medics.module').then((m) => m.MedicsModule)
+      import('./medics/medics.module').then((m) => m.MedicsModule),
+    canActivate: [ActivateGuard]
   },
   {
     path: 'funcionarios',
     loadChildren: () =>
-      import('./employees/employees.module').then((m) => m.EmployeesModule)
+      import('./employees/employees.module').then((m) => m.EmployeesModule),
+    canActivate: [ActivateGuard]
   },
   {
     path: 'especialidades',
     loadChildren: () =>
       import('./specialties/specialties.module').then(
         (m) => m.SpecialtiesModule
-      )
+      ),
+    canActivate: [ActivateGuard]
   },
   {
     path: 'cargos',
     loadChildren: () =>
-      import('./roles/roles.module').then((m) => m.RolesModule)
+      import('./roles/roles.module').then((m) => m.RolesModule),
+    canActivate: [ActivateGuard]
   },
   {
     path: 'doencas',
-    loadChildren: () => import('./icds/icds.module').then((m) => m.IcdsModule)
+    loadChildren: () =>
+      import('./diseases/diseases.module').then((m) => m.DiseasesModule),
+    canActivate: [ActivateGuard]
   },
   {
     path: 'agendamentos',
     loadChildren: () =>
       import('./appointments/appointments.module').then(
         (m) => m.AppointmentsModule
-      )
+      ),
+    canActivate: [ActivateGuard]
   },
   {
     path: 'atendimentos',
@@ -61,7 +70,8 @@ const routes: Routes = [
     loadChildren: () =>
       import(
         './patient-eletronic-records/patient-eletronic-records.module'
-      ).then((m) => m.PatientEletronicRecordsModule)
+      ).then((m) => m.PatientEletronicRecordsModule),
+    canActivate: [ActivateGuard]
   },
   {
     path: '',
@@ -71,7 +81,8 @@ const routes: Routes = [
   {
     path: '**',
     loadChildren: () =>
-      import('./not-found/not-found.module').then((m) => m.NotFoundModule)
+      import('./not-found/not-found.module').then((m) => m.NotFoundModule),
+    canActivate: [ActivateGuard]
   }
 ];
 

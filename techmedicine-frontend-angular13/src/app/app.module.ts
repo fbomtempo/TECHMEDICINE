@@ -14,12 +14,14 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { authInterceptorProviders } from './auth/auth-interceptor';
+import { FooterComponent } from './menus/footer/footer.component';
+import { NavbarComponent } from './menus/navbar/navbar.component';
 import { SharedModule } from './shared/shared.module';
 
 defineLocale('pt-br', ptBrLocale);
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, NavbarComponent, FooterComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

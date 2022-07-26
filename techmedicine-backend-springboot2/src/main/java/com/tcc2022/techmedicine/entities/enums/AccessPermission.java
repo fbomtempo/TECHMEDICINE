@@ -2,9 +2,8 @@ package com.tcc2022.techmedicine.entities.enums;
 
 public enum AccessPermission {
 	
-	ROLE_FUNCIONARIO("ROLE_FUNCIONARIO"),
-    ROLE_MEDICO("ROLE_MEDICO"),
-    ROLE_ADMIN("ROLE_ADMIN");
+	FUNCIONARIO("FUNCIONARIO"),
+    ADMIN("ADMIN");
 	
 	private String code;
 	

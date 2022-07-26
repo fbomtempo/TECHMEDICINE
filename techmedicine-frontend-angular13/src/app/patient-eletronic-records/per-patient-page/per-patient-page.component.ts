@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsDaterangepickerConfig } from 'ngx-bootstrap/datepicker';
 import { catchError, Observable, of, Subject, switchMap, take } from 'rxjs';
 import { CheckUp } from 'src/app/check-ups/model/check-up';
 import { CheckUpService } from 'src/app/check-ups/service/check-up.service';
@@ -26,7 +27,14 @@ export class PerPatientPageComponent implements OnInit {
   compareFnMedic(c1: Medic, c2: Medic): boolean {
     return c1 && c2 ? c1.id === c2.id : c1 === c2;
   }
+  dateRange: Date[];
   filterMedic: Medic;
+  datepickerConfig: Partial<BsDaterangepickerConfig> = {
+    adaptivePosition: true,
+    showClearButton: true,
+    clearButtonLabel: 'Limpar',
+    containerClass: 'theme-dark-blue'
+  };
 
   constructor(
     private patientService: PatientService,
@@ -70,12 +78,43 @@ export class PerPatientPageComponent implements OnInit {
     this.filterMedic = medic;
   }
 
+  log() {
+    console.log(this.dateRange);
+  }
+
   showData(checkUps: CheckUp[]): CheckUp[] {
     if (this.filterMedic) {
       checkUps = checkUps.filter(
         (checkUp: CheckUp) =>
           checkUp.checkUpHeader.medic.id === this.filterMedic.id
       );
+    }
+    if (this.dateRange) {
+      checkUps = checkUps.filter((checkUp: CheckUp) => {
+        const dayMonthYear: string[] = checkUp.checkUpHeader.date.split('/');
+        const startDate: Date = this.dateService.createDateObject(
+          this.dateRange[0].toISOString().slice(0, 10),
+          false
+        );
+        const endDate: Date = this.dateService.createDateObject(
+          this.dateRange[1].toISOString().slice(0, 10),
+          false
+        );
+        return (
+          this.dateService
+            .createDateObject(
+              `${dayMonthYear[2]}-${dayMonthYear[1]}-${dayMonthYear[0]}`,
+              false
+            )
+            .getTime() >= startDate.getTime() &&
+          this.dateService
+            .createDateObject(
+              `${dayMonthYear[2]}-${dayMonthYear[1]}-${dayMonthYear[0]}`,
+              false
+            )
+            .getTime() <= endDate.getTime()
+        );
+      });
     }
     return checkUps;
   }

@@ -1,7 +1,7 @@
 <div class="d-flex flex-column h-100">
-  <h1 class="text-center pt-5 display-4">Bem-vindo(a) de volta!</h1>
+  <h1 class="text-center pt-5 display-5">Bem-vindo(a) de volta!</h1>
   <div class="container container-padding">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3">
+    <div class="row row-cols-xl-3 row-cols-md-2 row-cols-1">
       <div class="pb-5 pt-4 pt-lg-1 pt-xl-0 col d-flex justify-content-center">
         <a
           [routerLink]="['/pacientes']"
@@ -46,6 +46,54 @@
             </div>
             <div class="card-body">
               <h5 class="text-center card-title h3">Funcionários</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="pb-5 pt-4 pt-lg-4 col d-flex justify-content-center">
+        <a
+          [routerLink]="['/especialidades']"
+          [queryParams]="{ pagina: 1 }"
+          class="icon-link"
+        >
+          <div class="card">
+            <div class="text-center card-icon">
+              <i class="fas fa-stethoscope"></i>
+            </div>
+            <div class="card-body">
+              <h5 class="text-center card-title h3">Especialidades</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="pb-5 pt-4 pt-lg-4 col d-flex justify-content-center">
+        <a
+          [routerLink]="['/cargos']"
+          [queryParams]="{ pagina: 1 }"
+          class="icon-link"
+        >
+          <div class="card">
+            <div class="text-center card-icon">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="card-body">
+              <h5 class="text-center card-title h3">Cargos</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="pb-5 pt-4 pt-lg-4 col d-flex justify-content-center">
+        <a
+          [routerLink]="['/doencas']"
+          [queryParams]="{ pagina: 1 }"
+          class="icon-link"
+        >
+          <div class="card">
+            <div class="text-center card-icon">
+              <i class="fas fa-virus"></i>
+            </div>
+            <div class="card-body">
+              <h5 class="text-center card-title h3">Doenças</h5>
             </div>
           </div>
         </a>

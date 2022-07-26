@@ -39,8 +39,9 @@ public class CheckUp implements Serializable {
 	@Column(length = 500, nullable = false)
 	private String patientHistory;
 	
-	@Column(length = 50, nullable = false)
-	private String disease;
+	@OneToOne
+	@JoinColumn(name = "disease_id")
+	private Disease disease;
 	
 	@Column(length = 500, nullable = false)
 	private String conduct;
@@ -57,7 +58,7 @@ public class CheckUp implements Serializable {
 	}
 
 	public CheckUp(Long id, CheckUpHeader checkUpHeader, String complaint, String diseaseHistory, String familyHistory,
-			String patientHistory, String disease, String conduct, String prescription, String exams, CheckUpSituation checkUpSituation) {
+			String patientHistory, Disease disease, String conduct, String prescription, String exams, CheckUpSituation checkUpSituation) {
 		super();
 		this.id = id;
 		this.checkUpHeader = checkUpHeader;
@@ -120,11 +121,11 @@ public class CheckUp implements Serializable {
 		this.patientHistory = patientHistory;
 	}
 
-	public String getDisease() {
+	public Disease getDisease() {
 		return disease;
 	}
 
-	public void setDisease(String disease) {
+	public void setDisease(Disease disease) {
 		this.disease = disease;
 	}
 

@@ -150,26 +150,28 @@
           <div class="valid-feedback">Parece bom.</div>
         </div>
         <div class="col-xl-12">
-          <label for="disease" class="form-label">CID:</label>
-          <input
-            class="form-control"
+          <label for="role" class="form-label">CID</label>
+          <ng-select
             formControlName="disease"
-            id="disease"
-            [ngClass]="applyValidationClass('disease')"
-          />
-          <div
-            class="invalid-feedback"
-            *ngIf="form.get('disease').errors?.['required']"
+            [items]="diseases"
+            bindLabel="description"
+            labelForId="role"
+            placeholder="Selecione a doença"
+            clearAllText="Limpar"
+            [compareWith]="compareFnDiseases"
+            [loading]="diseasesLoading"
+            loadingText="Carregando..."
+            notFoundText="Nenhum item encontrado"
+            [virtualScroll]="true"
+            [ngClass]="
+              submitted
+                ? applyValidationClass('specialty', true)
+                : 'ng-untouched'
+            "
           >
-            Campo é obrigatório.
-          </div>
-          <div
-            class="invalid-feedback"
-            *ngIf="form.get('disease').errors?.['maxlength']"
-          >
-            Campo deve possuir no máximo 50 caracteres.
-          </div>
-          <div class="valid-feedback">Parece bom.</div>
+          </ng-select>
+          <div class="ng-select-invalid-feedback">Campo é obrigatório.</div>
+          <div class="ng-select-valid-feedback">Parece bom.</div>
         </div>
         <div class="col-xl-12">
           <label for="conduct" class="form-label">Conduta:</label>

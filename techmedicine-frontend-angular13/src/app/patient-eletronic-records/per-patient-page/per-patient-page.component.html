@@ -7,18 +7,20 @@
     </div>
     <h1 class="text-center pb-5">Página do Paciente</h1>
   </div>
-  <div class="row border mb-4">
+  <div class="row border mb-4" style="border-radius: 10px">
     <span class="mb-3"></span>
     <div class="col-md-2 col-12">
       <img
         src="../../../assets/images/user_profile.jpg"
         class="img-fluid d-block mx-md-0 mx-auto"
-        style="width: 140px"
+        style="width: 155px"
       />
     </div>
     <div class="col-md-8 col-10">
       <div class="row">
-        <h3>{{ patient.name + " " + patient.surname }}</h3>
+        <h3 class="mt-md-0 mt-3 pb-3">
+          {{ patient.name + " " + patient.surname }}
+        </h3>
         <div class="col-md-8 col-sm-12">
           <h6>Nascimento: {{ patient.birthDate }}</h6>
           <h6>Total de Consultas: {{ checkUps.length }}</h6>
@@ -86,7 +88,7 @@
     <div class="row">
       <div class="pb-3">
         <div class="row">
-          <div class="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-xs-12">
+          <div class="col-xl-6 col-lg-8 col-md-12 col-sm-12 col-xs-12">
             <label for="medic" class="form-label">Médico:</label>
             <ng-select
               [items]="medics"
@@ -124,6 +126,23 @@
                 </div>
               </ng-template>
             </ng-select>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 pt-lg-0 pt-3">
+            <label for="dateRangeStart" class="form-label"
+              >Intervalo
+              <span class="text-muted" style="font-size: 14px"
+                >(início-fim)</span
+              >:</label
+            >
+            <input
+              type="text"
+              bsDaterangepicker
+              [(ngModel)]="dateRange"
+              [bsConfig]="datepickerConfig"
+              class="form-control"
+              id="dateRangeStart"
+              placeholder="Data Inicial"
+            />
           </div>
         </div>
       </div>
