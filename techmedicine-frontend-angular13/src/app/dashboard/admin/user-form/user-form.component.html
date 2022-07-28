@@ -1,0 +1,100 @@
+<form class="row g-3 needs-validation" novalidate [formGroup]="form">
+  <div class="col-xl-5">
+    <label for="username" class="form-label">Nome de Usuário</label>
+    <input
+      type="text"
+      class="form-control"
+      id="username"
+      formControlName="username"
+      placeholder="Nome de Usuário"
+      [ngClass]="applyValidationClass('username')"
+    />
+    <div
+      class="invalid-feedback"
+      *ngIf="form.get('username').errors?.['required']"
+    >
+      Campo é obrigatório.
+    </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="form.get('username').errors?.['maxlength']"
+    >
+      Campo deve possuir no máximo 20 caracteres.
+    </div>
+    <div class="valid-feedback">Parece bom.</div>
+  </div>
+  <div class="col-12"></div>
+  <div class="col-xl-5">
+    <label for="password" class="form-label">Senha</label>
+    <input
+      type="text"
+      class="form-control"
+      id="password"
+      formControlName="password"
+      placeholder="Senha"
+      [ngClass]="applyValidationClass('password')"
+    />
+    <div
+      class="invalid-feedback"
+      *ngIf="form.get('password').errors?.['required']"
+    >
+      Campo é obrigatório.
+    </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="form.get('password').errors?.['maxlength']"
+    >
+      Campo deve possuir no máximo 20 caracteres.
+    </div>
+    <div class="valid-feedback">Parece bom.</div>
+  </div>
+  <div class="col-12"></div>
+  <div class="col-xl-5">
+    <label for="permissions" class="form-label">Permissões</label>
+    <ng-select
+      formControlName="permissions"
+      [items]="permissions"
+      bindLabel="description"
+      LabelForId="permissions"
+      placeholder="Selecione as permissões"
+      clearAllText="Limpar"
+      [multiple]="true"
+      [loading]="permissionsLoading"
+      loadingText="Carregando..."
+      notFoundText="Nenhum item encontrado"
+      [closeOnSelect]="false"
+      [searchable]="false"
+      [virtualScroll]="true"
+      [ngClass]="
+        submitted ? applyValidationClass('specialty', true) : 'ng-untouched'
+      "
+    >
+    </ng-select>
+    <div
+      class="invalid-feedback"
+      *ngIf="form.get('username').errors?.['required']"
+    >
+      Campo é obrigatório.
+    </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="form.get('username').errors?.['maxlength']"
+    >
+      Campo deve possuir no máximo 20 caracteres.
+    </div>
+    <div class="valid-feedback">Parece bom.</div>
+  </div>
+  <div class="pt-4 mb-5">
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+      Salvar
+    </button>
+    <button
+      type="button"
+      class="ms-2 btn btn-danger"
+      [routerLink]="['/funcionarios']"
+      [queryParams]="{ pagina: 1 }"
+    >
+      Cancelar
+    </button>
+  </div>
+</form>

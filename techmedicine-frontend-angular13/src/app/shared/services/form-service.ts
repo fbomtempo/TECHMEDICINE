@@ -49,11 +49,14 @@ export class FormService implements ICanDeactivate {
   }
 
   canDeactivateRoute(): boolean {
-    //return this.formHasChanged();
     if (this.changed && !this.submittedSucess) {
-      return confirm(
+      const deactivate: boolean = confirm(
         'Tem certeza que deseja sair? Os dados preenchidos serão perdidos.'
       );
+      if (deactivate) {
+        this.changed = false;
+      }
+      return deactivate;
     }
     return true;
   }

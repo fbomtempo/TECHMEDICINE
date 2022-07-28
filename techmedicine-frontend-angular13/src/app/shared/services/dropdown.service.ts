@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { delay, map, Observable, take } from 'rxjs';
-import { Appointment } from 'src/app/appointments/model/appointment';
-import { CheckUpHeader } from 'src/app/check-ups/model/check-up-header';
-import { Disease } from 'src/app/diseases/model/disease';
-import { Medic } from 'src/app/medics/model/medic';
-import { Patient } from 'src/app/patients/model/patient';
-import { Role } from 'src/app/roles/model/role';
-import { Specialty } from 'src/app/specialties/model/specialty';
+import { Permission } from 'src/app/dashboard/admin/models/permission';
+import { Appointment } from 'src/app/dashboard/appointments/models/appointment';
+import { CheckUpHeader } from 'src/app/dashboard/check-ups/models/check-up-header';
+import { Disease } from 'src/app/dashboard/diseases/models/disease';
+import { Medic } from 'src/app/dashboard/medics/models/medic';
+import { Patient } from 'src/app/dashboard/patients/models/patient';
+import { Role } from 'src/app/dashboard/roles/models/role';
+import { Specialty } from 'src/app/dashboard/specialties/models/specialty';
 import { environment } from 'src/environments/environment';
 
 import { State } from '../models/states';
@@ -150,5 +151,21 @@ export class DropdownService {
           return checkUpHeaders;
         })
       );
+  }
+
+  getPermissions(): Observable<Permission[]> {
+    return this.http.get<Role[]>(`${this.API}permissoes`).pipe(
+      delay(750),
+      take(1),
+      map((permissions) =>
+        permissions.sort((a, b) =>
+          a.description > b.description
+            ? 1
+            : b.description > a.description
+            ? -1
+            : 0
+        )
+      )
+    );
   }
 }

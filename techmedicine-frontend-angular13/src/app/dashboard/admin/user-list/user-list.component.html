@@ -1,0 +1,123 @@
+<div *ngIf="users$ | async as users; else loadingError">
+  <div class="row">
+    <div class="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-xs-12 mt-md-0 mt-2">
+      <div class="d-flex">
+        <input
+          class="form-control"
+          type="search"
+          placeholder="Digite o nome do usuário"
+          aria-label="Search"
+          id="search"
+          [(ngModel)]="filter"
+          (input)="onFilterInput()"
+        />
+        <button
+          type="button"
+          class="btn btn-clear clear ms-2"
+          (click)="clearFilter()"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="mt-3 table table-striped table-hover align-middle">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">ID</th>
+          <th scope="col">Nome de Usuário</th>
+          <th scope="col">Permissões</th>
+        </tr>
+      </thead>
+      <tbody class="table-link">
+        <tr
+          *ngFor="
+            let user of showData(users) | pagination: currentPage:itemsPerPage;
+            let i = index
+          "
+        >
+          <th scope="row">{{ i + 1 + (currentPage - 1) * itemsPerPage }}</th>
+          <td>{{ user.id }}</td>
+          <td>{{ user.username }}</td>
+          <td>
+            <button
+              class="btn btn-sm btn-outline-primary"
+              (click)="showPermissions(user.username)"
+            >
+              Ver Permissões
+            </button>
+            <ul class="pt-3" *ngIf="show[user.username]">
+              <li *ngFor="let permission of user.permissions">
+                {{ permission.description }}
+              </li>
+            </ul>
+          </td>
+          <td>
+            <div class="d-flex">
+              <button
+                type="button"
+                title="Editar"
+                class="btn btn-round btn-outline-edit me-2"
+                (click)="onEdit(user.id)"
+              >
+                <i class="fas fa-pencil-alt"></i>
+              </button>
+              <button
+                type="button"
+                title="Deletar"
+                class="btn-round btn-outline-delete me-2"
+                (click)="onDelete(user)"
+              >
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="mb-3 d-flex justify-content-center">
+    <pagination
+      [totalItems]="showData(users).length"
+      [maxSize]="paginationSize"
+      [itemsPerPage]="itemsPerPage"
+      [(ngModel)]="currentPage"
+      [boundaryLinks]="true"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
+      lastText="&raquo;"
+    >
+    </pagination>
+    <br />
+  </div>
+</div>
+
+<ng-template #loadingError>
+  <div *ngIf="error | async; else loading">
+    <div
+      style="height: 80vh"
+      class="d-flex flex-column align-items-center justify-content-center"
+    >
+      <p style="font-size: 1.65rem">Erro ao carregar pacientes.</p>
+      <button
+        type="button"
+        class="btn btn-lg btn-secondary"
+        (click)="reloadPage()"
+      >
+        Tentar Novamente <i class="fas fa-sync-alt"></i>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div
+    style="height: 60vh"
+    class="d-flex align-items-center justify-content-center"
+  >
+    <div class="loader"></div>
+  </div>
+</ng-template>

@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="pt-4 pb-md-0 pb-3 col-md-3">
+    <a class="fs-5 display-1 back" (click)="onHome()"
+      ><i class="fas fa-home"></i><span class="ms-2">Home</span></a
+    >
+  </div>
+  <h1 class="text-center pb-5">Página do Administrador</h1>
+  <div class="row">
+    <div class="col-xxl-2 col-lg-3 col-12">
+      <div class="list-group list-group-flush">
+        <button
+          type="button"
+          class="list-group-item list-group-item-action"
+          [class.active]="components[c1].active"
+          (click)="changeComponent(c1)"
+        >
+          Listar Usuários
+        </button>
+        <button
+          type="button"
+          class="list-group-item list-group-item-action"
+          [class.active]="components[c2].active"
+          (click)="changeComponent(c2)"
+        >
+          Cadastrar Usuário
+        </button>
+      </div>
+    </div>
+    <div class="col-xxl-10 col-lg-9 col-12 pt-lg-0 pt-5">
+      <app-user-list
+        *ngIf="components[c1].active"
+        (editEvent)="findUser($event)"
+      ></app-user-list>
+      <app-user-form
+        *ngIf="components[c2].active"
+        [user]="user"
+        (clearUser)="clearUser()"
+      ></app-user-form>
+    </div>
+  </div>
+</div>

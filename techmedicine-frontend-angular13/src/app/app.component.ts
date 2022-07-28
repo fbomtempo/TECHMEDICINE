@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'techmedicine';
 
-  constructor(private route: ActivatedRoute) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    console.log(this.route.url);
-  }
+  ngOnInit(): void {}
 }

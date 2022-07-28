@@ -1,0 +1,247 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-color-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="['/home']">TECHMEDICINE</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            aria-current="page"
+            [routerLink]="['/home']"
+            [routerLinkActive]="['active']"
+            (isActiveChange)="onRouterLinkActive($event, -1)"
+            >Home</a
+          >
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            [class.active]="dropdownTitlesActive[0]"
+          >
+            {{ dropdownTitles[0] }}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['pacientes']"
+                [queryParams]="{ pagina: 1 }"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{
+                  paths: 'subset',
+                  queryParams: 'ignored',
+                  matrixParams: 'ignored',
+                  fragment: 'ignored'
+                }"
+                (isActiveChange)="onRouterLinkActive($event, 0, 'Pacientes')"
+                >Cadastro de Pacientes</a
+              >
+            </li>
+            <li></li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['medicos']"
+                [queryParams]="{ pagina: 1 }"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{
+                  paths: 'subset',
+                  queryParams: 'ignored',
+                  matrixParams: 'ignored',
+                  fragment: 'ignored'
+                }"
+                (isActiveChange)="onRouterLinkActive($event, 0, 'Médicos')"
+                >Cadastro de Médicos</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['funcionarios']"
+                [queryParams]="{ pagina: 1 }"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{
+                  paths: 'subset',
+                  queryParams: 'ignored',
+                  matrixParams: 'ignored',
+                  fragment: 'ignored'
+                }"
+                (isActiveChange)="onRouterLinkActive($event, 0, 'Funcionários')"
+                >Cadastro de Funcionários</a
+              >
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['especialidades']"
+                [queryParams]="{ pagina: 1 }"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{
+                  paths: 'subset',
+                  queryParams: 'ignored',
+                  matrixParams: 'ignored',
+                  fragment: 'ignored'
+                }"
+                (isActiveChange)="
+                  onRouterLinkActive($event, 0, 'Especialidades')
+                "
+                >Cadastro de Especialidades</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['cargos']"
+                [queryParams]="{ pagina: 1 }"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{
+                  paths: 'subset',
+                  queryParams: 'ignored',
+                  matrixParams: 'ignored',
+                  fragment: 'ignored'
+                }"
+                (isActiveChange)="onRouterLinkActive($event, 0, 'Cargos')"
+                >Cadastro de Cargos</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['doencas']"
+                [queryParams]="{ pagina: 1 }"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{
+                  paths: 'subset',
+                  queryParams: 'ignored',
+                  matrixParams: 'ignored',
+                  fragment: 'ignored'
+                }"
+                (isActiveChange)="onRouterLinkActive($event, 0, 'Doenças')"
+                >Cadastro de Doenças</a
+              >
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            [class.active]="dropdownTitlesActive[1]"
+          >
+            {{ dropdownTitles[1] }}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['agendamentos']"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{
+                  paths: 'subset',
+                  queryParams: 'ignored',
+                  matrixParams: 'ignored',
+                  fragment: 'ignored'
+                }"
+                (isActiveChange)="onRouterLinkActive($event, 1, 'Agendamentos')"
+                >Realização de Agendamentos</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['atendimentos']"
+                [queryParams]="{ pagina: 1 }"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{
+                  paths: 'subset',
+                  queryParams: 'ignored',
+                  matrixParams: 'ignored',
+                  fragment: 'ignored'
+                }"
+                (isActiveChange)="onRouterLinkActive($event, 1, 'Atendimentos')"
+                >Realização de Atendimentos</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['pep']"
+                [queryParams]="{ pagina: 1 }"
+                [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{
+                  paths: 'subset',
+                  queryParams: 'ignored',
+                  matrixParams: 'ignored',
+                  fragment: 'ignored'
+                }"
+                (isActiveChange)="onRouterLinkActive($event, 1, 'PEP')"
+                >Prontuário Eletrônico do Paciente</a
+              >
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link"
+            id="navbarDropdown"
+            [routerLink]="['admin']"
+            [routerLinkActive]="['active']"
+          >
+            Admin
+          </a>
+        </li>
+      </ul>
+      <div class="d-flex me-1 mt-0 mb-0">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown dropstart">
+            <a
+              class="nav-link"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="far fa-user-circle text-white fs-2"></i>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <a type="button" class="dropdown-item" (click)="logout()"
+                  >Logout</a
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

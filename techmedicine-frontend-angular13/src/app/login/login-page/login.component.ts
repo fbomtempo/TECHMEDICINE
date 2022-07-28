@@ -13,25 +13,34 @@ import { TokenStorageService } from '../../auth/services/token-storage.service';
 export class LoginComponent implements OnInit {
   form: FormGroup;
   isLoggedIn;
-  isLoginFailed;
-  errorMessage;
+  isLoginFailed: boolean = false;
+  errorMessage: string = 'Usuário ou senha inválido(s)';
   roles: string[];
 
   constructor(
     private authService: AuthService,
-    private tokenStorage: TokenStorageService,
+    private tokenService: TokenStorageService,
     private formBuilder: FormBuilder,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.isLoggedIn = this.tokenStorage.getToken() ? true : false;
     this.isLoginFailed = false;
-    this.errorMessage = '';
-    this.roles = this.tokenStorage.getToken()
-      ? this.tokenStorage.getUser().roles
-      : [];
+    this.isLoggedInFn();
+    this.createForm();
+  }
 
+  private isLoggedInFn(): void {
+    this.isLoggedIn =
+      this.tokenService.getToken() && !this.tokenService.isExpired()
+        ? true
+        : false;
+    if (!this.isLoggedIn) {
+      this.tokenService.signOut();
+    }
+  }
+
+  private createForm(): void {
     this.form = this.formBuilder.group({
       usuario: [null, Validators.required],
       senha: [null, Validators.required]
@@ -42,12 +51,51 @@ export class LoginComponent implements OnInit {
     const { usuario, senha } = this.form.value;
     this.authService.login(usuario, senha).subscribe({
       next: (data: any) => {
-        this.tokenStorage.saveToken(data.access_token);
-        this.tokenStorage.saveUser(data);
+        this.tokenService.saveToken(data.access_token);
+        console.log(this.tokenService.getUser());
+        this.router.navigate(['/home']);
+      },
+      error: (err: any) => {
+        if (err.status) {
+          this.isLoginFailed = true;
+          alert(this.errorMessage);
+        }
+      }
+    });
+  }
+}
+
+/*ngOnInit(): void {
+    this.isLoggedIn = this.tokenService.getToken() ? true : false;
+    this.isExpired();
+    this.isLoginFailed = false;
+    this.errorMessage = '';
+    this.roles = this.tokenService.getToken()
+      ? this.tokenService.getUser().roles
+      : [];
+
+    this.form = this.formBuilder.group({
+      usuario: [null, Validators.required],
+      senha: [null, Validators.required]
+    });
+  }
+
+  isExpired() {
+    if (this.tokenService.isExpired()) {
+      this.tokenService.signOut();
+    }
+  }
+
+  login() {
+    const { usuario, senha } = this.form.value;
+    this.authService.login(usuario, senha).subscribe({
+      next: (data: any) => {
+        this.tokenService.saveToken(data.access_token);
+        this.tokenService.saveUser(data);
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
-        this.reloadPage();
+        this.roles = this.tokenService.getUser().roles;
+        this.router.navigate(['/home']);
       },
       error: (err: any) => {
         this.errorMessage = err.error.message;
@@ -56,13 +104,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  reloadPage(): void {
-    window.location.reload();
-  }
-
   redirectToHome() {
     if (this.isLoggedIn) {
       this.router.navigate(['/home']);
     }
-  }
-}
+  }*/
