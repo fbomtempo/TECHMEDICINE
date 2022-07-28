@@ -1,4 +1,4 @@
-package com.tcc2022.techmedicine.config;
+package com.tcc2022.techmedicine.security;
 
 import java.util.Arrays;
 
@@ -18,7 +18,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import com.tcc2022.techmedicine.config.services.UserDetailsServiceImpl;
+import com.tcc2022.techmedicine.security.service.UserDetailsServiceImpl;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {

@@ -1,4 +1,4 @@
-package com.tcc2022.techmedicine.config;
+package com.tcc2022.techmedicine.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

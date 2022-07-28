@@ -1,4 +1,4 @@
-package com.tcc2022.techmedicine.config;
+package com.tcc2022.techmedicine.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,15 +11,15 @@ public class ResourceServerConfig extends  ResourceServerConfigurerAdapter {
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http
+		/*http
 			.authorizeRequests()
 				.antMatchers("/usuarios/**").permitAll()
 				.antMatchers("/pacientes/**").hasRole("FUNCIONARIO")
 				.antMatchers("/medicos/**").permitAll()
-				.anyRequest().hasRole("ADMIN");
-		/*http
+				.anyRequest().hasRole("ADMIN");*/
+		http
 			.authorizeRequests()
-				.anyRequest().permitAll();*/
+				.anyRequest().permitAll();
 	}
 	
 }

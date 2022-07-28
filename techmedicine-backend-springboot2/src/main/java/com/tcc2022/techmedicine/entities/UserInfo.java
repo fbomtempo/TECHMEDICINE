@@ -17,14 +17,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_usuario_novo")
-public class Usuario implements Serializable {
+public class UserInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false, unique = true)
+	@Column(length = 20, nullable = false, unique = true)
 	private String username;
 	
 	@Column(nullable = false)
@@ -34,10 +34,10 @@ public class Usuario implements Serializable {
 	@JoinTable(name = "tb_user_permissions", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
 	private Set<Permission> permissions = new HashSet<>();
 	
-	public Usuario() {
+	public UserInfo() {
 	}
 
-	public Usuario(Long id, String username, String password) {
+	public UserInfo(Long id, String username, String password) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -89,7 +89,7 @@ public class Usuario implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Usuario other = (Usuario) obj;
+		UserInfo other = (UserInfo) obj;
 		return Objects.equals(id, other.id);
 	}	
 }

@@ -1,4 +1,4 @@
-package com.tcc2022.techmedicine.config.services;
+package com.tcc2022.techmedicine.security.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,24 +10,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.tcc2022.techmedicine.entities.Usuario;
-import com.tcc2022.techmedicine.services.UserService;
+import com.tcc2022.techmedicine.entities.UserInfo;
+import com.tcc2022.techmedicine.services.UserInfoService;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	private UserService userService;
+	private UserInfoService userInfoService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Usuario usuario = userService.findByUsername(username);
-		List<String> permissions = usuario.getPermissions().stream().map(permission -> permission.getDescription().getCode()).collect(Collectors.toList());
+		UserInfo userInfo = userInfoService.findByUsername(username);
+		List<String> permissions = userInfo.getPermissions().stream().map(permission -> permission.getDescription().getCode()).collect(Collectors.toList());
 		String[] permissionArray = permissions.toArray(new String[0]);
 		return User
 				.builder()
-				.username(usuario.getUsername())
-				.password(usuario.getPassword())
+				.username(userInfo.getUsername())
+				.password(userInfo.getPassword())
 				.roles(permissionArray)
 				.build();
 	}
