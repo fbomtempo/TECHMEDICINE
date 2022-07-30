@@ -85,7 +85,9 @@ h2.active {
 
 /* FORM TYPOGRAPHY*/
 
-input[type=button], input[type=submit], input[type=reset] {
+input[type=button],
+input[type=submit],
+input[type=reset] {
   background-color: var(--bs-primary);
   border: none;
   color: white;
@@ -107,13 +109,17 @@ input[type=button], input[type=submit], input[type=reset] {
   transition: all 0.3s ease-in-out;
 }
 
-input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover {
+input[type=button]:hover,
+input[type=submit]:hover,
+input[type=reset]:hover {
   cursor: pointer;
   background-color: #0b5ed7;
   border-color: #0a58ca;
 }
 
-input[type=button]:active, input[type=submit]:active, input[type=reset]:active {
+input[type=button]:active,
+input[type=submit]:active,
+input[type=reset]:active {
   -moz-transform: scale(0.95);
   -webkit-transform: scale(0.95);
   -o-transform: scale(0.95);
@@ -123,7 +129,6 @@ input[type=button]:active, input[type=submit]:active, input[type=reset]:active {
 
 input[type=text] {
   background-color: #f6f6f6;
-  border: none;
   color: #0d0d0d;
   padding: 15px 32px;
   text-align: center;
@@ -132,7 +137,6 @@ input[type=text] {
   font-size: 16px;
   margin: 5px;
   width: 85%;
-  border: 2px solid #f6f6f6;
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
   -ms-transition: all 0.5s ease-in-out;
@@ -144,7 +148,6 @@ input[type=text] {
 
 input[type=password] {
   background-color: #f6f6f6;
-  border: none;
   color: #0d0d0d;
   padding: 15px 32px;
   text-align: center;
@@ -153,7 +156,6 @@ input[type=password] {
   font-size: 16px;
   margin: 5px;
   width: 85%;
-  border: 2px solid #f6f6f6;
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
   -ms-transition: all 0.5s ease-in-out;
@@ -187,27 +189,29 @@ input[type=text]:placeholder {
 
 @-webkit-keyframes fadeInDown {
   0% {
-      opacity: 0;
-      -webkit-transform: translate3d(0, -100%, 0);
-      transform: translate3d(0, -100%, 0);
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
   }
+
   100% {
-      opacity: 1;
-      -webkit-transform: none;
-      transform: none;
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
   }
 }
 
 @keyframes fadeInDown {
   0% {
-      opacity: 0;
-      -webkit-transform: translate3d(0, -100%, 0);
-      transform: translate3d(0, -100%, 0);
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
   }
+
   100% {
-      opacity: 1;
-      -webkit-transform: none;
-      transform: none;
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
   }
 }
 
@@ -215,28 +219,31 @@ input[type=text]:placeholder {
 
 @-webkit-keyframes fadeIn {
   from {
-      opacity: 0;
+    opacity: 0;
   }
+
   to {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
 @-moz-keyframes fadeIn {
   from {
-      opacity: 0;
+    opacity: 0;
   }
+
   to {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
 @keyframes fadeIn {
   from {
-      opacity: 0;
+    opacity: 0;
   }
+
   to {
-      opacity: 1;
+    opacity: 1;
   }
 }
 

@@ -45,6 +45,11 @@ export class AdminPageComponent implements OnInit {
 
   clearUser(): void {
     this.user = undefined;
+    this.changeComponent(this.c1);
+  }
+
+  redirectToList(): void {
+    this.changeComponent(this.c1);
   }
 
   onHome(): void {

@@ -98,11 +98,11 @@
   <div class="col-xl-4">
     <label for="specialty" class="form-label">Especialidade</label>
     <ng-select
-      formControlName="role"
+      formControlName="specialty"
       [items]="specialties"
       bindLabel="description"
-      labelForId="role"
-      placeholder="Selecione o cargo"
+      labelForId="specialty"
+      placeholder="Selecione a especialidade"
       clearAllText="Limpar"
       [compareWith]="compareFn"
       [loading]="specialtiesLoading"

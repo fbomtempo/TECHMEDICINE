@@ -27,13 +27,14 @@ export class AppointmentCalendarComponent implements OnInit, OnDestroy {
       center: 'title',
       right: 'timeGridWeek,timeGridDay'
     },
+    height: 1000,
     dayMinWidth: 150,
     eventShortHeight: 40,
     stickyHeaderDates: true,
     allDaySlot: false,
     expandRows: true,
     slotMinTime: '08:00',
-    slotMaxTime: '19:00',
+    slotMaxTime: '18:00',
     slotEventOverlap: false,
     slotLabelFormat: {
       hour: 'numeric',
@@ -50,7 +51,7 @@ export class AppointmentCalendarComponent implements OnInit, OnDestroy {
       {
         daysOfWeek: [1, 2, 3, 4, 5],
         startTime: '14:00',
-        endTime: '19:00'
+        endTime: '18:00'
       }
     ],
     editable: true,
@@ -175,6 +176,7 @@ export class AppointmentCalendarComponent implements OnInit, OnDestroy {
   }
 
   private addAppointment(arg: any): void {
+    console.log(arg);
     const startDateStr: string = arg.startStr.slice(0, 16);
     const endTimeStr: string = arg.endStr.slice(11, 16);
     const urlDateStr: string = `${startDateStr}-${endTimeStr}`;

@@ -1,6 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Observable } from 'rxjs';
 import { State } from 'src/app/shared/models/states';
@@ -8,7 +14,6 @@ import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { FormService } from 'src/app/shared/services/form-service';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
-import { Role } from '../../roles/models/role';
 import { Permission } from '../models/permission';
 import { User } from '../models/user';
 import { UserService } from '../services/user.service';
@@ -18,8 +23,12 @@ import { UserService } from '../services/user.service';
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.css']
 })
-export class UserFormComponent extends FormService implements OnInit {
+export class UserFormComponent
+  extends FormService
+  implements OnInit, OnDestroy
+{
   @Input() user: User;
+  userForm: any;
   states$: Observable<State[]>;
   permissions: Permission[];
   permissionsLoading: boolean = true;
@@ -33,6 +42,7 @@ export class UserFormComponent extends FormService implements OnInit {
     containerClass: 'theme-dark-blue'
   };
   @Output() clearUser: EventEmitter<void> = new EventEmitter();
+  @Output() userSaved: EventEmitter<void> = new EventEmitter();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,7 +59,18 @@ export class UserFormComponent extends FormService implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.clearUser.emit();
+    if (this.changed) {
+      if (
+        confirm(
+          'Tem certeza que deseja sair? Os dados preenchidos serão perdidos.'
+        )
+      ) {
+        this.changed = false;
+        this.clearUser.emit();
+      }
+    } else {
+      this.clearUser.emit();
+    }
   }
 
   private fetchData(): void {
@@ -64,15 +85,15 @@ export class UserFormComponent extends FormService implements OnInit {
   }
 
   private createForm(): void {
-    const user: any = this.user ? this.user : {};
+    this.userForm = this.user ? this.user : {};
     this.form = this.formBuilder.group({
-      id: [user.id],
+      id: [this.userForm.id],
       username: [
-        user.username,
+        this.userForm.username,
         [Validators.required, Validators.maxLength(20)]
       ],
-      password: [user.password, [Validators.maxLength(16)]],
-      permissions: [user.permissions, [Validators.required]]
+      password: [this.userForm.id ? null : '#1234', [Validators.maxLength(16)]],
+      permissions: [this.userForm.permissions, [Validators.required]]
     });
     this.subscribeToChanges();
   }
@@ -89,6 +110,9 @@ export class UserFormComponent extends FormService implements OnInit {
               'Redirecionando a página...'
             );
             this.submittedSucess = true;
+            setTimeout(() => {
+              this.userSaved.emit();
+            }, 2000);
           },
           error: () => {
             this.modalService.alertDanger(
@@ -108,6 +132,9 @@ export class UserFormComponent extends FormService implements OnInit {
               'Redirecionando a página...'
             );
             this.submittedSucess = true;
+            setTimeout(() => {
+              this.userSaved.emit();
+            }, 2000);
           },
           error: () => {
             this.modalService.alertDanger(

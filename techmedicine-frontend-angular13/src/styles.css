@@ -112,12 +112,12 @@ app-dashboard {
   border-color: #0dcaf0;
 }
 
-.btn-outline-attend {
+.btn-outline-appointment-checkup {
   color: black;
   border-color: black;
 }
 
-.btn-outline-attend:hover {
+.btn-outline-appointment-checkup:hover {
   color: #fff;
   background-color: #198754;
   border-color: #198754;

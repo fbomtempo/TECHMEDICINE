@@ -45,12 +45,12 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    // if (this.tokenService.getToken() && !this.tokenService.isExpired()) {
-    //   return true;
-    // }
-    // this.router.navigate(['/login']);
-    // return false;
-    return true;
+    if (this.tokenService.getToken() && !this.tokenService.isExpired()) {
+      return true;
+    }
+    this.router.navigate(['/login']);
+    return false;
+    // return true;
   }
 
   canLoad(
@@ -61,19 +61,19 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    // if (route.path !== 'login') {
-    //   if (this.tokenService.getToken() && !this.tokenService.isExpired()) {
-    //     return true;
-    //   }
-    //   this.router.navigate(['/login']);
-    //   return false;
-    // } else {
-    //   if (this.tokenService.getToken() && !this.tokenService.isExpired()) {
-    //     this.router.navigate(['/home']);
-    //     return false;
-    //   }
-    //   return true;
-    // }
-    return true;
+    if (route.path !== 'login') {
+      if (this.tokenService.getToken() && !this.tokenService.isExpired()) {
+        return true;
+      }
+      this.router.navigate(['/login']);
+      return false;
+    } else {
+      if (this.tokenService.getToken() && !this.tokenService.isExpired()) {
+        this.router.navigate(['/home']);
+        return false;
+      }
+      return true;
+    }
+    // return true;
   }
 }

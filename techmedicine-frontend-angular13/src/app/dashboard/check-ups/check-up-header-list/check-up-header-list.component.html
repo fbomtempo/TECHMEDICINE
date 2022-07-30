@@ -203,12 +203,14 @@
             </div>
           </td>
           <td>
-            <a
+            <button
               *ngIf="checkUpHeader.checkUpHeaderSituation === 'ABERTO'"
+              class="btn btn-outline-success"
               [routerLink]="['realizar/novo']"
               [queryParams]="{ atendimento: checkUpHeader.id }"
-              >Atender <i class="fas fa-external-link-alt"></i
-            ></a>
+            >
+              Atender <i class="fas fa-external-link-alt"></i>
+            </button>
           </td>
         </tr>
       </tbody>

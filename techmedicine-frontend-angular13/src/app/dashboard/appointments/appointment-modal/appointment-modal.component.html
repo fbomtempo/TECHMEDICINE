@@ -21,18 +21,23 @@
     </div>
     <div class="modal-body">
       <div class="row">
-        <div class="col-xl-12 pb-4">
-          <strong>Situação: </strong>
-          <strong [ngStyle]="appointmentSituationTextColor()"
+        <div class="d-flex align-items-center col-6 pb-4">
+          <strong>Situação:</strong>
+          <strong class="ms-1" [ngStyle]="appointmentSituationTextColor()"
             ><span>{{ appointment.appointmentSituation }}</span></strong
           >
-          <a
-            *ngIf="appointment.appointmentSituation === 'AGENDADO'"
-            class="ps-2"
-            [routerLink]="['/atendimentos/novo']"
-            [queryParams]="{ agendamento: appointment.id }"
-            >Criar Atendimento <i class="fas fa-external-link-alt"></i
-          ></a>
+        </div>
+        <div class="col-6 pb-4">
+          <div class="text-end">
+            <button
+              *ngIf="appointment.appointmentSituation === 'AGENDADO'"
+              class="btn btn-outline-success"
+              [routerLink]="['/atendimentos/novo']"
+              [queryParams]="{ agendamento: appointment.id }"
+            >
+              Criar Atendimento <i class="fas fa-external-link-alt"></i>
+            </button>
+          </div>
         </div>
         <hr data-content="PACIENTE" class="hr-text" />
         <span class="pt-2"></span>

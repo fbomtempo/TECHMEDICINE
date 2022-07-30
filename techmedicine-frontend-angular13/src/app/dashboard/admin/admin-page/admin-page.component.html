@@ -35,6 +35,7 @@
         *ngIf="components[c2].active"
         [user]="user"
         (clearUser)="clearUser()"
+        (userSaved)="redirectToList()"
       ></app-user-form>
     </div>
   </div>

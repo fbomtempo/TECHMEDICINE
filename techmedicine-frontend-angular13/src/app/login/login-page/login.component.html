@@ -18,30 +18,34 @@
           <input
             type="text"
             class="form-control fadeIn second"
-            id="usuario"
-            formControlName="usuario"
+            id="username"
+            formControlName="username"
             placeholder="Usuário"
-            required
+            [ngClass]="applyValidationClass('username')"
           />
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('username').errors?.['required']"
+          ></div>
           <input
             type="password"
             class="form-control fadeIn third"
-            id="senha"
-            formControlName="senha"
+            id="password"
+            formControlName="password"
             placeholder="Senha"
-            required
+            [ngClass]="applyValidationClass('password')"
           />
+          <div
+            class="invalid-feedback"
+            *ngIf="form.get('username').errors?.['required']"
+          ></div>
           <input
             type="submit"
             class="mt-4 fadeIn fourth"
-            value="Log In"
+            value="Logar"
             (click)="login()"
           />
         </form>
-        <!-- Remind Passowrd -->
-        <div id="formFooter">
-          <a class="underlineHover" href="#">Esqueceu a senha?</a>
-        </div>
       </div>
     </div>
   </div>

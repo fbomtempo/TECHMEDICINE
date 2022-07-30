@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { TokenStorageService } from 'src/app/auth/services/token-storage.service';
 
 @Component({
@@ -11,18 +10,16 @@ import { TokenStorageService } from 'src/app/auth/services/token-storage.service
 export class NavbarComponent implements OnInit {
   dropdownTitles: string[] = new Array(2);
   dropdownTitlesActive: boolean[] = new Array(2);
-  isLoggedIn: boolean = false;
+  user: any;
 
   constructor(
-    private tokenStorageService: TokenStorageService,
-    private localeService: BsLocaleService,
+    private tokenService: TokenStorageService,
     private router: Router
   ) {}
 
   ngOnInit() {
-    this.isLoggedIn = !!this.tokenStorageService.getToken();
-    this.localeService.use('pt-br');
     this.defaultDropdownsValues();
+    this.getUserLoggedIn();
   }
 
   defaultDropdownsValues(): void {
@@ -75,8 +72,22 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  logout(): void {
-    this.tokenStorageService.signOut();
+  private getUserLoggedIn(): void {
+    this.user = this.tokenService.getUser();
+  }
+
+  isAdmin(): boolean {
+    let admin: boolean = false;
+    this.user['authorities'].forEach((authority: string) => {
+      if (authority === 'ROLE_ADMIN') {
+        admin = true;
+      }
+    });
+    return admin;
+  }
+
+  signOut(): void {
+    this.tokenService.signOut();
     this.router.navigate(['/login']);
   }
 }

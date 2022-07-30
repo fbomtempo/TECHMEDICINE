@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { FormService } from 'src/app/shared/services/form-service';
 
 import { AuthService } from '../../auth/services/auth.service';
 import { TokenStorageService } from '../../auth/services/token-storage.service';
@@ -10,11 +11,9 @@ import { TokenStorageService } from '../../auth/services/token-storage.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
-  form: FormGroup;
-  isLoggedIn;
-  isLoginFailed: boolean = false;
-  errorMessage: string = 'Usuário ou senha inválido(s)';
+export class LoginComponent extends FormService implements OnInit {
+  readonly errorMessage: string = 'Usuário ou senha inválido(s)';
+  loggedIn: boolean = false;
   roles: string[];
 
   constructor(
@@ -22,16 +21,17 @@ export class LoginComponent implements OnInit {
     private tokenService: TokenStorageService,
     private formBuilder: FormBuilder,
     private router: Router
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.isLoginFailed = false;
-    this.isLoggedInFn();
+    this.isLoggedIn();
     this.createForm();
   }
 
-  private isLoggedInFn(): void {
-    this.isLoggedIn =
+  private isLoggedIn(): void {
+    this.loggedIn =
       this.tokenService.getToken() && !this.tokenService.isExpired()
         ? true
         : false;
@@ -42,70 +42,26 @@ export class LoginComponent implements OnInit {
 
   private createForm(): void {
     this.form = this.formBuilder.group({
-      usuario: [null, Validators.required],
-      senha: [null, Validators.required]
+      username: [null, Validators.required],
+      password: [null, Validators.required]
     });
   }
 
   login() {
-    const { usuario, senha } = this.form.value;
-    this.authService.login(usuario, senha).subscribe({
-      next: (data: any) => {
-        this.tokenService.saveToken(data.access_token);
-        console.log(this.tokenService.getUser());
-        this.router.navigate(['/home']);
-      },
-      error: (err: any) => {
-        if (err.status) {
-          this.isLoginFailed = true;
-          alert(this.errorMessage);
+    this.submitted = true;
+    if (this.form.valid) {
+      const { username, password } = this.form.value;
+      this.authService.login(username, password).subscribe({
+        next: (data: any) => {
+          this.tokenService.saveToken(data.access_token);
+          this.router.navigate(['/home']);
+        },
+        error: (err: any) => {
+          if (err.status) {
+            alert(this.errorMessage);
+          }
         }
-      }
-    });
+      });
+    }
   }
 }
-
-/*ngOnInit(): void {
-    this.isLoggedIn = this.tokenService.getToken() ? true : false;
-    this.isExpired();
-    this.isLoginFailed = false;
-    this.errorMessage = '';
-    this.roles = this.tokenService.getToken()
-      ? this.tokenService.getUser().roles
-      : [];
-
-    this.form = this.formBuilder.group({
-      usuario: [null, Validators.required],
-      senha: [null, Validators.required]
-    });
-  }
-
-  isExpired() {
-    if (this.tokenService.isExpired()) {
-      this.tokenService.signOut();
-    }
-  }
-
-  login() {
-    const { usuario, senha } = this.form.value;
-    this.authService.login(usuario, senha).subscribe({
-      next: (data: any) => {
-        this.tokenService.saveToken(data.access_token);
-        this.tokenService.saveUser(data);
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
-        this.roles = this.tokenService.getUser().roles;
-        this.router.navigate(['/home']);
-      },
-      error: (err: any) => {
-        this.errorMessage = err.error.message;
-        this.isLoginFailed = true;
-      }
-    });
-  }
-
-  redirectToHome() {
-    if (this.isLoggedIn) {
-      this.router.navigate(['/home']);
-    }
-  }*/

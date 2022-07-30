@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 
 import { AlertModalComponent } from '../alert-modal/alert-modal.component';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
-import { LookupModalComponent } from '../lookup-modal/lookup-modal.component';
 import { DateService } from './date.service';
 import { MaskService } from './mask.service';
 

@@ -1,0 +1,8 @@
+.dropdown-item-user:hover {
+  background-color: inherit !important;
+}
+
+.dropdown-item-user:active {
+  color: inherit !important;
+  background-color: inherit !important;
+}

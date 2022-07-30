@@ -209,7 +209,7 @@
             <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
         </li>
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown" *ngIf="isAdmin()">
           <a
             class="nav-link"
             id="navbarDropdown"
@@ -232,15 +232,88 @@
             >
               <i class="far fa-user-circle text-white fs-2"></i>
             </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="dropdownMenuButton1"
+            >
               <li>
-                <a type="button" class="dropdown-item" (click)="logout()"
-                  >Logout</a
-                >
+                <span class="dropdown-item dropdown-item-user">
+                  <div class="row">
+                    <div class="col-1 text-center">
+                      <i class="fa fa-user"></i>
+                    </div>
+                    <div class="col-10">
+                      <span class="me-4">Usuário: {{ user.user_name }}</span>
+                    </div>
+                  </div>
+                </span>
+              </li>
+              <li>
+                <a type="button" class="dropdown-item">
+                  <div class="row">
+                    <div class="col-1 text-center">
+                      <i class="fa fa-cog"></i>
+                    </div>
+                    <div class="col-10">Configurações</div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li>
+                <a type="button" class="dropdown-item" (click)="signOut()">
+                  <div class="row">
+                    <div class="col-1 text-center">
+                      <i class="fa fa-sign-out-alt"></i>
+                    </div>
+                    <div class="col-10">Logout</div>
+                  </div>
+                </a>
               </li>
             </ul>
           </li>
         </ul>
+        <!-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="dropdown-item-text"
+                      ><i class="fas fa-user"></i
+                    ></span>
+                  </div>
+                  <div class="col-10">
+                    <span class="dropdown-item-text">
+                      Usuário: {{ username }}</span
+                    >
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <a type="button" class="dropdown-item">
+                      <span class="dropdown-item-text"
+                        ><i class="fas fa-cog"></i
+                      ></span>
+                    </a>
+                  </div>
+                  <div class="col-10">
+                    <span class="dropdown-item-text">Configurações</span>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li>
+                <a type="button" class="dropdown-item" (click)="logout()">
+                  <i class="fas fa-sign-out-alt"></i> Logout</a
+                >
+              </li>
+            </ul>
+          </li>
+        </ul> -->
       </div>
     </div>
   </div>

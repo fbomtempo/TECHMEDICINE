@@ -23,8 +23,8 @@
     </div>
     <div class="valid-feedback">Parece bom.</div>
   </div>
-  <div class="col-12"></div>
-  <div class="col-xl-5">
+  <div class="col-7"></div>
+  <div class="col-xl-5" *ngIf="userForm.id">
     <label for="password" class="form-label">Senha</label>
     <input
       type="text"
@@ -48,7 +48,7 @@
     </div>
     <div class="valid-feedback">Parece bom.</div>
   </div>
-  <div class="col-12"></div>
+  <div class="col-7" *ngIf="userForm.id"></div>
   <div class="col-xl-5">
     <label for="permissions" class="form-label">Permissões</label>
     <ng-select
@@ -66,34 +66,18 @@
       [searchable]="false"
       [virtualScroll]="true"
       [ngClass]="
-        submitted ? applyValidationClass('specialty', true) : 'ng-untouched'
+        submitted ? applyValidationClass('permissions', true) : 'ng-untouched'
       "
     >
     </ng-select>
-    <div
-      class="invalid-feedback"
-      *ngIf="form.get('username').errors?.['required']"
-    >
-      Campo é obrigatório.
-    </div>
-    <div
-      class="invalid-feedback"
-      *ngIf="form.get('username').errors?.['maxlength']"
-    >
-      Campo deve possuir no máximo 20 caracteres.
-    </div>
-    <div class="valid-feedback">Parece bom.</div>
+    <div class="ng-select-invalid-feedback">Campo é obrigatório.</div>
+    <div class="ng-select-valid-feedback">Parece bom.</div>
   </div>
   <div class="pt-4 mb-5">
     <button type="submit" class="btn btn-primary" (click)="onSubmit()">
       Salvar
     </button>
-    <button
-      type="button"
-      class="ms-2 btn btn-danger"
-      [routerLink]="['/funcionarios']"
-      [queryParams]="{ pagina: 1 }"
-    >
+    <button type="button" class="ms-2 btn btn-danger" (click)="ngOnDestroy()">
       Cancelar
     </button>
   </div>
