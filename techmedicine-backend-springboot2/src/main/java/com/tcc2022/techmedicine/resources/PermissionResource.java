@@ -22,30 +22,36 @@ import com.tcc2022.techmedicine.services.PermissionService;
 public class PermissionResource {
 
 	@Autowired
-	private PermissionService permissaoService;
+	private PermissionService permissionService;
 	
 	@GetMapping
 	public ResponseEntity<List<Permission>> findAll() {
-		List<Permission> list = permissaoService.findAll();
+		List<Permission> list = permissionService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Permission> findById(@PathVariable Long id) {
-		Permission obj = permissaoService.findById(id);
+		Permission obj = permissionService.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
 	public ResponseEntity<Permission> insert(@RequestBody Permission obj) {
-		obj = permissaoService.insert(obj);
+		obj = permissionService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		permissaoService.delete(id);
+		permissionService.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping(value = "/ordenar/descricao/crescente")
+	public ResponseEntity<List<Permission>> findAllByOrderByDescriptionAsc() {
+		List<Permission> list = permissionService.findAllByOrderByDescriptionAsc();
+		return ResponseEntity.ok().body(list);
 	}
 }

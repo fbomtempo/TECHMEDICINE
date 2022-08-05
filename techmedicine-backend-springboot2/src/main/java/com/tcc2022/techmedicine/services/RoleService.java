@@ -62,4 +62,8 @@ public class RoleService {
 	private void updateData(Role role, Role obj) {
 		role.setDescription(obj.getDescription());
 	}
+	
+	public List<Role> findAllByOrderByDescriptionAsc() {
+		return roleRepository.findAllByOrderByDescriptionAsc();
+	}
 }

@@ -14,28 +14,32 @@ const routes: Routes = [
         loadChildren: () =>
           import('./home/home.module').then((m) => m.HomeModule),
         canLoad: [AuthGuard],
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
+        data: { roles: ['ROLE_ADMIN', 'ROLE_MEDICO', 'ROLE_FUNCIONARIO'] }
       },
       {
         path: 'pacientes',
         loadChildren: () =>
           import('./patients/patients.module').then((m) => m.PatientsModule),
         canLoad: [AuthGuard],
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
+        data: { roles: ['ROLE_ADMIN', 'ROLE_FUNCIONARIO'] }
       },
       {
         path: 'medicos',
         loadChildren: () =>
           import('./medics/medics.module').then((m) => m.MedicsModule),
         canLoad: [AuthGuard],
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
+        data: { roles: ['ROLE_ADMIN', 'ROLE_FUNCIONARIO'] }
       },
       {
         path: 'funcionarios',
         loadChildren: () =>
           import('./employees/employees.module').then((m) => m.EmployeesModule),
         canLoad: [AuthGuard],
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
+        data: { roles: ['ROLE_ADMIN', 'ROLE_FUNCIONARIO'] }
       },
       {
         path: 'especialidades',
@@ -44,21 +48,24 @@ const routes: Routes = [
             (m) => m.SpecialtiesModule
           ),
         canLoad: [AuthGuard],
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
+        data: { roles: ['ROLE_ADMIN', 'ROLE_FUNCIONARIO'] }
       },
       {
         path: 'cargos',
         loadChildren: () =>
           import('./roles/roles.module').then((m) => m.RolesModule),
         canLoad: [AuthGuard],
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
+        data: { roles: ['ROLE_ADMIN', 'ROLE_FUNCIONARIO'] }
       },
       {
         path: 'doencas',
         loadChildren: () =>
           import('./diseases/diseases.module').then((m) => m.DiseasesModule),
         canLoad: [AuthGuard],
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
+        data: { roles: ['ROLE_ADMIN', 'ROLE_FUNCIONARIO'] }
       },
       {
         path: 'agendamentos',
@@ -67,7 +74,8 @@ const routes: Routes = [
             (m) => m.AppointmentsModule
           ),
         canLoad: [AuthGuard],
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
+        data: { roles: ['ROLE_ADMIN', 'ROLE_FUNCIONARIO'] }
       },
       {
         path: 'atendimentos',
@@ -76,7 +84,8 @@ const routes: Routes = [
             (m) => m.CheckUpsModule
           ),
         canLoad: [AuthGuard],
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
+        data: { roles: ['ROLE_ADMIN', 'ROLE_MEDICO', 'ROLE_FUNCIONARIO'] }
       },
       {
         path: 'pep',
@@ -85,14 +94,24 @@ const routes: Routes = [
             './patient-eletronic-records/patient-eletronic-records.module'
           ).then((m) => m.PatientEletronicRecordsModule),
         canLoad: [AuthGuard],
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
+        data: { roles: ['ROLE_ADMIN', 'ROLE_MEDICO'] }
       },
       {
         path: 'admin',
         loadChildren: () =>
           import('./admin/admin.module').then((m) => m.AdminModule),
         canLoad: [AuthGuard],
-        canActivateChild: [AuthGuard]
+        canActivateChild: [AuthGuard],
+        data: { roles: ['ROLE_ADMIN'] }
+      },
+      {
+        path: 'relatorios',
+        loadChildren: () =>
+          import('./reports/reports.module').then((m) => m.ReportsModule),
+        canLoad: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        data: { roles: ['ROLE_ADMIN', 'ROLE_MEDICO', 'ROLE_FUNCIONARIO'] }
       },
       {
         path: '',

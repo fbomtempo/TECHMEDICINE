@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from 'src/app/shared/guards/auth.guard';
 
 import { DeactivateGuard } from '../../shared/guards/deactivate.guard';
 import { CheckUpFormComponent } from './check-up-form/check-up-form.component';
@@ -35,7 +36,9 @@ const routes: Routes = [
     path: 'realizar/novo',
     component: CheckUpFormComponent,
     resolve: { checkUp: CheckUpsResolver },
-    canDeactivate: [DeactivateGuard]
+    canDeactivate: [DeactivateGuard],
+    canActivate: [AuthGuard],
+    data: { roles: ['ROLE_ADMIN', 'ROLE_MEDICO'] }
   },
   {
     path: 'realizar/editar/:id',

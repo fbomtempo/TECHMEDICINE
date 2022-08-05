@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import com.tcc2022.techmedicine.entities.enums.AccessPermission;
 
 @Entity
-@Table(name = "tb_permission")
+@Table(name = "tb_sys_permission")
 public class Permission implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

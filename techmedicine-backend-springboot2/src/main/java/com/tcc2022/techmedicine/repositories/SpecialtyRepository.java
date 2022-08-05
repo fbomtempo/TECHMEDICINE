@@ -10,5 +10,4 @@ public interface SpecialtyRepository extends JpaRepository<Specialty, Long> {
 	
 	List<Specialty> findAllByOrderByIdDesc();
 	List<Specialty> findAllByOrderByDescriptionAsc();
-	
 }

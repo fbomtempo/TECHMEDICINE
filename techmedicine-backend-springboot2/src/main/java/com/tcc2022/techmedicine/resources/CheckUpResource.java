@@ -61,4 +61,10 @@ public class CheckUpResource {
 		List<CheckUp> list = checkUpService.findAllByPatient(id);
 		return ResponseEntity.ok().body(list);
 	}
+	
+	@GetMapping(value = "/finalizados")
+	public ResponseEntity<List<CheckUp>> findAllByCheckUpSituation() {
+		List<CheckUp> list = checkUpService.findAllByCheckUpSituation();
+		return ResponseEntity.ok().body(list);
+	}
 }

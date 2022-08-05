@@ -12,6 +12,14 @@
   transform: translate(-50%, -50%);
 }
 
+.notfound-bg {
+  background: url('../../../assets/images/403-bg.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center 42.5%;
+  background-size: 350px;
+}
+
 .notfound {
   max-width: 767px;
   width: 100%;
@@ -32,7 +40,7 @@
   font-weight: 900;
   margin: 0px;
   text-transform: uppercase;
-  background: url('../../../assets/images/error-bg.png');
+  background: url('../../../assets/images/error-status-bg.png');
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

@@ -113,4 +113,8 @@ public class CheckUpService {
 			throw new NotFoundException("Paciente de id " + id + " não existe");	
 		}
 	}
+	
+	public List<CheckUp> findAllByCheckUpSituation() {
+		return checkUpRepository.findAllByCheckUpSituation(CheckUpSituation.FINALIZADO.getCode());
+	}
 }

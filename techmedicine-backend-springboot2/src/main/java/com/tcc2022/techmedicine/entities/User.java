@@ -16,8 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_usuario_novo")
-public class UserInfo implements Serializable {
+@Table(name = "tb_sys_user")
+public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -31,13 +31,13 @@ public class UserInfo implements Serializable {
 	private String password;
 	
 	@ManyToMany()
-	@JoinTable(name = "tb_user_permissions", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
+	@JoinTable(name = "tb_sys_users_permissions", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
 	private Set<Permission> permissions = new HashSet<>();
 	
-	public UserInfo() {
+	public User() {
 	}
 
-	public UserInfo(Long id, String username, String password) {
+	public User(Long id, String username, String password) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -89,7 +89,7 @@ public class UserInfo implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserInfo other = (UserInfo) obj;
+		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}	
 }

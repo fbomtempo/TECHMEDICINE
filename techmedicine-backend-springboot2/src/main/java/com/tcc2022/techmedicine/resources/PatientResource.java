@@ -57,16 +57,9 @@ public class PatientResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
-	/*@GetMapping
-	public ResponseEntity<List<Paciente>> findAll() {
-		List<Paciente> list = pacienteService.findAll();
+	@GetMapping(value = "/ordenar/nomeSobrenome/crescente")
+	public ResponseEntity<List<Patient>> findAllByOrderByNameAscSurnameAsc() {
+		List<Patient> list = patientService.findAllByOrderByNameAscSurnameAsc();
 		return ResponseEntity.ok().body(list);
 	}
-	
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Paciente> findById(@PathVariable Long id) {
-		Paciente paciente = pacienteService.findById(id);
-		return ResponseEntity.ok().body(paciente);
-	}*/
-
 }

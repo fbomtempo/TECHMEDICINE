@@ -55,4 +55,10 @@ public class MedicResource {
 		obj = medicService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}
+	
+	@GetMapping(value = "/ordenar/nomeSobrenome/crescente")
+	public ResponseEntity<List<Medic>> findAllByOrderByNameAscSurnameAsc() {
+		List<Medic> list = medicService.findAllByOrderByNameAscSurnameAsc();
+		return ResponseEntity.ok().body(list);
+	}
 }

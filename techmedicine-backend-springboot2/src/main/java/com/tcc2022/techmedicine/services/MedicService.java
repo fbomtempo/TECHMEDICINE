@@ -80,4 +80,8 @@ public class MedicService {
 		medic.setDistrict(obj.getDistrict());
 		medic.setComplement(obj.getComplement());
 	}
+	
+	public List<Medic> findAllByOrderByNameAscSurnameAsc() {
+		return medicRepository.findAllByOrderByNameAscSurnameAsc();
+	}
 }

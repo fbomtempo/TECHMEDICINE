@@ -142,6 +142,52 @@
     10px 10px 0px 0px hsl(0, 0%, 80%);
 }
 
+@media only screen and (max-width: 1440px) {
+
+  .container-padding {
+    padding-top: 3.5vh;
+    padding-bottom: 3.5vh;
+  }
+
+  .card {
+    width: 10.3rem;
+    height: 10.3rem;
+  }
+
+  .card-icon {
+    margin-top: 0.5rem;
+    font-size: 4.1rem;
+  }
+
+  .card-title {
+    font-size: 1.15rem;
+  }
+
+}
+
+@media only screen and (max-width: 1280px) {
+
+  .container-padding {
+    padding-top: 3.5vh;
+    padding-bottom: 3.5vh;
+  }
+
+  .card {
+    width: 10rem;
+    height: 10rem;
+  }
+
+  .card-icon {
+    margin-top: 0.5rem;
+    font-size: 3.7rem;
+  }
+
+  .card-title {
+    font-size: 1.15rem;
+  }
+
+}
+
 @media only screen and (max-width: 576px) {
 
   .container-padding {
@@ -150,8 +196,8 @@
   }
 
   .card {
-    width: 12rem;
-    height: 9rem;
+    width: 10rem;
+    height: 10rem;
   }
 
   .card-icon {

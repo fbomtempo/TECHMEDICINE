@@ -13,22 +13,26 @@ import com.tcc2022.techmedicine.repositories.PermissionRepository;
 public class PermissionService {
 
 	@Autowired
-	private PermissionRepository permissaoRepository;
+	private PermissionRepository permissionRepository;
 	
 	public List<Permission> findAll() {
-		return permissaoRepository.findAll();
+		return permissionRepository.findAll();
 	}
 	
 	public Permission findById(Long id) {
-		Optional<Permission> obj = permissaoRepository.findById(id);
+		Optional<Permission> obj = permissionRepository.findById(id);
 		return obj.get();
 	}
 	
 	public Permission insert(Permission obj) {
-		return permissaoRepository.save(obj);
+		return permissionRepository.save(obj);
 	}
 	
 	public void delete(Long id) {
-		permissaoRepository.deleteById(id);
+		permissionRepository.deleteById(id);
+	}
+	
+	public List<Permission> findAllByOrderByDescriptionAsc() {
+		return permissionRepository.findAllByOrderByDescriptionAsc();
 	}
 }

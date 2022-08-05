@@ -138,10 +138,6 @@
                 >Cadastro de Doenças</a
               >
             </li>
-            <li>
-              <hr class="dropdown-divider" />
-            </li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -203,11 +199,17 @@
                 >Prontuário Eletrônico do Paciente</a
               >
             </li>
-            <li>
-              <hr class="dropdown-divider" />
-            </li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link"
+            id="navbarDropdown"
+            [routerLink]="['relatorios']"
+            [routerLinkActive]="['active']"
+          >
+            Relatórios
+          </a>
         </li>
         <li class="nav-item dropdown" *ngIf="isAdmin()">
           <a
@@ -249,16 +251,6 @@
                 </span>
               </li>
               <li>
-                <a type="button" class="dropdown-item">
-                  <div class="row">
-                    <div class="col-1 text-center">
-                      <i class="fa fa-cog"></i>
-                    </div>
-                    <div class="col-10">Configurações</div>
-                  </div>
-                </a>
-              </li>
-              <li>
                 <hr class="dropdown-divider" />
               </li>
               <li>
@@ -274,46 +266,6 @@
             </ul>
           </li>
         </ul>
-        <!-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <div class="row">
-                  <div class="col-1">
-                    <span class="dropdown-item-text"
-                      ><i class="fas fa-user"></i
-                    ></span>
-                  </div>
-                  <div class="col-10">
-                    <span class="dropdown-item-text">
-                      Usuário: {{ username }}</span
-                    >
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="row">
-                  <div class="col-1">
-                    <a type="button" class="dropdown-item">
-                      <span class="dropdown-item-text"
-                        ><i class="fas fa-cog"></i
-                      ></span>
-                    </a>
-                  </div>
-                  <div class="col-10">
-                    <span class="dropdown-item-text">Configurações</span>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <a type="button" class="dropdown-item" (click)="logout()">
-                  <i class="fas fa-sign-out-alt"></i> Logout</a
-                >
-              </li>
-            </ul>
-          </li>
-        </ul> -->
       </div>
     </div>
   </div>

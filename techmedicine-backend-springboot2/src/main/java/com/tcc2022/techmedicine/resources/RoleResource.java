@@ -55,4 +55,10 @@ public class RoleResource {
 		obj = roleService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}
+	
+	@GetMapping(value = "/ordenar/descricao/crescente")
+	public ResponseEntity<List<Role>> findAllByOrderByDescriptionAsc() {
+		List<Role> list = roleService.findAllByOrderByDescriptionAsc();
+		return ResponseEntity.ok().body(list);
+	}
 }

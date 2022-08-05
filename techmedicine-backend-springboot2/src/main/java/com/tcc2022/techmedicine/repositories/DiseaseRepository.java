@@ -9,6 +9,5 @@ import com.tcc2022.techmedicine.entities.Disease;
 public interface DiseaseRepository extends JpaRepository<Disease, Long> {
 	
 	List<Disease> findAllByOrderByIdDesc();
-	List<Disease> findAllByOrderByDescriptionAsc();
-	
+	List<Disease> findAllByOrderByDescriptionAsc();	
 }

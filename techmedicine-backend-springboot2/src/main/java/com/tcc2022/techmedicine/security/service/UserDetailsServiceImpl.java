@@ -10,24 +10,23 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.tcc2022.techmedicine.entities.UserInfo;
-import com.tcc2022.techmedicine.services.UserInfoService;
+import com.tcc2022.techmedicine.services.UserService;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	private UserInfoService userInfoService;
+	private UserService userService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserInfo userInfo = userInfoService.findByUsername(username);
-		List<String> permissions = userInfo.getPermissions().stream().map(permission -> permission.getDescription().getCode()).collect(Collectors.toList());
+		com.tcc2022.techmedicine.entities.User user = userService.findByUsername(username);
+		List<String> permissions = user.getPermissions().stream().map(permission -> permission.getDescription().getCode()).collect(Collectors.toList());
 		String[] permissionArray = permissions.toArray(new String[0]);
 		return User
 				.builder()
-				.username(userInfo.getUsername())
-				.password(userInfo.getPassword())
+				.username(user.getUsername())
+				.password(user.getPassword())
 				.roles(permissionArray)
 				.build();
 	}

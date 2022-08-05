@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { delay, map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { CrudService } from 'src/app/shared/services/crud-service';
 import { DateService } from 'src/app/shared/services/date.service';
 import { MaskService } from 'src/app/shared/services/mask.service';
@@ -22,7 +22,7 @@ export class CheckUpService extends CrudService<CheckUp> {
 
   findAllFormatted(): Observable<CheckUp[]> {
     return this.http.get<CheckUp[]>(this.API_URL).pipe(
-      delay(750),
+      take(1),
       map((checkUps: CheckUp[]) => {
         return checkUps.map((checkUp: CheckUp) => {
           this.dateService.toPtBrDateString(checkUp.checkUpHeader);
@@ -36,7 +36,7 @@ export class CheckUpService extends CrudService<CheckUp> {
 
   findAllByPatient(id: number): Observable<CheckUp[]> {
     return this.http.get<CheckUp[]>(`${this.API_URL}/paciente/${id}`).pipe(
-      delay(750),
+      take(1),
       map((checkUps: CheckUp[]) => {
         return checkUps.map((checkUp: CheckUp) => {
           this.dateService.toPtBrDateString(checkUp.checkUpHeader);
@@ -46,5 +46,11 @@ export class CheckUpService extends CrudService<CheckUp> {
         });
       })
     );
+  }
+
+  findAllByCheckUpSituationFinished(): Observable<CheckUp[]> {
+    return this.http
+      .get<CheckUp[]>(`${this.API_URL}/finalizados`)
+      .pipe(take(1));
   }
 }

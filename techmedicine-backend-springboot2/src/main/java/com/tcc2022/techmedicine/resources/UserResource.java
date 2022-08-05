@@ -16,51 +16,51 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.tcc2022.techmedicine.entities.UserInfo;
-import com.tcc2022.techmedicine.services.UserInfoService;
+import com.tcc2022.techmedicine.entities.User;
+import com.tcc2022.techmedicine.services.UserService;
 
 @RestController
 @RequestMapping(value = "/usuarios")
-public class UserInfoResource {
+public class UserResource {
 
 	@Autowired
-	private UserInfoService userInfoService;
+	private UserService userService;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
 	@GetMapping
-	public ResponseEntity<List<UserInfo>> findAll() {
-		List<UserInfo> list = userInfoService.findAll();
+	public ResponseEntity<List<User>> findAll() {
+		List<User> list = userService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<UserInfo> findById(@PathVariable Long id) {
-		UserInfo obj = userInfoService.findById(id);
+	public ResponseEntity<User> findById(@PathVariable Long id) {
+		User obj = userService.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
-	public ResponseEntity<UserInfo> insert(@RequestBody UserInfo obj) {
+	public ResponseEntity<User> insert(@RequestBody User obj) {
 		obj.setPassword(passwordEncoder.encode(obj.getPassword()));
-		obj = userInfoService.insert(obj);
+		obj = userService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		userInfoService.delete(id);
+		userService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserInfo> update(@PathVariable Long id, @RequestBody UserInfo obj) {
+	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj) {
 		if (obj.getPassword() != null) {
 			obj.setPassword(passwordEncoder.encode(obj.getPassword()));
 		}
-		obj = userInfoService.update(id, obj);
+		obj = userService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}	
 }

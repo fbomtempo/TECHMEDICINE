@@ -11,27 +11,27 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tcc2022.techmedicine.entities.UserInfo;
+import com.tcc2022.techmedicine.entities.User;
 import com.tcc2022.techmedicine.exceptions.custom.DatabaseException;
 import com.tcc2022.techmedicine.exceptions.custom.NotFoundException;
-import com.tcc2022.techmedicine.repositories.UserInfoRepository;
+import com.tcc2022.techmedicine.repositories.UserRepository;
 
 @Service
-public class UserInfoService {
+public class UserService {
 
 	@Autowired
-	private UserInfoRepository userInfoRepository;
+	private UserRepository userRepository;
 
-	public List<UserInfo> findAll() {
-		return userInfoRepository.findAll().stream().map(user -> {
+	public List<User> findAll() {
+		return userRepository.findAllByOrderByIdDesc().stream().map(user -> {
 			user.setPassword(null);
 			return user;
 		}).collect(Collectors.toList());
 	}
 
-	public UserInfo findById(Long id) {
+	public User findById(Long id) {
 		try {
-			UserInfo user = userInfoRepository.findById(id).get();
+			User user = userRepository.findById(id).get();
 			user.setPassword(null);
 			return user;
 		} catch (NoSuchElementException e) {
@@ -40,19 +40,19 @@ public class UserInfoService {
 	}
 
 	@Transactional
-	public UserInfo findByUsername(String username) {
+	public User findByUsername(String username) {
 		try {
-			UserInfo userInfo = userInfoRepository.findByUsername(username).get();
-			Hibernate.initialize(userInfo.getPermissions());
-			return userInfo;
+			User user = userRepository.findByUsername(username).get();
+			Hibernate.initialize(user.getPermissions());
+			return user;
 		} catch (NoSuchElementException e) {
 			throw new NotFoundException("Usuário não existe");
 		}
 	}
 
-	public UserInfo insert(UserInfo obj) {
+	public User insert(User obj) {
 		try {
-			return userInfoRepository.save(obj);
+			return userRepository.save(obj);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityViolationException("Integridade do banco de dados violada.");
 		}
@@ -60,17 +60,17 @@ public class UserInfoService {
 
 	public void delete(Long id) {
 		try {
-			userInfoRepository.deleteById(id);
+			userRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new NotFoundException("Especialidade de id " + id + " não existe");
 		}
 	}
 
-	public UserInfo update(Long id, UserInfo obj) {
+	public User update(Long id, User obj) {
 		try {
-			UserInfo userInfo = userInfoRepository.findById(id).get();
-			updateData(userInfo, obj);
-			return userInfoRepository.save(userInfo);
+			User user = userRepository.findById(id).get();
+			updateData(user, obj);
+			return userRepository.save(user);
 		} catch (NoSuchElementException e) {
 			throw new NotFoundException("Especialidade de id " + id + " não existe");
 		} catch (DataIntegrityViolationException e) {
@@ -78,11 +78,11 @@ public class UserInfoService {
 		}
 	}
 
-	private void updateData(UserInfo userInfo, UserInfo obj) {
-		userInfo.setUsername(obj.getUsername());
+	private void updateData(User user, User obj) {
+		user.setUsername(obj.getUsername());
 		if (obj.getPassword() != null) {
-			userInfo.setPassword(obj.getPassword());
+			user.setPassword(obj.getPassword());
 		}
-		userInfo.setPermissions(obj.getPermissions());
+		user.setPermissions(obj.getPermissions());
 	}
 }

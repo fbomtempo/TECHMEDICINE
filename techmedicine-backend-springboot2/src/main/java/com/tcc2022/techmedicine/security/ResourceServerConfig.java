@@ -15,10 +15,15 @@ public class ResourceServerConfig extends  ResourceServerConfigurerAdapter {
 			.authorizeRequests()
 				.antMatchers("/usuarios/**").hasRole("ADMIN")
 				.antMatchers("/permissoes/**").hasRole("ADMIN")
-				.anyRequest().hasAnyRole("ADMIN", "FUNCIONARIO");
-		/*http
-			.authorizeRequests()
-				.anyRequest().permitAll();*/
+				.antMatchers("/pacientes/**").hasAnyRole("ADMIN", "MEDICO", "FUNCIONARIO")
+				.antMatchers("/funcionarios/**").hasAnyRole("ADMIN", "FUNCIONARIO")
+				.antMatchers("/cargos/**").hasAnyRole("ADMIN", "FUNCIONARIO")
+				.antMatchers("/especialidades/**").hasAnyRole("ADMIN", "FUNCIONARIO")
+				.antMatchers("/agendamentos/**").hasAnyRole("ADMIN", "FUNCIONARIO")
+				.antMatchers("/doencas/**").hasAnyRole("ADMIN", "MEDICO", "FUNCIONARIO")
+				.antMatchers("/medicos/**").hasAnyRole("ADMIN", "MEDICO", "FUNCIONARIO")
+				.antMatchers("/cabecalhos-atendimento/**").hasAnyRole("ADMIN", "MEDICO",  "FUNCIONARIO")
+				.antMatchers("/atendimentos/**").hasAnyRole("ADMIN", "MEDICO", "FUNCIONARIO");
 	}
 	
 }

@@ -5,7 +5,7 @@ export class CrudService<T extends { id?: number }> {
   constructor(protected http: HttpClient, protected API_URL: string) {}
 
   findAll(): Observable<T[]> {
-    return this.http.get<T[]>(this.API_URL).pipe(delay(750));
+    return this.http.get<T[]>(this.API_URL).pipe(take(1));
   }
 
   findById(id: number): Observable<T> {

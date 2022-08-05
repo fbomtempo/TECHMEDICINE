@@ -55,4 +55,10 @@ public class DiseaseResource {
 		obj = diseaseService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}
+	
+	@GetMapping(value = "/ordenar/descricao/crescente")
+	public ResponseEntity<List<Disease>> findAllByOrderByDescriptionAsc() {
+		List<Disease> list = diseaseService.findAllByOrderByDescriptionAsc();
+		return ResponseEntity.ok().body(list);
+	}
 }

@@ -9,5 +9,5 @@ import com.tcc2022.techmedicine.entities.Patient;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 	
 	List<Patient> findAllByOrderByIdDesc();
-	
+	List<Patient> findAllByOrderByNameAscSurnameAsc();
 }

@@ -77,4 +77,8 @@ public class PatientService {
 		patient.setDistrict(obj.getDistrict());
 		patient.setComplement(obj.getComplement());
 	}
+	
+	public List<Patient> findAllByOrderByNameAscSurnameAsc() {
+		return patientRepository.findAllByOrderByNameAscSurnameAsc();
+	}
 }

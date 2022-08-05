@@ -13,7 +13,7 @@
 	<artifactId>techmedicine</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>TECHMEDICINE</name>
-	<description>Sistema Médico TECHMEDICINE</description>
+	<description>Sistema de gerenciamento para clínicas médicas</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -52,13 +52,13 @@
 			<version>1.1.0.RELEASE</version>
 		</dependency>
 		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>

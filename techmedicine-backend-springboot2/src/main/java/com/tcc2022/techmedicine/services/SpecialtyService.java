@@ -62,4 +62,8 @@ public class SpecialtyService {
 	private void updateData(Specialty specialty, Specialty obj) {
 		specialty.setDescription(obj.getDescription());
 	}
+	
+	public List<Specialty> findAllByOrderByDescriptionAsc() {
+		return specialtyRepository.findAllByOrderByDescriptionAsc();
+	}
 }

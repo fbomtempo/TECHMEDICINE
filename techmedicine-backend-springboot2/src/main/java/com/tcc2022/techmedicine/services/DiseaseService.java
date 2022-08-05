@@ -62,4 +62,8 @@ public class DiseaseService {
 	private void updateData(Disease specialty, Disease obj) {
 		specialty.setDescription(obj.getDescription());
 	}
+	
+	public List<Disease> findAllByOrderByDescriptionAsc() {
+		return diseaseRepository.findAllByOrderByDescriptionAsc();
+	}
 }

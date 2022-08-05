@@ -26,23 +26,12 @@ export class LoginComponent extends FormService implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isLoggedIn();
     this.createForm();
-  }
-
-  private isLoggedIn(): void {
-    this.loggedIn =
-      this.tokenService.getToken() && !this.tokenService.isExpired()
-        ? true
-        : false;
-    if (!this.isLoggedIn) {
-      this.tokenService.signOut();
-    }
   }
 
   private createForm(): void {
     this.form = this.formBuilder.group({
-      username: [null, Validators.required],
+      username: [null, [Validators.required, Validators.maxLength(20)]],
       password: [null, Validators.required]
     });
   }
