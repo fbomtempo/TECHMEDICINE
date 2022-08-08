@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Chart, ChartConfiguration, ChartType } from 'chart.js';
 import Annotation from 'chartjs-plugin-annotation';
 import { BaseChartDirective } from 'ng2-charts';
@@ -8,13 +9,17 @@ import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { CheckUp } from '../../check-ups/models/check-up';
 import { CheckUpService } from '../../check-ups/services/check-up.service';
 import { Medic } from '../../medics/models/medic';
+import { ReportService } from '../services/report.service';
 
 @Component({
-  selector: 'app-line-chart',
-  templateUrl: './line-chart.component.html',
-  styleUrls: ['./line-chart.component.css']
+  selector: 'app-reports',
+  templateUrl: './reports.component.html',
+  styleUrls: ['./reports.component.css']
 })
-export class LineChartComponent implements OnInit {
+export class ReportsComponent implements OnInit {
+  totalPatients: number;
+  totalAppointments: number;
+  totalCheckUps: number;
   lineChartData: ChartConfiguration['data'] = {
     datasets: [],
     labels: [
@@ -49,7 +54,7 @@ export class LineChartComponent implements OnInit {
           color: 'rgba(255,0,0,0.3)'
         },
         ticks: {
-          color: 'red'
+          color: 'rgba(54,162,235,1)'
         }
       }
     },
@@ -59,24 +64,39 @@ export class LineChartComponent implements OnInit {
   };
   lineChartType: ChartType = 'line';
   loadGraph: boolean = false;
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
   medics: Medic[];
   medicsLoading: boolean = true;
   compareFnMedic(c1: Medic, c2: Medic): boolean {
     return c1 && c2 ? c1.id === c2.id : c1 === c2;
   }
   filterMedic: Medic;
-  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   constructor(
+    private reportService: ReportService,
+    private dropdownService: DropdownService,
     private checkUpService: CheckUpService,
-    private dropdownService: DropdownService
+    private router: Router
   ) {
     Chart.register(Annotation);
   }
 
   ngOnInit(): void {
+    this.getTotals();
     this.fetchData();
     this.generateGraph();
+  }
+
+  private getTotals(): void {
+    this.reportService.getTotalPatients().subscribe((total: number) => {
+      this.totalPatients = total;
+    });
+    this.reportService.getTotalAppointments().subscribe((total: number) => {
+      this.totalAppointments = total;
+    });
+    this.reportService.getTotalCheckUps().subscribe((total: number) => {
+      this.totalCheckUps = total;
+    });
   }
 
   private fetchData(): void {
@@ -126,10 +146,10 @@ export class LineChartComponent implements OnInit {
           this.lineChartData.datasets = [
             {
               data: totals.totalByMonthFilter,
-              label: 'Médico',
+              label: `${this.filterMedic?.name} ${this.filterMedic?.surname}`,
               yAxisID: 'y-axis-1',
-              backgroundColor: 'rgba(255,0,0,0.3)',
-              borderColor: 'red',
+              backgroundColor: 'rgba(54,162,235,0.3)',
+              borderColor: 'rgba(54,162,235,1)',
               pointBackgroundColor: 'rgba(148,159,177,1)',
               pointBorderColor: '#fff',
               pointHoverBackgroundColor: '#fff',
@@ -157,5 +177,9 @@ export class LineChartComponent implements OnInit {
     this.filterMedic = medic;
     this.loadGraph = false;
     this.generateGraph();
+  }
+
+  onHome(): void {
+    this.router.navigate(['/home']);
   }
 }

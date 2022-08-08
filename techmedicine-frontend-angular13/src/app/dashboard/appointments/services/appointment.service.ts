@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { delay, map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { DateService } from 'src/app/shared/services/date.service';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { environment } from 'src/environments/environment';
@@ -22,7 +22,7 @@ export class AppointmentService extends CrudService<Appointment> {
 
   findAllFormatted(): Observable<any[]> {
     return this.http.get<Appointment[]>(this.API_URL).pipe(
-      delay(750),
+      take(1),
       map((appointments: Appointment[]) => {
         return appointments.map((appointment: Appointment) => {
           this.dateService.toPtBrDateString(appointment);
@@ -36,7 +36,7 @@ export class AppointmentService extends CrudService<Appointment> {
 
   findAllAsEvents(): Observable<any[]> {
     return this.http.get<Appointment[]>(this.API_URL).pipe(
-      delay(750),
+      take(1),
       map((appointments: Appointment[]) => {
         return appointments.map((appointment: Appointment) => {
           return {

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { delay, map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { DateService } from 'src/app/shared/services/date.service';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { environment } from 'src/environments/environment';
@@ -22,7 +22,7 @@ export class MedicService extends CrudService<Medic> {
 
   findAllFormatted(): Observable<Medic[]> {
     return this.http.get<Medic[]>(this.API_URL).pipe(
-      delay(750),
+      take(1),
       map((medics: Medic[]) => {
         return medics.map((medic: Medic) => {
           this.maskService.formatData(medic);

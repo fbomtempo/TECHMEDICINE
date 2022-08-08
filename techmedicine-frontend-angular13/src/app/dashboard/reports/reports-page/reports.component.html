@@ -27,7 +27,7 @@
         <div class="card-body">
           <h5 class="card-title">Total de Agendamentos</h5>
           <p class="card-text fs-2 fw-bold">{{ totalAppointments }}</p>
-          <a class="btn btn-warning" [routerLink]="['/agendamentos']"
+          <a class="btn btn-primary" [routerLink]="['/agendamentos']"
             >Módulo de Agendamentos</a
           >
         </div>
@@ -36,10 +36,10 @@
     <div class="col-sm-4 col-12 pt-sm-0 pt-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Atendmeintos Bem-Sucedidos</h5>
+          <h5 class="card-title">Atendimentos Bem-Sucedidos</h5>
           <p class="card-text fs-2 fw-bold">{{ totalCheckUps }}</p>
           <a
-            class="btn btn-danger"
+            class="btn btn-primary"
             [routerLink]="['/atendimentos']"
             [queryParams]="{ pagina: 1 }"
             >Módulo de Atendimentos</a

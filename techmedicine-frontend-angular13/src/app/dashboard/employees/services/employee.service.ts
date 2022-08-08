@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { delay, map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { DateService } from 'src/app/shared/services/date.service';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { environment } from 'src/environments/environment';
@@ -22,7 +22,7 @@ export class EmployeeService extends CrudService<Employee> {
 
   findAllFormatted(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.API_URL).pipe(
-      delay(750),
+      take(1),
       map((employees: Employee[]) => {
         return employees.map((employee: Employee) => {
           this.maskService.formatData(employee);

@@ -86,6 +86,16 @@ export class NavbarComponent implements OnInit {
     return admin;
   }
 
+  isSecretario(): boolean {
+    let secretario: boolean = true;
+    this.user['authorities'].forEach((authority: string) => {
+      if (authority === 'ROLE_SECRETARIO') {
+        secretario = false;
+      }
+    });
+    return secretario;
+  }
+
   signOut(): void {
     this.tokenService.signOut();
     this.router.navigate(['/login']);
