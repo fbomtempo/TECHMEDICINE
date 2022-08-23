@@ -2,7 +2,7 @@
   <div class="row">
     <div class="pt-4 pb-md-0 pb-3 col-md-3">
       <a class="fs-5 display-1 back" (click)="onBack()"
-        ><i class="fas fa-arrow-left"></i><span class="ms-2">Voltar</span></a
+        ><i class="fas fa-arrow-left"></i><span>Voltar</span></a
       >
     </div>
     <h1 class="text-center pb-5">Página do Paciente</h1>
@@ -31,7 +31,14 @@
           <h6>Tel. Celular: {{ patient.mobilePhone }}</h6>
           <h6>E-Mail: {{ patient.email }}</h6>
         </div>
-        <h6><a href="">Ver todos os dados </a></h6>
+        <h6>
+          <a
+            type="button"
+            class="link-primary"
+            (click)="viewPatientFullDetails()"
+            >Ver todos os dados
+          </a>
+        </h6>
       </div>
     </div>
     <div class="col-md-2 col-12 text-end">
@@ -88,6 +95,32 @@
     <div class="row">
       <div class="pb-3">
         <div class="row">
+          <div class="col-12 pt-2 pb-3">
+            <div class="form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="opened-filter-switch"
+                [(ngModel)]="filterSwitches.finished"
+              />
+              <label class="form-check-label" for="opened-filter-switch"
+                >Mostrar Finalizados</label
+              >
+            </div>
+            <div class="form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="cancelled-filter-switch"
+                [(ngModel)]="filterSwitches.cancelled"
+              />
+              <label class="form-check-label" for="cancelled-filter-switch"
+                >Mostrar Cancelados</label
+              >
+            </div>
+          </div>
           <div class="col-xl-6 col-lg-8 col-md-12 col-sm-12 col-xs-12">
             <label for="medic" class="form-label">Médico:</label>
             <ng-select
@@ -159,8 +192,18 @@
           <li class="checkUp-list" *ngFor="let checkUp of showData(checkUps)">
             <div class="row">
               <div class="col-12">
-                <span class="fs-4">
-                  <strong>{{ checkUp.checkUpHeader.date }}</strong>
+                <span
+                  class="fs-4"
+                  [ngClass]="cancelledCheckUpSituationTextColor(checkUp)"
+                >
+                  <strong
+                    >{{ checkUp.checkUpHeader.date
+                    }}{{
+                      checkUp.checkUpSituation === "CANCELADO"
+                        ? " - " + checkUp.checkUpSituation
+                        : ""
+                    }}</strong
+                  >
                 </span>
               </div>
             </div>
@@ -190,79 +233,111 @@
                 >
               </div>
             </div>
-            <div class="row">
+            <div class="row check-up-info">
               <accordion class="pt-3">
-                <accordion-group heading="Anamnese">
+                <accordion-group
+                  heading="Anamnese"
+                  [isDisabled]="checkUp.checkUpSituation === 'CANCELADO'"
+                >
                   <div class="pb-2">
                     <strong>Queixa:</strong>
                   </div>
-                  <p class="border pt-1 pb-1">
-                    <span class="ms-2">{{ checkUp.complaint }}</span>
+                  <p class="border pt-1 pb-1 ps-2">
+                    <span>{{ checkUp.complaint }}</span>
                   </p>
                   <div class="pb-2">
                     <strong>História da Doença:</strong>
                   </div>
-                  <p class="border pt-1 pb-1">
-                    <span class="ms-2">{{ checkUp.diseaseHistory }}</span>
+                  <p class="border pt-1 pb-1 ps-2">
+                    <span>{{ checkUp.diseaseHistory }}</span>
                   </p>
                   <div class="pb-2">
                     <strong>História da Família:</strong>
                   </div>
-                  <p class="border pt-1 pb-1">
-                    <span class="ms-2">{{ checkUp.familyHistory }}</span>
+                  <p class="border pt-1 pb-1 ps-2">
+                    <span>{{ checkUp.familyHistory }}</span>
                   </p>
                   <div class="pb-2">
                     <strong>História Pessoal:</strong>
                   </div>
-                  <p class="border pt-1 pb-1">
-                    <span class="ms-2">{{ checkUp.patientHistory }}</span>
+                  <p class="border pt-1 pb-1 ps-2">
+                    <span>{{ checkUp.patientHistory }}</span>
                   </p>
                   <div class="pb-2">
                     <strong>CID:</strong>
                   </div>
-                  <p class="border pt-1 pb-1">
-                    <span class="ms-2">{{ checkUp.disease }}</span>
+                  <p class="border pt-1 pb-1 ps-2">
+                    <span>{{ checkUp.disease }}</span>
                   </p>
                   <div class="pb-2">
                     <strong>Conduta:</strong>
                   </div>
-                  <p class="border pt-1 pb-1">
-                    <span class="ms-2">{{ checkUp.conduct }}</span>
+                  <p class="border pt-1 pb-1 ps-2">
+                    <span>{{ checkUp.conduct }}</span>
                   </p>
+                  <div class="pt-2 text-end">
+                    <button
+                      type="button"
+                      title="Imprimir Atestado"
+                      class="btn-round btn-outline-print me-2"
+                      (click)="printDocument(checkUp)"
+                    >
+                      <i class="fas fa-print"></i>
+                    </button>
+                  </div>
                 </accordion-group>
-                <accordion-group heading="Receituário">
+                <accordion-group
+                  heading="Receituário"
+                  [isDisabled]="checkUp.checkUpSituation === 'CANCELADO'"
+                >
                   <div class="pb-2">
                     <strong>Receituário:</strong>
                   </div>
-                  <p class="border pt-1 pb-1">
-                    <span class="ms-2">{{ checkUp.prescription }}</span>
+                  <p class="border pt-1 pb-1 ps-2 ps-2">
+                    <span>{{ checkUp.prescription }}</span>
                   </p>
+                  <div class="pt-2 text-end">
+                    <button
+                      type="button"
+                      title="Imprimir Receita"
+                      class="btn-round btn-outline-print me-2"
+                      (click)="printDocument(checkUp)"
+                    >
+                      <i class="fas fa-print"></i>
+                    </button>
+                  </div>
                 </accordion-group>
-                <accordion-group heading="Exames">
+                <accordion-group
+                  heading="Exames"
+                  [isDisabled]="checkUp.checkUpSituation === 'CANCELADO'"
+                >
                   <div class="pb-2">
                     <strong>Exames:</strong>
                   </div>
-                  <p class="border pt-1 pb-1">
-                    <span class="ms-2">{{ checkUp.exams }}</span>
+                  <p class="border pt-1 pb-1 ps-2">
+                    <span>{{ checkUp.exams }}</span>
                   </p>
+                  <div class="pt-2 text-end">
+                    <button
+                      type="button"
+                      title="Imprimir Exames"
+                      class="btn-round btn-outline-print me-2"
+                      (click)="printDocument(checkUp)"
+                    >
+                      <i class="fas fa-print"></i>
+                    </button>
+                  </div>
                 </accordion-group>
               </accordion>
             </div>
             <div class="pt-4">
               <div class="text-end">
                 <button
-                  type="button"
-                  title="Editar"
-                  class="btn btn-round btn-outline-edit me-2"
-                  [routerLink]="['/atendimentos/realizar/editar/', checkUp.id]"
-                >
-                  <i class="fas fa-pencil-alt"></i>
-                </button>
-
-                <button
+                  *ngIf="checkUp.checkUpSituation !== 'CANCELADO'"
                   type="button"
                   title="Deletar"
                   class="btn-round btn-outline-delete me-2"
+                  (click)="onCheckUpCancel(checkUp.id)"
                 >
                   <i class="fas fa-trash-alt"></i>
                 </button>
@@ -276,6 +351,18 @@
   </div>
 </div>
 
+<!-- MODAIS -->
+<app-per-patient-details-modal
+  [patient]="patient"
+  #patientFullDetailsModal
+></app-per-patient-details-modal>
+
+<app-prescription-print-model
+  [checkUp]="checkUp"
+  #printPrescription
+></app-prescription-print-model>
+
+<!-- TEMPLATES -->
 <ng-template #loadingError>
   <div *ngIf="error | async; else loading">
     <div

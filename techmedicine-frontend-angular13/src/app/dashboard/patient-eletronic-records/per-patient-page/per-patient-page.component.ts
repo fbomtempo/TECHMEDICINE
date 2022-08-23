@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsDaterangepickerConfig } from 'ngx-bootstrap/datepicker';
 import { catchError, Observable, of, Subject, switchMap, take } from 'rxjs';
@@ -11,6 +11,8 @@ import { DateService } from 'src/app/shared/services/date.service';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
+import { PrescriptionPrintModelComponent } from '../per-checkup-print-models/prescription-print-model/prescription-print-model/prescription-print-model.component';
+import { PerPatientDetailsModalComponent } from '../per-patient-details-modal/per-patient-details-modal.component';
 
 @Component({
   selector: 'app-per-patient-page',
@@ -19,9 +21,14 @@ import { ModalService } from 'src/app/shared/services/modal.service';
 })
 export class PerPatientPageComponent implements OnInit {
   patient: Patient;
+  checkUp: CheckUp;
   checkUps$: Observable<CheckUp[]>;
   error: Subject<boolean> = new Subject();
   isCollapsed: boolean = true;
+  filterSwitches: any = {
+    finished: true,
+    cancelled: false
+  };
   medics: Medic[];
   medicsLoading: boolean = true;
   compareFnMedic(c1: Medic, c2: Medic): boolean {
@@ -35,6 +42,11 @@ export class PerPatientPageComponent implements OnInit {
     clearButtonLabel: 'Limpar',
     containerClass: 'theme-dark-blue'
   };
+  @ViewChild('patientFullDetailsModal', { static: true })
+  patientFullDetailsModal?: PerPatientDetailsModalComponent;
+
+  @ViewChild('printPrescription', { static: true })
+  printPrescription?: PrescriptionPrintModelComponent;
 
   constructor(
     private patientService: PatientService,
@@ -74,15 +86,31 @@ export class PerPatientPageComponent implements OnInit {
     });
   }
 
+  cancelledCheckUpSituationTextColor(checkUp: CheckUp): any {
+    return {
+      'text-danger': checkUp.checkUpSituation === 'CANCELADO'
+    };
+  }
+
+  viewPatientFullDetails(): void {
+    this.patientFullDetailsModal.show();
+  }
+
   setFilterMedic(medic: Medic) {
     this.filterMedic = medic;
   }
 
-  log() {
-    console.log(this.dateRange);
-  }
-
   showData(checkUps: CheckUp[]): CheckUp[] {
+    if (!this.filterSwitches.finished) {
+      checkUps = checkUps.filter(
+        (checkUp: CheckUp) => checkUp.checkUpSituation !== 'FINALIZADO'
+      );
+    }
+    if (!this.filterSwitches.cancelled) {
+      checkUps = checkUps.filter(
+        (checkUp: CheckUp) => checkUp.checkUpSituation !== 'CANCELADO'
+      );
+    }
     if (this.filterMedic) {
       checkUps = checkUps.filter(
         (checkUp: CheckUp) =>
@@ -166,6 +194,33 @@ export class PerPatientPageComponent implements OnInit {
         error: () =>
           this.modalService.alertDanger(
             'Erro ao remover paciente!',
+            'Tente novamente mais tarde.'
+          )
+      });
+  }
+
+  printDocument(checkUp): void {
+    this.checkUp = checkUp;
+    this.printPrescription.show();
+  }
+
+  onCheckUpCancel(id: number): void {
+    this.modalService
+      .showConfirmModal(
+        'Confirmação',
+        'Tem certeza que deseja cancelar esse atendimento?'
+      )
+      .pipe(
+        take(1),
+        switchMap((confirmResult: boolean) =>
+          confirmResult ? this.checkUpService.delete(id) : of()
+        )
+      )
+      .subscribe({
+        next: () => setTimeout(() => this.fetchData(), 100),
+        error: () =>
+          this.modalService.alertDanger(
+            'Erro ao cancelar atendimento!',
             'Tente novamente mais tarde.'
           )
       });

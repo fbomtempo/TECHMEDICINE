@@ -11,9 +11,16 @@ import { SharedModule } from '../../shared/shared.module';
 import { PatientEletronicRecordsRoutingModule } from './patient-eletronic-records-routing.module';
 import { PerPatientListComponent } from './per-patient-list/per-patient-list.component';
 import { PerPatientPageComponent } from './per-patient-page/per-patient-page.component';
+import { PerPatientDetailsModalComponent } from './per-patient-details-modal/per-patient-details-modal.component';
+import { PrescriptionPrintModelComponent } from './per-checkup-print-models/prescription-print-model/prescription-print-model/prescription-print-model.component';
 
 @NgModule({
-  declarations: [PerPatientListComponent, PerPatientPageComponent],
+  declarations: [
+    PerPatientListComponent,
+    PerPatientPageComponent,
+    PerPatientDetailsModalComponent,
+    PrescriptionPrintModelComponent
+  ],
   imports: [
     CommonModule,
     PatientEletronicRecordsRoutingModule,

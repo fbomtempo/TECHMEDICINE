@@ -1,0 +1,125 @@
+<ng-template #template>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Detalhes do Paciente</h5>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+        (click)="close()"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <span class="pt-2"></span>
+        <div class="col-lg-10 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>Nome: </strong>
+            <br />
+            <span>{{ patient.name + " " + patient.surname }}</span>
+          </div>
+        </div>
+        <div class="col-lg-2 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>Nascimento: </strong>
+            <br />
+            <span>{{ patient.birthDate }}</span>
+          </div>
+        </div>
+        <div class="col-lg-4 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>Sexo: </strong>
+            <br />
+            <span>{{ patient.gender }}</span>
+          </div>
+        </div>
+        <div class="col-lg-4 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>RG: </strong>
+            <br />
+            <span>{{ patient.rg }}</span>
+          </div>
+        </div>
+        <div class="col-lg-4 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>CPF: </strong>
+            <br />
+            <span>{{ patient.cpf }}</span>
+          </div>
+        </div>
+        <div class="col-lg-3 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>Tel. Residencial: </strong>
+            <br />
+            <span>{{ patient.homePhone ? patient.homePhone : "-" }}</span>
+          </div>
+        </div>
+        <div class="col-lg-3 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>Tel. Celular: </strong>
+            <br />
+            <span>{{ patient.mobilePhone }}</span>
+          </div>
+        </div>
+        <div class="col-lg-6 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>E-mail: </strong>
+            <br />
+            <span>{{ patient.email }}</span>
+          </div>
+        </div>
+        <div class="col-lg-3 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>CEP: </strong>
+            <br />
+            <span>{{ patient.cep }}</span>
+          </div>
+        </div>
+        <div class="col-lg-6 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>Cidade: </strong>
+            <br />
+            <span>{{ patient.city }}</span>
+          </div>
+        </div>
+        <div class="col-lg-3 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>Estado: </strong>
+            <br />
+            <span>{{ patient.state }}</span>
+          </div>
+        </div>
+        <div class="col-lg-6 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>Endereço: </strong>
+            <br />
+            <span>{{ patient.address }}</span>
+          </div>
+        </div>
+        <div class="col-lg-2 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>Número: </strong>
+            <br />
+            <span>{{ patient.number }}</span>
+          </div>
+        </div>
+        <div class="col-lg-4 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>Bairro: </strong>
+            <br />
+            <span>{{ patient.district }}</span>
+          </div>
+        </div>
+        <div class="col-lg-12 pb-4">
+          <div class="cell-background cell-padding">
+            <strong>Complemento: </strong>
+            <br />
+            <span>{{ patient.complement }}</span>
+          </div>
+        </div>
+        <span class="pt-4"></span>
+      </div>
+    </div>
+  </div>
+</ng-template>

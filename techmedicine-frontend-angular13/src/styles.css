@@ -113,6 +113,17 @@ app-dashboard {
   border-color: #0dcaf0;
 }
 
+.btn-outline-print {
+  color: black;
+  border-color: black;
+}
+
+.btn-outline-print:hover {
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
 .btn-outline-appointment-checkup {
   color: black;
   border-color: black;
@@ -164,5 +175,13 @@ app-dashboard {
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@media print {
+
+  app-per-patient-page,
+  .modal-footer {
+    display: none;
   }
 }

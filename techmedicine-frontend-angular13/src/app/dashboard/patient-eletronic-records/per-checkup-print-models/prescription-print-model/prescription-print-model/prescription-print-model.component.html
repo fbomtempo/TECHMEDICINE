@@ -1,0 +1,54 @@
+<ng-template #template>
+  <div class="modal-content">
+    <div class="modal-body">
+      <div class="text-center">
+        <h1 class="display-6">Receituário Médico</h1>
+      </div>
+      <div class="pt-3 col-12 text-break">
+        <hr />
+        <div>
+          <strong
+            >Paciente:
+            {{
+              checkUp.checkUpHeader.patient.name +
+                " " +
+                checkUp.checkUpHeader.patient.surname
+            }}</strong
+          >
+        </div>
+        <div>
+          <strong
+            >Médico:
+            {{
+              checkUp.checkUpHeader.medic.gender === "Feminino" ? "Dra." : "Dr."
+            }}
+            {{
+              checkUp.checkUpHeader.medic.name +
+                " " +
+                checkUp.checkUpHeader.medic.surname
+            }}</strong
+          >
+        </div>
+        <div>
+          <strong>Data: {{ checkUp.checkUpHeader.date }}</strong>
+        </div>
+        <hr />
+        <div class="pt-5">
+          <div class="content pb-4">
+            <span>{{ checkUp.prescription }}</span>
+          </div>
+          <div class="pt-5 text-center">
+            _____________________________________________________________
+            <div>Assinatura do médico</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="close()">Voltar</button>
+      <button class="btn btn-primary" (click)="printDocument()">
+        Imprimir
+      </button>
+    </div>
+  </div>
+</ng-template>

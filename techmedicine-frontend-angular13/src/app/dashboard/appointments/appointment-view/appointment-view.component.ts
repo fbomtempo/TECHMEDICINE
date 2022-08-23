@@ -38,10 +38,6 @@ export class AppointmentViewComponent implements OnInit, AfterViewInit {
     return this.route.snapshot.queryParams['pagina'];
   }
 
-  log() {
-    console.log('teste');
-  }
-
   onHome(): void {
     this.router.navigate(['/home']);
   }

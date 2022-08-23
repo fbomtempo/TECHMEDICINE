@@ -11,4 +11,5 @@ export interface CheckUp {
   conduct: string;
   prescription: string;
   exams: string;
+  checkUpSituation: string;
 }
