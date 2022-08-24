@@ -295,10 +295,13 @@
                     <strong>Receituário:</strong>
                   </div>
                   <p class="border pt-1 pb-1 ps-2 ps-2">
-                    <span>{{ checkUp.prescription }}</span>
+                    <span>{{
+                      checkUp.prescription ? checkUp.prescription : "-"
+                    }}</span>
                   </p>
                   <div class="pt-2 text-end">
                     <button
+                      *ngIf="checkUp.prescription"
                       type="button"
                       title="Imprimir Receita"
                       class="btn-round btn-outline-print me-2"
@@ -316,10 +319,11 @@
                     <strong>Exames:</strong>
                   </div>
                   <p class="border pt-1 pb-1 ps-2">
-                    <span>{{ checkUp.exams }}</span>
+                    <span>{{ checkUp.exams ? checkUp.exams : "-" }}</span>
                   </p>
                   <div class="pt-2 text-end">
                     <button
+                      *ngIf="checkUp.exams"
                       type="button"
                       title="Imprimir Exames"
                       class="btn-round btn-outline-print me-2"
@@ -358,7 +362,11 @@
   #patientFullDetailsModal
 ></app-per-patient-details-modal>
 
-<app-statement-print-model #printStatement></app-statement-print-model>
+<app-statement-print-model
+  [checkUp]="checkUp"
+  [days]="daysLeave"
+  #printStatement
+></app-statement-print-model>
 
 <app-prescription-print-model
   [checkUp]="checkUp"

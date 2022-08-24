@@ -65,7 +65,7 @@ public class CheckUpService {
 	
 	public void delete(Long id) {
 		try {
-			CheckUp checkUp = checkUpRepository.findById(id).get();
+			CheckUp checkUp = findById(id);
 			if (checkUp.getCheckUpSituation() == CheckUpSituation.CANCELADO) {
 				throw new DatabaseException("Atendimento já está cancelado");
 			}
@@ -80,7 +80,7 @@ public class CheckUpService {
 	
 	public CheckUp update(Long id, CheckUp obj) {
 		try {
-			CheckUp checkUp = checkUpRepository.findById(id).get();
+			CheckUp checkUp = findById(id);
 			if (checkUp.getCheckUpSituation() == CheckUpSituation.CANCELADO) {
 				throw new DatabaseException("Não é possivel alterar um atendimento cancelado");
 			}

@@ -12,14 +12,20 @@
     aria-label="Close"
     (click)="onClose()"
   ></button>
-  <br />
-  <!--<a style="font-size: 10px;" (click)="onShow()">Mostrar erro v</a>-->
-  <div *ngIf="show">
-    <hr />
-    <p style="font-size: 10px">{{ error.timestamp }}</p>
-    <p style="font-size: 10px">{{ error.status }}</p>
-    <p style="font-size: 10px">{{ error.error }}</p>
-    <p style="font-size: 10px">{{ error.message }}</p>
-    <p style="font-size: 10px">{{ error.path }}</p>
-  </div>
+  <!--<div *ngIf="type === 'danger'" class="pt-3">
+    <hr style="margin: 0; padding: 0" />
+    <a
+      class="mt-3 btn btn-outline btn-sm"
+      data-bs-toggle="collapse"
+      href="#errorCollapse"
+      role="button"
+      aria-expanded="false"
+      aria-controls="collapseExample"
+    >
+      Expandir <i class="fas fa-angle-down"></i>
+    </a>
+    <div class="pt-2 collapse" id="errorCollapse" style="font-size: 14px">
+      <div>Mensagem: {{ error.error.message }}</div>
+    </div>
+  </div>-->
 </div>

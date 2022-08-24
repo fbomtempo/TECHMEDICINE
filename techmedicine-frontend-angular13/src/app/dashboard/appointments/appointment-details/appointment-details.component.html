@@ -113,15 +113,16 @@
 <hr />
 <div class="pt-2 mb-5">
   <button
+    *ngIf="appointment.appointmentSituation === 'AGENDADO'"
     type="button"
-    class="btn btn-primary"
+    class="btn btn-primary me-2"
     [routerLink]="['../../editar/', appointment.id]"
   >
     Editar
   </button>
   <button
     type="button"
-    class="ms-2 btn btn-secondary"
+    class="btn btn-secondary"
     [routerLink]="['/agendamentos']"
     [queryParams]="{ pagina: 1 }"
   >

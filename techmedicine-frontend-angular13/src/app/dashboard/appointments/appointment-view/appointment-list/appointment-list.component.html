@@ -190,13 +190,8 @@
             </div>
           </td>
           <td>
-            <!-- <a
-              *ngIf="appointment.appointmentSituation === 'AGENDADO'"
-              [routerLink]="['/atendimentos/novo']"
-              [queryParams]="{ agendamento: appointment.id }"
-              >Criar Atendimento <i class="fas fa-external-link-alt"></i
-            ></a> -->
             <button
+              *ngIf="appointment.appointmentSituation === 'AGENDADO'"
               class="btn btn-outline-success"
               [routerLink]="['/atendimentos/novo']"
               [queryParams]="{ agendamento: appointment.id }"

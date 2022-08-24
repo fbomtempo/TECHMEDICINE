@@ -41,19 +41,19 @@ public class Medic implements Serializable {
 	@JoinColumn(name = "specialty_id", nullable = false)
 	private Specialty specialty;
 	
-	@Column(length = 8, nullable = false)
+	@Column(length = 9, nullable = false)
 	private String crm;
 	
 	@Column(length = 12, nullable = false)
 	private String rg;
 	
-	@Column(length = 14, unique = true, nullable = false)
+	@Column(length = 11, unique = true, nullable = false)
 	private String cpf;
 	
-	@Column(length = 14, nullable = true)
+	@Column(length = 10, nullable = true)
 	private String homePhone;
 	
-	@Column(length = 15, nullable = false)
+	@Column(length = 11, nullable = false)
 	private String mobilePhone;
 	
 	@Column(length = 35, nullable = false)

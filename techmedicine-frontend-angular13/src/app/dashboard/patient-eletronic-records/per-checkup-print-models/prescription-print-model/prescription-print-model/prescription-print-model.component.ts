@@ -1,10 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CheckUp } from 'src/app/dashboard/check-ups/models/check-up';
 
@@ -23,15 +17,6 @@ export class PrescriptionPrintModelComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
-
-  /*ngOnChanges(changes: SimpleChanges): void {
-    if (this.checkUp) {
-      for (const patient in changes) {
-        const change = changes[patient];
-        console.log(change.currentValue);
-      }
-    }
-  }*/
 
   show(): void {
     this.bsModalRef = this.bsModalService.show(

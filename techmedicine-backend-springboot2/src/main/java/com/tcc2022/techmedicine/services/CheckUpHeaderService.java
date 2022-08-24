@@ -28,7 +28,7 @@ public class CheckUpHeaderService {
 	private AppointmentRepository appointmentRepository;
 	
 	public List<CheckUpHeader> findAll() {
-		return checkUpHeaderRepository.findAll();
+		return checkUpHeaderRepository.findAllByOrderByIdDesc();
 	}
 	
 	public CheckUpHeader findById(Long id) {
@@ -41,19 +41,19 @@ public class CheckUpHeaderService {
 	
 	public CheckUpHeader insert(CheckUpHeader obj) {
 		try {
-			CheckUpHeader checkUpHeader = checkUpHeaderRepository.findByAppointment(obj.getAppointment());
-			if (checkUpHeader != null) {
-				if (checkUpHeader.getCheckUpHeaderSituation() != CheckUpHeaderSituation.CANCELADO) {
-					throw new DatabaseException("Agendamento informado já possui um atendimento cadastrado");
-				}
-			}
 			Appointment appointment = obj.getAppointment();
 			if (appointment != null) {
-				appointment.setAppointmentSituation(AppointmentSituation.ATENDIDO);				
+				CheckUpHeader checkUpHeader = checkUpHeaderRepository.findByAppointment(appointment);
+				if (checkUpHeader != null) {
+					if (checkUpHeader.getCheckUpHeaderSituation() != CheckUpHeaderSituation.CANCELADO) {
+						throw new DatabaseException("Agendamento informado já possui um atendimento cadastrado");
+					}
+				}
+				appointment.setAppointmentSituation(AppointmentSituation.ATENDIDO);	
+				appointmentRepository.save(appointment);
 			}
 			obj.setCheckUpHeaderSituation(CheckUpHeaderSituation.ABERTO);
 			obj.setStartTime(LocalTime.now());
-			appointmentRepository.save(appointment);
 			return checkUpHeaderRepository.save(obj);
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Violação na integridade ou validações dos campos do banco");
@@ -69,11 +69,8 @@ public class CheckUpHeaderService {
 			if (checkUpHeader.getCheckUpHeaderSituation() == CheckUpHeaderSituation.FINALIZADO) {
 				throw new DatabaseException("Não é possivel cancelar um cabeçalho de atendimento finalizado");
 			}
-			Appointment appointment = checkUpHeader.getAppointment();
 			checkUpHeader.setCheckUpHeaderSituation(CheckUpHeaderSituation.CANCELADO);
-			appointment.setAppointmentSituation(AppointmentSituation.AGENDADO);
 			checkUpHeaderRepository.save(checkUpHeader);
-			appointmentRepository.save(appointment);
 		} catch (EmptyResultDataAccessException e) {
 			throw new NotFoundException("Cabeçalho de atendimento de id " + id + " não existe");
 		} catch (DataIntegrityViolationException e) {
@@ -83,7 +80,7 @@ public class CheckUpHeaderService {
 	
 	public CheckUpHeader update(Long id, CheckUpHeader obj) {
 		try {
-			CheckUpHeader checkUpHeader = checkUpHeaderRepository.findById(id).get();
+			CheckUpHeader checkUpHeader = findById(id);
 			if (checkUpHeader.getCheckUpHeaderSituation() == CheckUpHeaderSituation.CANCELADO) {
 				throw new DatabaseException("Não é possivel alterar um cabeçalho de atendimento cancelado");
 			}

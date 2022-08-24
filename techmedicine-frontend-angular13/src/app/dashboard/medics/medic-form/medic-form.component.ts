@@ -86,7 +86,7 @@ export class MedicFormComponent extends FormService implements OnInit {
         this.medic.gender,
         [Validators.required, Validators.maxLength(9)]
       ],
-      crm: [this.medic.crm, [Validators.required, Validators.maxLength(12)]],
+      crm: [this.medic.crm, [Validators.required, Validators.maxLength(9)]],
       specialty: [this.medic.specialty, [Validators.required]],
       rg: [this.medic.rg, [Validators.required, Validators.maxLength(12)]],
       cpf: [

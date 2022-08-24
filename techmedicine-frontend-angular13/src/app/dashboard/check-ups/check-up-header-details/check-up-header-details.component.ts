@@ -23,6 +23,17 @@ export class CheckUpHeaderDetailsComponent implements OnInit {
     this.fetchData();
   }
 
+  checkUpHeaderSituationTextColor(): any {
+    return {
+      color:
+        this.checkUpHeader.checkUpHeaderSituation === 'ABERTO'
+          ? '#3788d8'
+          : this.checkUpHeader.checkUpHeaderSituation === 'CANCELADO'
+          ? '#D90000'
+          : '#00b28e'
+    };
+  }
+
   fetchData(): void {
     this.checkUpHeader = this.route.snapshot.data['checkUpHeader'];
     this.dateService.toPtBrDateString(this.checkUpHeader);

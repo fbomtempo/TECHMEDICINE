@@ -37,4 +37,24 @@ export class PatientService extends CrudService<Patient> {
       })
     );
   }
+
+  findAllFormattedOrderByName(): Observable<Patient[]> {
+    return this.http
+      .get<Patient[]>(`${this.API_URL}/ordenar/nomeSobrenome/crescente`)
+      .pipe(
+        take(1),
+        map((patients: Patient[]) => {
+          return patients.map((patient: Patient) => {
+            this.maskService.formatData(patient, [
+              'cpf',
+              'homePhone',
+              'mobilePhone',
+              'cep'
+            ]);
+            this.dateService.toPtBrDateString(patient, ['birthDate']);
+            return patient;
+          });
+        })
+      );
+  }
 }

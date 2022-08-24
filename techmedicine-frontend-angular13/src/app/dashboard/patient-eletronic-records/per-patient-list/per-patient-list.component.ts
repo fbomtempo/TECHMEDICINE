@@ -53,7 +53,7 @@ export class PerPatientListComponent implements OnInit {
   }
 
   onRefresh(): void {
-    this.patients$ = this.patientService.findAllFormatted().pipe(
+    this.patients$ = this.patientService.findAllFormattedOrderByName().pipe(
       catchError(() => {
         this.error.next(true);
         return of();

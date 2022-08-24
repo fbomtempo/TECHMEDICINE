@@ -97,7 +97,7 @@ export class CheckUpFormComponent extends FormService implements OnInit {
       checkUpHeader: [this.checkUp.checkUpHeader, [Validators.required]],
       complaint: [
         this.checkUp.complaint,
-        [Validators.required, Validators.maxLength(10)]
+        [Validators.required, Validators.maxLength(500)]
       ],
       diseaseHistory: [
         this.checkUp.diseaseHistory,
@@ -111,22 +111,13 @@ export class CheckUpFormComponent extends FormService implements OnInit {
         this.checkUp.patientHistory,
         [Validators.required, Validators.maxLength(500)]
       ],
-      disease: [
-        this.checkUp.disease,
-        [Validators.required, Validators.maxLength(50)]
-      ],
+      disease: [this.checkUp.disease, [Validators.required]],
       conduct: [
         this.checkUp.conduct,
         [Validators.required, Validators.maxLength(500)]
       ],
-      prescription: [
-        this.checkUp.prescription,
-        [Validators.required, Validators.maxLength(300)]
-      ],
-      exams: [
-        this.checkUp.exams,
-        [Validators.required, Validators.maxLength(300)]
-      ]
+      prescription: [this.checkUp.prescription, [Validators.maxLength(300)]],
+      exams: [this.checkUp.exams, [Validators.maxLength(300)]]
     });
     this.checkHeaderQueryParam();
     this.subscribeToChanges();

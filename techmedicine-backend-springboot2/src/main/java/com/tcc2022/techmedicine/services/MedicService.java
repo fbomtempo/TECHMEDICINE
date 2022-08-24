@@ -35,7 +35,7 @@ public class MedicService {
 		try {
 			return medicRepository.save(obj);
 		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException("Violação na integridade ou validações dos campos do banco");
+			throw new DatabaseException(e.getMessage());
 		}
 	}
 	

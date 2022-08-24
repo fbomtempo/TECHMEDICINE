@@ -195,10 +195,14 @@ export class AppointmentFormComponent extends FormService implements OnInit {
   }
 
   onCancel(): void {
-    if (this.timestamp) {
-      this.router.navigate(['agendamentos']);
+    if (this.formType === 'Novo') {
+      if (this.timestamp) {
+        this.router.navigate(['agendamentos']);
+      } else {
+        this.router.navigate(['agendamentos'], { queryParams: { pagina: 1 } });
+      }
     } else {
-      this.router.navigate(['agendamentos'], { queryParams: { pagina: 1 } });
+      this.router.navigate(['agendamentos']);
     }
   }
 }

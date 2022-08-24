@@ -45,6 +45,7 @@ export class PerPatientPageComponent implements OnInit {
     clearButtonLabel: 'Limpar',
     containerClass: 'theme-dark-blue'
   };
+  daysLeave: number;
   @ViewChild('patientFullDetailsModal', { static: true })
   patientFullDetailsModal?: PerPatientDetailsModalComponent;
   @ViewChild('printStatement', { static: true })
@@ -208,6 +209,16 @@ export class PerPatientPageComponent implements OnInit {
   printDocument(checkUp: CheckUp, document: string): void {
     this.checkUp = checkUp;
     if (document === 'statement') {
+      this.daysLeave = parseInt(
+        prompt('Informe a quantidade de dias de afastamento do paciente:')
+      );
+      if (
+        isNaN(this.daysLeave) ||
+        this.daysLeave === 0 ||
+        this.daysLeave === undefined
+      ) {
+        return;
+      }
       this.printStatement.show();
     }
     if (document === 'prescription') {

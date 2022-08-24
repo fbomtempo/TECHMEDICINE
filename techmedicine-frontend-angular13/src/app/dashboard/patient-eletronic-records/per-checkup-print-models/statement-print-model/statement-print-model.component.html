@@ -1,6 +1,55 @@
 <ng-template #template>
   <div class="modal-content">
-    <div class="modal-body"></div>
+    <div class="modal-body">
+      <span class="logo">TECHMEDICINE®</span>
+      <div class="text-center pt-3 pb-4">
+        <h1 class="display-6">Receituário Médico</h1>
+      </div>
+      <hr />
+      <div class="content">
+        <div class="text-break col-12 pt-5">
+          Atesto que o paciente(a)
+          <strong class="text-uppercase">{{
+            checkUp.checkUpHeader.patient.name +
+              " " +
+              checkUp.checkUpHeader.patient.surname
+          }}</strong
+          >, de prontuário n°
+          <strong>{{ checkUp.checkUpHeader.patient.id }}</strong> e atendimento
+          n° <strong>{{ checkUp.id }}</strong
+          >, encontra-se em tratamento desde a data
+          <strong>{{ checkUp.checkUpHeader.date }}</strong> e deve ficar
+          afastado(a) de qualquer atividade durante um período de
+          <strong class="text-uppercase">{{ days }} dias</strong>.
+          <div class="pt-3">CID: {{ checkUp.disease.description }}</div>
+          <div class="pt-3">
+            Assinatura do paciente:
+            ____________________________________________________
+          </div>
+          <div class="pt-5">
+            <div class="pt-5 pb-5 text-center">
+              _____________________________________________________________
+              <div>Assinatura do médico</div>
+              <div>
+                Médico(a):
+                {{
+                  checkUp.checkUpHeader.medic.gender === "Feminino"
+                    ? "Dra."
+                    : "Dr."
+                }}
+                {{
+                  checkUp.checkUpHeader.medic.name +
+                    " " +
+                    checkUp.checkUpHeader.medic.surname
+                }}
+                - {{ "CRM: " + checkUp.checkUpHeader.medic.crm }}
+              </div>
+            </div>
+            <div class="pt-5 text-end">{{ date }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" (click)="close()">Voltar</button>
       <button class="btn btn-primary" (click)="printDocument()">

@@ -1,0 +1,38 @@
+.modal-content {
+  position: relative;
+}
+
+.modal-content:before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.6;
+  background: url('../../../../../assets/images/print-background.jpg');
+  background-repeat: no-repeat;
+  background-position: left;
+  background-size: 500px;
+}
+
+.modal-body,
+.modal-footer {
+  position: relative;
+}
+
+hr {
+  height: 6px;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  margin: 0.15rem 0 0.15rem 0;
+}
+
+.logo {
+  font-size: 1.3rem;
+}
+
+.content {
+  text-align: justify;
+}
