@@ -25,9 +25,8 @@ export class CheckUpHeadersResolver implements Resolve<CheckUpHeader> {
     if (route.params && route.params['id']) {
       const checkUpHeader: Observable<CheckUpHeader> | Observable<any> =
         this.checkUpHeaderService.findById(route.params['id']).pipe(
-          catchError((err) => {
-            console.log(err);
-            this.router.navigate(['nao-encontrado']);
+          catchError(() => {
+            this.router.navigate(['404']);
             return of({});
           })
         );

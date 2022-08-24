@@ -25,7 +25,7 @@ export class PatientsResolver implements Resolve<Patient> {
         .findById(route.params['id'])
         .pipe(
           catchError(() => {
-            this.router.navigate(['nao-encontrado']);
+            this.router.navigate(['404']);
             return of({});
           })
         );

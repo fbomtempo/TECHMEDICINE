@@ -168,7 +168,6 @@ export class CheckUpFormComponent extends FormService implements OnInit {
     this.submitted = true;
     if (this.form.valid && this.changed) {
       const checkUp: CheckUp = this.form.value;
-      console.log(checkUp);
       if (this.form.value['id']) {
         this.checkUpService.update(checkUp).subscribe({
           next: () => {

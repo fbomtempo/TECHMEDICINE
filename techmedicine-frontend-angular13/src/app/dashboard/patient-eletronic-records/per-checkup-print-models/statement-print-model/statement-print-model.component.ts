@@ -9,11 +9,11 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CheckUp } from 'src/app/dashboard/check-ups/models/check-up';
 
 @Component({
-  selector: 'app-prescription-print-model',
-  templateUrl: './prescription-print-model.component.html',
-  styleUrls: ['./prescription-print-model.component.css']
+  selector: 'app-statement-print-model',
+  templateUrl: './statement-print-model.component.html',
+  styleUrls: ['./statement-print-model.component.css']
 })
-export class PrescriptionPrintModelComponent implements OnInit {
+export class StatementPrintModelComponent implements OnInit {
   @Input() checkUp: CheckUp;
   @ViewChild('template') modalTemplate;
 
@@ -24,14 +24,14 @@ export class PrescriptionPrintModelComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  /*ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (this.checkUp) {
       for (const patient in changes) {
         const change = changes[patient];
         console.log(change.currentValue);
       }
     }
-  }*/
+  }
 
   show(): void {
     this.bsModalRef = this.bsModalService.show(

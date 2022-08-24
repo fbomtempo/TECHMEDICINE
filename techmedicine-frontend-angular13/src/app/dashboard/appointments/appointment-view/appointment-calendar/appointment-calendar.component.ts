@@ -176,7 +176,6 @@ export class AppointmentCalendarComponent implements OnInit, OnDestroy {
   }
 
   private addAppointment(arg: any): void {
-    console.log(arg);
     const startDateStr: string = arg.startStr.slice(0, 16);
     const endTimeStr: string = arg.endStr.slice(11, 16);
     const urlDateStr: string = `${startDateStr}-${endTimeStr}`;

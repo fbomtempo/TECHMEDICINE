@@ -25,7 +25,7 @@ export class RolesResolver implements Resolve<Role> {
         .findById(route.params['id'])
         .pipe(
           catchError(() => {
-            this.router.navigate(['nao-encontrado']);
+            this.router.navigate(['404']);
             return of({});
           })
         );

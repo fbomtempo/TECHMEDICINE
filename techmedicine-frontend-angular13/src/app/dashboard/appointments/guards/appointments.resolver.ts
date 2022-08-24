@@ -27,7 +27,7 @@ export class AppointmentsResolver implements Resolve<Appointment> {
       const appointment: Observable<Appointment> | Observable<any> =
         this.appointmentService.findById(route.params['id']).pipe(
           catchError(() => {
-            this.router.navigate(['nao-encontrado']);
+            this.router.navigate(['404']);
             return of({});
           })
         );

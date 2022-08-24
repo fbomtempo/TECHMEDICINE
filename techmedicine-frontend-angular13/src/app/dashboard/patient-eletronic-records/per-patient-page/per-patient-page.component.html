@@ -2,7 +2,7 @@
   <div class="row">
     <div class="pt-4 pb-md-0 pb-3 col-md-3">
       <a class="fs-5 display-1 back" (click)="onBack()"
-        ><i class="fas fa-arrow-left"></i><span>Voltar</span></a
+        ><i class="fas fa-arrow-left"></i><span class="ms-2">Voltar</span></a
       >
     </div>
     <h1 class="text-center pb-5">Página do Paciente</h1>
@@ -212,9 +212,10 @@
                 <span>
                   {{
                     checkUp.checkUpHeader.medic.gender === "Masculino"
-                      ? "Dr. "
-                      : "Dra.  "
-                  }}{{
+                      ? "Dr."
+                      : "Dra."
+                  }}
+                  {{
                     checkUp.checkUpHeader.medic.name +
                       " " +
                       checkUp.checkUpHeader.medic.surname
@@ -267,7 +268,7 @@
                     <strong>CID:</strong>
                   </div>
                   <p class="border pt-1 pb-1 ps-2">
-                    <span>{{ checkUp.disease }}</span>
+                    <span>{{ checkUp.disease.description }}</span>
                   </p>
                   <div class="pb-2">
                     <strong>Conduta:</strong>
@@ -280,7 +281,7 @@
                       type="button"
                       title="Imprimir Atestado"
                       class="btn-round btn-outline-print me-2"
-                      (click)="printDocument(checkUp)"
+                      (click)="printDocument(checkUp, 'statement')"
                     >
                       <i class="fas fa-print"></i>
                     </button>
@@ -301,7 +302,7 @@
                       type="button"
                       title="Imprimir Receita"
                       class="btn-round btn-outline-print me-2"
-                      (click)="printDocument(checkUp)"
+                      (click)="printDocument(checkUp, 'prescription')"
                     >
                       <i class="fas fa-print"></i>
                     </button>
@@ -322,7 +323,7 @@
                       type="button"
                       title="Imprimir Exames"
                       class="btn-round btn-outline-print me-2"
-                      (click)="printDocument(checkUp)"
+                      (click)="printDocument(checkUp, 'exams')"
                     >
                       <i class="fas fa-print"></i>
                     </button>
@@ -357,10 +358,14 @@
   #patientFullDetailsModal
 ></app-per-patient-details-modal>
 
+<app-statement-print-model #printStatement></app-statement-print-model>
+
 <app-prescription-print-model
   [checkUp]="checkUp"
   #printPrescription
 ></app-prescription-print-model>
+
+<app-exams-print-model [checkUp]="checkUp" #printExams></app-exams-print-model>
 
 <!-- TEMPLATES -->
 <ng-template #loadingError>

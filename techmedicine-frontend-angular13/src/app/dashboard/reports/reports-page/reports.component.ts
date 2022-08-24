@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Chart, ChartConfiguration, ChartType } from 'chart.js';
 import Annotation from 'chartjs-plugin-annotation';
 import { BaseChartDirective } from 'ng2-charts';
-import { map } from 'rxjs';
+import { catchError, map, Observable, of, Subject } from 'rxjs';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
 
 import { CheckUp } from '../../check-ups/models/check-up';
@@ -20,6 +20,10 @@ export class ReportsComponent implements OnInit {
   totalPatients: number;
   totalAppointments: number;
   totalCheckUps: number;
+  totalPatientsLoading: boolean = false;
+  totalAppointmentsLoading: boolean = false;
+  totalCheckUpsLoading: boolean = false;
+  error: Subject<boolean> = new Subject();
   lineChartData: ChartConfiguration['data'] = {
     datasets: [],
     labels: [
@@ -88,15 +92,48 @@ export class ReportsComponent implements OnInit {
   }
 
   private getTotals(): void {
-    this.reportService.getTotalPatients().subscribe((total: number) => {
-      this.totalPatients = total;
-    });
-    this.reportService.getTotalAppointments().subscribe((total: number) => {
-      this.totalAppointments = total;
-    });
-    this.reportService.getTotalCheckUps().subscribe((total: number) => {
-      this.totalCheckUps = total;
-    });
+    this.reportService
+      .getTotalPatients()
+      .pipe(
+        catchError(() => {
+          this.error.next(true);
+          return of();
+        })
+      )
+      .subscribe({
+        next: (total: number) => {
+          this.totalPatients = total;
+          this.totalPatientsLoading = true;
+        }
+      });
+    this.reportService
+      .getTotalAppointments()
+      .pipe(
+        catchError(() => {
+          this.error.next(true);
+          return of();
+        })
+      )
+      .subscribe({
+        next: (total: number) => {
+          this.totalAppointments = total;
+          this.totalAppointmentsLoading = true;
+        }
+      });
+    this.reportService
+      .getTotalCheckUps()
+      .pipe(
+        catchError(() => {
+          this.error.next(true);
+          return of();
+        })
+      )
+      .subscribe({
+        next: (total: number) => {
+          this.totalCheckUps = total;
+          this.totalCheckUpsLoading = true;
+        }
+      });
   }
 
   private fetchData(): void {
@@ -181,5 +218,9 @@ export class ReportsComponent implements OnInit {
 
   onHome(): void {
     this.router.navigate(['/home']);
+  }
+
+  reloadPage(): void {
+    window.location.reload();
   }
 }

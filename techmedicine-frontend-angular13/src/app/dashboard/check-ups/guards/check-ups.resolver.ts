@@ -24,9 +24,8 @@ export class CheckUpsResolver implements Resolve<CheckUp> {
       const checkUp: Observable<CheckUp> | Observable<any> = this.checkUpService
         .findById(route.params['id'])
         .pipe(
-          catchError((err) => {
-            console.log(err);
-            this.router.navigate(['nao-encontrado']);
+          catchError(() => {
+            this.router.navigate(['404']);
             return of({});
           })
         );

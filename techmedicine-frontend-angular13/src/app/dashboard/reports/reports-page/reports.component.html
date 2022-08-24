@@ -1,4 +1,9 @@
-<div>
+<div
+  *ngIf="
+    totalPatientsLoading && totalAppointmentsLoading && totalCheckUpsLoading;
+    else loadingError
+  "
+>
   <div class="row">
     <div class="pt-4 pb-md-0 pb-3 col-md-3">
       <a class="fs-5 display-1 back" (click)="onHome()"
@@ -101,3 +106,30 @@
     </div>
   </div>
 </div>
+
+<ng-template #loadingError>
+  <div *ngIf="error | async; else loading">
+    <div
+      style="height: 80vh"
+      class="d-flex flex-column align-items-center justify-content-center"
+    >
+      <p style="font-size: 1.65rem">Erro ao carregar atendimentos.</p>
+      <button
+        type="button"
+        class="btn btn-lg btn-secondary"
+        (click)="reloadPage()"
+      >
+        Tentar Novamente <i class="fas fa-sync-alt"></i>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div
+    style="height: 80vh"
+    class="d-flex align-items-center justify-content-center"
+  >
+    <div class="loader"></div>
+  </div>
+</ng-template>

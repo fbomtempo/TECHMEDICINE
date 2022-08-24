@@ -1,3 +1,4 @@
+import { Disease } from '../../diseases/models/disease';
 import { CheckUpHeader } from './check-up-header';
 
 export interface CheckUp {
@@ -7,7 +8,7 @@ export interface CheckUp {
   diseaseHistory: string;
   familyHistory: string;
   patientHistory: string;
-  disease: string;
+  disease: Disease;
   conduct: string;
   prescription: string;
   exams: string;

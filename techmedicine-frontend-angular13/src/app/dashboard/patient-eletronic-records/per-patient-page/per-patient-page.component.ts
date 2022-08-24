@@ -11,7 +11,10 @@ import { DateService } from 'src/app/shared/services/date.service';
 import { DropdownService } from 'src/app/shared/services/dropdown.service';
 import { MaskService } from 'src/app/shared/services/mask.service';
 import { ModalService } from 'src/app/shared/services/modal.service';
+
+import { ExamsPrintModelComponent } from '../per-checkup-print-models/exams-print-model/exams-print-model.component';
 import { PrescriptionPrintModelComponent } from '../per-checkup-print-models/prescription-print-model/prescription-print-model/prescription-print-model.component';
+import { StatementPrintModelComponent } from '../per-checkup-print-models/statement-print-model/statement-print-model.component';
 import { PerPatientDetailsModalComponent } from '../per-patient-details-modal/per-patient-details-modal.component';
 
 @Component({
@@ -44,9 +47,12 @@ export class PerPatientPageComponent implements OnInit {
   };
   @ViewChild('patientFullDetailsModal', { static: true })
   patientFullDetailsModal?: PerPatientDetailsModalComponent;
-
+  @ViewChild('printStatement', { static: true })
+  printStatement?: StatementPrintModelComponent;
   @ViewChild('printPrescription', { static: true })
   printPrescription?: PrescriptionPrintModelComponent;
+  @ViewChild('printExams', { static: true })
+  printExams?: ExamsPrintModelComponent;
 
   constructor(
     private patientService: PatientService,
@@ -199,9 +205,17 @@ export class PerPatientPageComponent implements OnInit {
       });
   }
 
-  printDocument(checkUp): void {
+  printDocument(checkUp: CheckUp, document: string): void {
     this.checkUp = checkUp;
-    this.printPrescription.show();
+    if (document === 'statement') {
+      this.printStatement.show();
+    }
+    if (document === 'prescription') {
+      this.printPrescription.show();
+    }
+    if (document === 'exams') {
+      this.printExams.show();
+    }
   }
 
   onCheckUpCancel(id: number): void {

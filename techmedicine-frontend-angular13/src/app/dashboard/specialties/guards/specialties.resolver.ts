@@ -27,7 +27,7 @@ export class SpecialtiesResolver implements Resolve<Specialty> {
       const specialty: Observable<Specialty> | Observable<any> =
         this.specialtyService.findById(route.params['id']).pipe(
           catchError(() => {
-            this.router.navigate(['nao-encontrado']);
+            this.router.navigate(['404']);
             return of({});
           })
         );

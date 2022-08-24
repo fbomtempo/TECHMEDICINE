@@ -13,13 +13,17 @@ import { PerPatientListComponent } from './per-patient-list/per-patient-list.com
 import { PerPatientPageComponent } from './per-patient-page/per-patient-page.component';
 import { PerPatientDetailsModalComponent } from './per-patient-details-modal/per-patient-details-modal.component';
 import { PrescriptionPrintModelComponent } from './per-checkup-print-models/prescription-print-model/prescription-print-model/prescription-print-model.component';
+import { ExamsPrintModelComponent } from './per-checkup-print-models/exams-print-model/exams-print-model.component';
+import { StatementPrintModelComponent } from './per-checkup-print-models/statement-print-model/statement-print-model.component';
 
 @NgModule({
   declarations: [
     PerPatientListComponent,
     PerPatientPageComponent,
     PerPatientDetailsModalComponent,
-    PrescriptionPrintModelComponent
+    PrescriptionPrintModelComponent,
+    ExamsPrintModelComponent,
+    StatementPrintModelComponent
   ],
   imports: [
     CommonModule,

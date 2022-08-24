@@ -1,9 +1,9 @@
-#notfound {
+#unauthorized {
   position: relative;
   height: 100vh;
 }
 
-#notfound .notfound {
+#unauthorized .unauthorized {
   position: absolute;
   left: 50%;
   top: 42.5%;
@@ -12,7 +12,7 @@
   transform: translate(-50%, -50%);
 }
 
-.notfound-bg {
+.unauthorized-bg {
   background: url('../../../assets/images/403-bg.png');
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -20,21 +20,21 @@
   background-size: 350px;
 }
 
-.notfound {
+.unauthorized {
   max-width: 767px;
   width: 100%;
   line-height: 1.4;
   padding: 0px 15px;
 }
 
-.notfound .notfound-404 {
+.unauthorized .unauthorized-403 {
   position: relative;
   height: 150px;
   line-height: 150px;
   margin-bottom: 25px;
 }
 
-.notfound .notfound-404 h1 {
+.unauthorized .unauthorized-403 h1 {
   font-family: 'Titillium Web', sans-serif;
   font-size: 186px;
   font-weight: 900;
@@ -48,14 +48,14 @@
   background-position: center;
 }
 
-.notfound h2 {
+.unauthorized h2 {
   font-family: 'Titillium Web', sans-serif;
   font-size: 26px;
   font-weight: 700;
   margin: 0;
 }
 
-.notfound p {
+.unauthorized p {
   font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -63,17 +63,17 @@
   text-transform: uppercase;
 }
 
-.notfound a:hover {
+.unauthorized a:hover {
   opacity: 0.8;
 }
 
 @media only screen and (max-width: 767px) {
-  .notfound .notfound-404 {
+  .unauthorized .unauthorized-403 {
     height: 110px;
     line-height: 110px;
   }
 
-  .notfound .notfound-404 h1 {
+  .unauthorized .unauthorized-403 h1 {
     font-size: 120px;
   }
 }

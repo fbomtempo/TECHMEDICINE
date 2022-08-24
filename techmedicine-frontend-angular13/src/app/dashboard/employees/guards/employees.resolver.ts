@@ -27,7 +27,7 @@ export class EmployeesResolver implements Resolve<Employee> {
       const employee: Observable<Employee> | Observable<any> =
         this.employeeService.findById(route.params['id']).pipe(
           catchError(() => {
-            this.router.navigate(['nao-encontrado']);
+            this.router.navigate(['404']);
             return of({});
           })
         );
