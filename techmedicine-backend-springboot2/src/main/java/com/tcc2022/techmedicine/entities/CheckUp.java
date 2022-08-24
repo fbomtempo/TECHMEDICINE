@@ -52,6 +52,7 @@ public class CheckUp implements Serializable {
 	@Column(length = 500, nullable = true)
 	private String exams;
 	
+	@Column(nullable = false)
 	private String checkUpSituation;
 	
 	public CheckUp() {

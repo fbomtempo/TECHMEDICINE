@@ -51,6 +51,7 @@ public class CheckUpHeader implements Serializable {
 	@JsonFormat(pattern = "HH:mm:ss")
 	private LocalTime endTime;
 	
+	@Column(nullable = false)
 	private String checkUpHeaderSituation;
 	
 	public CheckUpHeader() {

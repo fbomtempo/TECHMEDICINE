@@ -46,7 +46,7 @@ public class Appointment implements Serializable {
 	@JsonFormat(pattern = "HH:mm")
 	private LocalTime endTime;
 	
-	@Column(length = 30, nullable = false)
+	@Column(nullable = false)
 	private String appointmentSituation;
 	
 	public Appointment() {
