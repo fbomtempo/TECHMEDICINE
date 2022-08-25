@@ -27,7 +27,7 @@ export class AppointmentCalendarComponent implements OnInit, OnDestroy {
       center: 'title',
       right: 'timeGridWeek,timeGridDay'
     },
-    height: 1000,
+    height: 1075,
     dayMinWidth: 150,
     eventShortHeight: 40,
     stickyHeaderDates: true,
