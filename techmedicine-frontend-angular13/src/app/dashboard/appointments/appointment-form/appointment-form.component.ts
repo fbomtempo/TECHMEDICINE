@@ -41,9 +41,7 @@ export class AppointmentFormComponent extends FormService implements OnInit {
     '16:00-16:30',
     '16:30-17:00',
     '17:00-17:30',
-    '17:30-18:00',
-    '18:00-18:30',
-    '18:30-19:00'
+    '17:30-18:00'
   ];
   timestamp: string;
   date: Date;
