@@ -36,7 +36,7 @@ public class AppointmentService {
 		try {
 			Appointment appointment = appointmentRepository.findByMedicAndScheduledDateAndStartTime(obj.getMedic(), obj.getScheduledDate(), obj.getStartTime());
 			if (appointment != null) {
-				if (appointment.getAppointmentSituation() != AppointmentSituation.CANCELADO) {
+				if (appointment.getAppointmentSituation() == AppointmentSituation.AGENDADO) {
 					throw new DatabaseException("Médico já possui consulta agendada para o horário informado");
 				}
 			}
