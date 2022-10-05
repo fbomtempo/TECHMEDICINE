@@ -6,6 +6,9 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.tcc2022.techmedicine.entities.Role;
@@ -19,8 +22,15 @@ public class RoleService {
 	@Autowired
 	private RoleRepository roleRepository;
 	
-	public List<Role> findAll() {
-		return roleRepository.findAllByOrderByIdDesc();
+	public List<Role> findAll(Sort sort) {
+		return roleRepository.findAll(sort);
+	}
+	
+	public Page<Role> findAll(Pageable pageable, String filter) {
+		if (filter.isBlank()) {
+			return this.roleRepository.findAll(pageable);
+		}
+		return this.roleRepository.findRolesByFilter(pageable, filter);
 	}
 
 	public Role findById(Long id) {

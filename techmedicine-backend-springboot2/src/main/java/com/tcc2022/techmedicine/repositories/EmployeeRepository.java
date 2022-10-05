@@ -2,12 +2,24 @@ package com.tcc2022.techmedicine.repositories;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.tcc2022.techmedicine.entities.Employee;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 	List<Employee> findAllByOrderByIdDesc();
-
+	@Query(value = "SELECT * FROM tb_employee "
+				 + "WHERE CONCAT(TRIM(name), ' ', TRIM(surname)) "
+				 + "ILIKE :filter%",
+		   countQuery = "SELECT COUNT(*) FROM tb_employee "
+				 + "WHERE CONCAT(TRIM(name), ' ', TRIM(surname)) "
+				 + "ILIKE :filter%",
+		   nativeQuery = true)
+	Page<Employee> findEmployeesByFilter(Pageable pageable, @Param("filter") String filter);
+	List<Employee> findAllByOrderByNameAscSurnameAsc();
 }

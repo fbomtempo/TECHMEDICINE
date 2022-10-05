@@ -6,6 +6,9 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.tcc2022.techmedicine.entities.Specialty;
@@ -19,8 +22,15 @@ public class SpecialtyService {
 	@Autowired
 	private SpecialtyRepository specialtyRepository;
 	
-	public List<Specialty> findAll() {
-		return specialtyRepository.findAllByOrderByIdDesc();
+	public List<Specialty> findAll(Sort sort) {
+		return specialtyRepository.findAll(sort);
+	}
+	
+	public Page<Specialty> findAll(Pageable pageable, String filter) {
+		if (filter.isBlank()) {
+			return this.specialtyRepository.findAll(pageable);
+		}
+		return this.specialtyRepository.findSpecialtiesByFilter(pageable, filter);
 	}
 
 	public Specialty findById(Long id) {

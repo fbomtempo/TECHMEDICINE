@@ -12,7 +12,7 @@ public class ResourceServerConfig extends  ResourceServerConfigurerAdapter {
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http
+		/*http
 			.authorizeRequests()
 				// ADMIN
 				.antMatchers("/usuarios/**").hasRole("ADMIN")
@@ -32,6 +32,9 @@ public class ResourceServerConfig extends  ResourceServerConfigurerAdapter {
 				// RECEPCIONISTA
 				.antMatchers("/pacientes/**").hasAnyRole("ADMIN", "RECEPCIONISTA")
 				.antMatchers("/agendamentos/**").hasAnyRole("ADMIN", "RECEPCIONISTA")
-				.antMatchers("/cabecalhos-atendimento/**").hasAnyRole("ADMIN", "MEDICO", "RECEPCIONISTA");
+				.antMatchers("/cabecalhos-atendimento/**").hasAnyRole("ADMIN", "MEDICO", "RECEPCIONISTA");*/
+		http
+			.authorizeRequests()
+				.anyRequest().permitAll();
 	}	
 }

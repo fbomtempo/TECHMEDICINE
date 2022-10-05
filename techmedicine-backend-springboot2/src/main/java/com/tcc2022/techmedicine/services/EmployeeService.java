@@ -6,6 +6,9 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.tcc2022.techmedicine.entities.Employee;
@@ -19,9 +22,15 @@ public class EmployeeService {
 	@Autowired
 	private EmployeeRepository employeeRepository;
 	
-	public List<Employee> findAll() {
-		List<Employee> list = employeeRepository.findAllByOrderByIdDesc();
-		return list;
+	public List<Employee> findAll(Sort sort) {
+		return employeeRepository.findAll(sort);
+	}
+	
+	public Page<Employee> findAll(Pageable pageable, String filter) {
+		if (filter.isBlank()) {
+			return this.employeeRepository.findAll(pageable);
+		}
+		return this.employeeRepository.findEmployeesByFilter(pageable, filter);
 	}
 	
 	public Employee findById(Long id) {

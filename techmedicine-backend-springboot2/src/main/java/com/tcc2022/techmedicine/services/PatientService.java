@@ -6,6 +6,9 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.tcc2022.techmedicine.entities.Patient;
@@ -18,9 +21,16 @@ public class PatientService {
 
 	@Autowired
 	private PatientRepository patientRepository;
-
-	public List<Patient> findAll() {
-		return patientRepository.findAllByOrderByIdDesc();
+	
+	public List<Patient> findAll(Sort sort) {
+		return patientRepository.findAll(sort);
+	}
+	
+	public Page<Patient> findAll(Pageable pageable, String filter) {
+		if (filter.isBlank()) {
+			return this.patientRepository.findAll(pageable);
+		}
+		return this.patientRepository.findPatientsByFilter(pageable, filter);
 	}
 
 	public Patient findById(long id) {

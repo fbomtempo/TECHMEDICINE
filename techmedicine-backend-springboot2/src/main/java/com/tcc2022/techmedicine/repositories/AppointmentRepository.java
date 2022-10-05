@@ -12,5 +12,5 @@ import com.tcc2022.techmedicine.entities.Medic;
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
 	List<Appointment> findAllByOrderByIdDesc();
-	Appointment findByMedicAndScheduledDateAndStartTime(Medic medic, LocalDate scheduledDate, LocalTime starTime);
+	List<Appointment> findByMedicAndScheduledDateAndStartTime(Medic medic, LocalDate scheduledDate, LocalTime starTime);
 }

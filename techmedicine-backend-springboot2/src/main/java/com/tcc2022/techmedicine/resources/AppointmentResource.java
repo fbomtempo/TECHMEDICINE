@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +27,8 @@ public class AppointmentResource {
 	private AppointmentService appointmentService;
 	
 	@GetMapping
-	public ResponseEntity<List<Appointment>> findAll() {
-		List<Appointment> list = appointmentService.findAll();
+	public ResponseEntity<List<Appointment>> findAll(Sort sort) {
+		List<Appointment> list = appointmentService.findAll(sort);
 		return ResponseEntity.ok().body(list);
 	}
 	

@@ -13,10 +13,10 @@ import com.tcc2022.techmedicine.entities.Patient;
 public interface CheckUpRepository extends JpaRepository<CheckUp, Long> {
 	
 	CheckUp findByCheckUpHeader(CheckUpHeader checkUpHeader);
-	@Query("SELECT c from CheckUp c "
-			+ "WHERE c.checkUpHeader.patient = :patient "
-			+ "ORDER BY c.checkUpHeader.date DESC, c.checkUpHeader.startTime DESC")
-	List<CheckUp> findAllByPatient(@Param("patient")Patient patient);
+	@Query("select c from CheckUp c "
+			+ "where c.checkUpHeader.patient = :patient "
+			+ "order by c.checkUpHeader.date desc, c.checkUpHeader.startTime desc")
+	List<CheckUp> findAllByPatient(@Param("patient") Patient patient);
 	List<CheckUp> findAllByCheckUpSituation(String checkUpSituation);
 	Long countByCheckUpSituation(String checkUpSituation);
 }
